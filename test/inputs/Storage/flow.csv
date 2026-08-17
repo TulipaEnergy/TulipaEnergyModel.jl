@@ -12,3 +12,5 @@ caes,demand,electricity,false,0.0,10,1,0.02,false
 ens,caes,electricity,false,0.0,10,1,0.02,false
 ccgt,caes,electricity,false,0.0,10,1,0.02,false
 caes,atmosphere,co2,false,0.0,10,1,0.02,false
+demand,flow_battery,electricity,false,0.0,10,1,0.02,false
+flow_battery,demand,electricity,false,0.0,10,1,0.02,false

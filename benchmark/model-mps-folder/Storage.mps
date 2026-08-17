@@ -289,6 +289,78 @@ ROWS
  L  max_output_flows_limit_aggregated_vintage_method[ens,2030,3,22:22]
  L  max_output_flows_limit_aggregated_vintage_method[ens,2030,3,23:23]
  L  max_output_flows_limit_aggregated_vintage_method[ens,2030,3,24:24]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23]
+ L  max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24]
  L  max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,1:1]
  L  max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,2:2]
  L  max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,3:3]
@@ -721,6 +793,78 @@ ROWS
  L  max_input_flows_limit_aggregated_vintage_method[caes,2030,3,22:22]
  L  max_input_flows_limit_aggregated_vintage_method[caes,2030,3,23:23]
  L  max_input_flows_limit_aggregated_vintage_method[caes,2030,3,24:24]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23]
+ L  max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24]
  L  max_input_flows_limit_aggregated_vintage_method[phs,2030,1,1:1]
  L  max_input_flows_limit_aggregated_vintage_method[phs,2030,1,2:2]
  L  max_input_flows_limit_aggregated_vintage_method[phs,2030,1,3:3]
@@ -937,6 +1081,157 @@ ROWS
  L  max_storage_level_intra_rep_period_limit[caes,2030,3,22:22]
  L  max_storage_level_intra_rep_period_limit[caes,2030,3,23:23]
  L  max_storage_level_intra_rep_period_limit[caes,2030,3,24:24]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,1:1]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,2:2]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,3:3]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,4:4]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,5:5]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,6:6]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,7:7]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,8:8]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,9:9]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,10:10]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,11:11]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,12:12]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,13:13]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,14:14]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,15:15]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,16:16]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,17:17]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,18:18]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,19:19]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,20:20]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,21:21]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,22:22]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,23:23]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,24:24]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,1:1]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,2:2]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,3:3]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,4:4]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,5:5]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,6:6]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,7:7]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,8:8]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,9:9]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,10:10]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,11:11]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,12:12]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,13:13]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,14:14]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,15:15]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,16:16]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,17:17]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,18:18]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,19:19]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,20:20]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,21:21]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,22:22]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,23:23]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,24:24]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,1:1]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,2:2]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,3:3]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,4:4]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,5:5]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,6:6]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,7:7]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,8:8]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,9:9]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,10:10]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,11:11]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,12:12]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,13:13]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,14:14]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,15:15]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,16:16]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,17:17]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,18:18]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,19:19]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,20:20]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,21:21]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,22:22]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,23:23]
+ L  max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,24:24]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,1:1]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,2:2]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,3:3]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,4:4]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,5:5]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,6:6]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,7:7]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,8:8]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,9:9]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,10:10]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,11:11]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,12:12]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,13:13]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,14:14]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,15:15]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,16:16]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,17:17]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,18:18]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,19:19]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,20:20]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,21:21]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,22:22]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,23:23]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,24:24]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,1:1]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,2:2]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,3:3]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,4:4]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,5:5]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,6:6]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,7:7]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,8:8]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,9:9]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,10:10]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,11:11]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,12:12]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,13:13]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,14:14]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,15:15]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,16:16]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,17:17]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,18:18]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,19:19]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,20:20]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,21:21]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,22:22]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,23:23]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,24:24]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,1:1]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,2:2]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,3:3]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,4:4]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,5:5]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,6:6]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,7:7]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,8:8]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,9:9]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,10:10]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,11:11]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,12:12]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,13:13]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,14:14]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,15:15]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,16:16]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,17:17]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,18:18]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,19:19]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,20:20]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,21:21]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,22:22]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,23:23]
+ L  max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,24:24]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,1:1]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,2:2]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,3:3]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,4:4]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,5:5]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,6:6]
+ L  max_storage_level_inter_period_limit[flow_battery,2030,1,7:7]
  L  max_storage_level_inter_period_limit[phs,2030,1,1:1]
  L  max_storage_level_inter_period_limit[phs,2030,1,2:2]
  L  max_storage_level_inter_period_limit[phs,2030,1,3:3]
@@ -944,6 +1239,13 @@ ROWS
  L  max_storage_level_inter_period_limit[phs,2030,1,5:5]
  L  max_storage_level_inter_period_limit[phs,2030,1,6:6]
  L  max_storage_level_inter_period_limit[phs,2030,1,7:7]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,1:1]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,2:2]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,3:3]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,4:4]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,5:5]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,6:6]
+ G  min_storage_level_inter_period_limit[flow_battery,2030,1,7:7]
  G  cycling_condition_inter_period[phs,2030,1]
  E  consumer_balance[atmosphere,2030,1,1:1]
  E  consumer_balance[atmosphere,2030,1,2:2]
@@ -1233,6 +1535,13 @@ ROWS
  E  balance_storage_rep_period[caes,2030,3,22:22]
  E  balance_storage_rep_period[caes,2030,3,23:23]
  E  balance_storage_rep_period[caes,2030,3,24:24]
+ E  balance_storage_inter_period[flow_battery,2030,1,1:1]
+ E  balance_storage_inter_period[flow_battery,2030,1,2:2]
+ E  balance_storage_inter_period[flow_battery,2030,1,3:3]
+ E  balance_storage_inter_period[flow_battery,2030,1,4:4]
+ E  balance_storage_inter_period[flow_battery,2030,1,5:5]
+ E  balance_storage_inter_period[flow_battery,2030,1,6:6]
+ E  balance_storage_inter_period[flow_battery,2030,1,7:7]
  E  balance_storage_inter_period[phs,2030,1,1:1]
  E  balance_storage_inter_period[phs,2030,1,2:2]
  E  balance_storage_inter_period[phs,2030,1,3:3]
@@ -1240,6 +1549,78 @@ ROWS
  E  balance_storage_inter_period[phs,2030,1,5:5]
  E  balance_storage_inter_period[phs,2030,1,6:6]
  E  balance_storage_inter_period[phs,2030,1,7:7]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,1:1]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,2:2]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,3:3]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,4:4]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,5:5]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,6:6]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,7:7]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,8:8]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,9:9]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,10:10]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,11:11]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,12:12]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,13:13]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,14:14]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,15:15]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,16:16]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,17:17]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,18:18]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,19:19]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,20:20]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,21:21]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,22:22]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,23:23]
+ E  accumulated_storage_intra_period[flow_battery,2030,1,24:24]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,1:1]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,2:2]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,3:3]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,4:4]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,5:5]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,6:6]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,7:7]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,8:8]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,9:9]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,10:10]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,11:11]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,12:12]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,13:13]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,14:14]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,15:15]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,16:16]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,17:17]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,18:18]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,19:19]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,20:20]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,21:21]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,22:22]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,23:23]
+ E  accumulated_storage_intra_period[flow_battery,2030,2,24:24]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,1:1]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,2:2]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,3:3]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,4:4]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,5:5]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,6:6]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,7:7]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,8:8]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,9:9]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,10:10]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,11:11]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,12:12]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,13:13]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,14:14]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,15:15]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,16:16]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,17:17]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,18:18]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,19:19]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,20:20]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,21:21]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,22:22]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,23:23]
+ E  accumulated_storage_intra_period[flow_battery,2030,3,24:24]
  E  accumulated_storage_intra_period[phs,2030,1,1:1]
  E  accumulated_storage_intra_period[phs,2030,1,2:2]
  E  accumulated_storage_intra_period[phs,2030,1,3:3]
@@ -2369,78 +2750,222 @@ COLUMNS
     flow[(caes,atmosphere),2030,1,24:24] consumer_balance[atmosphere,2030,1,24:24] 1
     flow[(caes,atmosphere),2030,1,24:24] flows_relationships[ccgt_caes_caes_atmosphere,_2030,_1,_24:24] -0.4
     flow[(caes,atmosphere),2030,1,24:24] OBJ 1.7999999999999998
-    flow[(ccgt,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,1:1] 1
-    flow[(ccgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(ccgt,demand),2030,2,1:1] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,2:2] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,2:2] 1
-    flow[(ccgt,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(ccgt,demand),2030,2,2:2] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,3:3] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,3:3] 1
-    flow[(ccgt,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(ccgt,demand),2030,2,3:3] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,4:4] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,4:4] 1
-    flow[(ccgt,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(ccgt,demand),2030,2,4:4] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,5:5] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,5:5] 1
-    flow[(ccgt,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(ccgt,demand),2030,2,5:5] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,6:6] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,6:6] 1
-    flow[(ccgt,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(ccgt,demand),2030,2,6:6] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,7:7] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,7:7] 1
-    flow[(ccgt,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(ccgt,demand),2030,2,7:7] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,8:8] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,8:8] 1
-    flow[(ccgt,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(ccgt,demand),2030,2,8:8] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,9:9] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,9:9] 1
-    flow[(ccgt,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(ccgt,demand),2030,2,9:9] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,10:10] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,10:10] 1
-    flow[(ccgt,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(ccgt,demand),2030,2,10:10] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,11:11] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,11:11] 1
-    flow[(ccgt,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(ccgt,demand),2030,2,11:11] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,12:12] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,12:12] 1
-    flow[(ccgt,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(ccgt,demand),2030,2,12:12] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,13:13] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,13:13] 1
-    flow[(ccgt,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(ccgt,demand),2030,2,13:13] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,14:14] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,14:14] 1
-    flow[(ccgt,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(ccgt,demand),2030,2,14:14] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,15:15] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,15:15] 1
-    flow[(ccgt,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(ccgt,demand),2030,2,15:15] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,16:16] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,16:16] 1
-    flow[(ccgt,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(ccgt,demand),2030,2,16:16] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,17:17] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,17:17] 1
-    flow[(ccgt,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(ccgt,demand),2030,2,17:17] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,18:18] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,18:18] 1
-    flow[(ccgt,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(ccgt,demand),2030,2,18:18] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,19:19] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,19:19] 1
-    flow[(ccgt,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(ccgt,demand),2030,2,19:19] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,20:20] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,20:20] 1
-    flow[(ccgt,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(ccgt,demand),2030,2,20:20] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,21:21] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,21:21] 1
-    flow[(ccgt,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(ccgt,demand),2030,2,21:21] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,22:22] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,22:22] 1
-    flow[(ccgt,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(ccgt,demand),2030,2,22:22] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,23:23] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,23:23] 1
-    flow[(ccgt,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(ccgt,demand),2030,2,23:23] OBJ 0.21000000000000002
-    flow[(ccgt,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,24:24] 1
-    flow[(ccgt,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(ccgt,demand),2030,2,24:24] OBJ 0.21000000000000002
+    flow[(demand,flow_battery),2030,1,1:1] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1] 1
+    flow[(demand,flow_battery),2030,1,1:1] consumer_balance[demand,2030,1,1:1] -1
+    flow[(demand,flow_battery),2030,1,1:1] accumulated_storage_intra_period[flow_battery,2030,1,1:1] -0.86
+    flow[(demand,flow_battery),2030,1,2:2] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2] 1
+    flow[(demand,flow_battery),2030,1,2:2] consumer_balance[demand,2030,1,2:2] -1
+    flow[(demand,flow_battery),2030,1,2:2] accumulated_storage_intra_period[flow_battery,2030,1,2:2] -0.86
+    flow[(demand,flow_battery),2030,1,3:3] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3] 1
+    flow[(demand,flow_battery),2030,1,3:3] consumer_balance[demand,2030,1,3:3] -1
+    flow[(demand,flow_battery),2030,1,3:3] accumulated_storage_intra_period[flow_battery,2030,1,3:3] -0.86
+    flow[(demand,flow_battery),2030,1,4:4] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4] 1
+    flow[(demand,flow_battery),2030,1,4:4] consumer_balance[demand,2030,1,4:4] -1
+    flow[(demand,flow_battery),2030,1,4:4] accumulated_storage_intra_period[flow_battery,2030,1,4:4] -0.86
+    flow[(demand,flow_battery),2030,1,5:5] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5] 1
+    flow[(demand,flow_battery),2030,1,5:5] consumer_balance[demand,2030,1,5:5] -1
+    flow[(demand,flow_battery),2030,1,5:5] accumulated_storage_intra_period[flow_battery,2030,1,5:5] -0.86
+    flow[(demand,flow_battery),2030,1,6:6] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6] 1
+    flow[(demand,flow_battery),2030,1,6:6] consumer_balance[demand,2030,1,6:6] -1
+    flow[(demand,flow_battery),2030,1,6:6] accumulated_storage_intra_period[flow_battery,2030,1,6:6] -0.86
+    flow[(demand,flow_battery),2030,1,7:7] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7] 1
+    flow[(demand,flow_battery),2030,1,7:7] consumer_balance[demand,2030,1,7:7] -1
+    flow[(demand,flow_battery),2030,1,7:7] accumulated_storage_intra_period[flow_battery,2030,1,7:7] -0.86
+    flow[(demand,flow_battery),2030,1,8:8] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8] 1
+    flow[(demand,flow_battery),2030,1,8:8] consumer_balance[demand,2030,1,8:8] -1
+    flow[(demand,flow_battery),2030,1,8:8] accumulated_storage_intra_period[flow_battery,2030,1,8:8] -0.86
+    flow[(demand,flow_battery),2030,1,9:9] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9] 1
+    flow[(demand,flow_battery),2030,1,9:9] consumer_balance[demand,2030,1,9:9] -1
+    flow[(demand,flow_battery),2030,1,9:9] accumulated_storage_intra_period[flow_battery,2030,1,9:9] -0.86
+    flow[(demand,flow_battery),2030,1,10:10] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10] 1
+    flow[(demand,flow_battery),2030,1,10:10] consumer_balance[demand,2030,1,10:10] -1
+    flow[(demand,flow_battery),2030,1,10:10] accumulated_storage_intra_period[flow_battery,2030,1,10:10] -0.86
+    flow[(demand,flow_battery),2030,1,11:11] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11] 1
+    flow[(demand,flow_battery),2030,1,11:11] consumer_balance[demand,2030,1,11:11] -1
+    flow[(demand,flow_battery),2030,1,11:11] accumulated_storage_intra_period[flow_battery,2030,1,11:11] -0.86
+    flow[(demand,flow_battery),2030,1,12:12] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12] 1
+    flow[(demand,flow_battery),2030,1,12:12] consumer_balance[demand,2030,1,12:12] -1
+    flow[(demand,flow_battery),2030,1,12:12] accumulated_storage_intra_period[flow_battery,2030,1,12:12] -0.86
+    flow[(demand,flow_battery),2030,1,13:13] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13] 1
+    flow[(demand,flow_battery),2030,1,13:13] consumer_balance[demand,2030,1,13:13] -1
+    flow[(demand,flow_battery),2030,1,13:13] accumulated_storage_intra_period[flow_battery,2030,1,13:13] -0.86
+    flow[(demand,flow_battery),2030,1,14:14] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14] 1
+    flow[(demand,flow_battery),2030,1,14:14] consumer_balance[demand,2030,1,14:14] -1
+    flow[(demand,flow_battery),2030,1,14:14] accumulated_storage_intra_period[flow_battery,2030,1,14:14] -0.86
+    flow[(demand,flow_battery),2030,1,15:15] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15] 1
+    flow[(demand,flow_battery),2030,1,15:15] consumer_balance[demand,2030,1,15:15] -1
+    flow[(demand,flow_battery),2030,1,15:15] accumulated_storage_intra_period[flow_battery,2030,1,15:15] -0.86
+    flow[(demand,flow_battery),2030,1,16:16] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16] 1
+    flow[(demand,flow_battery),2030,1,16:16] consumer_balance[demand,2030,1,16:16] -1
+    flow[(demand,flow_battery),2030,1,16:16] accumulated_storage_intra_period[flow_battery,2030,1,16:16] -0.86
+    flow[(demand,flow_battery),2030,1,17:17] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17] 1
+    flow[(demand,flow_battery),2030,1,17:17] consumer_balance[demand,2030,1,17:17] -1
+    flow[(demand,flow_battery),2030,1,17:17] accumulated_storage_intra_period[flow_battery,2030,1,17:17] -0.86
+    flow[(demand,flow_battery),2030,1,18:18] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18] 1
+    flow[(demand,flow_battery),2030,1,18:18] consumer_balance[demand,2030,1,18:18] -1
+    flow[(demand,flow_battery),2030,1,18:18] accumulated_storage_intra_period[flow_battery,2030,1,18:18] -0.86
+    flow[(demand,flow_battery),2030,1,19:19] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19] 1
+    flow[(demand,flow_battery),2030,1,19:19] consumer_balance[demand,2030,1,19:19] -1
+    flow[(demand,flow_battery),2030,1,19:19] accumulated_storage_intra_period[flow_battery,2030,1,19:19] -0.86
+    flow[(demand,flow_battery),2030,1,20:20] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20] 1
+    flow[(demand,flow_battery),2030,1,20:20] consumer_balance[demand,2030,1,20:20] -1
+    flow[(demand,flow_battery),2030,1,20:20] accumulated_storage_intra_period[flow_battery,2030,1,20:20] -0.86
+    flow[(demand,flow_battery),2030,1,21:21] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21] 1
+    flow[(demand,flow_battery),2030,1,21:21] consumer_balance[demand,2030,1,21:21] -1
+    flow[(demand,flow_battery),2030,1,21:21] accumulated_storage_intra_period[flow_battery,2030,1,21:21] -0.86
+    flow[(demand,flow_battery),2030,1,22:22] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22] 1
+    flow[(demand,flow_battery),2030,1,22:22] consumer_balance[demand,2030,1,22:22] -1
+    flow[(demand,flow_battery),2030,1,22:22] accumulated_storage_intra_period[flow_battery,2030,1,22:22] -0.86
+    flow[(demand,flow_battery),2030,1,23:23] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23] 1
+    flow[(demand,flow_battery),2030,1,23:23] consumer_balance[demand,2030,1,23:23] -1
+    flow[(demand,flow_battery),2030,1,23:23] accumulated_storage_intra_period[flow_battery,2030,1,23:23] -0.86
+    flow[(demand,flow_battery),2030,1,24:24] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24] 1
+    flow[(demand,flow_battery),2030,1,24:24] consumer_balance[demand,2030,1,24:24] -1
+    flow[(demand,flow_battery),2030,1,24:24] accumulated_storage_intra_period[flow_battery,2030,1,24:24] -0.86
+    flow[(flow_battery,demand),2030,1,1:1] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1] 1
+    flow[(flow_battery,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
+    flow[(flow_battery,demand),2030,1,1:1] accumulated_storage_intra_period[flow_battery,2030,1,1:1] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,2:2] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2] 1
+    flow[(flow_battery,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
+    flow[(flow_battery,demand),2030,1,2:2] accumulated_storage_intra_period[flow_battery,2030,1,2:2] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,3:3] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3] 1
+    flow[(flow_battery,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
+    flow[(flow_battery,demand),2030,1,3:3] accumulated_storage_intra_period[flow_battery,2030,1,3:3] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,4:4] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4] 1
+    flow[(flow_battery,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
+    flow[(flow_battery,demand),2030,1,4:4] accumulated_storage_intra_period[flow_battery,2030,1,4:4] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,5:5] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5] 1
+    flow[(flow_battery,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
+    flow[(flow_battery,demand),2030,1,5:5] accumulated_storage_intra_period[flow_battery,2030,1,5:5] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,6:6] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6] 1
+    flow[(flow_battery,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
+    flow[(flow_battery,demand),2030,1,6:6] accumulated_storage_intra_period[flow_battery,2030,1,6:6] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,7:7] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7] 1
+    flow[(flow_battery,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
+    flow[(flow_battery,demand),2030,1,7:7] accumulated_storage_intra_period[flow_battery,2030,1,7:7] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,8:8] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8] 1
+    flow[(flow_battery,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
+    flow[(flow_battery,demand),2030,1,8:8] accumulated_storage_intra_period[flow_battery,2030,1,8:8] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,9:9] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9] 1
+    flow[(flow_battery,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
+    flow[(flow_battery,demand),2030,1,9:9] accumulated_storage_intra_period[flow_battery,2030,1,9:9] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,10:10] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10] 1
+    flow[(flow_battery,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
+    flow[(flow_battery,demand),2030,1,10:10] accumulated_storage_intra_period[flow_battery,2030,1,10:10] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,11:11] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11] 1
+    flow[(flow_battery,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
+    flow[(flow_battery,demand),2030,1,11:11] accumulated_storage_intra_period[flow_battery,2030,1,11:11] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,12:12] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12] 1
+    flow[(flow_battery,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
+    flow[(flow_battery,demand),2030,1,12:12] accumulated_storage_intra_period[flow_battery,2030,1,12:12] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,13:13] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13] 1
+    flow[(flow_battery,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
+    flow[(flow_battery,demand),2030,1,13:13] accumulated_storage_intra_period[flow_battery,2030,1,13:13] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,14:14] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14] 1
+    flow[(flow_battery,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
+    flow[(flow_battery,demand),2030,1,14:14] accumulated_storage_intra_period[flow_battery,2030,1,14:14] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,15:15] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15] 1
+    flow[(flow_battery,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
+    flow[(flow_battery,demand),2030,1,15:15] accumulated_storage_intra_period[flow_battery,2030,1,15:15] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,16:16] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16] 1
+    flow[(flow_battery,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
+    flow[(flow_battery,demand),2030,1,16:16] accumulated_storage_intra_period[flow_battery,2030,1,16:16] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,17:17] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17] 1
+    flow[(flow_battery,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
+    flow[(flow_battery,demand),2030,1,17:17] accumulated_storage_intra_period[flow_battery,2030,1,17:17] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,18:18] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18] 1
+    flow[(flow_battery,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
+    flow[(flow_battery,demand),2030,1,18:18] accumulated_storage_intra_period[flow_battery,2030,1,18:18] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,19:19] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19] 1
+    flow[(flow_battery,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
+    flow[(flow_battery,demand),2030,1,19:19] accumulated_storage_intra_period[flow_battery,2030,1,19:19] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,20:20] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20] 1
+    flow[(flow_battery,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
+    flow[(flow_battery,demand),2030,1,20:20] accumulated_storage_intra_period[flow_battery,2030,1,20:20] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,21:21] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21] 1
+    flow[(flow_battery,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
+    flow[(flow_battery,demand),2030,1,21:21] accumulated_storage_intra_period[flow_battery,2030,1,21:21] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,22:22] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22] 1
+    flow[(flow_battery,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
+    flow[(flow_battery,demand),2030,1,22:22] accumulated_storage_intra_period[flow_battery,2030,1,22:22] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,23:23] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23] 1
+    flow[(flow_battery,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
+    flow[(flow_battery,demand),2030,1,23:23] accumulated_storage_intra_period[flow_battery,2030,1,23:23] 1.1627906976744187
+    flow[(flow_battery,demand),2030,1,24:24] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24] 1
+    flow[(flow_battery,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
+    flow[(flow_battery,demand),2030,1,24:24] accumulated_storage_intra_period[flow_battery,2030,1,24:24] 1.1627906976744187
+    flow[(wind,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,1:1] 1
+    flow[(wind,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(wind,demand),2030,2,1:1] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,2:2] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,2:2] 1
+    flow[(wind,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(wind,demand),2030,2,2:2] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,3:3] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,3:3] 1
+    flow[(wind,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(wind,demand),2030,2,3:3] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,4:4] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,4:4] 1
+    flow[(wind,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(wind,demand),2030,2,4:4] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,5:5] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,5:5] 1
+    flow[(wind,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(wind,demand),2030,2,5:5] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,6:6] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,6:6] 1
+    flow[(wind,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(wind,demand),2030,2,6:6] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,7:7] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,7:7] 1
+    flow[(wind,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(wind,demand),2030,2,7:7] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,8:8] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,8:8] 1
+    flow[(wind,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(wind,demand),2030,2,8:8] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,9:9] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,9:9] 1
+    flow[(wind,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(wind,demand),2030,2,9:9] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,10:10] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,10:10] 1
+    flow[(wind,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(wind,demand),2030,2,10:10] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,11:11] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,11:11] 1
+    flow[(wind,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(wind,demand),2030,2,11:11] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,12:12] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,12:12] 1
+    flow[(wind,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(wind,demand),2030,2,12:12] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,13:13] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,13:13] 1
+    flow[(wind,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(wind,demand),2030,2,13:13] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,14:14] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,14:14] 1
+    flow[(wind,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(wind,demand),2030,2,14:14] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,15:15] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,15:15] 1
+    flow[(wind,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(wind,demand),2030,2,15:15] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,16:16] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,16:16] 1
+    flow[(wind,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(wind,demand),2030,2,16:16] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,17:17] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,17:17] 1
+    flow[(wind,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(wind,demand),2030,2,17:17] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,18:18] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,18:18] 1
+    flow[(wind,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(wind,demand),2030,2,18:18] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,19:19] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,19:19] 1
+    flow[(wind,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(wind,demand),2030,2,19:19] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,20:20] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,20:20] 1
+    flow[(wind,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(wind,demand),2030,2,20:20] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,21:21] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,21:21] 1
+    flow[(wind,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(wind,demand),2030,2,21:21] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,22:22] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,22:22] 1
+    flow[(wind,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(wind,demand),2030,2,22:22] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,23:23] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,23:23] 1
+    flow[(wind,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(wind,demand),2030,2,23:23] OBJ 0.004200000000000001
+    flow[(wind,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,24:24] 1
+    flow[(wind,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(wind,demand),2030,2,24:24] OBJ 0.004200000000000001
     flow[(ocgt,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,2,1:1] 1
     flow[(ocgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(ocgt,demand),2030,2,1:1] OBJ 0.29400000000000004
@@ -2801,6 +3326,78 @@ COLUMNS
     flow[(phs,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[phs,2030,2,24:24] 1
     flow[(phs,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
     flow[(phs,demand),2030,2,24:24] accumulated_storage_intra_period[phs,2030,2,24:24] 1.1764705882352942
+    flow[(ccgt,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,1:1] 1
+    flow[(ccgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(ccgt,demand),2030,2,1:1] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,2:2] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,2:2] 1
+    flow[(ccgt,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(ccgt,demand),2030,2,2:2] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,3:3] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,3:3] 1
+    flow[(ccgt,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(ccgt,demand),2030,2,3:3] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,4:4] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,4:4] 1
+    flow[(ccgt,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(ccgt,demand),2030,2,4:4] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,5:5] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,5:5] 1
+    flow[(ccgt,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(ccgt,demand),2030,2,5:5] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,6:6] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,6:6] 1
+    flow[(ccgt,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(ccgt,demand),2030,2,6:6] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,7:7] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,7:7] 1
+    flow[(ccgt,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(ccgt,demand),2030,2,7:7] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,8:8] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,8:8] 1
+    flow[(ccgt,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(ccgt,demand),2030,2,8:8] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,9:9] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,9:9] 1
+    flow[(ccgt,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(ccgt,demand),2030,2,9:9] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,10:10] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,10:10] 1
+    flow[(ccgt,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(ccgt,demand),2030,2,10:10] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,11:11] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,11:11] 1
+    flow[(ccgt,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(ccgt,demand),2030,2,11:11] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,12:12] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,12:12] 1
+    flow[(ccgt,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(ccgt,demand),2030,2,12:12] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,13:13] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,13:13] 1
+    flow[(ccgt,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(ccgt,demand),2030,2,13:13] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,14:14] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,14:14] 1
+    flow[(ccgt,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(ccgt,demand),2030,2,14:14] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,15:15] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,15:15] 1
+    flow[(ccgt,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(ccgt,demand),2030,2,15:15] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,16:16] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,16:16] 1
+    flow[(ccgt,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(ccgt,demand),2030,2,16:16] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,17:17] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,17:17] 1
+    flow[(ccgt,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(ccgt,demand),2030,2,17:17] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,18:18] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,18:18] 1
+    flow[(ccgt,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(ccgt,demand),2030,2,18:18] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,19:19] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,19:19] 1
+    flow[(ccgt,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(ccgt,demand),2030,2,19:19] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,20:20] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,20:20] 1
+    flow[(ccgt,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(ccgt,demand),2030,2,20:20] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,21:21] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,21:21] 1
+    flow[(ccgt,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(ccgt,demand),2030,2,21:21] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,22:22] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,22:22] 1
+    flow[(ccgt,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(ccgt,demand),2030,2,22:22] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,23:23] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,23:23] 1
+    flow[(ccgt,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(ccgt,demand),2030,2,23:23] OBJ 0.21000000000000002
+    flow[(ccgt,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,2,24:24] 1
+    flow[(ccgt,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(ccgt,demand),2030,2,24:24] OBJ 0.21000000000000002
     flow[(ens,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[ens,2030,2,1:1] 1
     flow[(ens,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(ens,demand),2030,2,1:1] OBJ 0.756
@@ -2873,78 +3470,6 @@ COLUMNS
     flow[(ens,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[ens,2030,2,24:24] 1
     flow[(ens,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
     flow[(ens,demand),2030,2,24:24] OBJ 0.756
-    flow[(wind,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,1:1] 1
-    flow[(wind,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(wind,demand),2030,2,1:1] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,2:2] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,2:2] 1
-    flow[(wind,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(wind,demand),2030,2,2:2] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,3:3] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,3:3] 1
-    flow[(wind,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(wind,demand),2030,2,3:3] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,4:4] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,4:4] 1
-    flow[(wind,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(wind,demand),2030,2,4:4] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,5:5] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,5:5] 1
-    flow[(wind,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(wind,demand),2030,2,5:5] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,6:6] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,6:6] 1
-    flow[(wind,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(wind,demand),2030,2,6:6] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,7:7] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,7:7] 1
-    flow[(wind,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(wind,demand),2030,2,7:7] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,8:8] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,8:8] 1
-    flow[(wind,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(wind,demand),2030,2,8:8] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,9:9] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,9:9] 1
-    flow[(wind,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(wind,demand),2030,2,9:9] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,10:10] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,10:10] 1
-    flow[(wind,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(wind,demand),2030,2,10:10] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,11:11] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,11:11] 1
-    flow[(wind,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(wind,demand),2030,2,11:11] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,12:12] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,12:12] 1
-    flow[(wind,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(wind,demand),2030,2,12:12] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,13:13] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,13:13] 1
-    flow[(wind,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(wind,demand),2030,2,13:13] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,14:14] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,14:14] 1
-    flow[(wind,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(wind,demand),2030,2,14:14] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,15:15] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,15:15] 1
-    flow[(wind,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(wind,demand),2030,2,15:15] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,16:16] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,16:16] 1
-    flow[(wind,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(wind,demand),2030,2,16:16] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,17:17] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,17:17] 1
-    flow[(wind,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(wind,demand),2030,2,17:17] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,18:18] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,18:18] 1
-    flow[(wind,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(wind,demand),2030,2,18:18] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,19:19] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,19:19] 1
-    flow[(wind,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(wind,demand),2030,2,19:19] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,20:20] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,20:20] 1
-    flow[(wind,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(wind,demand),2030,2,20:20] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,21:21] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,21:21] 1
-    flow[(wind,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(wind,demand),2030,2,21:21] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,22:22] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,22:22] 1
-    flow[(wind,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(wind,demand),2030,2,22:22] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,23:23] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,23:23] 1
-    flow[(wind,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(wind,demand),2030,2,23:23] OBJ 0.004200000000000001
-    flow[(wind,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[wind,2030,2,24:24] 1
-    flow[(wind,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(wind,demand),2030,2,24:24] OBJ 0.004200000000000001
     flow[(solar,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[solar,2030,2,1:1] 1
     flow[(solar,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(solar,demand),2030,2,2:2] max_output_flows_limit_aggregated_vintage_method[solar,2030,2,2:2] 1
@@ -3353,6 +3878,150 @@ COLUMNS
     flow[(caes,atmosphere),2030,2,24:24] consumer_balance[atmosphere,2030,2,24:24] 1
     flow[(caes,atmosphere),2030,2,24:24] flows_relationships[ccgt_caes_caes_atmosphere,_2030,_2,_24:24] -0.4
     flow[(caes,atmosphere),2030,2,24:24] OBJ 5.04
+    flow[(demand,flow_battery),2030,2,1:1] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1] 1
+    flow[(demand,flow_battery),2030,2,1:1] consumer_balance[demand,2030,2,1:1] -1
+    flow[(demand,flow_battery),2030,2,1:1] accumulated_storage_intra_period[flow_battery,2030,2,1:1] -0.86
+    flow[(demand,flow_battery),2030,2,2:2] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2] 1
+    flow[(demand,flow_battery),2030,2,2:2] consumer_balance[demand,2030,2,2:2] -1
+    flow[(demand,flow_battery),2030,2,2:2] accumulated_storage_intra_period[flow_battery,2030,2,2:2] -0.86
+    flow[(demand,flow_battery),2030,2,3:3] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3] 1
+    flow[(demand,flow_battery),2030,2,3:3] consumer_balance[demand,2030,2,3:3] -1
+    flow[(demand,flow_battery),2030,2,3:3] accumulated_storage_intra_period[flow_battery,2030,2,3:3] -0.86
+    flow[(demand,flow_battery),2030,2,4:4] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4] 1
+    flow[(demand,flow_battery),2030,2,4:4] consumer_balance[demand,2030,2,4:4] -1
+    flow[(demand,flow_battery),2030,2,4:4] accumulated_storage_intra_period[flow_battery,2030,2,4:4] -0.86
+    flow[(demand,flow_battery),2030,2,5:5] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5] 1
+    flow[(demand,flow_battery),2030,2,5:5] consumer_balance[demand,2030,2,5:5] -1
+    flow[(demand,flow_battery),2030,2,5:5] accumulated_storage_intra_period[flow_battery,2030,2,5:5] -0.86
+    flow[(demand,flow_battery),2030,2,6:6] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6] 1
+    flow[(demand,flow_battery),2030,2,6:6] consumer_balance[demand,2030,2,6:6] -1
+    flow[(demand,flow_battery),2030,2,6:6] accumulated_storage_intra_period[flow_battery,2030,2,6:6] -0.86
+    flow[(demand,flow_battery),2030,2,7:7] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7] 1
+    flow[(demand,flow_battery),2030,2,7:7] consumer_balance[demand,2030,2,7:7] -1
+    flow[(demand,flow_battery),2030,2,7:7] accumulated_storage_intra_period[flow_battery,2030,2,7:7] -0.86
+    flow[(demand,flow_battery),2030,2,8:8] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8] 1
+    flow[(demand,flow_battery),2030,2,8:8] consumer_balance[demand,2030,2,8:8] -1
+    flow[(demand,flow_battery),2030,2,8:8] accumulated_storage_intra_period[flow_battery,2030,2,8:8] -0.86
+    flow[(demand,flow_battery),2030,2,9:9] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9] 1
+    flow[(demand,flow_battery),2030,2,9:9] consumer_balance[demand,2030,2,9:9] -1
+    flow[(demand,flow_battery),2030,2,9:9] accumulated_storage_intra_period[flow_battery,2030,2,9:9] -0.86
+    flow[(demand,flow_battery),2030,2,10:10] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10] 1
+    flow[(demand,flow_battery),2030,2,10:10] consumer_balance[demand,2030,2,10:10] -1
+    flow[(demand,flow_battery),2030,2,10:10] accumulated_storage_intra_period[flow_battery,2030,2,10:10] -0.86
+    flow[(demand,flow_battery),2030,2,11:11] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11] 1
+    flow[(demand,flow_battery),2030,2,11:11] consumer_balance[demand,2030,2,11:11] -1
+    flow[(demand,flow_battery),2030,2,11:11] accumulated_storage_intra_period[flow_battery,2030,2,11:11] -0.86
+    flow[(demand,flow_battery),2030,2,12:12] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12] 1
+    flow[(demand,flow_battery),2030,2,12:12] consumer_balance[demand,2030,2,12:12] -1
+    flow[(demand,flow_battery),2030,2,12:12] accumulated_storage_intra_period[flow_battery,2030,2,12:12] -0.86
+    flow[(demand,flow_battery),2030,2,13:13] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13] 1
+    flow[(demand,flow_battery),2030,2,13:13] consumer_balance[demand,2030,2,13:13] -1
+    flow[(demand,flow_battery),2030,2,13:13] accumulated_storage_intra_period[flow_battery,2030,2,13:13] -0.86
+    flow[(demand,flow_battery),2030,2,14:14] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14] 1
+    flow[(demand,flow_battery),2030,2,14:14] consumer_balance[demand,2030,2,14:14] -1
+    flow[(demand,flow_battery),2030,2,14:14] accumulated_storage_intra_period[flow_battery,2030,2,14:14] -0.86
+    flow[(demand,flow_battery),2030,2,15:15] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15] 1
+    flow[(demand,flow_battery),2030,2,15:15] consumer_balance[demand,2030,2,15:15] -1
+    flow[(demand,flow_battery),2030,2,15:15] accumulated_storage_intra_period[flow_battery,2030,2,15:15] -0.86
+    flow[(demand,flow_battery),2030,2,16:16] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16] 1
+    flow[(demand,flow_battery),2030,2,16:16] consumer_balance[demand,2030,2,16:16] -1
+    flow[(demand,flow_battery),2030,2,16:16] accumulated_storage_intra_period[flow_battery,2030,2,16:16] -0.86
+    flow[(demand,flow_battery),2030,2,17:17] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17] 1
+    flow[(demand,flow_battery),2030,2,17:17] consumer_balance[demand,2030,2,17:17] -1
+    flow[(demand,flow_battery),2030,2,17:17] accumulated_storage_intra_period[flow_battery,2030,2,17:17] -0.86
+    flow[(demand,flow_battery),2030,2,18:18] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18] 1
+    flow[(demand,flow_battery),2030,2,18:18] consumer_balance[demand,2030,2,18:18] -1
+    flow[(demand,flow_battery),2030,2,18:18] accumulated_storage_intra_period[flow_battery,2030,2,18:18] -0.86
+    flow[(demand,flow_battery),2030,2,19:19] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19] 1
+    flow[(demand,flow_battery),2030,2,19:19] consumer_balance[demand,2030,2,19:19] -1
+    flow[(demand,flow_battery),2030,2,19:19] accumulated_storage_intra_period[flow_battery,2030,2,19:19] -0.86
+    flow[(demand,flow_battery),2030,2,20:20] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20] 1
+    flow[(demand,flow_battery),2030,2,20:20] consumer_balance[demand,2030,2,20:20] -1
+    flow[(demand,flow_battery),2030,2,20:20] accumulated_storage_intra_period[flow_battery,2030,2,20:20] -0.86
+    flow[(demand,flow_battery),2030,2,21:21] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21] 1
+    flow[(demand,flow_battery),2030,2,21:21] consumer_balance[demand,2030,2,21:21] -1
+    flow[(demand,flow_battery),2030,2,21:21] accumulated_storage_intra_period[flow_battery,2030,2,21:21] -0.86
+    flow[(demand,flow_battery),2030,2,22:22] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22] 1
+    flow[(demand,flow_battery),2030,2,22:22] consumer_balance[demand,2030,2,22:22] -1
+    flow[(demand,flow_battery),2030,2,22:22] accumulated_storage_intra_period[flow_battery,2030,2,22:22] -0.86
+    flow[(demand,flow_battery),2030,2,23:23] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23] 1
+    flow[(demand,flow_battery),2030,2,23:23] consumer_balance[demand,2030,2,23:23] -1
+    flow[(demand,flow_battery),2030,2,23:23] accumulated_storage_intra_period[flow_battery,2030,2,23:23] -0.86
+    flow[(demand,flow_battery),2030,2,24:24] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24] 1
+    flow[(demand,flow_battery),2030,2,24:24] consumer_balance[demand,2030,2,24:24] -1
+    flow[(demand,flow_battery),2030,2,24:24] accumulated_storage_intra_period[flow_battery,2030,2,24:24] -0.86
+    flow[(flow_battery,demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1] 1
+    flow[(flow_battery,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(flow_battery,demand),2030,2,1:1] accumulated_storage_intra_period[flow_battery,2030,2,1:1] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,2:2] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2] 1
+    flow[(flow_battery,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(flow_battery,demand),2030,2,2:2] accumulated_storage_intra_period[flow_battery,2030,2,2:2] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,3:3] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3] 1
+    flow[(flow_battery,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(flow_battery,demand),2030,2,3:3] accumulated_storage_intra_period[flow_battery,2030,2,3:3] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,4:4] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4] 1
+    flow[(flow_battery,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(flow_battery,demand),2030,2,4:4] accumulated_storage_intra_period[flow_battery,2030,2,4:4] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,5:5] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5] 1
+    flow[(flow_battery,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(flow_battery,demand),2030,2,5:5] accumulated_storage_intra_period[flow_battery,2030,2,5:5] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,6:6] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6] 1
+    flow[(flow_battery,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(flow_battery,demand),2030,2,6:6] accumulated_storage_intra_period[flow_battery,2030,2,6:6] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,7:7] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7] 1
+    flow[(flow_battery,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(flow_battery,demand),2030,2,7:7] accumulated_storage_intra_period[flow_battery,2030,2,7:7] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,8:8] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8] 1
+    flow[(flow_battery,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(flow_battery,demand),2030,2,8:8] accumulated_storage_intra_period[flow_battery,2030,2,8:8] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,9:9] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9] 1
+    flow[(flow_battery,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(flow_battery,demand),2030,2,9:9] accumulated_storage_intra_period[flow_battery,2030,2,9:9] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,10:10] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10] 1
+    flow[(flow_battery,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(flow_battery,demand),2030,2,10:10] accumulated_storage_intra_period[flow_battery,2030,2,10:10] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,11:11] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11] 1
+    flow[(flow_battery,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(flow_battery,demand),2030,2,11:11] accumulated_storage_intra_period[flow_battery,2030,2,11:11] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,12:12] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12] 1
+    flow[(flow_battery,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(flow_battery,demand),2030,2,12:12] accumulated_storage_intra_period[flow_battery,2030,2,12:12] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,13:13] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13] 1
+    flow[(flow_battery,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(flow_battery,demand),2030,2,13:13] accumulated_storage_intra_period[flow_battery,2030,2,13:13] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,14:14] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14] 1
+    flow[(flow_battery,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(flow_battery,demand),2030,2,14:14] accumulated_storage_intra_period[flow_battery,2030,2,14:14] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,15:15] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15] 1
+    flow[(flow_battery,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(flow_battery,demand),2030,2,15:15] accumulated_storage_intra_period[flow_battery,2030,2,15:15] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,16:16] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16] 1
+    flow[(flow_battery,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(flow_battery,demand),2030,2,16:16] accumulated_storage_intra_period[flow_battery,2030,2,16:16] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,17:17] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17] 1
+    flow[(flow_battery,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(flow_battery,demand),2030,2,17:17] accumulated_storage_intra_period[flow_battery,2030,2,17:17] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,18:18] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18] 1
+    flow[(flow_battery,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(flow_battery,demand),2030,2,18:18] accumulated_storage_intra_period[flow_battery,2030,2,18:18] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,19:19] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19] 1
+    flow[(flow_battery,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(flow_battery,demand),2030,2,19:19] accumulated_storage_intra_period[flow_battery,2030,2,19:19] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,20:20] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20] 1
+    flow[(flow_battery,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(flow_battery,demand),2030,2,20:20] accumulated_storage_intra_period[flow_battery,2030,2,20:20] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,21:21] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21] 1
+    flow[(flow_battery,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(flow_battery,demand),2030,2,21:21] accumulated_storage_intra_period[flow_battery,2030,2,21:21] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,22:22] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22] 1
+    flow[(flow_battery,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(flow_battery,demand),2030,2,22:22] accumulated_storage_intra_period[flow_battery,2030,2,22:22] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,23:23] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23] 1
+    flow[(flow_battery,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(flow_battery,demand),2030,2,23:23] accumulated_storage_intra_period[flow_battery,2030,2,23:23] 1.1627906976744187
+    flow[(flow_battery,demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24] 1
+    flow[(flow_battery,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(flow_battery,demand),2030,2,24:24] accumulated_storage_intra_period[flow_battery,2030,2,24:24] 1.1627906976744187
     flow[(ens,demand),2030,3,1:1] max_output_flows_limit_aggregated_vintage_method[ens,2030,3,1:1] 1
     flow[(ens,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
     flow[(ens,demand),2030,3,1:1] OBJ 0.23399999999999996
@@ -4337,6 +5006,150 @@ COLUMNS
     flow[(caes,atmosphere),2030,3,24:24] consumer_balance[atmosphere,2030,3,24:24] 1
     flow[(caes,atmosphere),2030,3,24:24] flows_relationships[ccgt_caes_caes_atmosphere,_2030,_3,_24:24] -0.4
     flow[(caes,atmosphere),2030,3,24:24] OBJ 1.5599999999999998
+    flow[(demand,flow_battery),2030,3,1:1] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1] 1
+    flow[(demand,flow_battery),2030,3,1:1] consumer_balance[demand,2030,3,1:1] -1
+    flow[(demand,flow_battery),2030,3,1:1] accumulated_storage_intra_period[flow_battery,2030,3,1:1] -0.86
+    flow[(demand,flow_battery),2030,3,2:2] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2] 1
+    flow[(demand,flow_battery),2030,3,2:2] consumer_balance[demand,2030,3,2:2] -1
+    flow[(demand,flow_battery),2030,3,2:2] accumulated_storage_intra_period[flow_battery,2030,3,2:2] -0.86
+    flow[(demand,flow_battery),2030,3,3:3] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3] 1
+    flow[(demand,flow_battery),2030,3,3:3] consumer_balance[demand,2030,3,3:3] -1
+    flow[(demand,flow_battery),2030,3,3:3] accumulated_storage_intra_period[flow_battery,2030,3,3:3] -0.86
+    flow[(demand,flow_battery),2030,3,4:4] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4] 1
+    flow[(demand,flow_battery),2030,3,4:4] consumer_balance[demand,2030,3,4:4] -1
+    flow[(demand,flow_battery),2030,3,4:4] accumulated_storage_intra_period[flow_battery,2030,3,4:4] -0.86
+    flow[(demand,flow_battery),2030,3,5:5] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5] 1
+    flow[(demand,flow_battery),2030,3,5:5] consumer_balance[demand,2030,3,5:5] -1
+    flow[(demand,flow_battery),2030,3,5:5] accumulated_storage_intra_period[flow_battery,2030,3,5:5] -0.86
+    flow[(demand,flow_battery),2030,3,6:6] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6] 1
+    flow[(demand,flow_battery),2030,3,6:6] consumer_balance[demand,2030,3,6:6] -1
+    flow[(demand,flow_battery),2030,3,6:6] accumulated_storage_intra_period[flow_battery,2030,3,6:6] -0.86
+    flow[(demand,flow_battery),2030,3,7:7] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7] 1
+    flow[(demand,flow_battery),2030,3,7:7] consumer_balance[demand,2030,3,7:7] -1
+    flow[(demand,flow_battery),2030,3,7:7] accumulated_storage_intra_period[flow_battery,2030,3,7:7] -0.86
+    flow[(demand,flow_battery),2030,3,8:8] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8] 1
+    flow[(demand,flow_battery),2030,3,8:8] consumer_balance[demand,2030,3,8:8] -1
+    flow[(demand,flow_battery),2030,3,8:8] accumulated_storage_intra_period[flow_battery,2030,3,8:8] -0.86
+    flow[(demand,flow_battery),2030,3,9:9] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9] 1
+    flow[(demand,flow_battery),2030,3,9:9] consumer_balance[demand,2030,3,9:9] -1
+    flow[(demand,flow_battery),2030,3,9:9] accumulated_storage_intra_period[flow_battery,2030,3,9:9] -0.86
+    flow[(demand,flow_battery),2030,3,10:10] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10] 1
+    flow[(demand,flow_battery),2030,3,10:10] consumer_balance[demand,2030,3,10:10] -1
+    flow[(demand,flow_battery),2030,3,10:10] accumulated_storage_intra_period[flow_battery,2030,3,10:10] -0.86
+    flow[(demand,flow_battery),2030,3,11:11] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11] 1
+    flow[(demand,flow_battery),2030,3,11:11] consumer_balance[demand,2030,3,11:11] -1
+    flow[(demand,flow_battery),2030,3,11:11] accumulated_storage_intra_period[flow_battery,2030,3,11:11] -0.86
+    flow[(demand,flow_battery),2030,3,12:12] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12] 1
+    flow[(demand,flow_battery),2030,3,12:12] consumer_balance[demand,2030,3,12:12] -1
+    flow[(demand,flow_battery),2030,3,12:12] accumulated_storage_intra_period[flow_battery,2030,3,12:12] -0.86
+    flow[(demand,flow_battery),2030,3,13:13] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13] 1
+    flow[(demand,flow_battery),2030,3,13:13] consumer_balance[demand,2030,3,13:13] -1
+    flow[(demand,flow_battery),2030,3,13:13] accumulated_storage_intra_period[flow_battery,2030,3,13:13] -0.86
+    flow[(demand,flow_battery),2030,3,14:14] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14] 1
+    flow[(demand,flow_battery),2030,3,14:14] consumer_balance[demand,2030,3,14:14] -1
+    flow[(demand,flow_battery),2030,3,14:14] accumulated_storage_intra_period[flow_battery,2030,3,14:14] -0.86
+    flow[(demand,flow_battery),2030,3,15:15] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15] 1
+    flow[(demand,flow_battery),2030,3,15:15] consumer_balance[demand,2030,3,15:15] -1
+    flow[(demand,flow_battery),2030,3,15:15] accumulated_storage_intra_period[flow_battery,2030,3,15:15] -0.86
+    flow[(demand,flow_battery),2030,3,16:16] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16] 1
+    flow[(demand,flow_battery),2030,3,16:16] consumer_balance[demand,2030,3,16:16] -1
+    flow[(demand,flow_battery),2030,3,16:16] accumulated_storage_intra_period[flow_battery,2030,3,16:16] -0.86
+    flow[(demand,flow_battery),2030,3,17:17] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17] 1
+    flow[(demand,flow_battery),2030,3,17:17] consumer_balance[demand,2030,3,17:17] -1
+    flow[(demand,flow_battery),2030,3,17:17] accumulated_storage_intra_period[flow_battery,2030,3,17:17] -0.86
+    flow[(demand,flow_battery),2030,3,18:18] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18] 1
+    flow[(demand,flow_battery),2030,3,18:18] consumer_balance[demand,2030,3,18:18] -1
+    flow[(demand,flow_battery),2030,3,18:18] accumulated_storage_intra_period[flow_battery,2030,3,18:18] -0.86
+    flow[(demand,flow_battery),2030,3,19:19] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19] 1
+    flow[(demand,flow_battery),2030,3,19:19] consumer_balance[demand,2030,3,19:19] -1
+    flow[(demand,flow_battery),2030,3,19:19] accumulated_storage_intra_period[flow_battery,2030,3,19:19] -0.86
+    flow[(demand,flow_battery),2030,3,20:20] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20] 1
+    flow[(demand,flow_battery),2030,3,20:20] consumer_balance[demand,2030,3,20:20] -1
+    flow[(demand,flow_battery),2030,3,20:20] accumulated_storage_intra_period[flow_battery,2030,3,20:20] -0.86
+    flow[(demand,flow_battery),2030,3,21:21] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21] 1
+    flow[(demand,flow_battery),2030,3,21:21] consumer_balance[demand,2030,3,21:21] -1
+    flow[(demand,flow_battery),2030,3,21:21] accumulated_storage_intra_period[flow_battery,2030,3,21:21] -0.86
+    flow[(demand,flow_battery),2030,3,22:22] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22] 1
+    flow[(demand,flow_battery),2030,3,22:22] consumer_balance[demand,2030,3,22:22] -1
+    flow[(demand,flow_battery),2030,3,22:22] accumulated_storage_intra_period[flow_battery,2030,3,22:22] -0.86
+    flow[(demand,flow_battery),2030,3,23:23] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23] 1
+    flow[(demand,flow_battery),2030,3,23:23] consumer_balance[demand,2030,3,23:23] -1
+    flow[(demand,flow_battery),2030,3,23:23] accumulated_storage_intra_period[flow_battery,2030,3,23:23] -0.86
+    flow[(demand,flow_battery),2030,3,24:24] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24] 1
+    flow[(demand,flow_battery),2030,3,24:24] consumer_balance[demand,2030,3,24:24] -1
+    flow[(demand,flow_battery),2030,3,24:24] accumulated_storage_intra_period[flow_battery,2030,3,24:24] -0.86
+    flow[(flow_battery,demand),2030,3,1:1] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1] 1
+    flow[(flow_battery,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
+    flow[(flow_battery,demand),2030,3,1:1] accumulated_storage_intra_period[flow_battery,2030,3,1:1] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,2:2] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2] 1
+    flow[(flow_battery,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
+    flow[(flow_battery,demand),2030,3,2:2] accumulated_storage_intra_period[flow_battery,2030,3,2:2] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,3:3] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3] 1
+    flow[(flow_battery,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
+    flow[(flow_battery,demand),2030,3,3:3] accumulated_storage_intra_period[flow_battery,2030,3,3:3] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,4:4] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4] 1
+    flow[(flow_battery,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
+    flow[(flow_battery,demand),2030,3,4:4] accumulated_storage_intra_period[flow_battery,2030,3,4:4] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,5:5] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5] 1
+    flow[(flow_battery,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
+    flow[(flow_battery,demand),2030,3,5:5] accumulated_storage_intra_period[flow_battery,2030,3,5:5] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,6:6] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6] 1
+    flow[(flow_battery,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
+    flow[(flow_battery,demand),2030,3,6:6] accumulated_storage_intra_period[flow_battery,2030,3,6:6] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,7:7] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7] 1
+    flow[(flow_battery,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
+    flow[(flow_battery,demand),2030,3,7:7] accumulated_storage_intra_period[flow_battery,2030,3,7:7] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,8:8] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8] 1
+    flow[(flow_battery,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
+    flow[(flow_battery,demand),2030,3,8:8] accumulated_storage_intra_period[flow_battery,2030,3,8:8] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,9:9] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9] 1
+    flow[(flow_battery,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
+    flow[(flow_battery,demand),2030,3,9:9] accumulated_storage_intra_period[flow_battery,2030,3,9:9] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,10:10] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10] 1
+    flow[(flow_battery,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
+    flow[(flow_battery,demand),2030,3,10:10] accumulated_storage_intra_period[flow_battery,2030,3,10:10] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,11:11] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11] 1
+    flow[(flow_battery,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
+    flow[(flow_battery,demand),2030,3,11:11] accumulated_storage_intra_period[flow_battery,2030,3,11:11] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,12:12] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12] 1
+    flow[(flow_battery,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
+    flow[(flow_battery,demand),2030,3,12:12] accumulated_storage_intra_period[flow_battery,2030,3,12:12] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,13:13] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13] 1
+    flow[(flow_battery,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
+    flow[(flow_battery,demand),2030,3,13:13] accumulated_storage_intra_period[flow_battery,2030,3,13:13] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,14:14] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14] 1
+    flow[(flow_battery,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
+    flow[(flow_battery,demand),2030,3,14:14] accumulated_storage_intra_period[flow_battery,2030,3,14:14] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,15:15] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15] 1
+    flow[(flow_battery,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
+    flow[(flow_battery,demand),2030,3,15:15] accumulated_storage_intra_period[flow_battery,2030,3,15:15] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,16:16] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16] 1
+    flow[(flow_battery,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
+    flow[(flow_battery,demand),2030,3,16:16] accumulated_storage_intra_period[flow_battery,2030,3,16:16] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,17:17] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17] 1
+    flow[(flow_battery,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
+    flow[(flow_battery,demand),2030,3,17:17] accumulated_storage_intra_period[flow_battery,2030,3,17:17] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,18:18] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18] 1
+    flow[(flow_battery,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
+    flow[(flow_battery,demand),2030,3,18:18] accumulated_storage_intra_period[flow_battery,2030,3,18:18] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,19:19] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19] 1
+    flow[(flow_battery,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
+    flow[(flow_battery,demand),2030,3,19:19] accumulated_storage_intra_period[flow_battery,2030,3,19:19] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,20:20] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20] 1
+    flow[(flow_battery,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
+    flow[(flow_battery,demand),2030,3,20:20] accumulated_storage_intra_period[flow_battery,2030,3,20:20] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,21:21] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21] 1
+    flow[(flow_battery,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
+    flow[(flow_battery,demand),2030,3,21:21] accumulated_storage_intra_period[flow_battery,2030,3,21:21] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,22:22] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22] 1
+    flow[(flow_battery,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
+    flow[(flow_battery,demand),2030,3,22:22] accumulated_storage_intra_period[flow_battery,2030,3,22:22] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,23:23] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23] 1
+    flow[(flow_battery,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
+    flow[(flow_battery,demand),2030,3,23:23] accumulated_storage_intra_period[flow_battery,2030,3,23:23] 1.1627906976744187
+    flow[(flow_battery,demand),2030,3,24:24] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24] 1
+    flow[(flow_battery,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
+    flow[(flow_battery,demand),2030,3,24:24] accumulated_storage_intra_period[flow_battery,2030,3,24:24] 1.1627906976744187
     assets_decommission[ocgt,2030,2030] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,1:1] 100
     assets_decommission[ocgt,2030,2030] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,2:2] 100
     assets_decommission[ocgt,2030,2030] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,3:3] 100
@@ -5093,499 +5906,970 @@ COLUMNS
     assets_decommission[caes,2030,2030] max_input_flows_limit_aggregated_vintage_method[caes,2030,3,22:22] 10
     assets_decommission[caes,2030,2030] max_input_flows_limit_aggregated_vintage_method[caes,2030,3,23:23] 10
     assets_decommission[caes,2030,2030] max_input_flows_limit_aggregated_vintage_method[caes,2030,3,24:24] 10
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23] 50
+    assets_decommission[flow_battery,2030,2030] max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23] 50
+    assets_decommission[flow_battery,2030,2030] max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24] 50
     storage_level_intra_rep_period[battery,2030,1,1:1] max_storage_level_intra_rep_period_limit[battery,2030,1,1:1] 1
     storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,1:1] 1
-    storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,2:2] -0.9
+    storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,2:2] -0.99
     storage_level_intra_rep_period[battery,2030,1,2:2] max_storage_level_intra_rep_period_limit[battery,2030,1,2:2] 1
     storage_level_intra_rep_period[battery,2030,1,2:2] balance_storage_rep_period[battery,2030,1,2:2] 1
-    storage_level_intra_rep_period[battery,2030,1,2:2] balance_storage_rep_period[battery,2030,1,3:3] -0.9
+    storage_level_intra_rep_period[battery,2030,1,2:2] balance_storage_rep_period[battery,2030,1,3:3] -0.99
     storage_level_intra_rep_period[battery,2030,1,3:3] max_storage_level_intra_rep_period_limit[battery,2030,1,3:3] 1
     storage_level_intra_rep_period[battery,2030,1,3:3] balance_storage_rep_period[battery,2030,1,3:3] 1
-    storage_level_intra_rep_period[battery,2030,1,3:3] balance_storage_rep_period[battery,2030,1,4:4] -0.9
+    storage_level_intra_rep_period[battery,2030,1,3:3] balance_storage_rep_period[battery,2030,1,4:4] -0.99
     storage_level_intra_rep_period[battery,2030,1,4:4] max_storage_level_intra_rep_period_limit[battery,2030,1,4:4] 1
     storage_level_intra_rep_period[battery,2030,1,4:4] balance_storage_rep_period[battery,2030,1,4:4] 1
-    storage_level_intra_rep_period[battery,2030,1,4:4] balance_storage_rep_period[battery,2030,1,5:5] -0.9
+    storage_level_intra_rep_period[battery,2030,1,4:4] balance_storage_rep_period[battery,2030,1,5:5] -0.99
     storage_level_intra_rep_period[battery,2030,1,5:5] max_storage_level_intra_rep_period_limit[battery,2030,1,5:5] 1
     storage_level_intra_rep_period[battery,2030,1,5:5] balance_storage_rep_period[battery,2030,1,5:5] 1
-    storage_level_intra_rep_period[battery,2030,1,5:5] balance_storage_rep_period[battery,2030,1,6:6] -0.9
+    storage_level_intra_rep_period[battery,2030,1,5:5] balance_storage_rep_period[battery,2030,1,6:6] -0.99
     storage_level_intra_rep_period[battery,2030,1,6:6] max_storage_level_intra_rep_period_limit[battery,2030,1,6:6] 1
     storage_level_intra_rep_period[battery,2030,1,6:6] balance_storage_rep_period[battery,2030,1,6:6] 1
-    storage_level_intra_rep_period[battery,2030,1,6:6] balance_storage_rep_period[battery,2030,1,7:7] -0.9
+    storage_level_intra_rep_period[battery,2030,1,6:6] balance_storage_rep_period[battery,2030,1,7:7] -0.99
     storage_level_intra_rep_period[battery,2030,1,7:7] max_storage_level_intra_rep_period_limit[battery,2030,1,7:7] 1
     storage_level_intra_rep_period[battery,2030,1,7:7] balance_storage_rep_period[battery,2030,1,7:7] 1
-    storage_level_intra_rep_period[battery,2030,1,7:7] balance_storage_rep_period[battery,2030,1,8:8] -0.9
+    storage_level_intra_rep_period[battery,2030,1,7:7] balance_storage_rep_period[battery,2030,1,8:8] -0.99
     storage_level_intra_rep_period[battery,2030,1,8:8] max_storage_level_intra_rep_period_limit[battery,2030,1,8:8] 1
     storage_level_intra_rep_period[battery,2030,1,8:8] balance_storage_rep_period[battery,2030,1,8:8] 1
-    storage_level_intra_rep_period[battery,2030,1,8:8] balance_storage_rep_period[battery,2030,1,9:9] -0.9
+    storage_level_intra_rep_period[battery,2030,1,8:8] balance_storage_rep_period[battery,2030,1,9:9] -0.99
     storage_level_intra_rep_period[battery,2030,1,9:9] max_storage_level_intra_rep_period_limit[battery,2030,1,9:9] 1
     storage_level_intra_rep_period[battery,2030,1,9:9] balance_storage_rep_period[battery,2030,1,9:9] 1
-    storage_level_intra_rep_period[battery,2030,1,9:9] balance_storage_rep_period[battery,2030,1,10:10] -0.9
+    storage_level_intra_rep_period[battery,2030,1,9:9] balance_storage_rep_period[battery,2030,1,10:10] -0.99
     storage_level_intra_rep_period[battery,2030,1,10:10] max_storage_level_intra_rep_period_limit[battery,2030,1,10:10] 1
     storage_level_intra_rep_period[battery,2030,1,10:10] balance_storage_rep_period[battery,2030,1,10:10] 1
-    storage_level_intra_rep_period[battery,2030,1,10:10] balance_storage_rep_period[battery,2030,1,11:11] -0.9
+    storage_level_intra_rep_period[battery,2030,1,10:10] balance_storage_rep_period[battery,2030,1,11:11] -0.99
     storage_level_intra_rep_period[battery,2030,1,11:11] max_storage_level_intra_rep_period_limit[battery,2030,1,11:11] 1
     storage_level_intra_rep_period[battery,2030,1,11:11] balance_storage_rep_period[battery,2030,1,11:11] 1
-    storage_level_intra_rep_period[battery,2030,1,11:11] balance_storage_rep_period[battery,2030,1,12:12] -0.9
+    storage_level_intra_rep_period[battery,2030,1,11:11] balance_storage_rep_period[battery,2030,1,12:12] -0.99
     storage_level_intra_rep_period[battery,2030,1,12:12] max_storage_level_intra_rep_period_limit[battery,2030,1,12:12] 1
     storage_level_intra_rep_period[battery,2030,1,12:12] balance_storage_rep_period[battery,2030,1,12:12] 1
-    storage_level_intra_rep_period[battery,2030,1,12:12] balance_storage_rep_period[battery,2030,1,13:13] -0.9
+    storage_level_intra_rep_period[battery,2030,1,12:12] balance_storage_rep_period[battery,2030,1,13:13] -0.99
     storage_level_intra_rep_period[battery,2030,1,13:13] max_storage_level_intra_rep_period_limit[battery,2030,1,13:13] 1
     storage_level_intra_rep_period[battery,2030,1,13:13] balance_storage_rep_period[battery,2030,1,13:13] 1
-    storage_level_intra_rep_period[battery,2030,1,13:13] balance_storage_rep_period[battery,2030,1,14:14] -0.9
+    storage_level_intra_rep_period[battery,2030,1,13:13] balance_storage_rep_period[battery,2030,1,14:14] -0.99
     storage_level_intra_rep_period[battery,2030,1,14:14] max_storage_level_intra_rep_period_limit[battery,2030,1,14:14] 1
     storage_level_intra_rep_period[battery,2030,1,14:14] balance_storage_rep_period[battery,2030,1,14:14] 1
-    storage_level_intra_rep_period[battery,2030,1,14:14] balance_storage_rep_period[battery,2030,1,15:15] -0.9
+    storage_level_intra_rep_period[battery,2030,1,14:14] balance_storage_rep_period[battery,2030,1,15:15] -0.99
     storage_level_intra_rep_period[battery,2030,1,15:15] max_storage_level_intra_rep_period_limit[battery,2030,1,15:15] 1
     storage_level_intra_rep_period[battery,2030,1,15:15] balance_storage_rep_period[battery,2030,1,15:15] 1
-    storage_level_intra_rep_period[battery,2030,1,15:15] balance_storage_rep_period[battery,2030,1,16:16] -0.9
+    storage_level_intra_rep_period[battery,2030,1,15:15] balance_storage_rep_period[battery,2030,1,16:16] -0.99
     storage_level_intra_rep_period[battery,2030,1,16:16] max_storage_level_intra_rep_period_limit[battery,2030,1,16:16] 1
     storage_level_intra_rep_period[battery,2030,1,16:16] balance_storage_rep_period[battery,2030,1,16:16] 1
-    storage_level_intra_rep_period[battery,2030,1,16:16] balance_storage_rep_period[battery,2030,1,17:17] -0.9
+    storage_level_intra_rep_period[battery,2030,1,16:16] balance_storage_rep_period[battery,2030,1,17:17] -0.99
     storage_level_intra_rep_period[battery,2030,1,17:17] max_storage_level_intra_rep_period_limit[battery,2030,1,17:17] 1
     storage_level_intra_rep_period[battery,2030,1,17:17] balance_storage_rep_period[battery,2030,1,17:17] 1
-    storage_level_intra_rep_period[battery,2030,1,17:17] balance_storage_rep_period[battery,2030,1,18:18] -0.9
+    storage_level_intra_rep_period[battery,2030,1,17:17] balance_storage_rep_period[battery,2030,1,18:18] -0.99
     storage_level_intra_rep_period[battery,2030,1,18:18] max_storage_level_intra_rep_period_limit[battery,2030,1,18:18] 1
     storage_level_intra_rep_period[battery,2030,1,18:18] balance_storage_rep_period[battery,2030,1,18:18] 1
-    storage_level_intra_rep_period[battery,2030,1,18:18] balance_storage_rep_period[battery,2030,1,19:19] -0.9
+    storage_level_intra_rep_period[battery,2030,1,18:18] balance_storage_rep_period[battery,2030,1,19:19] -0.99
     storage_level_intra_rep_period[battery,2030,1,19:19] max_storage_level_intra_rep_period_limit[battery,2030,1,19:19] 1
     storage_level_intra_rep_period[battery,2030,1,19:19] balance_storage_rep_period[battery,2030,1,19:19] 1
-    storage_level_intra_rep_period[battery,2030,1,19:19] balance_storage_rep_period[battery,2030,1,20:20] -0.9
+    storage_level_intra_rep_period[battery,2030,1,19:19] balance_storage_rep_period[battery,2030,1,20:20] -0.99
     storage_level_intra_rep_period[battery,2030,1,20:20] max_storage_level_intra_rep_period_limit[battery,2030,1,20:20] 1
     storage_level_intra_rep_period[battery,2030,1,20:20] balance_storage_rep_period[battery,2030,1,20:20] 1
-    storage_level_intra_rep_period[battery,2030,1,20:20] balance_storage_rep_period[battery,2030,1,21:21] -0.9
+    storage_level_intra_rep_period[battery,2030,1,20:20] balance_storage_rep_period[battery,2030,1,21:21] -0.99
     storage_level_intra_rep_period[battery,2030,1,21:21] max_storage_level_intra_rep_period_limit[battery,2030,1,21:21] 1
     storage_level_intra_rep_period[battery,2030,1,21:21] balance_storage_rep_period[battery,2030,1,21:21] 1
-    storage_level_intra_rep_period[battery,2030,1,21:21] balance_storage_rep_period[battery,2030,1,22:22] -0.9
+    storage_level_intra_rep_period[battery,2030,1,21:21] balance_storage_rep_period[battery,2030,1,22:22] -0.99
     storage_level_intra_rep_period[battery,2030,1,22:22] max_storage_level_intra_rep_period_limit[battery,2030,1,22:22] 1
     storage_level_intra_rep_period[battery,2030,1,22:22] balance_storage_rep_period[battery,2030,1,22:22] 1
-    storage_level_intra_rep_period[battery,2030,1,22:22] balance_storage_rep_period[battery,2030,1,23:23] -0.9
+    storage_level_intra_rep_period[battery,2030,1,22:22] balance_storage_rep_period[battery,2030,1,23:23] -0.99
     storage_level_intra_rep_period[battery,2030,1,23:23] max_storage_level_intra_rep_period_limit[battery,2030,1,23:23] 1
     storage_level_intra_rep_period[battery,2030,1,23:23] balance_storage_rep_period[battery,2030,1,23:23] 1
-    storage_level_intra_rep_period[battery,2030,1,23:23] balance_storage_rep_period[battery,2030,1,24:24] -0.9
+    storage_level_intra_rep_period[battery,2030,1,23:23] balance_storage_rep_period[battery,2030,1,24:24] -0.99
     storage_level_intra_rep_period[battery,2030,1,24:24] max_storage_level_intra_rep_period_limit[battery,2030,1,24:24] 1
     storage_level_intra_rep_period[battery,2030,1,24:24] balance_storage_rep_period[battery,2030,1,24:24] 1
     storage_level_intra_rep_period[battery,2030,2,1:1] max_storage_level_intra_rep_period_limit[battery,2030,2,1:1] 1
     storage_level_intra_rep_period[battery,2030,2,1:1] balance_storage_rep_period[battery,2030,2,1:1] 1
-    storage_level_intra_rep_period[battery,2030,2,1:1] balance_storage_rep_period[battery,2030,2,2:2] -0.9
+    storage_level_intra_rep_period[battery,2030,2,1:1] balance_storage_rep_period[battery,2030,2,2:2] -0.99
     storage_level_intra_rep_period[battery,2030,2,2:2] max_storage_level_intra_rep_period_limit[battery,2030,2,2:2] 1
     storage_level_intra_rep_period[battery,2030,2,2:2] balance_storage_rep_period[battery,2030,2,2:2] 1
-    storage_level_intra_rep_period[battery,2030,2,2:2] balance_storage_rep_period[battery,2030,2,3:3] -0.9
+    storage_level_intra_rep_period[battery,2030,2,2:2] balance_storage_rep_period[battery,2030,2,3:3] -0.99
     storage_level_intra_rep_period[battery,2030,2,3:3] max_storage_level_intra_rep_period_limit[battery,2030,2,3:3] 1
     storage_level_intra_rep_period[battery,2030,2,3:3] balance_storage_rep_period[battery,2030,2,3:3] 1
-    storage_level_intra_rep_period[battery,2030,2,3:3] balance_storage_rep_period[battery,2030,2,4:4] -0.9
+    storage_level_intra_rep_period[battery,2030,2,3:3] balance_storage_rep_period[battery,2030,2,4:4] -0.99
     storage_level_intra_rep_period[battery,2030,2,4:4] max_storage_level_intra_rep_period_limit[battery,2030,2,4:4] 1
     storage_level_intra_rep_period[battery,2030,2,4:4] balance_storage_rep_period[battery,2030,2,4:4] 1
-    storage_level_intra_rep_period[battery,2030,2,4:4] balance_storage_rep_period[battery,2030,2,5:5] -0.9
+    storage_level_intra_rep_period[battery,2030,2,4:4] balance_storage_rep_period[battery,2030,2,5:5] -0.99
     storage_level_intra_rep_period[battery,2030,2,5:5] max_storage_level_intra_rep_period_limit[battery,2030,2,5:5] 1
     storage_level_intra_rep_period[battery,2030,2,5:5] balance_storage_rep_period[battery,2030,2,5:5] 1
-    storage_level_intra_rep_period[battery,2030,2,5:5] balance_storage_rep_period[battery,2030,2,6:6] -0.9
+    storage_level_intra_rep_period[battery,2030,2,5:5] balance_storage_rep_period[battery,2030,2,6:6] -0.99
     storage_level_intra_rep_period[battery,2030,2,6:6] max_storage_level_intra_rep_period_limit[battery,2030,2,6:6] 1
     storage_level_intra_rep_period[battery,2030,2,6:6] balance_storage_rep_period[battery,2030,2,6:6] 1
-    storage_level_intra_rep_period[battery,2030,2,6:6] balance_storage_rep_period[battery,2030,2,7:7] -0.9
+    storage_level_intra_rep_period[battery,2030,2,6:6] balance_storage_rep_period[battery,2030,2,7:7] -0.99
     storage_level_intra_rep_period[battery,2030,2,7:7] max_storage_level_intra_rep_period_limit[battery,2030,2,7:7] 1
     storage_level_intra_rep_period[battery,2030,2,7:7] balance_storage_rep_period[battery,2030,2,7:7] 1
-    storage_level_intra_rep_period[battery,2030,2,7:7] balance_storage_rep_period[battery,2030,2,8:8] -0.9
+    storage_level_intra_rep_period[battery,2030,2,7:7] balance_storage_rep_period[battery,2030,2,8:8] -0.99
     storage_level_intra_rep_period[battery,2030,2,8:8] max_storage_level_intra_rep_period_limit[battery,2030,2,8:8] 1
     storage_level_intra_rep_period[battery,2030,2,8:8] balance_storage_rep_period[battery,2030,2,8:8] 1
-    storage_level_intra_rep_period[battery,2030,2,8:8] balance_storage_rep_period[battery,2030,2,9:9] -0.9
+    storage_level_intra_rep_period[battery,2030,2,8:8] balance_storage_rep_period[battery,2030,2,9:9] -0.99
     storage_level_intra_rep_period[battery,2030,2,9:9] max_storage_level_intra_rep_period_limit[battery,2030,2,9:9] 1
     storage_level_intra_rep_period[battery,2030,2,9:9] balance_storage_rep_period[battery,2030,2,9:9] 1
-    storage_level_intra_rep_period[battery,2030,2,9:9] balance_storage_rep_period[battery,2030,2,10:10] -0.9
+    storage_level_intra_rep_period[battery,2030,2,9:9] balance_storage_rep_period[battery,2030,2,10:10] -0.99
     storage_level_intra_rep_period[battery,2030,2,10:10] max_storage_level_intra_rep_period_limit[battery,2030,2,10:10] 1
     storage_level_intra_rep_period[battery,2030,2,10:10] balance_storage_rep_period[battery,2030,2,10:10] 1
-    storage_level_intra_rep_period[battery,2030,2,10:10] balance_storage_rep_period[battery,2030,2,11:11] -0.9
+    storage_level_intra_rep_period[battery,2030,2,10:10] balance_storage_rep_period[battery,2030,2,11:11] -0.99
     storage_level_intra_rep_period[battery,2030,2,11:11] max_storage_level_intra_rep_period_limit[battery,2030,2,11:11] 1
     storage_level_intra_rep_period[battery,2030,2,11:11] balance_storage_rep_period[battery,2030,2,11:11] 1
-    storage_level_intra_rep_period[battery,2030,2,11:11] balance_storage_rep_period[battery,2030,2,12:12] -0.9
+    storage_level_intra_rep_period[battery,2030,2,11:11] balance_storage_rep_period[battery,2030,2,12:12] -0.99
     storage_level_intra_rep_period[battery,2030,2,12:12] max_storage_level_intra_rep_period_limit[battery,2030,2,12:12] 1
     storage_level_intra_rep_period[battery,2030,2,12:12] balance_storage_rep_period[battery,2030,2,12:12] 1
-    storage_level_intra_rep_period[battery,2030,2,12:12] balance_storage_rep_period[battery,2030,2,13:13] -0.9
+    storage_level_intra_rep_period[battery,2030,2,12:12] balance_storage_rep_period[battery,2030,2,13:13] -0.99
     storage_level_intra_rep_period[battery,2030,2,13:13] max_storage_level_intra_rep_period_limit[battery,2030,2,13:13] 1
     storage_level_intra_rep_period[battery,2030,2,13:13] balance_storage_rep_period[battery,2030,2,13:13] 1
-    storage_level_intra_rep_period[battery,2030,2,13:13] balance_storage_rep_period[battery,2030,2,14:14] -0.9
+    storage_level_intra_rep_period[battery,2030,2,13:13] balance_storage_rep_period[battery,2030,2,14:14] -0.99
     storage_level_intra_rep_period[battery,2030,2,14:14] max_storage_level_intra_rep_period_limit[battery,2030,2,14:14] 1
     storage_level_intra_rep_period[battery,2030,2,14:14] balance_storage_rep_period[battery,2030,2,14:14] 1
-    storage_level_intra_rep_period[battery,2030,2,14:14] balance_storage_rep_period[battery,2030,2,15:15] -0.9
+    storage_level_intra_rep_period[battery,2030,2,14:14] balance_storage_rep_period[battery,2030,2,15:15] -0.99
     storage_level_intra_rep_period[battery,2030,2,15:15] max_storage_level_intra_rep_period_limit[battery,2030,2,15:15] 1
     storage_level_intra_rep_period[battery,2030,2,15:15] balance_storage_rep_period[battery,2030,2,15:15] 1
-    storage_level_intra_rep_period[battery,2030,2,15:15] balance_storage_rep_period[battery,2030,2,16:16] -0.9
+    storage_level_intra_rep_period[battery,2030,2,15:15] balance_storage_rep_period[battery,2030,2,16:16] -0.99
     storage_level_intra_rep_period[battery,2030,2,16:16] max_storage_level_intra_rep_period_limit[battery,2030,2,16:16] 1
     storage_level_intra_rep_period[battery,2030,2,16:16] balance_storage_rep_period[battery,2030,2,16:16] 1
-    storage_level_intra_rep_period[battery,2030,2,16:16] balance_storage_rep_period[battery,2030,2,17:17] -0.9
+    storage_level_intra_rep_period[battery,2030,2,16:16] balance_storage_rep_period[battery,2030,2,17:17] -0.99
     storage_level_intra_rep_period[battery,2030,2,17:17] max_storage_level_intra_rep_period_limit[battery,2030,2,17:17] 1
     storage_level_intra_rep_period[battery,2030,2,17:17] balance_storage_rep_period[battery,2030,2,17:17] 1
-    storage_level_intra_rep_period[battery,2030,2,17:17] balance_storage_rep_period[battery,2030,2,18:18] -0.9
+    storage_level_intra_rep_period[battery,2030,2,17:17] balance_storage_rep_period[battery,2030,2,18:18] -0.99
     storage_level_intra_rep_period[battery,2030,2,18:18] max_storage_level_intra_rep_period_limit[battery,2030,2,18:18] 1
     storage_level_intra_rep_period[battery,2030,2,18:18] balance_storage_rep_period[battery,2030,2,18:18] 1
-    storage_level_intra_rep_period[battery,2030,2,18:18] balance_storage_rep_period[battery,2030,2,19:19] -0.9
+    storage_level_intra_rep_period[battery,2030,2,18:18] balance_storage_rep_period[battery,2030,2,19:19] -0.99
     storage_level_intra_rep_period[battery,2030,2,19:19] max_storage_level_intra_rep_period_limit[battery,2030,2,19:19] 1
     storage_level_intra_rep_period[battery,2030,2,19:19] balance_storage_rep_period[battery,2030,2,19:19] 1
-    storage_level_intra_rep_period[battery,2030,2,19:19] balance_storage_rep_period[battery,2030,2,20:20] -0.9
+    storage_level_intra_rep_period[battery,2030,2,19:19] balance_storage_rep_period[battery,2030,2,20:20] -0.99
     storage_level_intra_rep_period[battery,2030,2,20:20] max_storage_level_intra_rep_period_limit[battery,2030,2,20:20] 1
     storage_level_intra_rep_period[battery,2030,2,20:20] balance_storage_rep_period[battery,2030,2,20:20] 1
-    storage_level_intra_rep_period[battery,2030,2,20:20] balance_storage_rep_period[battery,2030,2,21:21] -0.9
+    storage_level_intra_rep_period[battery,2030,2,20:20] balance_storage_rep_period[battery,2030,2,21:21] -0.99
     storage_level_intra_rep_period[battery,2030,2,21:21] max_storage_level_intra_rep_period_limit[battery,2030,2,21:21] 1
     storage_level_intra_rep_period[battery,2030,2,21:21] balance_storage_rep_period[battery,2030,2,21:21] 1
-    storage_level_intra_rep_period[battery,2030,2,21:21] balance_storage_rep_period[battery,2030,2,22:22] -0.9
+    storage_level_intra_rep_period[battery,2030,2,21:21] balance_storage_rep_period[battery,2030,2,22:22] -0.99
     storage_level_intra_rep_period[battery,2030,2,22:22] max_storage_level_intra_rep_period_limit[battery,2030,2,22:22] 1
     storage_level_intra_rep_period[battery,2030,2,22:22] balance_storage_rep_period[battery,2030,2,22:22] 1
-    storage_level_intra_rep_period[battery,2030,2,22:22] balance_storage_rep_period[battery,2030,2,23:23] -0.9
+    storage_level_intra_rep_period[battery,2030,2,22:22] balance_storage_rep_period[battery,2030,2,23:23] -0.99
     storage_level_intra_rep_period[battery,2030,2,23:23] max_storage_level_intra_rep_period_limit[battery,2030,2,23:23] 1
     storage_level_intra_rep_period[battery,2030,2,23:23] balance_storage_rep_period[battery,2030,2,23:23] 1
-    storage_level_intra_rep_period[battery,2030,2,23:23] balance_storage_rep_period[battery,2030,2,24:24] -0.9
+    storage_level_intra_rep_period[battery,2030,2,23:23] balance_storage_rep_period[battery,2030,2,24:24] -0.99
     storage_level_intra_rep_period[battery,2030,2,24:24] max_storage_level_intra_rep_period_limit[battery,2030,2,24:24] 1
     storage_level_intra_rep_period[battery,2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] 1
     storage_level_intra_rep_period[battery,2030,3,1:1] max_storage_level_intra_rep_period_limit[battery,2030,3,1:1] 1
     storage_level_intra_rep_period[battery,2030,3,1:1] balance_storage_rep_period[battery,2030,3,1:1] 1
-    storage_level_intra_rep_period[battery,2030,3,1:1] balance_storage_rep_period[battery,2030,3,2:2] -0.9
+    storage_level_intra_rep_period[battery,2030,3,1:1] balance_storage_rep_period[battery,2030,3,2:2] -0.99
     storage_level_intra_rep_period[battery,2030,3,2:2] max_storage_level_intra_rep_period_limit[battery,2030,3,2:2] 1
     storage_level_intra_rep_period[battery,2030,3,2:2] balance_storage_rep_period[battery,2030,3,2:2] 1
-    storage_level_intra_rep_period[battery,2030,3,2:2] balance_storage_rep_period[battery,2030,3,3:3] -0.9
+    storage_level_intra_rep_period[battery,2030,3,2:2] balance_storage_rep_period[battery,2030,3,3:3] -0.99
     storage_level_intra_rep_period[battery,2030,3,3:3] max_storage_level_intra_rep_period_limit[battery,2030,3,3:3] 1
     storage_level_intra_rep_period[battery,2030,3,3:3] balance_storage_rep_period[battery,2030,3,3:3] 1
-    storage_level_intra_rep_period[battery,2030,3,3:3] balance_storage_rep_period[battery,2030,3,4:4] -0.9
+    storage_level_intra_rep_period[battery,2030,3,3:3] balance_storage_rep_period[battery,2030,3,4:4] -0.99
     storage_level_intra_rep_period[battery,2030,3,4:4] max_storage_level_intra_rep_period_limit[battery,2030,3,4:4] 1
     storage_level_intra_rep_period[battery,2030,3,4:4] balance_storage_rep_period[battery,2030,3,4:4] 1
-    storage_level_intra_rep_period[battery,2030,3,4:4] balance_storage_rep_period[battery,2030,3,5:5] -0.9
+    storage_level_intra_rep_period[battery,2030,3,4:4] balance_storage_rep_period[battery,2030,3,5:5] -0.99
     storage_level_intra_rep_period[battery,2030,3,5:5] max_storage_level_intra_rep_period_limit[battery,2030,3,5:5] 1
     storage_level_intra_rep_period[battery,2030,3,5:5] balance_storage_rep_period[battery,2030,3,5:5] 1
-    storage_level_intra_rep_period[battery,2030,3,5:5] balance_storage_rep_period[battery,2030,3,6:6] -0.9
+    storage_level_intra_rep_period[battery,2030,3,5:5] balance_storage_rep_period[battery,2030,3,6:6] -0.99
     storage_level_intra_rep_period[battery,2030,3,6:6] max_storage_level_intra_rep_period_limit[battery,2030,3,6:6] 1
     storage_level_intra_rep_period[battery,2030,3,6:6] balance_storage_rep_period[battery,2030,3,6:6] 1
-    storage_level_intra_rep_period[battery,2030,3,6:6] balance_storage_rep_period[battery,2030,3,7:7] -0.9
+    storage_level_intra_rep_period[battery,2030,3,6:6] balance_storage_rep_period[battery,2030,3,7:7] -0.99
     storage_level_intra_rep_period[battery,2030,3,7:7] max_storage_level_intra_rep_period_limit[battery,2030,3,7:7] 1
     storage_level_intra_rep_period[battery,2030,3,7:7] balance_storage_rep_period[battery,2030,3,7:7] 1
-    storage_level_intra_rep_period[battery,2030,3,7:7] balance_storage_rep_period[battery,2030,3,8:8] -0.9
+    storage_level_intra_rep_period[battery,2030,3,7:7] balance_storage_rep_period[battery,2030,3,8:8] -0.99
     storage_level_intra_rep_period[battery,2030,3,8:8] max_storage_level_intra_rep_period_limit[battery,2030,3,8:8] 1
     storage_level_intra_rep_period[battery,2030,3,8:8] balance_storage_rep_period[battery,2030,3,8:8] 1
-    storage_level_intra_rep_period[battery,2030,3,8:8] balance_storage_rep_period[battery,2030,3,9:9] -0.9
+    storage_level_intra_rep_period[battery,2030,3,8:8] balance_storage_rep_period[battery,2030,3,9:9] -0.99
     storage_level_intra_rep_period[battery,2030,3,9:9] max_storage_level_intra_rep_period_limit[battery,2030,3,9:9] 1
     storage_level_intra_rep_period[battery,2030,3,9:9] balance_storage_rep_period[battery,2030,3,9:9] 1
-    storage_level_intra_rep_period[battery,2030,3,9:9] balance_storage_rep_period[battery,2030,3,10:10] -0.9
+    storage_level_intra_rep_period[battery,2030,3,9:9] balance_storage_rep_period[battery,2030,3,10:10] -0.99
     storage_level_intra_rep_period[battery,2030,3,10:10] max_storage_level_intra_rep_period_limit[battery,2030,3,10:10] 1
     storage_level_intra_rep_period[battery,2030,3,10:10] balance_storage_rep_period[battery,2030,3,10:10] 1
-    storage_level_intra_rep_period[battery,2030,3,10:10] balance_storage_rep_period[battery,2030,3,11:11] -0.9
+    storage_level_intra_rep_period[battery,2030,3,10:10] balance_storage_rep_period[battery,2030,3,11:11] -0.99
     storage_level_intra_rep_period[battery,2030,3,11:11] max_storage_level_intra_rep_period_limit[battery,2030,3,11:11] 1
     storage_level_intra_rep_period[battery,2030,3,11:11] balance_storage_rep_period[battery,2030,3,11:11] 1
-    storage_level_intra_rep_period[battery,2030,3,11:11] balance_storage_rep_period[battery,2030,3,12:12] -0.9
+    storage_level_intra_rep_period[battery,2030,3,11:11] balance_storage_rep_period[battery,2030,3,12:12] -0.99
     storage_level_intra_rep_period[battery,2030,3,12:12] max_storage_level_intra_rep_period_limit[battery,2030,3,12:12] 1
     storage_level_intra_rep_period[battery,2030,3,12:12] balance_storage_rep_period[battery,2030,3,12:12] 1
-    storage_level_intra_rep_period[battery,2030,3,12:12] balance_storage_rep_period[battery,2030,3,13:13] -0.9
+    storage_level_intra_rep_period[battery,2030,3,12:12] balance_storage_rep_period[battery,2030,3,13:13] -0.99
     storage_level_intra_rep_period[battery,2030,3,13:13] max_storage_level_intra_rep_period_limit[battery,2030,3,13:13] 1
     storage_level_intra_rep_period[battery,2030,3,13:13] balance_storage_rep_period[battery,2030,3,13:13] 1
-    storage_level_intra_rep_period[battery,2030,3,13:13] balance_storage_rep_period[battery,2030,3,14:14] -0.9
+    storage_level_intra_rep_period[battery,2030,3,13:13] balance_storage_rep_period[battery,2030,3,14:14] -0.99
     storage_level_intra_rep_period[battery,2030,3,14:14] max_storage_level_intra_rep_period_limit[battery,2030,3,14:14] 1
     storage_level_intra_rep_period[battery,2030,3,14:14] balance_storage_rep_period[battery,2030,3,14:14] 1
-    storage_level_intra_rep_period[battery,2030,3,14:14] balance_storage_rep_period[battery,2030,3,15:15] -0.9
+    storage_level_intra_rep_period[battery,2030,3,14:14] balance_storage_rep_period[battery,2030,3,15:15] -0.99
     storage_level_intra_rep_period[battery,2030,3,15:15] max_storage_level_intra_rep_period_limit[battery,2030,3,15:15] 1
     storage_level_intra_rep_period[battery,2030,3,15:15] balance_storage_rep_period[battery,2030,3,15:15] 1
-    storage_level_intra_rep_period[battery,2030,3,15:15] balance_storage_rep_period[battery,2030,3,16:16] -0.9
+    storage_level_intra_rep_period[battery,2030,3,15:15] balance_storage_rep_period[battery,2030,3,16:16] -0.99
     storage_level_intra_rep_period[battery,2030,3,16:16] max_storage_level_intra_rep_period_limit[battery,2030,3,16:16] 1
     storage_level_intra_rep_period[battery,2030,3,16:16] balance_storage_rep_period[battery,2030,3,16:16] 1
-    storage_level_intra_rep_period[battery,2030,3,16:16] balance_storage_rep_period[battery,2030,3,17:17] -0.9
+    storage_level_intra_rep_period[battery,2030,3,16:16] balance_storage_rep_period[battery,2030,3,17:17] -0.99
     storage_level_intra_rep_period[battery,2030,3,17:17] max_storage_level_intra_rep_period_limit[battery,2030,3,17:17] 1
     storage_level_intra_rep_period[battery,2030,3,17:17] balance_storage_rep_period[battery,2030,3,17:17] 1
-    storage_level_intra_rep_period[battery,2030,3,17:17] balance_storage_rep_period[battery,2030,3,18:18] -0.9
+    storage_level_intra_rep_period[battery,2030,3,17:17] balance_storage_rep_period[battery,2030,3,18:18] -0.99
     storage_level_intra_rep_period[battery,2030,3,18:18] max_storage_level_intra_rep_period_limit[battery,2030,3,18:18] 1
     storage_level_intra_rep_period[battery,2030,3,18:18] balance_storage_rep_period[battery,2030,3,18:18] 1
-    storage_level_intra_rep_period[battery,2030,3,18:18] balance_storage_rep_period[battery,2030,3,19:19] -0.9
+    storage_level_intra_rep_period[battery,2030,3,18:18] balance_storage_rep_period[battery,2030,3,19:19] -0.99
     storage_level_intra_rep_period[battery,2030,3,19:19] max_storage_level_intra_rep_period_limit[battery,2030,3,19:19] 1
     storage_level_intra_rep_period[battery,2030,3,19:19] balance_storage_rep_period[battery,2030,3,19:19] 1
-    storage_level_intra_rep_period[battery,2030,3,19:19] balance_storage_rep_period[battery,2030,3,20:20] -0.9
+    storage_level_intra_rep_period[battery,2030,3,19:19] balance_storage_rep_period[battery,2030,3,20:20] -0.99
     storage_level_intra_rep_period[battery,2030,3,20:20] max_storage_level_intra_rep_period_limit[battery,2030,3,20:20] 1
     storage_level_intra_rep_period[battery,2030,3,20:20] balance_storage_rep_period[battery,2030,3,20:20] 1
-    storage_level_intra_rep_period[battery,2030,3,20:20] balance_storage_rep_period[battery,2030,3,21:21] -0.9
+    storage_level_intra_rep_period[battery,2030,3,20:20] balance_storage_rep_period[battery,2030,3,21:21] -0.99
     storage_level_intra_rep_period[battery,2030,3,21:21] max_storage_level_intra_rep_period_limit[battery,2030,3,21:21] 1
     storage_level_intra_rep_period[battery,2030,3,21:21] balance_storage_rep_period[battery,2030,3,21:21] 1
-    storage_level_intra_rep_period[battery,2030,3,21:21] balance_storage_rep_period[battery,2030,3,22:22] -0.9
+    storage_level_intra_rep_period[battery,2030,3,21:21] balance_storage_rep_period[battery,2030,3,22:22] -0.99
     storage_level_intra_rep_period[battery,2030,3,22:22] max_storage_level_intra_rep_period_limit[battery,2030,3,22:22] 1
     storage_level_intra_rep_period[battery,2030,3,22:22] balance_storage_rep_period[battery,2030,3,22:22] 1
-    storage_level_intra_rep_period[battery,2030,3,22:22] balance_storage_rep_period[battery,2030,3,23:23] -0.9
+    storage_level_intra_rep_period[battery,2030,3,22:22] balance_storage_rep_period[battery,2030,3,23:23] -0.99
     storage_level_intra_rep_period[battery,2030,3,23:23] max_storage_level_intra_rep_period_limit[battery,2030,3,23:23] 1
     storage_level_intra_rep_period[battery,2030,3,23:23] balance_storage_rep_period[battery,2030,3,23:23] 1
-    storage_level_intra_rep_period[battery,2030,3,23:23] balance_storage_rep_period[battery,2030,3,24:24] -0.9
+    storage_level_intra_rep_period[battery,2030,3,23:23] balance_storage_rep_period[battery,2030,3,24:24] -0.99
     storage_level_intra_rep_period[battery,2030,3,24:24] max_storage_level_intra_rep_period_limit[battery,2030,3,24:24] 1
     storage_level_intra_rep_period[battery,2030,3,24:24] balance_storage_rep_period[battery,2030,3,24:24] 1
     storage_level_intra_rep_period[caes,2030,1,1:1] max_storage_level_intra_rep_period_limit[caes,2030,1,1:1] 1
     storage_level_intra_rep_period[caes,2030,1,1:1] balance_storage_rep_period[caes,2030,1,1:1] 1
-    storage_level_intra_rep_period[caes,2030,1,1:1] balance_storage_rep_period[caes,2030,1,2:2] -0.9
+    storage_level_intra_rep_period[caes,2030,1,1:1] balance_storage_rep_period[caes,2030,1,2:2] -0.99
     storage_level_intra_rep_period[caes,2030,1,2:2] max_storage_level_intra_rep_period_limit[caes,2030,1,2:2] 1
     storage_level_intra_rep_period[caes,2030,1,2:2] balance_storage_rep_period[caes,2030,1,2:2] 1
-    storage_level_intra_rep_period[caes,2030,1,2:2] balance_storage_rep_period[caes,2030,1,3:3] -0.9
+    storage_level_intra_rep_period[caes,2030,1,2:2] balance_storage_rep_period[caes,2030,1,3:3] -0.99
     storage_level_intra_rep_period[caes,2030,1,3:3] max_storage_level_intra_rep_period_limit[caes,2030,1,3:3] 1
     storage_level_intra_rep_period[caes,2030,1,3:3] balance_storage_rep_period[caes,2030,1,3:3] 1
-    storage_level_intra_rep_period[caes,2030,1,3:3] balance_storage_rep_period[caes,2030,1,4:4] -0.9
+    storage_level_intra_rep_period[caes,2030,1,3:3] balance_storage_rep_period[caes,2030,1,4:4] -0.99
     storage_level_intra_rep_period[caes,2030,1,4:4] max_storage_level_intra_rep_period_limit[caes,2030,1,4:4] 1
     storage_level_intra_rep_period[caes,2030,1,4:4] balance_storage_rep_period[caes,2030,1,4:4] 1
-    storage_level_intra_rep_period[caes,2030,1,4:4] balance_storage_rep_period[caes,2030,1,5:5] -0.9
+    storage_level_intra_rep_period[caes,2030,1,4:4] balance_storage_rep_period[caes,2030,1,5:5] -0.99
     storage_level_intra_rep_period[caes,2030,1,5:5] max_storage_level_intra_rep_period_limit[caes,2030,1,5:5] 1
     storage_level_intra_rep_period[caes,2030,1,5:5] balance_storage_rep_period[caes,2030,1,5:5] 1
-    storage_level_intra_rep_period[caes,2030,1,5:5] balance_storage_rep_period[caes,2030,1,6:6] -0.9
+    storage_level_intra_rep_period[caes,2030,1,5:5] balance_storage_rep_period[caes,2030,1,6:6] -0.99
     storage_level_intra_rep_period[caes,2030,1,6:6] max_storage_level_intra_rep_period_limit[caes,2030,1,6:6] 1
     storage_level_intra_rep_period[caes,2030,1,6:6] balance_storage_rep_period[caes,2030,1,6:6] 1
-    storage_level_intra_rep_period[caes,2030,1,6:6] balance_storage_rep_period[caes,2030,1,7:7] -0.9
+    storage_level_intra_rep_period[caes,2030,1,6:6] balance_storage_rep_period[caes,2030,1,7:7] -0.99
     storage_level_intra_rep_period[caes,2030,1,7:7] max_storage_level_intra_rep_period_limit[caes,2030,1,7:7] 1
     storage_level_intra_rep_period[caes,2030,1,7:7] balance_storage_rep_period[caes,2030,1,7:7] 1
-    storage_level_intra_rep_period[caes,2030,1,7:7] balance_storage_rep_period[caes,2030,1,8:8] -0.9
+    storage_level_intra_rep_period[caes,2030,1,7:7] balance_storage_rep_period[caes,2030,1,8:8] -0.99
     storage_level_intra_rep_period[caes,2030,1,8:8] max_storage_level_intra_rep_period_limit[caes,2030,1,8:8] 1
     storage_level_intra_rep_period[caes,2030,1,8:8] balance_storage_rep_period[caes,2030,1,8:8] 1
-    storage_level_intra_rep_period[caes,2030,1,8:8] balance_storage_rep_period[caes,2030,1,9:9] -0.9
+    storage_level_intra_rep_period[caes,2030,1,8:8] balance_storage_rep_period[caes,2030,1,9:9] -0.99
     storage_level_intra_rep_period[caes,2030,1,9:9] max_storage_level_intra_rep_period_limit[caes,2030,1,9:9] 1
     storage_level_intra_rep_period[caes,2030,1,9:9] balance_storage_rep_period[caes,2030,1,9:9] 1
-    storage_level_intra_rep_period[caes,2030,1,9:9] balance_storage_rep_period[caes,2030,1,10:10] -0.9
+    storage_level_intra_rep_period[caes,2030,1,9:9] balance_storage_rep_period[caes,2030,1,10:10] -0.99
     storage_level_intra_rep_period[caes,2030,1,10:10] max_storage_level_intra_rep_period_limit[caes,2030,1,10:10] 1
     storage_level_intra_rep_period[caes,2030,1,10:10] balance_storage_rep_period[caes,2030,1,10:10] 1
-    storage_level_intra_rep_period[caes,2030,1,10:10] balance_storage_rep_period[caes,2030,1,11:11] -0.9
+    storage_level_intra_rep_period[caes,2030,1,10:10] balance_storage_rep_period[caes,2030,1,11:11] -0.99
     storage_level_intra_rep_period[caes,2030,1,11:11] max_storage_level_intra_rep_period_limit[caes,2030,1,11:11] 1
     storage_level_intra_rep_period[caes,2030,1,11:11] balance_storage_rep_period[caes,2030,1,11:11] 1
-    storage_level_intra_rep_period[caes,2030,1,11:11] balance_storage_rep_period[caes,2030,1,12:12] -0.9
+    storage_level_intra_rep_period[caes,2030,1,11:11] balance_storage_rep_period[caes,2030,1,12:12] -0.99
     storage_level_intra_rep_period[caes,2030,1,12:12] max_storage_level_intra_rep_period_limit[caes,2030,1,12:12] 1
     storage_level_intra_rep_period[caes,2030,1,12:12] balance_storage_rep_period[caes,2030,1,12:12] 1
-    storage_level_intra_rep_period[caes,2030,1,12:12] balance_storage_rep_period[caes,2030,1,13:13] -0.9
+    storage_level_intra_rep_period[caes,2030,1,12:12] balance_storage_rep_period[caes,2030,1,13:13] -0.99
     storage_level_intra_rep_period[caes,2030,1,13:13] max_storage_level_intra_rep_period_limit[caes,2030,1,13:13] 1
     storage_level_intra_rep_period[caes,2030,1,13:13] balance_storage_rep_period[caes,2030,1,13:13] 1
-    storage_level_intra_rep_period[caes,2030,1,13:13] balance_storage_rep_period[caes,2030,1,14:14] -0.9
+    storage_level_intra_rep_period[caes,2030,1,13:13] balance_storage_rep_period[caes,2030,1,14:14] -0.99
     storage_level_intra_rep_period[caes,2030,1,14:14] max_storage_level_intra_rep_period_limit[caes,2030,1,14:14] 1
     storage_level_intra_rep_period[caes,2030,1,14:14] balance_storage_rep_period[caes,2030,1,14:14] 1
-    storage_level_intra_rep_period[caes,2030,1,14:14] balance_storage_rep_period[caes,2030,1,15:15] -0.9
+    storage_level_intra_rep_period[caes,2030,1,14:14] balance_storage_rep_period[caes,2030,1,15:15] -0.99
     storage_level_intra_rep_period[caes,2030,1,15:15] max_storage_level_intra_rep_period_limit[caes,2030,1,15:15] 1
     storage_level_intra_rep_period[caes,2030,1,15:15] balance_storage_rep_period[caes,2030,1,15:15] 1
-    storage_level_intra_rep_period[caes,2030,1,15:15] balance_storage_rep_period[caes,2030,1,16:16] -0.9
+    storage_level_intra_rep_period[caes,2030,1,15:15] balance_storage_rep_period[caes,2030,1,16:16] -0.99
     storage_level_intra_rep_period[caes,2030,1,16:16] max_storage_level_intra_rep_period_limit[caes,2030,1,16:16] 1
     storage_level_intra_rep_period[caes,2030,1,16:16] balance_storage_rep_period[caes,2030,1,16:16] 1
-    storage_level_intra_rep_period[caes,2030,1,16:16] balance_storage_rep_period[caes,2030,1,17:17] -0.9
+    storage_level_intra_rep_period[caes,2030,1,16:16] balance_storage_rep_period[caes,2030,1,17:17] -0.99
     storage_level_intra_rep_period[caes,2030,1,17:17] max_storage_level_intra_rep_period_limit[caes,2030,1,17:17] 1
     storage_level_intra_rep_period[caes,2030,1,17:17] balance_storage_rep_period[caes,2030,1,17:17] 1
-    storage_level_intra_rep_period[caes,2030,1,17:17] balance_storage_rep_period[caes,2030,1,18:18] -0.9
+    storage_level_intra_rep_period[caes,2030,1,17:17] balance_storage_rep_period[caes,2030,1,18:18] -0.99
     storage_level_intra_rep_period[caes,2030,1,18:18] max_storage_level_intra_rep_period_limit[caes,2030,1,18:18] 1
     storage_level_intra_rep_period[caes,2030,1,18:18] balance_storage_rep_period[caes,2030,1,18:18] 1
-    storage_level_intra_rep_period[caes,2030,1,18:18] balance_storage_rep_period[caes,2030,1,19:19] -0.9
+    storage_level_intra_rep_period[caes,2030,1,18:18] balance_storage_rep_period[caes,2030,1,19:19] -0.99
     storage_level_intra_rep_period[caes,2030,1,19:19] max_storage_level_intra_rep_period_limit[caes,2030,1,19:19] 1
     storage_level_intra_rep_period[caes,2030,1,19:19] balance_storage_rep_period[caes,2030,1,19:19] 1
-    storage_level_intra_rep_period[caes,2030,1,19:19] balance_storage_rep_period[caes,2030,1,20:20] -0.9
+    storage_level_intra_rep_period[caes,2030,1,19:19] balance_storage_rep_period[caes,2030,1,20:20] -0.99
     storage_level_intra_rep_period[caes,2030,1,20:20] max_storage_level_intra_rep_period_limit[caes,2030,1,20:20] 1
     storage_level_intra_rep_period[caes,2030,1,20:20] balance_storage_rep_period[caes,2030,1,20:20] 1
-    storage_level_intra_rep_period[caes,2030,1,20:20] balance_storage_rep_period[caes,2030,1,21:21] -0.9
+    storage_level_intra_rep_period[caes,2030,1,20:20] balance_storage_rep_period[caes,2030,1,21:21] -0.99
     storage_level_intra_rep_period[caes,2030,1,21:21] max_storage_level_intra_rep_period_limit[caes,2030,1,21:21] 1
     storage_level_intra_rep_period[caes,2030,1,21:21] balance_storage_rep_period[caes,2030,1,21:21] 1
-    storage_level_intra_rep_period[caes,2030,1,21:21] balance_storage_rep_period[caes,2030,1,22:22] -0.9
+    storage_level_intra_rep_period[caes,2030,1,21:21] balance_storage_rep_period[caes,2030,1,22:22] -0.99
     storage_level_intra_rep_period[caes,2030,1,22:22] max_storage_level_intra_rep_period_limit[caes,2030,1,22:22] 1
     storage_level_intra_rep_period[caes,2030,1,22:22] balance_storage_rep_period[caes,2030,1,22:22] 1
-    storage_level_intra_rep_period[caes,2030,1,22:22] balance_storage_rep_period[caes,2030,1,23:23] -0.9
+    storage_level_intra_rep_period[caes,2030,1,22:22] balance_storage_rep_period[caes,2030,1,23:23] -0.99
     storage_level_intra_rep_period[caes,2030,1,23:23] max_storage_level_intra_rep_period_limit[caes,2030,1,23:23] 1
     storage_level_intra_rep_period[caes,2030,1,23:23] balance_storage_rep_period[caes,2030,1,23:23] 1
-    storage_level_intra_rep_period[caes,2030,1,23:23] balance_storage_rep_period[caes,2030,1,24:24] -0.9
+    storage_level_intra_rep_period[caes,2030,1,23:23] balance_storage_rep_period[caes,2030,1,24:24] -0.99
     storage_level_intra_rep_period[caes,2030,1,24:24] max_storage_level_intra_rep_period_limit[caes,2030,1,24:24] 1
     storage_level_intra_rep_period[caes,2030,1,24:24] balance_storage_rep_period[caes,2030,1,24:24] 1
     storage_level_intra_rep_period[caes,2030,2,1:1] max_storage_level_intra_rep_period_limit[caes,2030,2,1:1] 1
     storage_level_intra_rep_period[caes,2030,2,1:1] balance_storage_rep_period[caes,2030,2,1:1] 1
-    storage_level_intra_rep_period[caes,2030,2,1:1] balance_storage_rep_period[caes,2030,2,2:2] -0.9
+    storage_level_intra_rep_period[caes,2030,2,1:1] balance_storage_rep_period[caes,2030,2,2:2] -0.99
     storage_level_intra_rep_period[caes,2030,2,2:2] max_storage_level_intra_rep_period_limit[caes,2030,2,2:2] 1
     storage_level_intra_rep_period[caes,2030,2,2:2] balance_storage_rep_period[caes,2030,2,2:2] 1
-    storage_level_intra_rep_period[caes,2030,2,2:2] balance_storage_rep_period[caes,2030,2,3:3] -0.9
+    storage_level_intra_rep_period[caes,2030,2,2:2] balance_storage_rep_period[caes,2030,2,3:3] -0.99
     storage_level_intra_rep_period[caes,2030,2,3:3] max_storage_level_intra_rep_period_limit[caes,2030,2,3:3] 1
     storage_level_intra_rep_period[caes,2030,2,3:3] balance_storage_rep_period[caes,2030,2,3:3] 1
-    storage_level_intra_rep_period[caes,2030,2,3:3] balance_storage_rep_period[caes,2030,2,4:4] -0.9
+    storage_level_intra_rep_period[caes,2030,2,3:3] balance_storage_rep_period[caes,2030,2,4:4] -0.99
     storage_level_intra_rep_period[caes,2030,2,4:4] max_storage_level_intra_rep_period_limit[caes,2030,2,4:4] 1
     storage_level_intra_rep_period[caes,2030,2,4:4] balance_storage_rep_period[caes,2030,2,4:4] 1
-    storage_level_intra_rep_period[caes,2030,2,4:4] balance_storage_rep_period[caes,2030,2,5:5] -0.9
+    storage_level_intra_rep_period[caes,2030,2,4:4] balance_storage_rep_period[caes,2030,2,5:5] -0.99
     storage_level_intra_rep_period[caes,2030,2,5:5] max_storage_level_intra_rep_period_limit[caes,2030,2,5:5] 1
     storage_level_intra_rep_period[caes,2030,2,5:5] balance_storage_rep_period[caes,2030,2,5:5] 1
-    storage_level_intra_rep_period[caes,2030,2,5:5] balance_storage_rep_period[caes,2030,2,6:6] -0.9
+    storage_level_intra_rep_period[caes,2030,2,5:5] balance_storage_rep_period[caes,2030,2,6:6] -0.99
     storage_level_intra_rep_period[caes,2030,2,6:6] max_storage_level_intra_rep_period_limit[caes,2030,2,6:6] 1
     storage_level_intra_rep_period[caes,2030,2,6:6] balance_storage_rep_period[caes,2030,2,6:6] 1
-    storage_level_intra_rep_period[caes,2030,2,6:6] balance_storage_rep_period[caes,2030,2,7:7] -0.9
+    storage_level_intra_rep_period[caes,2030,2,6:6] balance_storage_rep_period[caes,2030,2,7:7] -0.99
     storage_level_intra_rep_period[caes,2030,2,7:7] max_storage_level_intra_rep_period_limit[caes,2030,2,7:7] 1
     storage_level_intra_rep_period[caes,2030,2,7:7] balance_storage_rep_period[caes,2030,2,7:7] 1
-    storage_level_intra_rep_period[caes,2030,2,7:7] balance_storage_rep_period[caes,2030,2,8:8] -0.9
+    storage_level_intra_rep_period[caes,2030,2,7:7] balance_storage_rep_period[caes,2030,2,8:8] -0.99
     storage_level_intra_rep_period[caes,2030,2,8:8] max_storage_level_intra_rep_period_limit[caes,2030,2,8:8] 1
     storage_level_intra_rep_period[caes,2030,2,8:8] balance_storage_rep_period[caes,2030,2,8:8] 1
-    storage_level_intra_rep_period[caes,2030,2,8:8] balance_storage_rep_period[caes,2030,2,9:9] -0.9
+    storage_level_intra_rep_period[caes,2030,2,8:8] balance_storage_rep_period[caes,2030,2,9:9] -0.99
     storage_level_intra_rep_period[caes,2030,2,9:9] max_storage_level_intra_rep_period_limit[caes,2030,2,9:9] 1
     storage_level_intra_rep_period[caes,2030,2,9:9] balance_storage_rep_period[caes,2030,2,9:9] 1
-    storage_level_intra_rep_period[caes,2030,2,9:9] balance_storage_rep_period[caes,2030,2,10:10] -0.9
+    storage_level_intra_rep_period[caes,2030,2,9:9] balance_storage_rep_period[caes,2030,2,10:10] -0.99
     storage_level_intra_rep_period[caes,2030,2,10:10] max_storage_level_intra_rep_period_limit[caes,2030,2,10:10] 1
     storage_level_intra_rep_period[caes,2030,2,10:10] balance_storage_rep_period[caes,2030,2,10:10] 1
-    storage_level_intra_rep_period[caes,2030,2,10:10] balance_storage_rep_period[caes,2030,2,11:11] -0.9
+    storage_level_intra_rep_period[caes,2030,2,10:10] balance_storage_rep_period[caes,2030,2,11:11] -0.99
     storage_level_intra_rep_period[caes,2030,2,11:11] max_storage_level_intra_rep_period_limit[caes,2030,2,11:11] 1
     storage_level_intra_rep_period[caes,2030,2,11:11] balance_storage_rep_period[caes,2030,2,11:11] 1
-    storage_level_intra_rep_period[caes,2030,2,11:11] balance_storage_rep_period[caes,2030,2,12:12] -0.9
+    storage_level_intra_rep_period[caes,2030,2,11:11] balance_storage_rep_period[caes,2030,2,12:12] -0.99
     storage_level_intra_rep_period[caes,2030,2,12:12] max_storage_level_intra_rep_period_limit[caes,2030,2,12:12] 1
     storage_level_intra_rep_period[caes,2030,2,12:12] balance_storage_rep_period[caes,2030,2,12:12] 1
-    storage_level_intra_rep_period[caes,2030,2,12:12] balance_storage_rep_period[caes,2030,2,13:13] -0.9
+    storage_level_intra_rep_period[caes,2030,2,12:12] balance_storage_rep_period[caes,2030,2,13:13] -0.99
     storage_level_intra_rep_period[caes,2030,2,13:13] max_storage_level_intra_rep_period_limit[caes,2030,2,13:13] 1
     storage_level_intra_rep_period[caes,2030,2,13:13] balance_storage_rep_period[caes,2030,2,13:13] 1
-    storage_level_intra_rep_period[caes,2030,2,13:13] balance_storage_rep_period[caes,2030,2,14:14] -0.9
+    storage_level_intra_rep_period[caes,2030,2,13:13] balance_storage_rep_period[caes,2030,2,14:14] -0.99
     storage_level_intra_rep_period[caes,2030,2,14:14] max_storage_level_intra_rep_period_limit[caes,2030,2,14:14] 1
     storage_level_intra_rep_period[caes,2030,2,14:14] balance_storage_rep_period[caes,2030,2,14:14] 1
-    storage_level_intra_rep_period[caes,2030,2,14:14] balance_storage_rep_period[caes,2030,2,15:15] -0.9
+    storage_level_intra_rep_period[caes,2030,2,14:14] balance_storage_rep_period[caes,2030,2,15:15] -0.99
     storage_level_intra_rep_period[caes,2030,2,15:15] max_storage_level_intra_rep_period_limit[caes,2030,2,15:15] 1
     storage_level_intra_rep_period[caes,2030,2,15:15] balance_storage_rep_period[caes,2030,2,15:15] 1
-    storage_level_intra_rep_period[caes,2030,2,15:15] balance_storage_rep_period[caes,2030,2,16:16] -0.9
+    storage_level_intra_rep_period[caes,2030,2,15:15] balance_storage_rep_period[caes,2030,2,16:16] -0.99
     storage_level_intra_rep_period[caes,2030,2,16:16] max_storage_level_intra_rep_period_limit[caes,2030,2,16:16] 1
     storage_level_intra_rep_period[caes,2030,2,16:16] balance_storage_rep_period[caes,2030,2,16:16] 1
-    storage_level_intra_rep_period[caes,2030,2,16:16] balance_storage_rep_period[caes,2030,2,17:17] -0.9
+    storage_level_intra_rep_period[caes,2030,2,16:16] balance_storage_rep_period[caes,2030,2,17:17] -0.99
     storage_level_intra_rep_period[caes,2030,2,17:17] max_storage_level_intra_rep_period_limit[caes,2030,2,17:17] 1
     storage_level_intra_rep_period[caes,2030,2,17:17] balance_storage_rep_period[caes,2030,2,17:17] 1
-    storage_level_intra_rep_period[caes,2030,2,17:17] balance_storage_rep_period[caes,2030,2,18:18] -0.9
+    storage_level_intra_rep_period[caes,2030,2,17:17] balance_storage_rep_period[caes,2030,2,18:18] -0.99
     storage_level_intra_rep_period[caes,2030,2,18:18] max_storage_level_intra_rep_period_limit[caes,2030,2,18:18] 1
     storage_level_intra_rep_period[caes,2030,2,18:18] balance_storage_rep_period[caes,2030,2,18:18] 1
-    storage_level_intra_rep_period[caes,2030,2,18:18] balance_storage_rep_period[caes,2030,2,19:19] -0.9
+    storage_level_intra_rep_period[caes,2030,2,18:18] balance_storage_rep_period[caes,2030,2,19:19] -0.99
     storage_level_intra_rep_period[caes,2030,2,19:19] max_storage_level_intra_rep_period_limit[caes,2030,2,19:19] 1
     storage_level_intra_rep_period[caes,2030,2,19:19] balance_storage_rep_period[caes,2030,2,19:19] 1
-    storage_level_intra_rep_period[caes,2030,2,19:19] balance_storage_rep_period[caes,2030,2,20:20] -0.9
+    storage_level_intra_rep_period[caes,2030,2,19:19] balance_storage_rep_period[caes,2030,2,20:20] -0.99
     storage_level_intra_rep_period[caes,2030,2,20:20] max_storage_level_intra_rep_period_limit[caes,2030,2,20:20] 1
     storage_level_intra_rep_period[caes,2030,2,20:20] balance_storage_rep_period[caes,2030,2,20:20] 1
-    storage_level_intra_rep_period[caes,2030,2,20:20] balance_storage_rep_period[caes,2030,2,21:21] -0.9
+    storage_level_intra_rep_period[caes,2030,2,20:20] balance_storage_rep_period[caes,2030,2,21:21] -0.99
     storage_level_intra_rep_period[caes,2030,2,21:21] max_storage_level_intra_rep_period_limit[caes,2030,2,21:21] 1
     storage_level_intra_rep_period[caes,2030,2,21:21] balance_storage_rep_period[caes,2030,2,21:21] 1
-    storage_level_intra_rep_period[caes,2030,2,21:21] balance_storage_rep_period[caes,2030,2,22:22] -0.9
+    storage_level_intra_rep_period[caes,2030,2,21:21] balance_storage_rep_period[caes,2030,2,22:22] -0.99
     storage_level_intra_rep_period[caes,2030,2,22:22] max_storage_level_intra_rep_period_limit[caes,2030,2,22:22] 1
     storage_level_intra_rep_period[caes,2030,2,22:22] balance_storage_rep_period[caes,2030,2,22:22] 1
-    storage_level_intra_rep_period[caes,2030,2,22:22] balance_storage_rep_period[caes,2030,2,23:23] -0.9
+    storage_level_intra_rep_period[caes,2030,2,22:22] balance_storage_rep_period[caes,2030,2,23:23] -0.99
     storage_level_intra_rep_period[caes,2030,2,23:23] max_storage_level_intra_rep_period_limit[caes,2030,2,23:23] 1
     storage_level_intra_rep_period[caes,2030,2,23:23] balance_storage_rep_period[caes,2030,2,23:23] 1
-    storage_level_intra_rep_period[caes,2030,2,23:23] balance_storage_rep_period[caes,2030,2,24:24] -0.9
+    storage_level_intra_rep_period[caes,2030,2,23:23] balance_storage_rep_period[caes,2030,2,24:24] -0.99
     storage_level_intra_rep_period[caes,2030,2,24:24] max_storage_level_intra_rep_period_limit[caes,2030,2,24:24] 1
     storage_level_intra_rep_period[caes,2030,2,24:24] balance_storage_rep_period[caes,2030,2,24:24] 1
     storage_level_intra_rep_period[caes,2030,3,1:1] max_storage_level_intra_rep_period_limit[caes,2030,3,1:1] 1
     storage_level_intra_rep_period[caes,2030,3,1:1] balance_storage_rep_period[caes,2030,3,1:1] 1
-    storage_level_intra_rep_period[caes,2030,3,1:1] balance_storage_rep_period[caes,2030,3,2:2] -0.9
+    storage_level_intra_rep_period[caes,2030,3,1:1] balance_storage_rep_period[caes,2030,3,2:2] -0.99
     storage_level_intra_rep_period[caes,2030,3,2:2] max_storage_level_intra_rep_period_limit[caes,2030,3,2:2] 1
     storage_level_intra_rep_period[caes,2030,3,2:2] balance_storage_rep_period[caes,2030,3,2:2] 1
-    storage_level_intra_rep_period[caes,2030,3,2:2] balance_storage_rep_period[caes,2030,3,3:3] -0.9
+    storage_level_intra_rep_period[caes,2030,3,2:2] balance_storage_rep_period[caes,2030,3,3:3] -0.99
     storage_level_intra_rep_period[caes,2030,3,3:3] max_storage_level_intra_rep_period_limit[caes,2030,3,3:3] 1
     storage_level_intra_rep_period[caes,2030,3,3:3] balance_storage_rep_period[caes,2030,3,3:3] 1
-    storage_level_intra_rep_period[caes,2030,3,3:3] balance_storage_rep_period[caes,2030,3,4:4] -0.9
+    storage_level_intra_rep_period[caes,2030,3,3:3] balance_storage_rep_period[caes,2030,3,4:4] -0.99
     storage_level_intra_rep_period[caes,2030,3,4:4] max_storage_level_intra_rep_period_limit[caes,2030,3,4:4] 1
     storage_level_intra_rep_period[caes,2030,3,4:4] balance_storage_rep_period[caes,2030,3,4:4] 1
-    storage_level_intra_rep_period[caes,2030,3,4:4] balance_storage_rep_period[caes,2030,3,5:5] -0.9
+    storage_level_intra_rep_period[caes,2030,3,4:4] balance_storage_rep_period[caes,2030,3,5:5] -0.99
     storage_level_intra_rep_period[caes,2030,3,5:5] max_storage_level_intra_rep_period_limit[caes,2030,3,5:5] 1
     storage_level_intra_rep_period[caes,2030,3,5:5] balance_storage_rep_period[caes,2030,3,5:5] 1
-    storage_level_intra_rep_period[caes,2030,3,5:5] balance_storage_rep_period[caes,2030,3,6:6] -0.9
+    storage_level_intra_rep_period[caes,2030,3,5:5] balance_storage_rep_period[caes,2030,3,6:6] -0.99
     storage_level_intra_rep_period[caes,2030,3,6:6] max_storage_level_intra_rep_period_limit[caes,2030,3,6:6] 1
     storage_level_intra_rep_period[caes,2030,3,6:6] balance_storage_rep_period[caes,2030,3,6:6] 1
-    storage_level_intra_rep_period[caes,2030,3,6:6] balance_storage_rep_period[caes,2030,3,7:7] -0.9
+    storage_level_intra_rep_period[caes,2030,3,6:6] balance_storage_rep_period[caes,2030,3,7:7] -0.99
     storage_level_intra_rep_period[caes,2030,3,7:7] max_storage_level_intra_rep_period_limit[caes,2030,3,7:7] 1
     storage_level_intra_rep_period[caes,2030,3,7:7] balance_storage_rep_period[caes,2030,3,7:7] 1
-    storage_level_intra_rep_period[caes,2030,3,7:7] balance_storage_rep_period[caes,2030,3,8:8] -0.9
+    storage_level_intra_rep_period[caes,2030,3,7:7] balance_storage_rep_period[caes,2030,3,8:8] -0.99
     storage_level_intra_rep_period[caes,2030,3,8:8] max_storage_level_intra_rep_period_limit[caes,2030,3,8:8] 1
     storage_level_intra_rep_period[caes,2030,3,8:8] balance_storage_rep_period[caes,2030,3,8:8] 1
-    storage_level_intra_rep_period[caes,2030,3,8:8] balance_storage_rep_period[caes,2030,3,9:9] -0.9
+    storage_level_intra_rep_period[caes,2030,3,8:8] balance_storage_rep_period[caes,2030,3,9:9] -0.99
     storage_level_intra_rep_period[caes,2030,3,9:9] max_storage_level_intra_rep_period_limit[caes,2030,3,9:9] 1
     storage_level_intra_rep_period[caes,2030,3,9:9] balance_storage_rep_period[caes,2030,3,9:9] 1
-    storage_level_intra_rep_period[caes,2030,3,9:9] balance_storage_rep_period[caes,2030,3,10:10] -0.9
+    storage_level_intra_rep_period[caes,2030,3,9:9] balance_storage_rep_period[caes,2030,3,10:10] -0.99
     storage_level_intra_rep_period[caes,2030,3,10:10] max_storage_level_intra_rep_period_limit[caes,2030,3,10:10] 1
     storage_level_intra_rep_period[caes,2030,3,10:10] balance_storage_rep_period[caes,2030,3,10:10] 1
-    storage_level_intra_rep_period[caes,2030,3,10:10] balance_storage_rep_period[caes,2030,3,11:11] -0.9
+    storage_level_intra_rep_period[caes,2030,3,10:10] balance_storage_rep_period[caes,2030,3,11:11] -0.99
     storage_level_intra_rep_period[caes,2030,3,11:11] max_storage_level_intra_rep_period_limit[caes,2030,3,11:11] 1
     storage_level_intra_rep_period[caes,2030,3,11:11] balance_storage_rep_period[caes,2030,3,11:11] 1
-    storage_level_intra_rep_period[caes,2030,3,11:11] balance_storage_rep_period[caes,2030,3,12:12] -0.9
+    storage_level_intra_rep_period[caes,2030,3,11:11] balance_storage_rep_period[caes,2030,3,12:12] -0.99
     storage_level_intra_rep_period[caes,2030,3,12:12] max_storage_level_intra_rep_period_limit[caes,2030,3,12:12] 1
     storage_level_intra_rep_period[caes,2030,3,12:12] balance_storage_rep_period[caes,2030,3,12:12] 1
-    storage_level_intra_rep_period[caes,2030,3,12:12] balance_storage_rep_period[caes,2030,3,13:13] -0.9
+    storage_level_intra_rep_period[caes,2030,3,12:12] balance_storage_rep_period[caes,2030,3,13:13] -0.99
     storage_level_intra_rep_period[caes,2030,3,13:13] max_storage_level_intra_rep_period_limit[caes,2030,3,13:13] 1
     storage_level_intra_rep_period[caes,2030,3,13:13] balance_storage_rep_period[caes,2030,3,13:13] 1
-    storage_level_intra_rep_period[caes,2030,3,13:13] balance_storage_rep_period[caes,2030,3,14:14] -0.9
+    storage_level_intra_rep_period[caes,2030,3,13:13] balance_storage_rep_period[caes,2030,3,14:14] -0.99
     storage_level_intra_rep_period[caes,2030,3,14:14] max_storage_level_intra_rep_period_limit[caes,2030,3,14:14] 1
     storage_level_intra_rep_period[caes,2030,3,14:14] balance_storage_rep_period[caes,2030,3,14:14] 1
-    storage_level_intra_rep_period[caes,2030,3,14:14] balance_storage_rep_period[caes,2030,3,15:15] -0.9
+    storage_level_intra_rep_period[caes,2030,3,14:14] balance_storage_rep_period[caes,2030,3,15:15] -0.99
     storage_level_intra_rep_period[caes,2030,3,15:15] max_storage_level_intra_rep_period_limit[caes,2030,3,15:15] 1
     storage_level_intra_rep_period[caes,2030,3,15:15] balance_storage_rep_period[caes,2030,3,15:15] 1
-    storage_level_intra_rep_period[caes,2030,3,15:15] balance_storage_rep_period[caes,2030,3,16:16] -0.9
+    storage_level_intra_rep_period[caes,2030,3,15:15] balance_storage_rep_period[caes,2030,3,16:16] -0.99
     storage_level_intra_rep_period[caes,2030,3,16:16] max_storage_level_intra_rep_period_limit[caes,2030,3,16:16] 1
     storage_level_intra_rep_period[caes,2030,3,16:16] balance_storage_rep_period[caes,2030,3,16:16] 1
-    storage_level_intra_rep_period[caes,2030,3,16:16] balance_storage_rep_period[caes,2030,3,17:17] -0.9
+    storage_level_intra_rep_period[caes,2030,3,16:16] balance_storage_rep_period[caes,2030,3,17:17] -0.99
     storage_level_intra_rep_period[caes,2030,3,17:17] max_storage_level_intra_rep_period_limit[caes,2030,3,17:17] 1
     storage_level_intra_rep_period[caes,2030,3,17:17] balance_storage_rep_period[caes,2030,3,17:17] 1
-    storage_level_intra_rep_period[caes,2030,3,17:17] balance_storage_rep_period[caes,2030,3,18:18] -0.9
+    storage_level_intra_rep_period[caes,2030,3,17:17] balance_storage_rep_period[caes,2030,3,18:18] -0.99
     storage_level_intra_rep_period[caes,2030,3,18:18] max_storage_level_intra_rep_period_limit[caes,2030,3,18:18] 1
     storage_level_intra_rep_period[caes,2030,3,18:18] balance_storage_rep_period[caes,2030,3,18:18] 1
-    storage_level_intra_rep_period[caes,2030,3,18:18] balance_storage_rep_period[caes,2030,3,19:19] -0.9
+    storage_level_intra_rep_period[caes,2030,3,18:18] balance_storage_rep_period[caes,2030,3,19:19] -0.99
     storage_level_intra_rep_period[caes,2030,3,19:19] max_storage_level_intra_rep_period_limit[caes,2030,3,19:19] 1
     storage_level_intra_rep_period[caes,2030,3,19:19] balance_storage_rep_period[caes,2030,3,19:19] 1
-    storage_level_intra_rep_period[caes,2030,3,19:19] balance_storage_rep_period[caes,2030,3,20:20] -0.9
+    storage_level_intra_rep_period[caes,2030,3,19:19] balance_storage_rep_period[caes,2030,3,20:20] -0.99
     storage_level_intra_rep_period[caes,2030,3,20:20] max_storage_level_intra_rep_period_limit[caes,2030,3,20:20] 1
     storage_level_intra_rep_period[caes,2030,3,20:20] balance_storage_rep_period[caes,2030,3,20:20] 1
-    storage_level_intra_rep_period[caes,2030,3,20:20] balance_storage_rep_period[caes,2030,3,21:21] -0.9
+    storage_level_intra_rep_period[caes,2030,3,20:20] balance_storage_rep_period[caes,2030,3,21:21] -0.99
     storage_level_intra_rep_period[caes,2030,3,21:21] max_storage_level_intra_rep_period_limit[caes,2030,3,21:21] 1
     storage_level_intra_rep_period[caes,2030,3,21:21] balance_storage_rep_period[caes,2030,3,21:21] 1
-    storage_level_intra_rep_period[caes,2030,3,21:21] balance_storage_rep_period[caes,2030,3,22:22] -0.9
+    storage_level_intra_rep_period[caes,2030,3,21:21] balance_storage_rep_period[caes,2030,3,22:22] -0.99
     storage_level_intra_rep_period[caes,2030,3,22:22] max_storage_level_intra_rep_period_limit[caes,2030,3,22:22] 1
     storage_level_intra_rep_period[caes,2030,3,22:22] balance_storage_rep_period[caes,2030,3,22:22] 1
-    storage_level_intra_rep_period[caes,2030,3,22:22] balance_storage_rep_period[caes,2030,3,23:23] -0.9
+    storage_level_intra_rep_period[caes,2030,3,22:22] balance_storage_rep_period[caes,2030,3,23:23] -0.99
     storage_level_intra_rep_period[caes,2030,3,23:23] max_storage_level_intra_rep_period_limit[caes,2030,3,23:23] 1
     storage_level_intra_rep_period[caes,2030,3,23:23] balance_storage_rep_period[caes,2030,3,23:23] 1
-    storage_level_intra_rep_period[caes,2030,3,23:23] balance_storage_rep_period[caes,2030,3,24:24] -0.9
+    storage_level_intra_rep_period[caes,2030,3,23:23] balance_storage_rep_period[caes,2030,3,24:24] -0.99
     storage_level_intra_rep_period[caes,2030,3,24:24] max_storage_level_intra_rep_period_limit[caes,2030,3,24:24] 1
     storage_level_intra_rep_period[caes,2030,3,24:24] balance_storage_rep_period[caes,2030,3,24:24] 1
+    storage_level_inter_period[flow_battery,2030,1,1:1] max_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 0.998
+    storage_level_inter_period[flow_battery,2030,1,1:1] min_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,1:1] balance_storage_inter_period[flow_battery,2030,1,1:1] 1
+    storage_level_inter_period[flow_battery,2030,1,1:1] balance_storage_inter_period[flow_battery,2030,1,2:2] -0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,2:2] max_storage_level_inter_period_limit[flow_battery,2030,1,3:3] 0.998
+    storage_level_inter_period[flow_battery,2030,1,2:2] min_storage_level_inter_period_limit[flow_battery,2030,1,3:3] 0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,2:2] balance_storage_inter_period[flow_battery,2030,1,2:2] 1
+    storage_level_inter_period[flow_battery,2030,1,2:2] balance_storage_inter_period[flow_battery,2030,1,3:3] -0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,3:3] max_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 0.998
+    storage_level_inter_period[flow_battery,2030,1,3:3] min_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,3:3] balance_storage_inter_period[flow_battery,2030,1,3:3] 1
+    storage_level_inter_period[flow_battery,2030,1,3:3] balance_storage_inter_period[flow_battery,2030,1,4:4] -0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,4:4] max_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 0.998
+    storage_level_inter_period[flow_battery,2030,1,4:4] min_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,4:4] balance_storage_inter_period[flow_battery,2030,1,4:4] 1
+    storage_level_inter_period[flow_battery,2030,1,4:4] balance_storage_inter_period[flow_battery,2030,1,5:5] -0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,5:5] max_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 0.998
+    storage_level_inter_period[flow_battery,2030,1,5:5] min_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,5:5] balance_storage_inter_period[flow_battery,2030,1,5:5] 1
+    storage_level_inter_period[flow_battery,2030,1,5:5] balance_storage_inter_period[flow_battery,2030,1,6:6] -0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,6:6] max_storage_level_inter_period_limit[flow_battery,2030,1,7:7] 0.998
+    storage_level_inter_period[flow_battery,2030,1,6:6] min_storage_level_inter_period_limit[flow_battery,2030,1,7:7] 0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,6:6] balance_storage_inter_period[flow_battery,2030,1,6:6] 1
+    storage_level_inter_period[flow_battery,2030,1,6:6] balance_storage_inter_period[flow_battery,2030,1,7:7] -0.953087976664442
+    storage_level_inter_period[flow_battery,2030,1,7:7] balance_storage_inter_period[flow_battery,2030,1,7:7] 1
     storage_level_inter_period[phs,2030,1,1:1] max_storage_level_inter_period_limit[phs,2030,1,1:1] 1
     storage_level_inter_period[phs,2030,1,1:1] balance_storage_inter_period[phs,2030,1,1:1] 1
-    storage_level_inter_period[phs,2030,1,1:1] balance_storage_inter_period[phs,2030,1,2:2] -0.7856781408072188
+    storage_level_inter_period[phs,2030,1,1:1] balance_storage_inter_period[phs,2030,1,2:2] -0.8866535105013078
     storage_level_inter_period[phs,2030,1,2:2] max_storage_level_inter_period_limit[phs,2030,1,2:2] 1
     storage_level_inter_period[phs,2030,1,2:2] balance_storage_inter_period[phs,2030,1,2:2] 1
-    storage_level_inter_period[phs,2030,1,2:2] balance_storage_inter_period[phs,2030,1,3:3] -0.7856781408072188
+    storage_level_inter_period[phs,2030,1,2:2] balance_storage_inter_period[phs,2030,1,3:3] -0.8866535105013078
     storage_level_inter_period[phs,2030,1,3:3] max_storage_level_inter_period_limit[phs,2030,1,3:3] 1
     storage_level_inter_period[phs,2030,1,3:3] balance_storage_inter_period[phs,2030,1,3:3] 1
-    storage_level_inter_period[phs,2030,1,3:3] balance_storage_inter_period[phs,2030,1,4:4] -0.7856781408072188
+    storage_level_inter_period[phs,2030,1,3:3] balance_storage_inter_period[phs,2030,1,4:4] -0.8866535105013078
     storage_level_inter_period[phs,2030,1,4:4] max_storage_level_inter_period_limit[phs,2030,1,4:4] 1
     storage_level_inter_period[phs,2030,1,4:4] balance_storage_inter_period[phs,2030,1,4:4] 1
-    storage_level_inter_period[phs,2030,1,4:4] balance_storage_inter_period[phs,2030,1,5:5] -0.7856781408072188
+    storage_level_inter_period[phs,2030,1,4:4] balance_storage_inter_period[phs,2030,1,5:5] -0.8866535105013078
     storage_level_inter_period[phs,2030,1,5:5] max_storage_level_inter_period_limit[phs,2030,1,5:5] 1
     storage_level_inter_period[phs,2030,1,5:5] balance_storage_inter_period[phs,2030,1,5:5] 1
-    storage_level_inter_period[phs,2030,1,5:5] balance_storage_inter_period[phs,2030,1,6:6] -0.7856781408072188
+    storage_level_inter_period[phs,2030,1,5:5] balance_storage_inter_period[phs,2030,1,6:6] -0.8866535105013078
     storage_level_inter_period[phs,2030,1,6:6] max_storage_level_inter_period_limit[phs,2030,1,6:6] 1
     storage_level_inter_period[phs,2030,1,6:6] balance_storage_inter_period[phs,2030,1,6:6] 1
-    storage_level_inter_period[phs,2030,1,6:6] balance_storage_inter_period[phs,2030,1,7:7] -0.7856781408072188
+    storage_level_inter_period[phs,2030,1,6:6] balance_storage_inter_period[phs,2030,1,7:7] -0.8866535105013078
     storage_level_inter_period[phs,2030,1,7:7] max_storage_level_inter_period_limit[phs,2030,1,7:7] 1
     storage_level_inter_period[phs,2030,1,7:7] cycling_condition_inter_period[phs,2030,1] 1
     storage_level_inter_period[phs,2030,1,7:7] balance_storage_inter_period[phs,2030,1,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,1:1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,1:1] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,1:1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,1:1] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,1:1] accumulated_storage_intra_period[flow_battery,2030,1,1:1] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,1:1] accumulated_storage_intra_period[flow_battery,2030,1,2:2] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,2:2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,2:2] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,2:2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,2:2] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,2:2] accumulated_storage_intra_period[flow_battery,2030,1,2:2] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,2:2] accumulated_storage_intra_period[flow_battery,2030,1,3:3] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,3:3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,3:3] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,3:3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,3:3] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,3:3] accumulated_storage_intra_period[flow_battery,2030,1,3:3] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,3:3] accumulated_storage_intra_period[flow_battery,2030,1,4:4] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,4:4] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,4:4] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,4:4] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,4:4] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,4:4] accumulated_storage_intra_period[flow_battery,2030,1,4:4] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,4:4] accumulated_storage_intra_period[flow_battery,2030,1,5:5] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,5:5] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,5:5] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,5:5] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,5:5] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,5:5] accumulated_storage_intra_period[flow_battery,2030,1,5:5] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,5:5] accumulated_storage_intra_period[flow_battery,2030,1,6:6] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,6:6] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,6:6] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,6:6] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,6:6] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,6:6] accumulated_storage_intra_period[flow_battery,2030,1,6:6] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,6:6] accumulated_storage_intra_period[flow_battery,2030,1,7:7] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,7:7] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,7:7] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,7:7] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,7:7] accumulated_storage_intra_period[flow_battery,2030,1,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,7:7] accumulated_storage_intra_period[flow_battery,2030,1,8:8] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,8:8] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,8:8] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,8:8] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,8:8] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,8:8] accumulated_storage_intra_period[flow_battery,2030,1,8:8] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,8:8] accumulated_storage_intra_period[flow_battery,2030,1,9:9] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,9:9] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,9:9] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,9:9] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,9:9] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,9:9] accumulated_storage_intra_period[flow_battery,2030,1,9:9] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,9:9] accumulated_storage_intra_period[flow_battery,2030,1,10:10] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,10:10] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,10:10] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,10:10] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,10:10] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,10:10] accumulated_storage_intra_period[flow_battery,2030,1,10:10] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,10:10] accumulated_storage_intra_period[flow_battery,2030,1,11:11] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,11:11] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,11:11] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,11:11] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,11:11] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,11:11] accumulated_storage_intra_period[flow_battery,2030,1,11:11] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,11:11] accumulated_storage_intra_period[flow_battery,2030,1,12:12] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,12:12] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,12:12] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,12:12] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,12:12] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,12:12] accumulated_storage_intra_period[flow_battery,2030,1,12:12] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,12:12] accumulated_storage_intra_period[flow_battery,2030,1,13:13] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,13:13] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,13:13] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,13:13] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,13:13] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,13:13] accumulated_storage_intra_period[flow_battery,2030,1,13:13] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,13:13] accumulated_storage_intra_period[flow_battery,2030,1,14:14] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,14:14] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,14:14] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,14:14] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,14:14] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,14:14] accumulated_storage_intra_period[flow_battery,2030,1,14:14] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,14:14] accumulated_storage_intra_period[flow_battery,2030,1,15:15] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,15:15] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,15:15] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,15:15] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,15:15] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,15:15] accumulated_storage_intra_period[flow_battery,2030,1,15:15] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,15:15] accumulated_storage_intra_period[flow_battery,2030,1,16:16] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,16:16] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,16:16] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,16:16] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,16:16] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,16:16] accumulated_storage_intra_period[flow_battery,2030,1,16:16] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,16:16] accumulated_storage_intra_period[flow_battery,2030,1,17:17] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,17:17] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,17:17] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,17:17] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,17:17] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,17:17] accumulated_storage_intra_period[flow_battery,2030,1,17:17] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,17:17] accumulated_storage_intra_period[flow_battery,2030,1,18:18] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,18:18] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,18:18] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,18:18] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,18:18] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,18:18] accumulated_storage_intra_period[flow_battery,2030,1,18:18] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,18:18] accumulated_storage_intra_period[flow_battery,2030,1,19:19] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,19:19] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,19:19] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,19:19] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,19:19] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,19:19] accumulated_storage_intra_period[flow_battery,2030,1,19:19] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,19:19] accumulated_storage_intra_period[flow_battery,2030,1,20:20] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,20:20] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,20:20] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,20:20] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,20:20] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,20:20] accumulated_storage_intra_period[flow_battery,2030,1,20:20] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,20:20] accumulated_storage_intra_period[flow_battery,2030,1,21:21] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,21:21] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,21:21] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,21:21] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,21:21] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,21:21] accumulated_storage_intra_period[flow_battery,2030,1,21:21] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,21:21] accumulated_storage_intra_period[flow_battery,2030,1,22:22] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,22:22] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,22:22] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,22:22] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,22:22] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,22:22] accumulated_storage_intra_period[flow_battery,2030,1,22:22] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,22:22] accumulated_storage_intra_period[flow_battery,2030,1,23:23] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,23:23] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,23:23] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,23:23] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,23:23] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,23:23] accumulated_storage_intra_period[flow_battery,2030,1,23:23] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,23:23] accumulated_storage_intra_period[flow_battery,2030,1,24:24] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,24:24] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,24:24] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] balance_storage_inter_period[flow_battery,2030,1,2:2] -0.2
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] balance_storage_inter_period[flow_battery,2030,1,4:4] -0.3
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] balance_storage_inter_period[flow_battery,2030,1,5:5] -0.1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] balance_storage_inter_period[flow_battery,2030,1,6:6] -0.1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] balance_storage_inter_period[flow_battery,2030,1,7:7] -0.8
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24] accumulated_storage_intra_period[flow_battery,2030,1,24:24] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,1:1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,1:1] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,1:1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,1:1] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,1:1] accumulated_storage_intra_period[flow_battery,2030,2,1:1] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,1:1] accumulated_storage_intra_period[flow_battery,2030,2,2:2] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,2:2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,2:2] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,2:2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,2:2] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,2:2] accumulated_storage_intra_period[flow_battery,2030,2,2:2] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,2:2] accumulated_storage_intra_period[flow_battery,2030,2,3:3] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,3:3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,3:3] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,3:3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,3:3] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,3:3] accumulated_storage_intra_period[flow_battery,2030,2,3:3] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,3:3] accumulated_storage_intra_period[flow_battery,2030,2,4:4] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,4:4] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,4:4] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,4:4] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,4:4] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,4:4] accumulated_storage_intra_period[flow_battery,2030,2,4:4] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,4:4] accumulated_storage_intra_period[flow_battery,2030,2,5:5] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,5:5] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,5:5] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,5:5] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,5:5] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,5:5] accumulated_storage_intra_period[flow_battery,2030,2,5:5] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,5:5] accumulated_storage_intra_period[flow_battery,2030,2,6:6] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,6:6] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,6:6] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,6:6] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,6:6] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,6:6] accumulated_storage_intra_period[flow_battery,2030,2,6:6] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,6:6] accumulated_storage_intra_period[flow_battery,2030,2,7:7] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,7:7] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,7:7] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,7:7] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,7:7] accumulated_storage_intra_period[flow_battery,2030,2,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,7:7] accumulated_storage_intra_period[flow_battery,2030,2,8:8] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,8:8] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,8:8] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,8:8] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,8:8] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,8:8] accumulated_storage_intra_period[flow_battery,2030,2,8:8] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,8:8] accumulated_storage_intra_period[flow_battery,2030,2,9:9] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,9:9] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,9:9] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,9:9] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,9:9] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,9:9] accumulated_storage_intra_period[flow_battery,2030,2,9:9] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,9:9] accumulated_storage_intra_period[flow_battery,2030,2,10:10] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,10:10] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,10:10] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,10:10] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,10:10] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,10:10] accumulated_storage_intra_period[flow_battery,2030,2,10:10] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,10:10] accumulated_storage_intra_period[flow_battery,2030,2,11:11] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,11:11] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,11:11] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,11:11] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,11:11] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,11:11] accumulated_storage_intra_period[flow_battery,2030,2,11:11] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,11:11] accumulated_storage_intra_period[flow_battery,2030,2,12:12] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,12:12] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,12:12] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,12:12] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,12:12] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,12:12] accumulated_storage_intra_period[flow_battery,2030,2,12:12] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,12:12] accumulated_storage_intra_period[flow_battery,2030,2,13:13] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,13:13] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,13:13] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,13:13] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,13:13] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,13:13] accumulated_storage_intra_period[flow_battery,2030,2,13:13] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,13:13] accumulated_storage_intra_period[flow_battery,2030,2,14:14] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,14:14] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,14:14] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,14:14] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,14:14] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,14:14] accumulated_storage_intra_period[flow_battery,2030,2,14:14] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,14:14] accumulated_storage_intra_period[flow_battery,2030,2,15:15] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,15:15] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,15:15] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,15:15] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,15:15] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,15:15] accumulated_storage_intra_period[flow_battery,2030,2,15:15] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,15:15] accumulated_storage_intra_period[flow_battery,2030,2,16:16] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,16:16] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,16:16] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,16:16] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,16:16] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,16:16] accumulated_storage_intra_period[flow_battery,2030,2,16:16] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,16:16] accumulated_storage_intra_period[flow_battery,2030,2,17:17] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,17:17] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,17:17] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,17:17] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,17:17] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,17:17] accumulated_storage_intra_period[flow_battery,2030,2,17:17] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,17:17] accumulated_storage_intra_period[flow_battery,2030,2,18:18] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,18:18] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,18:18] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,18:18] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,18:18] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,18:18] accumulated_storage_intra_period[flow_battery,2030,2,18:18] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,18:18] accumulated_storage_intra_period[flow_battery,2030,2,19:19] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,19:19] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,19:19] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,19:19] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,19:19] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,19:19] accumulated_storage_intra_period[flow_battery,2030,2,19:19] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,19:19] accumulated_storage_intra_period[flow_battery,2030,2,20:20] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,20:20] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,20:20] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,20:20] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,20:20] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,20:20] accumulated_storage_intra_period[flow_battery,2030,2,20:20] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,20:20] accumulated_storage_intra_period[flow_battery,2030,2,21:21] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,21:21] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,21:21] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,21:21] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,21:21] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,21:21] accumulated_storage_intra_period[flow_battery,2030,2,21:21] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,21:21] accumulated_storage_intra_period[flow_battery,2030,2,22:22] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,22:22] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,22:22] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,22:22] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,22:22] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,22:22] accumulated_storage_intra_period[flow_battery,2030,2,22:22] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,22:22] accumulated_storage_intra_period[flow_battery,2030,2,23:23] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,23:23] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,23:23] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,23:23] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,23:23] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,23:23] accumulated_storage_intra_period[flow_battery,2030,2,23:23] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,23:23] accumulated_storage_intra_period[flow_battery,2030,2,24:24] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,24:24] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,24:24] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,1:1] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,2:2] -0.7
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,3:3] -0.8
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,4:4] -0.6
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,5:5] -0.6
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,6:6] -0.3
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] balance_storage_inter_period[flow_battery,2030,1,7:7] -0.2
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24] accumulated_storage_intra_period[flow_battery,2030,2,24:24] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,1:1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,1:1] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,1:1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,1:1] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,1:1] accumulated_storage_intra_period[flow_battery,2030,3,1:1] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,1:1] accumulated_storage_intra_period[flow_battery,2030,3,2:2] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,2:2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,2:2] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,2:2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,2:2] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,2:2] accumulated_storage_intra_period[flow_battery,2030,3,2:2] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,2:2] accumulated_storage_intra_period[flow_battery,2030,3,3:3] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,3:3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,3:3] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,3:3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,3:3] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,3:3] accumulated_storage_intra_period[flow_battery,2030,3,3:3] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,3:3] accumulated_storage_intra_period[flow_battery,2030,3,4:4] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,4:4] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,4:4] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,4:4] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,4:4] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,4:4] accumulated_storage_intra_period[flow_battery,2030,3,4:4] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,4:4] accumulated_storage_intra_period[flow_battery,2030,3,5:5] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,5:5] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,5:5] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,5:5] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,5:5] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,5:5] accumulated_storage_intra_period[flow_battery,2030,3,5:5] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,5:5] accumulated_storage_intra_period[flow_battery,2030,3,6:6] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,6:6] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,6:6] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,6:6] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,6:6] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,6:6] accumulated_storage_intra_period[flow_battery,2030,3,6:6] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,6:6] accumulated_storage_intra_period[flow_battery,2030,3,7:7] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,7:7] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,7:7] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,7:7] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,7:7] accumulated_storage_intra_period[flow_battery,2030,3,7:7] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,7:7] accumulated_storage_intra_period[flow_battery,2030,3,8:8] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,8:8] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,8:8] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,8:8] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,8:8] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,8:8] accumulated_storage_intra_period[flow_battery,2030,3,8:8] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,8:8] accumulated_storage_intra_period[flow_battery,2030,3,9:9] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,9:9] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,9:9] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,9:9] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,9:9] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,9:9] accumulated_storage_intra_period[flow_battery,2030,3,9:9] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,9:9] accumulated_storage_intra_period[flow_battery,2030,3,10:10] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,10:10] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,10:10] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,10:10] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,10:10] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,10:10] accumulated_storage_intra_period[flow_battery,2030,3,10:10] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,10:10] accumulated_storage_intra_period[flow_battery,2030,3,11:11] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,11:11] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,11:11] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,11:11] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,11:11] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,11:11] accumulated_storage_intra_period[flow_battery,2030,3,11:11] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,11:11] accumulated_storage_intra_period[flow_battery,2030,3,12:12] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,12:12] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,12:12] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,12:12] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,12:12] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,12:12] accumulated_storage_intra_period[flow_battery,2030,3,12:12] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,12:12] accumulated_storage_intra_period[flow_battery,2030,3,13:13] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,13:13] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,13:13] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,13:13] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,13:13] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,13:13] accumulated_storage_intra_period[flow_battery,2030,3,13:13] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,13:13] accumulated_storage_intra_period[flow_battery,2030,3,14:14] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,14:14] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,14:14] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,14:14] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,14:14] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,14:14] accumulated_storage_intra_period[flow_battery,2030,3,14:14] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,14:14] accumulated_storage_intra_period[flow_battery,2030,3,15:15] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,15:15] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,15:15] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,15:15] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,15:15] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,15:15] accumulated_storage_intra_period[flow_battery,2030,3,15:15] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,15:15] accumulated_storage_intra_period[flow_battery,2030,3,16:16] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,16:16] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,16:16] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,16:16] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,16:16] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,16:16] accumulated_storage_intra_period[flow_battery,2030,3,16:16] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,16:16] accumulated_storage_intra_period[flow_battery,2030,3,17:17] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,17:17] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,17:17] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,17:17] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,17:17] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,17:17] accumulated_storage_intra_period[flow_battery,2030,3,17:17] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,17:17] accumulated_storage_intra_period[flow_battery,2030,3,18:18] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,18:18] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,18:18] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,18:18] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,18:18] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,18:18] accumulated_storage_intra_period[flow_battery,2030,3,18:18] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,18:18] accumulated_storage_intra_period[flow_battery,2030,3,19:19] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,19:19] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,19:19] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,19:19] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,19:19] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,19:19] accumulated_storage_intra_period[flow_battery,2030,3,19:19] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,19:19] accumulated_storage_intra_period[flow_battery,2030,3,20:20] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,20:20] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,20:20] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,20:20] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,20:20] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,20:20] accumulated_storage_intra_period[flow_battery,2030,3,20:20] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,20:20] accumulated_storage_intra_period[flow_battery,2030,3,21:21] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,21:21] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,21:21] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,21:21] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,21:21] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,21:21] accumulated_storage_intra_period[flow_battery,2030,3,21:21] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,21:21] accumulated_storage_intra_period[flow_battery,2030,3,22:22] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,22:22] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,22:22] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,22:22] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,22:22] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,22:22] accumulated_storage_intra_period[flow_battery,2030,3,22:22] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,22:22] accumulated_storage_intra_period[flow_battery,2030,3,23:23] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,23:23] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,23:23] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,23:23] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,23:23] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,23:23] accumulated_storage_intra_period[flow_battery,2030,3,23:23] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,23:23] accumulated_storage_intra_period[flow_battery,2030,3,24:24] -0.998
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,24:24] 1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,24:24] -1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] balance_storage_inter_period[flow_battery,2030,1,2:2] -0.1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] balance_storage_inter_period[flow_battery,2030,1,3:3] -0.2
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] balance_storage_inter_period[flow_battery,2030,1,4:4] -0.1
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] balance_storage_inter_period[flow_battery,2030,1,5:5] -0.3
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] balance_storage_inter_period[flow_battery,2030,1,6:6] -0.6
+    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24] accumulated_storage_intra_period[flow_battery,2030,3,24:24] 1
     accumulated_storage_level_intra_rep_period[phs,2030,1,1:1] accumulated_storage_intra_period[phs,2030,1,1:1] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,1:1] accumulated_storage_intra_period[phs,2030,1,2:2] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,1:1] accumulated_storage_intra_period[phs,2030,1,2:2] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,2:2] accumulated_storage_intra_period[phs,2030,1,2:2] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,2:2] accumulated_storage_intra_period[phs,2030,1,3:3] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,2:2] accumulated_storage_intra_period[phs,2030,1,3:3] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,3:3] accumulated_storage_intra_period[phs,2030,1,3:3] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,3:3] accumulated_storage_intra_period[phs,2030,1,4:4] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,3:3] accumulated_storage_intra_period[phs,2030,1,4:4] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,4:4] accumulated_storage_intra_period[phs,2030,1,4:4] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,4:4] accumulated_storage_intra_period[phs,2030,1,5:5] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,4:4] accumulated_storage_intra_period[phs,2030,1,5:5] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,5:5] accumulated_storage_intra_period[phs,2030,1,5:5] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,5:5] accumulated_storage_intra_period[phs,2030,1,6:6] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,5:5] accumulated_storage_intra_period[phs,2030,1,6:6] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,6:6] accumulated_storage_intra_period[phs,2030,1,6:6] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,6:6] accumulated_storage_intra_period[phs,2030,1,7:7] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,6:6] accumulated_storage_intra_period[phs,2030,1,7:7] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,7:7] accumulated_storage_intra_period[phs,2030,1,7:7] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,7:7] accumulated_storage_intra_period[phs,2030,1,8:8] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,7:7] accumulated_storage_intra_period[phs,2030,1,8:8] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,8:8] accumulated_storage_intra_period[phs,2030,1,8:8] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,8:8] accumulated_storage_intra_period[phs,2030,1,9:9] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,8:8] accumulated_storage_intra_period[phs,2030,1,9:9] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,9:9] accumulated_storage_intra_period[phs,2030,1,9:9] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,9:9] accumulated_storage_intra_period[phs,2030,1,10:10] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,9:9] accumulated_storage_intra_period[phs,2030,1,10:10] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,10:10] accumulated_storage_intra_period[phs,2030,1,10:10] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,10:10] accumulated_storage_intra_period[phs,2030,1,11:11] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,10:10] accumulated_storage_intra_period[phs,2030,1,11:11] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,11:11] accumulated_storage_intra_period[phs,2030,1,11:11] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,11:11] accumulated_storage_intra_period[phs,2030,1,12:12] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,11:11] accumulated_storage_intra_period[phs,2030,1,12:12] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,12:12] accumulated_storage_intra_period[phs,2030,1,12:12] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,12:12] accumulated_storage_intra_period[phs,2030,1,13:13] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,12:12] accumulated_storage_intra_period[phs,2030,1,13:13] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,13:13] accumulated_storage_intra_period[phs,2030,1,13:13] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,13:13] accumulated_storage_intra_period[phs,2030,1,14:14] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,13:13] accumulated_storage_intra_period[phs,2030,1,14:14] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,14:14] accumulated_storage_intra_period[phs,2030,1,14:14] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,14:14] accumulated_storage_intra_period[phs,2030,1,15:15] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,14:14] accumulated_storage_intra_period[phs,2030,1,15:15] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,15:15] accumulated_storage_intra_period[phs,2030,1,15:15] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,15:15] accumulated_storage_intra_period[phs,2030,1,16:16] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,15:15] accumulated_storage_intra_period[phs,2030,1,16:16] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,16:16] accumulated_storage_intra_period[phs,2030,1,16:16] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,16:16] accumulated_storage_intra_period[phs,2030,1,17:17] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,16:16] accumulated_storage_intra_period[phs,2030,1,17:17] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,17:17] accumulated_storage_intra_period[phs,2030,1,17:17] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,17:17] accumulated_storage_intra_period[phs,2030,1,18:18] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,17:17] accumulated_storage_intra_period[phs,2030,1,18:18] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,18:18] accumulated_storage_intra_period[phs,2030,1,18:18] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,18:18] accumulated_storage_intra_period[phs,2030,1,19:19] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,18:18] accumulated_storage_intra_period[phs,2030,1,19:19] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,19:19] accumulated_storage_intra_period[phs,2030,1,19:19] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,19:19] accumulated_storage_intra_period[phs,2030,1,20:20] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,19:19] accumulated_storage_intra_period[phs,2030,1,20:20] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,20:20] accumulated_storage_intra_period[phs,2030,1,20:20] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,20:20] accumulated_storage_intra_period[phs,2030,1,21:21] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,20:20] accumulated_storage_intra_period[phs,2030,1,21:21] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,21:21] accumulated_storage_intra_period[phs,2030,1,21:21] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,21:21] accumulated_storage_intra_period[phs,2030,1,22:22] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,21:21] accumulated_storage_intra_period[phs,2030,1,22:22] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,22:22] accumulated_storage_intra_period[phs,2030,1,22:22] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,22:22] accumulated_storage_intra_period[phs,2030,1,23:23] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,22:22] accumulated_storage_intra_period[phs,2030,1,23:23] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,23:23] accumulated_storage_intra_period[phs,2030,1,23:23] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,1,23:23] accumulated_storage_intra_period[phs,2030,1,24:24] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,1,23:23] accumulated_storage_intra_period[phs,2030,1,24:24] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,1,24:24] balance_storage_inter_period[phs,2030,1,2:2] -0.2
     accumulated_storage_level_intra_rep_period[phs,2030,1,24:24] balance_storage_inter_period[phs,2030,1,4:4] -0.3
     accumulated_storage_level_intra_rep_period[phs,2030,1,24:24] balance_storage_inter_period[phs,2030,1,5:5] -0.1
@@ -5593,51 +6877,51 @@ COLUMNS
     accumulated_storage_level_intra_rep_period[phs,2030,1,24:24] balance_storage_inter_period[phs,2030,1,7:7] -0.8
     accumulated_storage_level_intra_rep_period[phs,2030,1,24:24] accumulated_storage_intra_period[phs,2030,1,24:24] 1
     accumulated_storage_level_intra_rep_period[phs,2030,2,1:1] accumulated_storage_intra_period[phs,2030,2,1:1] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,1:1] accumulated_storage_intra_period[phs,2030,2,2:2] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,1:1] accumulated_storage_intra_period[phs,2030,2,2:2] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,2:2] accumulated_storage_intra_period[phs,2030,2,2:2] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,2:2] accumulated_storage_intra_period[phs,2030,2,3:3] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,2:2] accumulated_storage_intra_period[phs,2030,2,3:3] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,3:3] accumulated_storage_intra_period[phs,2030,2,3:3] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,3:3] accumulated_storage_intra_period[phs,2030,2,4:4] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,3:3] accumulated_storage_intra_period[phs,2030,2,4:4] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,4:4] accumulated_storage_intra_period[phs,2030,2,4:4] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,4:4] accumulated_storage_intra_period[phs,2030,2,5:5] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,4:4] accumulated_storage_intra_period[phs,2030,2,5:5] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,5:5] accumulated_storage_intra_period[phs,2030,2,5:5] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,5:5] accumulated_storage_intra_period[phs,2030,2,6:6] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,5:5] accumulated_storage_intra_period[phs,2030,2,6:6] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,6:6] accumulated_storage_intra_period[phs,2030,2,6:6] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,6:6] accumulated_storage_intra_period[phs,2030,2,7:7] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,6:6] accumulated_storage_intra_period[phs,2030,2,7:7] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,7:7] accumulated_storage_intra_period[phs,2030,2,7:7] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,7:7] accumulated_storage_intra_period[phs,2030,2,8:8] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,7:7] accumulated_storage_intra_period[phs,2030,2,8:8] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,8:8] accumulated_storage_intra_period[phs,2030,2,8:8] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,8:8] accumulated_storage_intra_period[phs,2030,2,9:9] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,8:8] accumulated_storage_intra_period[phs,2030,2,9:9] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,9:9] accumulated_storage_intra_period[phs,2030,2,9:9] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,9:9] accumulated_storage_intra_period[phs,2030,2,10:10] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,9:9] accumulated_storage_intra_period[phs,2030,2,10:10] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,10:10] accumulated_storage_intra_period[phs,2030,2,10:10] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,10:10] accumulated_storage_intra_period[phs,2030,2,11:11] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,10:10] accumulated_storage_intra_period[phs,2030,2,11:11] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,11:11] accumulated_storage_intra_period[phs,2030,2,11:11] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,11:11] accumulated_storage_intra_period[phs,2030,2,12:12] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,11:11] accumulated_storage_intra_period[phs,2030,2,12:12] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,12:12] accumulated_storage_intra_period[phs,2030,2,12:12] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,12:12] accumulated_storage_intra_period[phs,2030,2,13:13] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,12:12] accumulated_storage_intra_period[phs,2030,2,13:13] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,13:13] accumulated_storage_intra_period[phs,2030,2,13:13] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,13:13] accumulated_storage_intra_period[phs,2030,2,14:14] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,13:13] accumulated_storage_intra_period[phs,2030,2,14:14] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,14:14] accumulated_storage_intra_period[phs,2030,2,14:14] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,14:14] accumulated_storage_intra_period[phs,2030,2,15:15] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,14:14] accumulated_storage_intra_period[phs,2030,2,15:15] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,15:15] accumulated_storage_intra_period[phs,2030,2,15:15] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,15:15] accumulated_storage_intra_period[phs,2030,2,16:16] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,15:15] accumulated_storage_intra_period[phs,2030,2,16:16] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,16:16] accumulated_storage_intra_period[phs,2030,2,16:16] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,16:16] accumulated_storage_intra_period[phs,2030,2,17:17] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,16:16] accumulated_storage_intra_period[phs,2030,2,17:17] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,17:17] accumulated_storage_intra_period[phs,2030,2,17:17] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,17:17] accumulated_storage_intra_period[phs,2030,2,18:18] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,17:17] accumulated_storage_intra_period[phs,2030,2,18:18] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,18:18] accumulated_storage_intra_period[phs,2030,2,18:18] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,18:18] accumulated_storage_intra_period[phs,2030,2,19:19] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,18:18] accumulated_storage_intra_period[phs,2030,2,19:19] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,19:19] accumulated_storage_intra_period[phs,2030,2,19:19] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,19:19] accumulated_storage_intra_period[phs,2030,2,20:20] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,19:19] accumulated_storage_intra_period[phs,2030,2,20:20] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,20:20] accumulated_storage_intra_period[phs,2030,2,20:20] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,20:20] accumulated_storage_intra_period[phs,2030,2,21:21] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,20:20] accumulated_storage_intra_period[phs,2030,2,21:21] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,21:21] accumulated_storage_intra_period[phs,2030,2,21:21] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,21:21] accumulated_storage_intra_period[phs,2030,2,22:22] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,21:21] accumulated_storage_intra_period[phs,2030,2,22:22] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,22:22] accumulated_storage_intra_period[phs,2030,2,22:22] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,22:22] accumulated_storage_intra_period[phs,2030,2,23:23] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,22:22] accumulated_storage_intra_period[phs,2030,2,23:23] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,23:23] accumulated_storage_intra_period[phs,2030,2,23:23] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,2,23:23] accumulated_storage_intra_period[phs,2030,2,24:24] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,2,23:23] accumulated_storage_intra_period[phs,2030,2,24:24] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,2,24:24] balance_storage_inter_period[phs,2030,1,1:1] -1
     accumulated_storage_level_intra_rep_period[phs,2030,2,24:24] balance_storage_inter_period[phs,2030,1,2:2] -0.7
     accumulated_storage_level_intra_rep_period[phs,2030,2,24:24] balance_storage_inter_period[phs,2030,1,3:3] -0.8
@@ -5647,57 +6931,235 @@ COLUMNS
     accumulated_storage_level_intra_rep_period[phs,2030,2,24:24] balance_storage_inter_period[phs,2030,1,7:7] -0.2
     accumulated_storage_level_intra_rep_period[phs,2030,2,24:24] accumulated_storage_intra_period[phs,2030,2,24:24] 1
     accumulated_storage_level_intra_rep_period[phs,2030,3,1:1] accumulated_storage_intra_period[phs,2030,3,1:1] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,1:1] accumulated_storage_intra_period[phs,2030,3,2:2] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,1:1] accumulated_storage_intra_period[phs,2030,3,2:2] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,2:2] accumulated_storage_intra_period[phs,2030,3,2:2] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,2:2] accumulated_storage_intra_period[phs,2030,3,3:3] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,2:2] accumulated_storage_intra_period[phs,2030,3,3:3] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,3:3] accumulated_storage_intra_period[phs,2030,3,3:3] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,3:3] accumulated_storage_intra_period[phs,2030,3,4:4] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,3:3] accumulated_storage_intra_period[phs,2030,3,4:4] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,4:4] accumulated_storage_intra_period[phs,2030,3,4:4] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,4:4] accumulated_storage_intra_period[phs,2030,3,5:5] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,4:4] accumulated_storage_intra_period[phs,2030,3,5:5] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,5:5] accumulated_storage_intra_period[phs,2030,3,5:5] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,5:5] accumulated_storage_intra_period[phs,2030,3,6:6] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,5:5] accumulated_storage_intra_period[phs,2030,3,6:6] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,6:6] accumulated_storage_intra_period[phs,2030,3,6:6] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,6:6] accumulated_storage_intra_period[phs,2030,3,7:7] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,6:6] accumulated_storage_intra_period[phs,2030,3,7:7] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,7:7] accumulated_storage_intra_period[phs,2030,3,7:7] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,7:7] accumulated_storage_intra_period[phs,2030,3,8:8] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,7:7] accumulated_storage_intra_period[phs,2030,3,8:8] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,8:8] accumulated_storage_intra_period[phs,2030,3,8:8] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,8:8] accumulated_storage_intra_period[phs,2030,3,9:9] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,8:8] accumulated_storage_intra_period[phs,2030,3,9:9] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,9:9] accumulated_storage_intra_period[phs,2030,3,9:9] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,9:9] accumulated_storage_intra_period[phs,2030,3,10:10] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,9:9] accumulated_storage_intra_period[phs,2030,3,10:10] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,10:10] accumulated_storage_intra_period[phs,2030,3,10:10] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,10:10] accumulated_storage_intra_period[phs,2030,3,11:11] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,10:10] accumulated_storage_intra_period[phs,2030,3,11:11] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,11:11] accumulated_storage_intra_period[phs,2030,3,11:11] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,11:11] accumulated_storage_intra_period[phs,2030,3,12:12] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,11:11] accumulated_storage_intra_period[phs,2030,3,12:12] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,12:12] accumulated_storage_intra_period[phs,2030,3,12:12] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,12:12] accumulated_storage_intra_period[phs,2030,3,13:13] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,12:12] accumulated_storage_intra_period[phs,2030,3,13:13] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,13:13] accumulated_storage_intra_period[phs,2030,3,13:13] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,13:13] accumulated_storage_intra_period[phs,2030,3,14:14] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,13:13] accumulated_storage_intra_period[phs,2030,3,14:14] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,14:14] accumulated_storage_intra_period[phs,2030,3,14:14] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,14:14] accumulated_storage_intra_period[phs,2030,3,15:15] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,14:14] accumulated_storage_intra_period[phs,2030,3,15:15] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,15:15] accumulated_storage_intra_period[phs,2030,3,15:15] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,15:15] accumulated_storage_intra_period[phs,2030,3,16:16] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,15:15] accumulated_storage_intra_period[phs,2030,3,16:16] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,16:16] accumulated_storage_intra_period[phs,2030,3,16:16] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,16:16] accumulated_storage_intra_period[phs,2030,3,17:17] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,16:16] accumulated_storage_intra_period[phs,2030,3,17:17] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,17:17] accumulated_storage_intra_period[phs,2030,3,17:17] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,17:17] accumulated_storage_intra_period[phs,2030,3,18:18] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,17:17] accumulated_storage_intra_period[phs,2030,3,18:18] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,18:18] accumulated_storage_intra_period[phs,2030,3,18:18] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,18:18] accumulated_storage_intra_period[phs,2030,3,19:19] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,18:18] accumulated_storage_intra_period[phs,2030,3,19:19] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,19:19] accumulated_storage_intra_period[phs,2030,3,19:19] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,19:19] accumulated_storage_intra_period[phs,2030,3,20:20] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,19:19] accumulated_storage_intra_period[phs,2030,3,20:20] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,20:20] accumulated_storage_intra_period[phs,2030,3,20:20] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,20:20] accumulated_storage_intra_period[phs,2030,3,21:21] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,20:20] accumulated_storage_intra_period[phs,2030,3,21:21] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,21:21] accumulated_storage_intra_period[phs,2030,3,21:21] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,21:21] accumulated_storage_intra_period[phs,2030,3,22:22] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,21:21] accumulated_storage_intra_period[phs,2030,3,22:22] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,22:22] accumulated_storage_intra_period[phs,2030,3,22:22] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,22:22] accumulated_storage_intra_period[phs,2030,3,23:23] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,22:22] accumulated_storage_intra_period[phs,2030,3,23:23] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,23:23] accumulated_storage_intra_period[phs,2030,3,23:23] 1
-    accumulated_storage_level_intra_rep_period[phs,2030,3,23:23] accumulated_storage_intra_period[phs,2030,3,24:24] -0.99
+    accumulated_storage_level_intra_rep_period[phs,2030,3,23:23] accumulated_storage_intra_period[phs,2030,3,24:24] -0.995
     accumulated_storage_level_intra_rep_period[phs,2030,3,24:24] balance_storage_inter_period[phs,2030,1,2:2] -0.1
     accumulated_storage_level_intra_rep_period[phs,2030,3,24:24] balance_storage_inter_period[phs,2030,1,3:3] -0.2
     accumulated_storage_level_intra_rep_period[phs,2030,3,24:24] balance_storage_inter_period[phs,2030,1,4:4] -0.1
     accumulated_storage_level_intra_rep_period[phs,2030,3,24:24] balance_storage_inter_period[phs,2030,1,5:5] -0.3
     accumulated_storage_level_intra_rep_period[phs,2030,3,24:24] balance_storage_inter_period[phs,2030,1,6:6] -0.6
     accumulated_storage_level_intra_rep_period[phs,2030,3,24:24] accumulated_storage_intra_period[phs,2030,3,24:24] 1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,1:1] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,2:2] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,3:3] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,4:4] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,5:5] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,6:6] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,7:7] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,8:8] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,9:9] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,10:10] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,11:11] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,12:12] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,13:13] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,14:14] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,15:15] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,16:16] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,17:17] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,18:18] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,19:19] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,20:20] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,21:21] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,22:22] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,23:23] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,24:24] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 0.2
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 0.3
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 0.1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 0.1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] max_storage_level_inter_period_limit[flow_battery,2030,1,7:7] 0.8
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,1:1] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,2:2] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,3:3] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,4:4] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,5:5] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,6:6] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,7:7] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,8:8] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,9:9] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,10:10] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,11:11] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,12:12] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,13:13] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,14:14] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,15:15] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,16:16] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,17:17] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,18:18] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,19:19] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,20:20] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,21:21] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,22:22] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,23:23] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,24:24] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,1:1] 1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 0.7
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,3:3] 0.8
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 0.6
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 0.6
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 0.3
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] max_storage_level_inter_period_limit[flow_battery,2030,1,7:7] 0.2
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,1:1] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,2:2] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,3:3] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,4:4] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,5:5] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,6:6] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,7:7] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,8:8] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,9:9] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,10:10] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,11:11] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,12:12] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,13:13] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,14:14] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,15:15] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,16:16] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,17:17] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,18:18] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,19:19] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,20:20] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,21:21] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,22:22] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,23:23] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,24:24] -1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 0.1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_inter_period_limit[flow_battery,2030,1,3:3] 0.2
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 0.1
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 0.3
+    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] max_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 0.6
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,1:1] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,2:2] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,3:3] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,4:4] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,5:5] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,6:6] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,7:7] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,8:8] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,9:9] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,10:10] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,11:11] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,12:12] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,13:13] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,14:14] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,15:15] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,16:16] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,17:17] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,18:18] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,19:19] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,20:20] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,21:21] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,22:22] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,23:23] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,24:24] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] min_storage_level_inter_period_limit[flow_battery,2030,1,2:2] -0.2
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] min_storage_level_inter_period_limit[flow_battery,2030,1,4:4] -0.3
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] min_storage_level_inter_period_limit[flow_battery,2030,1,5:5] -0.1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] min_storage_level_inter_period_limit[flow_battery,2030,1,6:6] -0.1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] min_storage_level_inter_period_limit[flow_battery,2030,1,7:7] -0.8
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,1:1] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,2:2] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,3:3] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,4:4] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,5:5] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,6:6] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,7:7] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,8:8] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,9:9] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,10:10] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,11:11] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,12:12] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,13:13] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,14:14] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,15:15] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,16:16] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,17:17] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,18:18] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,19:19] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,20:20] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,21:21] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,22:22] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,23:23] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,24:24] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,1:1] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,2:2] -0.7
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,3:3] -0.8
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,4:4] -0.6
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,5:5] -0.6
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,6:6] -0.3
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] min_storage_level_inter_period_limit[flow_battery,2030,1,7:7] -0.2
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,1:1] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,2:2] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,3:3] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,4:4] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,5:5] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,6:6] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,7:7] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,8:8] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,9:9] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,10:10] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,11:11] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,12:12] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,13:13] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,14:14] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,15:15] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,16:16] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,17:17] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,18:18] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,19:19] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,20:20] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,21:21] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,22:22] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,23:23] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,24:24] -1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] min_storage_level_inter_period_limit[flow_battery,2030,1,2:2] -0.1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] min_storage_level_inter_period_limit[flow_battery,2030,1,3:3] -0.2
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] min_storage_level_inter_period_limit[flow_battery,2030,1,4:4] -0.1
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] min_storage_level_inter_period_limit[flow_battery,2030,1,5:5] -0.3
+    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] min_storage_level_inter_period_limit[flow_battery,2030,1,6:6] -0.6
 RHS
     rhs       max_output_flows_limit_aggregated_vintage_method[battery,2030,1,1:1] 10
     rhs       max_output_flows_limit_aggregated_vintage_method[battery,2030,1,2:2] 10
@@ -5987,6 +7449,78 @@ RHS
     rhs       max_output_flows_limit_aggregated_vintage_method[ens,2030,3,22:22] 1240
     rhs       max_output_flows_limit_aggregated_vintage_method[ens,2030,3,23:23] 1240
     rhs       max_output_flows_limit_aggregated_vintage_method[ens,2030,3,24:24] 1240
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23] 50
+    rhs       max_output_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24] 50
     rhs       max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,1:1] 100
     rhs       max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,2:2] 100
     rhs       max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,3:3] 100
@@ -6419,6 +7953,78 @@ RHS
     rhs       max_input_flows_limit_aggregated_vintage_method[caes,2030,3,22:22] 10
     rhs       max_input_flows_limit_aggregated_vintage_method[caes,2030,3,23:23] 10
     rhs       max_input_flows_limit_aggregated_vintage_method[caes,2030,3,24:24] 10
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,1:1] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,2:2] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,3:3] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,4:4] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,5:5] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,6:6] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,7:7] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,8:8] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,9:9] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,10:10] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,11:11] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,12:12] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,13:13] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,14:14] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,15:15] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,16:16] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,17:17] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,18:18] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,19:19] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,20:20] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,21:21] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,22:22] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,23:23] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,1,24:24] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,1:1] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,2:2] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,3:3] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,4:4] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,5:5] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,6:6] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,7:7] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,8:8] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,9:9] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,10:10] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,11:11] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,12:12] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,13:13] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,14:14] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,15:15] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,16:16] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,17:17] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,18:18] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,19:19] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,20:20] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,21:21] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,22:22] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,23:23] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,2,24:24] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,1:1] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,2:2] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,3:3] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,4:4] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,5:5] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,6:6] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,7:7] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,8:8] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,9:9] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,10:10] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,11:11] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,12:12] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,13:13] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,14:14] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,15:15] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,16:16] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,17:17] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,18:18] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,19:19] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,20:20] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,21:21] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,22:22] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,23:23] 50
+    rhs       max_input_flows_limit_aggregated_vintage_method[flow_battery,2030,3,24:24] 50
     rhs       max_input_flows_limit_aggregated_vintage_method[phs,2030,1,1:1] 100
     rhs       max_input_flows_limit_aggregated_vintage_method[phs,2030,1,2:2] 100
     rhs       max_input_flows_limit_aggregated_vintage_method[phs,2030,1,3:3] 100
@@ -6635,6 +8241,157 @@ RHS
     rhs       max_storage_level_intra_rep_period_limit[caes,2030,3,22:22] 20
     rhs       max_storage_level_intra_rep_period_limit[caes,2030,3,23:23] 20
     rhs       max_storage_level_intra_rep_period_limit[caes,2030,3,24:24] 20
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,1:1] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,2:2] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,3:3] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,4:4] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,5:5] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,6:6] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,7:7] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,8:8] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,9:9] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,10:10] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,11:11] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,12:12] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,13:13] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,14:14] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,15:15] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,16:16] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,17:17] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,18:18] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,19:19] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,20:20] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,21:21] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,22:22] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,23:23] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,1,24:24] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,1:1] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,2:2] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,3:3] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,4:4] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,5:5] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,6:6] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,7:7] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,8:8] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,9:9] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,10:10] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,11:11] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,12:12] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,13:13] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,14:14] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,15:15] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,16:16] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,17:17] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,18:18] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,19:19] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,20:20] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,21:21] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,22:22] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,23:23] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,2,24:24] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,1:1] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,2:2] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,3:3] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,4:4] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,5:5] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,6:6] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,7:7] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,8:8] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,9:9] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,10:10] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,11:11] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,12:12] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,13:13] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,14:14] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,15:15] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,16:16] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,17:17] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,18:18] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,19:19] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,20:20] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,21:21] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,22:22] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,23:23] 0
+    rhs       max_storage_level_increase_intra_rep_period_limit[flow_battery,2030,3,24:24] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,1:1] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,2:2] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,3:3] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,4:4] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,5:5] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,6:6] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,7:7] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,8:8] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,9:9] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,10:10] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,11:11] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,12:12] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,13:13] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,14:14] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,15:15] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,16:16] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,17:17] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,18:18] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,19:19] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,20:20] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,21:21] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,22:22] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,23:23] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,1,24:24] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,1:1] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,2:2] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,3:3] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,4:4] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,5:5] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,6:6] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,7:7] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,8:8] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,9:9] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,10:10] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,11:11] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,12:12] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,13:13] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,14:14] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,15:15] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,16:16] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,17:17] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,18:18] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,19:19] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,20:20] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,21:21] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,22:22] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,23:23] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,2,24:24] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,1:1] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,2:2] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,3:3] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,4:4] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,5:5] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,6:6] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,7:7] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,8:8] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,9:9] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,10:10] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,11:11] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,12:12] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,13:13] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,14:14] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,15:15] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,16:16] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,17:17] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,18:18] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,19:19] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,20:20] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,21:21] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,22:22] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,23:23] 0
+    rhs       max_storage_level_decrease_intra_rep_period_limit[flow_battery,2030,3,24:24] 0
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,1:1] 500
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 500
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,3:3] 500
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 500
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 500
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 500
+    rhs       max_storage_level_inter_period_limit[flow_battery,2030,1,7:7] 500
     rhs       max_storage_level_inter_period_limit[phs,2030,1,1:1] 4800
     rhs       max_storage_level_inter_period_limit[phs,2030,1,2:2] 4800
     rhs       max_storage_level_inter_period_limit[phs,2030,1,3:3] 4800
@@ -6642,6 +8399,13 @@ RHS
     rhs       max_storage_level_inter_period_limit[phs,2030,1,5:5] 4800
     rhs       max_storage_level_inter_period_limit[phs,2030,1,6:6] 4800
     rhs       max_storage_level_inter_period_limit[phs,2030,1,7:7] 4800
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,1:1] 0
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,2:2] 0
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,3:3] 0
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,4:4] 0
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,5:5] 0
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,6:6] 0
+    rhs       min_storage_level_inter_period_limit[flow_battery,2030,1,7:7] 0
     rhs       cycling_condition_inter_period[phs,2030,1] 2400
     rhs       consumer_balance[atmosphere,2030,1,1:1] 10
     rhs       consumer_balance[atmosphere,2030,1,2:2] 10
@@ -6931,13 +8695,92 @@ RHS
     rhs       balance_storage_rep_period[caes,2030,3,22:22] 0
     rhs       balance_storage_rep_period[caes,2030,3,23:23] 0
     rhs       balance_storage_rep_period[caes,2030,3,24:24] 0
-    rhs       balance_storage_inter_period[phs,2030,1,1:1] 1885.627537937325
+    rhs       balance_storage_inter_period[flow_battery,2030,1,1:1] 0
+    rhs       balance_storage_inter_period[flow_battery,2030,1,2:2] 0
+    rhs       balance_storage_inter_period[flow_battery,2030,1,3:3] 0
+    rhs       balance_storage_inter_period[flow_battery,2030,1,4:4] 0
+    rhs       balance_storage_inter_period[flow_battery,2030,1,5:5] 0
+    rhs       balance_storage_inter_period[flow_battery,2030,1,6:6] 0
+    rhs       balance_storage_inter_period[flow_battery,2030,1,7:7] 0
+    rhs       balance_storage_inter_period[phs,2030,1,1:1] 2127.968425203139
     rhs       balance_storage_inter_period[phs,2030,1,2:2] 0
     rhs       balance_storage_inter_period[phs,2030,1,3:3] 0
     rhs       balance_storage_inter_period[phs,2030,1,4:4] 0
     rhs       balance_storage_inter_period[phs,2030,1,5:5] 0
     rhs       balance_storage_inter_period[phs,2030,1,6:6] 0
     rhs       balance_storage_inter_period[phs,2030,1,7:7] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,1:1] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,2:2] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,3:3] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,4:4] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,5:5] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,6:6] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,7:7] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,8:8] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,9:9] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,10:10] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,11:11] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,12:12] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,13:13] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,14:14] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,15:15] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,16:16] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,17:17] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,18:18] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,19:19] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,20:20] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,21:21] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,22:22] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,23:23] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,1,24:24] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,1:1] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,2:2] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,3:3] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,4:4] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,5:5] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,6:6] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,7:7] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,8:8] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,9:9] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,10:10] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,11:11] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,12:12] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,13:13] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,14:14] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,15:15] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,16:16] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,17:17] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,18:18] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,19:19] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,20:20] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,21:21] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,22:22] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,23:23] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,2,24:24] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,1:1] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,2:2] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,3:3] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,4:4] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,5:5] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,6:6] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,7:7] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,8:8] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,9:9] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,10:10] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,11:11] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,12:12] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,13:13] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,14:14] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,15:15] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,16:16] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,17:17] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,18:18] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,19:19] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,20:20] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,21:21] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,22:22] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,23:23] 0
+    rhs       accumulated_storage_intra_period[flow_battery,2030,3,24:24] 0
     rhs       accumulated_storage_intra_period[phs,2030,1,1:1] 0
     rhs       accumulated_storage_intra_period[phs,2030,1,2:2] 0
     rhs       accumulated_storage_intra_period[phs,2030,1,3:3] 0
@@ -7708,54 +9551,150 @@ BOUNDS
  PL bounds    flow[(caes,atmosphere),2030,1,23:23]
  LO bounds    flow[(caes,atmosphere),2030,1,24:24] 0
  PL bounds    flow[(caes,atmosphere),2030,1,24:24]
- LO bounds    flow[(ccgt,demand),2030,2,1:1] 0
- PL bounds    flow[(ccgt,demand),2030,2,1:1]
- LO bounds    flow[(ccgt,demand),2030,2,2:2] 0
- PL bounds    flow[(ccgt,demand),2030,2,2:2]
- LO bounds    flow[(ccgt,demand),2030,2,3:3] 0
- PL bounds    flow[(ccgt,demand),2030,2,3:3]
- LO bounds    flow[(ccgt,demand),2030,2,4:4] 0
- PL bounds    flow[(ccgt,demand),2030,2,4:4]
- LO bounds    flow[(ccgt,demand),2030,2,5:5] 0
- PL bounds    flow[(ccgt,demand),2030,2,5:5]
- LO bounds    flow[(ccgt,demand),2030,2,6:6] 0
- PL bounds    flow[(ccgt,demand),2030,2,6:6]
- LO bounds    flow[(ccgt,demand),2030,2,7:7] 0
- PL bounds    flow[(ccgt,demand),2030,2,7:7]
- LO bounds    flow[(ccgt,demand),2030,2,8:8] 0
- PL bounds    flow[(ccgt,demand),2030,2,8:8]
- LO bounds    flow[(ccgt,demand),2030,2,9:9] 0
- PL bounds    flow[(ccgt,demand),2030,2,9:9]
- LO bounds    flow[(ccgt,demand),2030,2,10:10] 0
- PL bounds    flow[(ccgt,demand),2030,2,10:10]
- LO bounds    flow[(ccgt,demand),2030,2,11:11] 0
- PL bounds    flow[(ccgt,demand),2030,2,11:11]
- LO bounds    flow[(ccgt,demand),2030,2,12:12] 0
- PL bounds    flow[(ccgt,demand),2030,2,12:12]
- LO bounds    flow[(ccgt,demand),2030,2,13:13] 0
- PL bounds    flow[(ccgt,demand),2030,2,13:13]
- LO bounds    flow[(ccgt,demand),2030,2,14:14] 0
- PL bounds    flow[(ccgt,demand),2030,2,14:14]
- LO bounds    flow[(ccgt,demand),2030,2,15:15] 0
- PL bounds    flow[(ccgt,demand),2030,2,15:15]
- LO bounds    flow[(ccgt,demand),2030,2,16:16] 0
- PL bounds    flow[(ccgt,demand),2030,2,16:16]
- LO bounds    flow[(ccgt,demand),2030,2,17:17] 0
- PL bounds    flow[(ccgt,demand),2030,2,17:17]
- LO bounds    flow[(ccgt,demand),2030,2,18:18] 0
- PL bounds    flow[(ccgt,demand),2030,2,18:18]
- LO bounds    flow[(ccgt,demand),2030,2,19:19] 0
- PL bounds    flow[(ccgt,demand),2030,2,19:19]
- LO bounds    flow[(ccgt,demand),2030,2,20:20] 0
- PL bounds    flow[(ccgt,demand),2030,2,20:20]
- LO bounds    flow[(ccgt,demand),2030,2,21:21] 0
- PL bounds    flow[(ccgt,demand),2030,2,21:21]
- LO bounds    flow[(ccgt,demand),2030,2,22:22] 0
- PL bounds    flow[(ccgt,demand),2030,2,22:22]
- LO bounds    flow[(ccgt,demand),2030,2,23:23] 0
- PL bounds    flow[(ccgt,demand),2030,2,23:23]
- LO bounds    flow[(ccgt,demand),2030,2,24:24] 0
- PL bounds    flow[(ccgt,demand),2030,2,24:24]
+ LO bounds    flow[(demand,flow_battery),2030,1,1:1] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,1:1]
+ LO bounds    flow[(demand,flow_battery),2030,1,2:2] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,2:2]
+ LO bounds    flow[(demand,flow_battery),2030,1,3:3] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,3:3]
+ LO bounds    flow[(demand,flow_battery),2030,1,4:4] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,4:4]
+ LO bounds    flow[(demand,flow_battery),2030,1,5:5] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,5:5]
+ LO bounds    flow[(demand,flow_battery),2030,1,6:6] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,6:6]
+ LO bounds    flow[(demand,flow_battery),2030,1,7:7] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,7:7]
+ LO bounds    flow[(demand,flow_battery),2030,1,8:8] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,8:8]
+ LO bounds    flow[(demand,flow_battery),2030,1,9:9] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,9:9]
+ LO bounds    flow[(demand,flow_battery),2030,1,10:10] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,10:10]
+ LO bounds    flow[(demand,flow_battery),2030,1,11:11] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,11:11]
+ LO bounds    flow[(demand,flow_battery),2030,1,12:12] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,12:12]
+ LO bounds    flow[(demand,flow_battery),2030,1,13:13] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,13:13]
+ LO bounds    flow[(demand,flow_battery),2030,1,14:14] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,14:14]
+ LO bounds    flow[(demand,flow_battery),2030,1,15:15] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,15:15]
+ LO bounds    flow[(demand,flow_battery),2030,1,16:16] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,16:16]
+ LO bounds    flow[(demand,flow_battery),2030,1,17:17] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,17:17]
+ LO bounds    flow[(demand,flow_battery),2030,1,18:18] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,18:18]
+ LO bounds    flow[(demand,flow_battery),2030,1,19:19] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,19:19]
+ LO bounds    flow[(demand,flow_battery),2030,1,20:20] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,20:20]
+ LO bounds    flow[(demand,flow_battery),2030,1,21:21] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,21:21]
+ LO bounds    flow[(demand,flow_battery),2030,1,22:22] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,22:22]
+ LO bounds    flow[(demand,flow_battery),2030,1,23:23] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,23:23]
+ LO bounds    flow[(demand,flow_battery),2030,1,24:24] 0
+ PL bounds    flow[(demand,flow_battery),2030,1,24:24]
+ LO bounds    flow[(flow_battery,demand),2030,1,1:1] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,1:1]
+ LO bounds    flow[(flow_battery,demand),2030,1,2:2] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,2:2]
+ LO bounds    flow[(flow_battery,demand),2030,1,3:3] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,3:3]
+ LO bounds    flow[(flow_battery,demand),2030,1,4:4] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,4:4]
+ LO bounds    flow[(flow_battery,demand),2030,1,5:5] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,5:5]
+ LO bounds    flow[(flow_battery,demand),2030,1,6:6] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,6:6]
+ LO bounds    flow[(flow_battery,demand),2030,1,7:7] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,7:7]
+ LO bounds    flow[(flow_battery,demand),2030,1,8:8] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,8:8]
+ LO bounds    flow[(flow_battery,demand),2030,1,9:9] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,9:9]
+ LO bounds    flow[(flow_battery,demand),2030,1,10:10] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,10:10]
+ LO bounds    flow[(flow_battery,demand),2030,1,11:11] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,11:11]
+ LO bounds    flow[(flow_battery,demand),2030,1,12:12] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,12:12]
+ LO bounds    flow[(flow_battery,demand),2030,1,13:13] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,13:13]
+ LO bounds    flow[(flow_battery,demand),2030,1,14:14] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,14:14]
+ LO bounds    flow[(flow_battery,demand),2030,1,15:15] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,15:15]
+ LO bounds    flow[(flow_battery,demand),2030,1,16:16] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,16:16]
+ LO bounds    flow[(flow_battery,demand),2030,1,17:17] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,17:17]
+ LO bounds    flow[(flow_battery,demand),2030,1,18:18] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,18:18]
+ LO bounds    flow[(flow_battery,demand),2030,1,19:19] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,19:19]
+ LO bounds    flow[(flow_battery,demand),2030,1,20:20] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,20:20]
+ LO bounds    flow[(flow_battery,demand),2030,1,21:21] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,21:21]
+ LO bounds    flow[(flow_battery,demand),2030,1,22:22] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,22:22]
+ LO bounds    flow[(flow_battery,demand),2030,1,23:23] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,23:23]
+ LO bounds    flow[(flow_battery,demand),2030,1,24:24] 0
+ PL bounds    flow[(flow_battery,demand),2030,1,24:24]
+ LO bounds    flow[(wind,demand),2030,2,1:1] 0
+ PL bounds    flow[(wind,demand),2030,2,1:1]
+ LO bounds    flow[(wind,demand),2030,2,2:2] 0
+ PL bounds    flow[(wind,demand),2030,2,2:2]
+ LO bounds    flow[(wind,demand),2030,2,3:3] 0
+ PL bounds    flow[(wind,demand),2030,2,3:3]
+ LO bounds    flow[(wind,demand),2030,2,4:4] 0
+ PL bounds    flow[(wind,demand),2030,2,4:4]
+ LO bounds    flow[(wind,demand),2030,2,5:5] 0
+ PL bounds    flow[(wind,demand),2030,2,5:5]
+ LO bounds    flow[(wind,demand),2030,2,6:6] 0
+ PL bounds    flow[(wind,demand),2030,2,6:6]
+ LO bounds    flow[(wind,demand),2030,2,7:7] 0
+ PL bounds    flow[(wind,demand),2030,2,7:7]
+ LO bounds    flow[(wind,demand),2030,2,8:8] 0
+ PL bounds    flow[(wind,demand),2030,2,8:8]
+ LO bounds    flow[(wind,demand),2030,2,9:9] 0
+ PL bounds    flow[(wind,demand),2030,2,9:9]
+ LO bounds    flow[(wind,demand),2030,2,10:10] 0
+ PL bounds    flow[(wind,demand),2030,2,10:10]
+ LO bounds    flow[(wind,demand),2030,2,11:11] 0
+ PL bounds    flow[(wind,demand),2030,2,11:11]
+ LO bounds    flow[(wind,demand),2030,2,12:12] 0
+ PL bounds    flow[(wind,demand),2030,2,12:12]
+ LO bounds    flow[(wind,demand),2030,2,13:13] 0
+ PL bounds    flow[(wind,demand),2030,2,13:13]
+ LO bounds    flow[(wind,demand),2030,2,14:14] 0
+ PL bounds    flow[(wind,demand),2030,2,14:14]
+ LO bounds    flow[(wind,demand),2030,2,15:15] 0
+ PL bounds    flow[(wind,demand),2030,2,15:15]
+ LO bounds    flow[(wind,demand),2030,2,16:16] 0
+ PL bounds    flow[(wind,demand),2030,2,16:16]
+ LO bounds    flow[(wind,demand),2030,2,17:17] 0
+ PL bounds    flow[(wind,demand),2030,2,17:17]
+ LO bounds    flow[(wind,demand),2030,2,18:18] 0
+ PL bounds    flow[(wind,demand),2030,2,18:18]
+ LO bounds    flow[(wind,demand),2030,2,19:19] 0
+ PL bounds    flow[(wind,demand),2030,2,19:19]
+ LO bounds    flow[(wind,demand),2030,2,20:20] 0
+ PL bounds    flow[(wind,demand),2030,2,20:20]
+ LO bounds    flow[(wind,demand),2030,2,21:21] 0
+ PL bounds    flow[(wind,demand),2030,2,21:21]
+ LO bounds    flow[(wind,demand),2030,2,22:22] 0
+ PL bounds    flow[(wind,demand),2030,2,22:22]
+ LO bounds    flow[(wind,demand),2030,2,23:23] 0
+ PL bounds    flow[(wind,demand),2030,2,23:23]
+ LO bounds    flow[(wind,demand),2030,2,24:24] 0
+ PL bounds    flow[(wind,demand),2030,2,24:24]
  LO bounds    flow[(ocgt,demand),2030,2,1:1] 0
  PL bounds    flow[(ocgt,demand),2030,2,1:1]
  LO bounds    flow[(ocgt,demand),2030,2,2:2] 0
@@ -7996,6 +9935,54 @@ BOUNDS
  PL bounds    flow[(phs,demand),2030,2,23:23]
  LO bounds    flow[(phs,demand),2030,2,24:24] 0
  PL bounds    flow[(phs,demand),2030,2,24:24]
+ LO bounds    flow[(ccgt,demand),2030,2,1:1] 0
+ PL bounds    flow[(ccgt,demand),2030,2,1:1]
+ LO bounds    flow[(ccgt,demand),2030,2,2:2] 0
+ PL bounds    flow[(ccgt,demand),2030,2,2:2]
+ LO bounds    flow[(ccgt,demand),2030,2,3:3] 0
+ PL bounds    flow[(ccgt,demand),2030,2,3:3]
+ LO bounds    flow[(ccgt,demand),2030,2,4:4] 0
+ PL bounds    flow[(ccgt,demand),2030,2,4:4]
+ LO bounds    flow[(ccgt,demand),2030,2,5:5] 0
+ PL bounds    flow[(ccgt,demand),2030,2,5:5]
+ LO bounds    flow[(ccgt,demand),2030,2,6:6] 0
+ PL bounds    flow[(ccgt,demand),2030,2,6:6]
+ LO bounds    flow[(ccgt,demand),2030,2,7:7] 0
+ PL bounds    flow[(ccgt,demand),2030,2,7:7]
+ LO bounds    flow[(ccgt,demand),2030,2,8:8] 0
+ PL bounds    flow[(ccgt,demand),2030,2,8:8]
+ LO bounds    flow[(ccgt,demand),2030,2,9:9] 0
+ PL bounds    flow[(ccgt,demand),2030,2,9:9]
+ LO bounds    flow[(ccgt,demand),2030,2,10:10] 0
+ PL bounds    flow[(ccgt,demand),2030,2,10:10]
+ LO bounds    flow[(ccgt,demand),2030,2,11:11] 0
+ PL bounds    flow[(ccgt,demand),2030,2,11:11]
+ LO bounds    flow[(ccgt,demand),2030,2,12:12] 0
+ PL bounds    flow[(ccgt,demand),2030,2,12:12]
+ LO bounds    flow[(ccgt,demand),2030,2,13:13] 0
+ PL bounds    flow[(ccgt,demand),2030,2,13:13]
+ LO bounds    flow[(ccgt,demand),2030,2,14:14] 0
+ PL bounds    flow[(ccgt,demand),2030,2,14:14]
+ LO bounds    flow[(ccgt,demand),2030,2,15:15] 0
+ PL bounds    flow[(ccgt,demand),2030,2,15:15]
+ LO bounds    flow[(ccgt,demand),2030,2,16:16] 0
+ PL bounds    flow[(ccgt,demand),2030,2,16:16]
+ LO bounds    flow[(ccgt,demand),2030,2,17:17] 0
+ PL bounds    flow[(ccgt,demand),2030,2,17:17]
+ LO bounds    flow[(ccgt,demand),2030,2,18:18] 0
+ PL bounds    flow[(ccgt,demand),2030,2,18:18]
+ LO bounds    flow[(ccgt,demand),2030,2,19:19] 0
+ PL bounds    flow[(ccgt,demand),2030,2,19:19]
+ LO bounds    flow[(ccgt,demand),2030,2,20:20] 0
+ PL bounds    flow[(ccgt,demand),2030,2,20:20]
+ LO bounds    flow[(ccgt,demand),2030,2,21:21] 0
+ PL bounds    flow[(ccgt,demand),2030,2,21:21]
+ LO bounds    flow[(ccgt,demand),2030,2,22:22] 0
+ PL bounds    flow[(ccgt,demand),2030,2,22:22]
+ LO bounds    flow[(ccgt,demand),2030,2,23:23] 0
+ PL bounds    flow[(ccgt,demand),2030,2,23:23]
+ LO bounds    flow[(ccgt,demand),2030,2,24:24] 0
+ PL bounds    flow[(ccgt,demand),2030,2,24:24]
  LO bounds    flow[(ens,demand),2030,2,1:1] 0
  PL bounds    flow[(ens,demand),2030,2,1:1]
  LO bounds    flow[(ens,demand),2030,2,2:2] 0
@@ -8044,54 +10031,6 @@ BOUNDS
  PL bounds    flow[(ens,demand),2030,2,23:23]
  LO bounds    flow[(ens,demand),2030,2,24:24] 0
  PL bounds    flow[(ens,demand),2030,2,24:24]
- LO bounds    flow[(wind,demand),2030,2,1:1] 0
- PL bounds    flow[(wind,demand),2030,2,1:1]
- LO bounds    flow[(wind,demand),2030,2,2:2] 0
- PL bounds    flow[(wind,demand),2030,2,2:2]
- LO bounds    flow[(wind,demand),2030,2,3:3] 0
- PL bounds    flow[(wind,demand),2030,2,3:3]
- LO bounds    flow[(wind,demand),2030,2,4:4] 0
- PL bounds    flow[(wind,demand),2030,2,4:4]
- LO bounds    flow[(wind,demand),2030,2,5:5] 0
- PL bounds    flow[(wind,demand),2030,2,5:5]
- LO bounds    flow[(wind,demand),2030,2,6:6] 0
- PL bounds    flow[(wind,demand),2030,2,6:6]
- LO bounds    flow[(wind,demand),2030,2,7:7] 0
- PL bounds    flow[(wind,demand),2030,2,7:7]
- LO bounds    flow[(wind,demand),2030,2,8:8] 0
- PL bounds    flow[(wind,demand),2030,2,8:8]
- LO bounds    flow[(wind,demand),2030,2,9:9] 0
- PL bounds    flow[(wind,demand),2030,2,9:9]
- LO bounds    flow[(wind,demand),2030,2,10:10] 0
- PL bounds    flow[(wind,demand),2030,2,10:10]
- LO bounds    flow[(wind,demand),2030,2,11:11] 0
- PL bounds    flow[(wind,demand),2030,2,11:11]
- LO bounds    flow[(wind,demand),2030,2,12:12] 0
- PL bounds    flow[(wind,demand),2030,2,12:12]
- LO bounds    flow[(wind,demand),2030,2,13:13] 0
- PL bounds    flow[(wind,demand),2030,2,13:13]
- LO bounds    flow[(wind,demand),2030,2,14:14] 0
- PL bounds    flow[(wind,demand),2030,2,14:14]
- LO bounds    flow[(wind,demand),2030,2,15:15] 0
- PL bounds    flow[(wind,demand),2030,2,15:15]
- LO bounds    flow[(wind,demand),2030,2,16:16] 0
- PL bounds    flow[(wind,demand),2030,2,16:16]
- LO bounds    flow[(wind,demand),2030,2,17:17] 0
- PL bounds    flow[(wind,demand),2030,2,17:17]
- LO bounds    flow[(wind,demand),2030,2,18:18] 0
- PL bounds    flow[(wind,demand),2030,2,18:18]
- LO bounds    flow[(wind,demand),2030,2,19:19] 0
- PL bounds    flow[(wind,demand),2030,2,19:19]
- LO bounds    flow[(wind,demand),2030,2,20:20] 0
- PL bounds    flow[(wind,demand),2030,2,20:20]
- LO bounds    flow[(wind,demand),2030,2,21:21] 0
- PL bounds    flow[(wind,demand),2030,2,21:21]
- LO bounds    flow[(wind,demand),2030,2,22:22] 0
- PL bounds    flow[(wind,demand),2030,2,22:22]
- LO bounds    flow[(wind,demand),2030,2,23:23] 0
- PL bounds    flow[(wind,demand),2030,2,23:23]
- LO bounds    flow[(wind,demand),2030,2,24:24] 0
- PL bounds    flow[(wind,demand),2030,2,24:24]
  LO bounds    flow[(solar,demand),2030,2,1:1] 0
  PL bounds    flow[(solar,demand),2030,2,1:1]
  LO bounds    flow[(solar,demand),2030,2,2:2] 0
@@ -8332,6 +10271,102 @@ BOUNDS
  PL bounds    flow[(caes,atmosphere),2030,2,23:23]
  LO bounds    flow[(caes,atmosphere),2030,2,24:24] 0
  PL bounds    flow[(caes,atmosphere),2030,2,24:24]
+ LO bounds    flow[(demand,flow_battery),2030,2,1:1] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,1:1]
+ LO bounds    flow[(demand,flow_battery),2030,2,2:2] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,2:2]
+ LO bounds    flow[(demand,flow_battery),2030,2,3:3] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,3:3]
+ LO bounds    flow[(demand,flow_battery),2030,2,4:4] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,4:4]
+ LO bounds    flow[(demand,flow_battery),2030,2,5:5] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,5:5]
+ LO bounds    flow[(demand,flow_battery),2030,2,6:6] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,6:6]
+ LO bounds    flow[(demand,flow_battery),2030,2,7:7] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,7:7]
+ LO bounds    flow[(demand,flow_battery),2030,2,8:8] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,8:8]
+ LO bounds    flow[(demand,flow_battery),2030,2,9:9] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,9:9]
+ LO bounds    flow[(demand,flow_battery),2030,2,10:10] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,10:10]
+ LO bounds    flow[(demand,flow_battery),2030,2,11:11] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,11:11]
+ LO bounds    flow[(demand,flow_battery),2030,2,12:12] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,12:12]
+ LO bounds    flow[(demand,flow_battery),2030,2,13:13] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,13:13]
+ LO bounds    flow[(demand,flow_battery),2030,2,14:14] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,14:14]
+ LO bounds    flow[(demand,flow_battery),2030,2,15:15] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,15:15]
+ LO bounds    flow[(demand,flow_battery),2030,2,16:16] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,16:16]
+ LO bounds    flow[(demand,flow_battery),2030,2,17:17] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,17:17]
+ LO bounds    flow[(demand,flow_battery),2030,2,18:18] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,18:18]
+ LO bounds    flow[(demand,flow_battery),2030,2,19:19] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,19:19]
+ LO bounds    flow[(demand,flow_battery),2030,2,20:20] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,20:20]
+ LO bounds    flow[(demand,flow_battery),2030,2,21:21] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,21:21]
+ LO bounds    flow[(demand,flow_battery),2030,2,22:22] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,22:22]
+ LO bounds    flow[(demand,flow_battery),2030,2,23:23] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,23:23]
+ LO bounds    flow[(demand,flow_battery),2030,2,24:24] 0
+ PL bounds    flow[(demand,flow_battery),2030,2,24:24]
+ LO bounds    flow[(flow_battery,demand),2030,2,1:1] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,1:1]
+ LO bounds    flow[(flow_battery,demand),2030,2,2:2] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,2:2]
+ LO bounds    flow[(flow_battery,demand),2030,2,3:3] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,3:3]
+ LO bounds    flow[(flow_battery,demand),2030,2,4:4] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,4:4]
+ LO bounds    flow[(flow_battery,demand),2030,2,5:5] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,5:5]
+ LO bounds    flow[(flow_battery,demand),2030,2,6:6] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,6:6]
+ LO bounds    flow[(flow_battery,demand),2030,2,7:7] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,7:7]
+ LO bounds    flow[(flow_battery,demand),2030,2,8:8] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,8:8]
+ LO bounds    flow[(flow_battery,demand),2030,2,9:9] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,9:9]
+ LO bounds    flow[(flow_battery,demand),2030,2,10:10] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,10:10]
+ LO bounds    flow[(flow_battery,demand),2030,2,11:11] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,11:11]
+ LO bounds    flow[(flow_battery,demand),2030,2,12:12] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,12:12]
+ LO bounds    flow[(flow_battery,demand),2030,2,13:13] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,13:13]
+ LO bounds    flow[(flow_battery,demand),2030,2,14:14] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,14:14]
+ LO bounds    flow[(flow_battery,demand),2030,2,15:15] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,15:15]
+ LO bounds    flow[(flow_battery,demand),2030,2,16:16] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,16:16]
+ LO bounds    flow[(flow_battery,demand),2030,2,17:17] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,17:17]
+ LO bounds    flow[(flow_battery,demand),2030,2,18:18] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,18:18]
+ LO bounds    flow[(flow_battery,demand),2030,2,19:19] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,19:19]
+ LO bounds    flow[(flow_battery,demand),2030,2,20:20] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,20:20]
+ LO bounds    flow[(flow_battery,demand),2030,2,21:21] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,21:21]
+ LO bounds    flow[(flow_battery,demand),2030,2,22:22] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,22:22]
+ LO bounds    flow[(flow_battery,demand),2030,2,23:23] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,23:23]
+ LO bounds    flow[(flow_battery,demand),2030,2,24:24] 0
+ PL bounds    flow[(flow_battery,demand),2030,2,24:24]
  LO bounds    flow[(ens,demand),2030,3,1:1] 0
  PL bounds    flow[(ens,demand),2030,3,1:1]
  LO bounds    flow[(ens,demand),2030,3,2:2] 0
@@ -8956,6 +10991,102 @@ BOUNDS
  PL bounds    flow[(caes,atmosphere),2030,3,23:23]
  LO bounds    flow[(caes,atmosphere),2030,3,24:24] 0
  PL bounds    flow[(caes,atmosphere),2030,3,24:24]
+ LO bounds    flow[(demand,flow_battery),2030,3,1:1] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,1:1]
+ LO bounds    flow[(demand,flow_battery),2030,3,2:2] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,2:2]
+ LO bounds    flow[(demand,flow_battery),2030,3,3:3] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,3:3]
+ LO bounds    flow[(demand,flow_battery),2030,3,4:4] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,4:4]
+ LO bounds    flow[(demand,flow_battery),2030,3,5:5] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,5:5]
+ LO bounds    flow[(demand,flow_battery),2030,3,6:6] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,6:6]
+ LO bounds    flow[(demand,flow_battery),2030,3,7:7] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,7:7]
+ LO bounds    flow[(demand,flow_battery),2030,3,8:8] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,8:8]
+ LO bounds    flow[(demand,flow_battery),2030,3,9:9] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,9:9]
+ LO bounds    flow[(demand,flow_battery),2030,3,10:10] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,10:10]
+ LO bounds    flow[(demand,flow_battery),2030,3,11:11] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,11:11]
+ LO bounds    flow[(demand,flow_battery),2030,3,12:12] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,12:12]
+ LO bounds    flow[(demand,flow_battery),2030,3,13:13] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,13:13]
+ LO bounds    flow[(demand,flow_battery),2030,3,14:14] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,14:14]
+ LO bounds    flow[(demand,flow_battery),2030,3,15:15] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,15:15]
+ LO bounds    flow[(demand,flow_battery),2030,3,16:16] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,16:16]
+ LO bounds    flow[(demand,flow_battery),2030,3,17:17] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,17:17]
+ LO bounds    flow[(demand,flow_battery),2030,3,18:18] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,18:18]
+ LO bounds    flow[(demand,flow_battery),2030,3,19:19] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,19:19]
+ LO bounds    flow[(demand,flow_battery),2030,3,20:20] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,20:20]
+ LO bounds    flow[(demand,flow_battery),2030,3,21:21] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,21:21]
+ LO bounds    flow[(demand,flow_battery),2030,3,22:22] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,22:22]
+ LO bounds    flow[(demand,flow_battery),2030,3,23:23] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,23:23]
+ LO bounds    flow[(demand,flow_battery),2030,3,24:24] 0
+ PL bounds    flow[(demand,flow_battery),2030,3,24:24]
+ LO bounds    flow[(flow_battery,demand),2030,3,1:1] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,1:1]
+ LO bounds    flow[(flow_battery,demand),2030,3,2:2] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,2:2]
+ LO bounds    flow[(flow_battery,demand),2030,3,3:3] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,3:3]
+ LO bounds    flow[(flow_battery,demand),2030,3,4:4] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,4:4]
+ LO bounds    flow[(flow_battery,demand),2030,3,5:5] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,5:5]
+ LO bounds    flow[(flow_battery,demand),2030,3,6:6] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,6:6]
+ LO bounds    flow[(flow_battery,demand),2030,3,7:7] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,7:7]
+ LO bounds    flow[(flow_battery,demand),2030,3,8:8] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,8:8]
+ LO bounds    flow[(flow_battery,demand),2030,3,9:9] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,9:9]
+ LO bounds    flow[(flow_battery,demand),2030,3,10:10] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,10:10]
+ LO bounds    flow[(flow_battery,demand),2030,3,11:11] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,11:11]
+ LO bounds    flow[(flow_battery,demand),2030,3,12:12] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,12:12]
+ LO bounds    flow[(flow_battery,demand),2030,3,13:13] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,13:13]
+ LO bounds    flow[(flow_battery,demand),2030,3,14:14] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,14:14]
+ LO bounds    flow[(flow_battery,demand),2030,3,15:15] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,15:15]
+ LO bounds    flow[(flow_battery,demand),2030,3,16:16] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,16:16]
+ LO bounds    flow[(flow_battery,demand),2030,3,17:17] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,17:17]
+ LO bounds    flow[(flow_battery,demand),2030,3,18:18] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,18:18]
+ LO bounds    flow[(flow_battery,demand),2030,3,19:19] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,19:19]
+ LO bounds    flow[(flow_battery,demand),2030,3,20:20] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,20:20]
+ LO bounds    flow[(flow_battery,demand),2030,3,21:21] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,21:21]
+ LO bounds    flow[(flow_battery,demand),2030,3,22:22] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,22:22]
+ LO bounds    flow[(flow_battery,demand),2030,3,23:23] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,23:23]
+ LO bounds    flow[(flow_battery,demand),2030,3,24:24] 0
+ PL bounds    flow[(flow_battery,demand),2030,3,24:24]
  LO bounds    assets_decommission[ocgt,2030,2030] 0
  PL bounds    assets_decommission[ocgt,2030,2030]
  LO bounds    assets_decommission[ccgt,2030,2030] 0
@@ -8972,6 +11103,8 @@ BOUNDS
  PL bounds    assets_decommission[phs,2030,2030]
  LO bounds    assets_decommission[caes,2030,2030] 0
  PL bounds    assets_decommission[caes,2030,2030]
+ LO bounds    assets_decommission[flow_battery,2030,2030] 0
+ PL bounds    assets_decommission[flow_battery,2030,2030]
  LO bounds    storage_level_intra_rep_period[battery,2030,1,1:1] 0
  PL bounds    storage_level_intra_rep_period[battery,2030,1,1:1]
  LO bounds    storage_level_intra_rep_period[battery,2030,1,2:2] 0
@@ -9260,6 +11393,20 @@ BOUNDS
  PL bounds    storage_level_intra_rep_period[caes,2030,3,23:23]
  LO bounds    storage_level_intra_rep_period[caes,2030,3,24:24] 0
  PL bounds    storage_level_intra_rep_period[caes,2030,3,24:24]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,1:1] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,1:1]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,2:2] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,2:2]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,3:3] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,3:3]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,4:4] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,4:4]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,5:5] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,5:5]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,6:6] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,6:6]
+ LO bounds    storage_level_inter_period[flow_battery,2030,1,7:7] 0
+ PL bounds    storage_level_inter_period[flow_battery,2030,1,7:7]
  LO bounds    storage_level_inter_period[phs,2030,1,1:1] 0
  PL bounds    storage_level_inter_period[phs,2030,1,1:1]
  LO bounds    storage_level_inter_period[phs,2030,1,2:2] 0
@@ -9274,6 +11421,78 @@ BOUNDS
  PL bounds    storage_level_inter_period[phs,2030,1,6:6]
  LO bounds    storage_level_inter_period[phs,2030,1,7:7] 0
  PL bounds    storage_level_inter_period[phs,2030,1,7:7]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,1:1]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,2:2]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,3:3]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,4:4]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,5:5]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,6:6]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,7:7]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,8:8]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,9:9]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,10:10]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,11:11]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,12:12]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,13:13]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,14:14]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,15:15]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,16:16]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,17:17]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,18:18]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,19:19]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,20:20]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,21:21]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,22:22]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,23:23]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,1,24:24]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,1:1]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,2:2]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,3:3]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,4:4]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,5:5]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,6:6]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,7:7]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,8:8]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,9:9]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,10:10]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,11:11]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,12:12]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,13:13]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,14:14]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,15:15]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,16:16]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,17:17]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,18:18]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,19:19]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,20:20]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,21:21]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,22:22]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,23:23]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,2,24:24]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,1:1]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,2:2]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,3:3]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,4:4]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,5:5]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,6:6]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,7:7]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,8:8]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,9:9]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,10:10]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,11:11]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,12:12]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,13:13]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,14:14]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,15:15]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,16:16]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,17:17]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,18:18]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,19:19]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,20:20]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,21:21]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,22:22]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,23:23]
+ FR bounds    accumulated_storage_level_intra_rep_period[flow_battery,2030,3,24:24]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,1,1:1]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,1,2:2]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,1,3:3]
@@ -9346,4 +11565,16 @@ BOUNDS
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,3,22:22]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,3,23:23]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,3,24:24]
+ LO bounds    max_storage_level_increase_intra_rep_period[flow_battery,2030,1] 0
+ PL bounds    max_storage_level_increase_intra_rep_period[flow_battery,2030,1]
+ LO bounds    max_storage_level_increase_intra_rep_period[flow_battery,2030,2] 0
+ PL bounds    max_storage_level_increase_intra_rep_period[flow_battery,2030,2]
+ LO bounds    max_storage_level_increase_intra_rep_period[flow_battery,2030,3] 0
+ PL bounds    max_storage_level_increase_intra_rep_period[flow_battery,2030,3]
+ LO bounds    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1] 0
+ PL bounds    max_storage_level_decrease_intra_rep_period[flow_battery,2030,1]
+ LO bounds    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2] 0
+ PL bounds    max_storage_level_decrease_intra_rep_period[flow_battery,2030,2]
+ LO bounds    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3] 0
+ PL bounds    max_storage_level_decrease_intra_rep_period[flow_battery,2030,3]
 ENDATA

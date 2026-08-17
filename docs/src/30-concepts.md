@@ -597,10 +597,12 @@ input_dir = "../../test/inputs/Storage" # hide
 assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
 graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
 assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
-filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "use_inter_period_constraints"]] # hide
+filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy", "use_inter_period_constraints", "inter_period_storage_level_bounds"]] # hide
 ```
 
-The `use_inter_period_constraints` parameter determines whether or not the storage asset uses the inter-period constraints. The `phs` is the only storage asset with this type of constraint and inter-period-storage level variable (i.e., $v^{\text{inter-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` and the `caes` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), and both have 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
+The `use_inter_period_constraints` parameter specifies whether a storage asset employs inter-period constraints. The `phs` has a capacity of 100 MW and a storage capacity of 4,800 MWh, corresponding to a 48-hour discharge duration, and utilizes `inter_period_only` bounds. The `flow_battery` has a capacity of 50 MW and 500 MWh of storage capacity, equating to a 10-hour discharge duration, and employs `inter_and_intra_rep_period` because it manages energy both within and across periods. This option applies conservative intra-representative-period envelopes on top of the inter-period storage bounds, enabling the mid-duration flow battery to use the inter-period storage-level formulation while maintaining intra-period chronological tracking. As a result, the 10-hour flow battery can transfer energy between periods while keeping storage levels within the specified bounds inside each period.
+
+In contrast, the `battery` and the `caes` only use rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), so they cannot shift energy between periods. In addition, both have 10 MW capacity with 20 MWh of storage capacity (i.e., 2-hour discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance to represent its CO2 emmissions; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -705,7 +707,7 @@ end # hide
 p # hide
 ```
 
-Since the `phs` is defined as seasonal, it has results for only the inter-period-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the inter-period constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
+The `phs` and `flow_battery` have results for the inter-period-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the inter-period constraints in the model keep track of their storage levels through the whole timeframe definition (i.e., week). The `flow_battery` additionally uses the intra-representative-period envelopes that enforces its storage-level to be within bounds also within periods.
 
 ```@example seasonal-storage
 seasonal_storage_levels = TulipaIO.get_table(connection, "var_storage_level_inter_period") # hide
@@ -725,7 +727,7 @@ plot!( # hide
 p # hide
 ```
 
-In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
+In this example, we have demonstrated how to partially recover chronological information for both a storage asset with a longer discharge duration than the representative period (`phs`) and a short-duration asset using conservative inter- and intra-representative-period bounds (`flow_battery`). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
 
 ## [Multi-year Investment Modeling](@id multi-year-investment-modeling)
 
