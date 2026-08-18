@@ -267,3 +267,13 @@ function _append_available_units_shut_down_compact_method(connection, table_name
         ",
     )
 end
+
+"""
+    timestamp()
+
+Return the current UTC time formatted for log messages.
+The returned string ends with `UTC` to make the timezone explicit.
+"""
+function timestamp()
+    return string(Dates.format(Dates.now(Dates.UTC), LOG_DATE_FORMAT), " UTC")
+end

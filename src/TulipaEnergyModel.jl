@@ -18,11 +18,13 @@ using MathOptInterface: MathOptInterface
 using ParametricOptInterface: ParametricOptInterface as POI
 
 ## Others
+using Dates: Dates
 using OrderedCollections: OrderedDict
 using Statistics: Statistics
 using TimerOutputs: TimerOutput, @timeit, reset_timer!
 
 const to = TimerOutput()
+const LOG_DATE_FORMAT = Dates.dateformat"yyyy-mm-ddTHH:MM:SS.sss"
 
 # Public API
 export

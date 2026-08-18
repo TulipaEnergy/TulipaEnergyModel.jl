@@ -63,11 +63,11 @@ end
 Saves the solution from `energy_problem` in CSV files inside `output_file`.
 Notice that this assumes that the solution has been computed by [`save_solution!`](@ref).
 """
-function export_solution_to_csv_files(output_folder, energy_problem::EnergyProblem)
+function export_solution_to_csv_files(output_folder, energy_problem::EnergyProblem; show_log = true)
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    export_solution_to_csv_files(output_folder, energy_problem.db_connection)
+    export_solution_to_csv_files(output_folder, energy_problem.db_connection; show_log)
     return
 end
 
@@ -78,7 +78,7 @@ Saves the solution in CSV files inside `output_folder`.
 Notice that this assumes that the solution has already been computed (e.g., by
 [`save_solution!`](@ref), or using rolling horizon).
 """
-function export_solution_to_csv_files(output_folder, connection)
+function export_solution_to_csv_files(output_folder, connection; show_log = true)
     # Save each variable and constraint
     for prefix in ("var", "cons", "obj")
         for table_name in [

@@ -3,13 +3,16 @@
 
 Create the internal model of a [`TulipaEnergyModel.EnergyProblem`](@ref).
 Any keyword argument will be passed to the underlying [`create_model`](@ref).
+     Set `show_log = false` to silence progress logging.
 """
-function create_model!(energy_problem; kwargs...)
+function create_model!(energy_problem; show_log = true, kwargs...)
+    show_log && @info "[$(timestamp())] Creating optimization model"
     energy_problem.model, energy_problem.expressions = @timeit to "create_model" create_model(
         energy_problem.db_connection,
         energy_problem.variables,
         energy_problem.constraints,
         energy_problem.profiles;
+        show_log = show_log,
         kwargs...,
     )
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -30,6 +33,7 @@ end
         model_file_name = "",
         enable_names = true
         direct_model = false,
+        show_log = true,
     )
 
 Create the energy model manually. We recommend using [`create_model!`](@ref) instead.
@@ -53,6 +57,8 @@ For more information, see [`JuMP.set_string_names_on_creation`](https://jump.dev
 Set `direct_model = true` to create a JuMP `direct_model` using `optimizer_with_attributes`, which has memory improvements.
 For more information, see [`JuMP.direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 
+Set `show_log = false` to silence progress logging.
+
 """
 function create_model(
     connection,
@@ -66,7 +72,9 @@ function create_model(
     direct_model = false,
     rolling_horizon = false,
     rolling_horizon_window_length = 0,
+    show_log = true,
 )
+    show_log && @info "[$(timestamp())] Preparing optimization model"
     if rolling_horizon
         @assert rolling_horizon_window_length > 0
     end
@@ -96,28 +104,39 @@ function create_model(
     end
 
     ## Model Parameters
+    show_log && @info "[$(timestamp())] Preparing model parameters"
     @timeit to "get_model_parameters!" model_parameters = get_model_parameters(connection)
 
     ## Variables
+    show_log && @info "[$(timestamp())] Adding flow variables"
     @timeit to "add_flow_variables!" add_flow_variables!(connection, model, variables)
+    show_log && @info "[$(timestamp())] Adding vintage flow variables"
     @timeit to "add_vintage_flow_variables!" add_vintage_flow_variables!(
         connection,
         model,
         variables,
     )
+    show_log && @info "[$(timestamp())] Adding investment variables"
     @timeit to "add_investment_variables!" add_investment_variables!(model, variables)
+    show_log && @info "[$(timestamp())] Adding decommission variables"
     @timeit to "add_decommission_variables!" add_decommission_variables!(model, variables)
+    show_log && @info "[$(timestamp())] Adding unit commitment variables"
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(model, variables)
+    show_log && @info "[$(timestamp())] Adding start-up and shut-down variables"
     @timeit to "add_start_up_and_shut_down_variables!" add_start_up_and_shut_down_variables!(
         model,
         variables,
     )
+    show_log && @info "[$(timestamp())] Adding power flow variables"
     @timeit to "add_power_flow_variables!" add_power_flow_variables!(model, variables)
+    show_log && @info "[$(timestamp())] Adding storage variables"
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
+    show_log && @info "[$(timestamp())] Adding conditional value-at-risk variables"
     @timeit to "add_conditional_value_at_risk_variables!" add_conditional_value_at_risk_variables!(
         model,
         variables,
     )
+    show_log && @info "[$(timestamp())] Adding expressions to constraints"
     @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         connection,
         variables,
@@ -125,9 +144,11 @@ function create_model(
     )
 
     ## Expressions
+    show_log && @info "[$(timestamp())] Creating model expressions"
     expressions = Dict{Symbol,TulipaExpression}()
 
     ## Expressions for multi-year investment
+    show_log && @info "[$(timestamp())] Creating multi-year expressions"
     @timeit to "create_multi_year_expressions!" create_multi_year_expressions!(
         connection,
         model,
@@ -136,6 +157,7 @@ function create_model(
     )
 
     ## Expressions for storage assets
+    show_log && @info "[$(timestamp())] Adding storage expressions"
     @timeit to "add_storage_expressions!" add_storage_expressions!(connection, model, expressions)
 
     ## Rolling Horizon Parameters
@@ -150,9 +172,11 @@ function create_model(
     end
 
     ## Tables for the objective function
+    show_log && @info "[$(timestamp())] Preparing objective tables"
     @timeit to "prepare_objective_tables!" prepare_objective_tables!(connection, model_parameters)
 
     ## Expressions for operational costs
+    show_log && @info "[$(timestamp())] Adding operational cost expressions"
     @timeit to "add_operational_cost_expressions!" add_operational_cost_expressions!(
         connection,
         model,
@@ -162,6 +186,7 @@ function create_model(
     )
 
     ## Expressions for the objective function
+    show_log && @info "[$(timestamp())] Adding objective"
     @timeit to "add_objective!" add_objective!(
         connection,
         model,
@@ -171,6 +196,7 @@ function create_model(
     )
 
     ## Expressions for the scenario tail excess (conditional value at risk constraints)
+    show_log && @info "[$(timestamp())] Adding scenario tail excess expressions"
     @timeit to "add_scenario_tail_excess_expressions!" add_scenario_tail_excess_expressions!(
         connection,
         model,
@@ -179,6 +205,7 @@ function create_model(
     )
 
     ## Constraints
+    show_log && @info "[$(timestamp())] Adding capacity constraints"
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         connection,
         model,
@@ -187,6 +214,7 @@ function create_model(
         profiles,
     )
 
+    show_log && @info "[$(timestamp())] Adding energy constraints"
     @timeit to "add_energy_constraints!" add_energy_constraints!(
         connection,
         model,
@@ -194,6 +222,7 @@ function create_model(
         profiles,
     )
 
+    show_log && @info "[$(timestamp())] Adding consumer constraints"
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         connection,
         model,
@@ -202,6 +231,7 @@ function create_model(
         profiles,
     )
 
+    show_log && @info "[$(timestamp())] Adding storage constraints"
     @timeit to "add_storage_constraints!" add_storage_constraints!(
         connection,
         model,
@@ -212,12 +242,14 @@ function create_model(
         rolling_horizon,
     )
 
+    show_log && @info "[$(timestamp())] Adding conversion constraints"
     @timeit to "add_conversion_constraints!" add_conversion_constraints!(
         connection,
         model,
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding transport constraints"
     @timeit to "add_transport_constraints!" add_transport_constraints!(
         connection,
         model,
@@ -227,6 +259,7 @@ function create_model(
         profiles,
     )
 
+    show_log && @info "[$(timestamp())] Adding investment group constraints"
     @timeit to "add_investment_group_constraints!" add_investment_group_constraints!(
         connection,
         model,
@@ -235,6 +268,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding available asset units constraints"
     @timeit to "add_available_asset_units_constraints!" add_available_asset_units_constraints!(
         connection,
         model,
@@ -242,6 +276,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding ramping constraints"
     @timeit to "add_ramping_constraints!" add_ramping_constraints!(
         connection,
         model,
@@ -251,6 +286,7 @@ function create_model(
         profiles,
     )
 
+    show_log && @info "[$(timestamp())] Adding minimum output flow constraints"
     @timeit to "add_min_output_flow_without_unit_commitment_constraints!" add_min_output_flow_without_unit_commitment_constraints!(
         connection,
         model,
@@ -258,6 +294,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding flow relationship constraints"
     @timeit to "add_flows_relationships_constraints!" add_flows_relationships_constraints!(
         connection,
         model,
@@ -265,6 +302,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding DC power flow constraints"
     @timeit to "add_dc_power_flow_constraints!" add_dc_power_flow_constraints!(
         connection,
         model,
@@ -272,6 +310,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding vintage flow sum constraints"
     @timeit to "add_vintage_flow_sum_constraints!" add_vintage_flow_sum_constraints!(
         connection,
         model,
@@ -279,6 +318,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding start-up upper bound constraints"
     @timeit to "add_start_up_upper_bound_constraints!" add_start_up_upper_bound_constraints!(
         connection,
         model,
@@ -287,6 +327,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding shut-down upper bound constraints"
     @timeit to "add_shut_down_upper_bound_constraints!" add_shut_down_upper_bound_constraints!(
         connection,
         model,
@@ -295,6 +336,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding unit commitment logic constraints"
     @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
         connection,
         model,
@@ -303,6 +345,7 @@ function create_model(
         constraints,
     )
 
+    show_log && @info "[$(timestamp())] Adding scenario tail excess constraints"
     @timeit to "add_scenario_tail_excess_constraints!" add_scenario_tail_excess_constraints!(
         connection,
         model,
@@ -328,8 +371,10 @@ function create_model(
     )
 
     if model_file_name != ""
+        show_log && @info "[$(timestamp())] Writing model file to $model_file_name"
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end
 
+    show_log && @info "[$(timestamp())] Optimization model creation finished"
     return model, expressions
 end
