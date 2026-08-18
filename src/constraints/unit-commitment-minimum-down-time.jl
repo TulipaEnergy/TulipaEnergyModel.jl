@@ -1,7 +1,5 @@
-export add_minimum_down_time_constraints!
-
 """
-    add_minimum_down_time_constraints!(model, constraints)
+    add_minimum_down_time_constraints!(connection, model, variables, expressions, constraints)
 
 Adds the minimum down time constraints to the model.
 """
@@ -62,6 +60,8 @@ function add_minimum_down_time_constraints!(connection, model, variables, expres
             ],
         )
     end
+
+    return nothing
 end
 
 function _get_indices_for_minimum_down_time_constraints_aggregated_vintage_method(

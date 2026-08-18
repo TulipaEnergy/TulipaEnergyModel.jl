@@ -1,7 +1,5 @@
-export add_minimum_up_time_constraints!
-
 """
-    add_minimum_up_time_constraints!(model, constraints)
+    add_minimum_up_time_constraints!(connection, model, variables, expressions, constraints)
 
 Adds the minimum up time constraints to the model.
 """
@@ -26,6 +24,8 @@ function add_minimum_up_time_constraints!(connection, model, variables, expressi
             ],
         )
     end
+
+    return nothing
 end
 
 function _get_indices_for_minimum_up_time_constraints(connection, table_name)

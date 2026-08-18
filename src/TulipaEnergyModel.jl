@@ -80,6 +80,8 @@ export
     add_investment_group_constraints!,
     add_start_up_upper_bound_constraints!,
     add_shut_down_upper_bound_constraints!,
+    add_minimum_down_time_constraints!,
+    add_minimum_up_time_constraints!,
 
     # Objectives
     add_objective!,
