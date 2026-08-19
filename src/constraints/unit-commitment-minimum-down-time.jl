@@ -94,11 +94,11 @@ function _get_indices_for_minimum_down_time_constraints_aggregated_vintage_metho
             ANY_VALUE(var_shut_down.id) FILTER (WHERE var_shut_down.time_block_start = clb.time_block_start) AS last_shut_down_id,
             ANY_VALUE(expr_avail.id) AS avail_id
         FROM cons_with_lower_bound as clb
-        LEFT JOIN var_shut_down ON
+        INNER JOIN var_shut_down ON
             var_shut_down.asset = clb.asset AND
             var_shut_down.milestone_year = clb.milestone_year AND
             var_shut_down.rep_period = clb.rep_period
-        LEFT JOIN var_units_on ON
+        INNER JOIN var_units_on ON
             var_units_on.asset = clb.asset AND
             var_units_on.milestone_year = clb.milestone_year AND
             var_units_on.rep_period = clb.rep_period AND
@@ -146,11 +146,11 @@ function _get_indices_for_minimum_down_time_constraints_compact_vintage_method(
                 ARG_MIN(var_shut_down.id, var_shut_down.time_block_start) FILTER (WHERE var_shut_down.time_block_start >= clb.lower_bound) AS first_shut_down_id,
                 ANY_VALUE(var_shut_down.id) FILTER (WHERE var_shut_down.time_block_start = clb.time_block_start) AS last_shut_down_id
             FROM cons_with_lower_bound as clb
-            LEFT JOIN var_shut_down ON
+            INNER JOIN var_shut_down ON
                 var_shut_down.asset = clb.asset AND
                 var_shut_down.milestone_year = clb.milestone_year AND
                 var_shut_down.rep_period = clb.rep_period
-            LEFT JOIN var_units_on ON
+            INNER JOIN var_units_on ON
                 var_units_on.asset = clb.asset AND
                 var_units_on.milestone_year = clb.milestone_year AND
                 var_units_on.rep_period = clb.rep_period AND

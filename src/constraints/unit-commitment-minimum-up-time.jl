@@ -53,11 +53,11 @@ function _get_indices_for_minimum_up_time_constraints(connection, table_name)
             ARG_MIN(var_start_up.id, var_start_up.time_block_start) FILTER (WHERE var_start_up.time_block_start >= clb.lower_bound) AS first_start_up_id,
             ANY_VALUE(var_start_up.id) FILTER (WHERE var_start_up.time_block_start = clb.time_block_start) AS last_start_up_id
         FROM cons_with_lower_bound as clb
-        LEFT JOIN var_start_up ON
+        INNER JOIN var_start_up ON
             var_start_up.asset = clb.asset AND
             var_start_up.milestone_year = clb.milestone_year AND
             var_start_up.rep_period = clb.rep_period
-        LEFT JOIN var_units_on ON
+        INNER JOIN var_units_on ON
             var_units_on.asset = clb.asset AND
             var_units_on.milestone_year = clb.milestone_year AND
             var_units_on.rep_period = clb.rep_period AND
