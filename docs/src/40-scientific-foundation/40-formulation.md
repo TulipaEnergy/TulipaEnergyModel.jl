@@ -173,7 +173,7 @@ The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer a
 | $p^{\text{max ramp up}}_{a,y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}_y$      | Maximum ramping up rate as a portion of the capacity of asset $a$ at year $y$                                            | [p.u./h]       |
 | $p^{\text{max ramp down}}_{a,y}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}_y$      | Maximum ramping down rate as a portion of the capacity of asset $a$ at year $y$                                          | [p.u./h]       |
 | $p^{\text{minimum up time}}_{a,y}$     | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously operate once it has been turned on, at year $y$             | [h]            |
-| $p^{\text{minimum down time}}_{a,y}$   | $\mathbb{N}$     | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously remain off once it has been shut down, at year $y$          | [h]            |
+| $p^{\text{minimum down time}}_{a,y}$   | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously remain off once it has been shut down, at year $y$          | [h]            |
 
 ### Parameters for Flows
 
@@ -585,10 +585,10 @@ v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\te
 #### Minimum Up and Down Time Constraints
 
 ```math
-\sum_{i=b_{k_y} - p_{a,y}^{\text{minimum up time}} + 1}^{b_{k_y}} v_{a, k_y,i}^{\text{start up}} \leq v_{a, k_y, b_{k_y}}^{\text{units on}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
-\\ \sum_{i=b_{k_y} - p_{a,y}^{\text{minimum down time}} + 1}^{b_{k_y}} v_{a, k_y, i}^{\text{shut down}} \leq v^{\text{available units}}_{a,y} - v_{a, k_y, b_{k_y}}^{\text{units on}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\sum_{\substack{i \in \mathcal{B}^{\text{su}}_{a, y, {k_y}}\text{: start}(b_{k_y}) - p_{a,y}^{\text{minimum up time}} + 1 \\ \leq \text{start}(i) \leq \text{start}(b_{k_{y}})}} v_{a, k_y, i}^{\text{start up}} \leq v_{a, k_y, b'}^{\text{units on}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}, b' = {B}^{\text{uc}}_{a, y, k_y}(b_{k_y})
+\\ \sum_{\substack{i \in \mathcal{B}^{\text{su}}_{a, y, {k_y}}\text{: start}(b_{k_y}) - p_{a,y}^{\text{minimum down time}} + 1 \\ \leq \text{start}(i) \leq \text{start}(b_{k_{y}})}}^{b_{k_y}} v_{a, k_y, i}^{\text{shut down}} \leq v^{\text{available units}}_{a,y} - v_{a, k_y, b'}^{\text{units on}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}, b' = {B}^{\text{uc}}_{a, y, k_y}(b_{k_y})
 ```
 
 ### [Minimum Output Constraints Without Unit Commitment](@id min-output-constraints-without-unit-commitment)
