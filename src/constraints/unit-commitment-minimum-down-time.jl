@@ -172,7 +172,7 @@ function _get_indices_for_minimum_down_time_constraints_compact_vintage_method(
             ANY_VALUE(csd.units_on_id) as units_on_id,
             ANY_VALUE(csd.first_shut_down_id) as first_shut_down_id,
             ANY_VALUE(csd.last_shut_down_id) as last_shut_down_id,
-            ARRAY_AGG(expr_avail.id) AS avail_indices
+            ARRAY_AGG(expr_avail.id ORDER BY expr_avail.id) AS avail_indices
         FROM cons_with_shut_down_ids AS csd
         LEFT JOIN expr_available_asset_units_compact_vintage_method AS expr_avail
             ON csd.asset = expr_avail.asset

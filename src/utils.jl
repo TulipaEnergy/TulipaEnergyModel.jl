@@ -242,7 +242,7 @@ function _append_available_units_shut_down_compact_method(connection, table_name
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ARRAY_AGG(expr_avail.id) AS avail_indices,
+            ARRAY_AGG(expr_avail.id ORDER BY expr_avail.id) AS avail_indices,
             ANY_VALUE(var_units_on.id) AS units_on_id,
             ANY_VALUE(var_shut_down.id) AS shut_down_id
         FROM cons_$table_name AS cons
