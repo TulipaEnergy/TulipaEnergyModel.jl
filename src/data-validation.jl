@@ -967,7 +967,6 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
 end
 
 function _validate_bid_related_data!(error_messages, connection)
-
     #= Testing strategy:
     # - For a given `asset`, there are necessary and sufficient conditions that
     #   imply that this asset represents a bid.
