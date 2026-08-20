@@ -28,7 +28,7 @@ jobs:
         uses: julia-actions/cache@v3
       - name: Install JuliaFormatter.jl
         run: |
-          julia -e 'using Pkg; pkg"add JuliaFormatter@1"' # Version 1 is fixed due to https://github.com/domluna/JuliaFormatter.jl/issues/878
+          julia -e 'using Pkg; pkg"add JuliaFormatter"'
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
         run: touch requirements.txt
       - name: Setup Python
