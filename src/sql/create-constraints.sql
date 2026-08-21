@@ -1015,3 +1015,54 @@ select
 from
     var_tail_excess_slack_xi
 ;
+
+create sequence id start 1
+;
+
+drop table if exists cons_minimum_up_time
+;
+
+create table cons_minimum_up_time as
+select
+    nextval('id') as id,
+    uc.* EXCLUDE (id)
+from cons_start_up_upper_bound as uc
+join asset using (asset)
+where asset.minimum_up_time > 1;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_minimum_down_time_aggregated_vintage_method
+;
+
+create table cons_minimum_down_time_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    uc.* EXCLUDE (id)
+from cons_shut_down_upper_bound_aggregated_vintage_method as uc
+join asset using (asset)
+where asset.minimum_up_time > 1;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_minimum_down_time_compact_vintage_method
+;
+
+create table cons_minimum_down_time_compact_vintage_method as
+select
+    nextval('id') as id,
+    uc.* EXCLUDE (id)
+from cons_shut_down_upper_bound_compact_vintage_method as uc
+join asset using (asset)
+where asset.minimum_up_time > 1;
+
+drop sequence id
+;
