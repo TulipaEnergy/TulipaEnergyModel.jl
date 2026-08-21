@@ -35,8 +35,11 @@ function run_scenario(
 )
     reset_timer!(to)
 
-    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(connection)
+    show_log && @info "[$(timestamp())] Starting TulipaEnergyModel"
+    energy_problem =
+        @timeit to "create EnergyProblem from connection" EnergyProblem(connection; show_log)
 
+    show_log && @info "[$(timestamp())] Creating model"
     @timeit to "create_model!" create_model!(
         energy_problem;
         optimizer,
@@ -44,17 +47,22 @@ function run_scenario(
         model_file_name,
         enable_names,
         direct_model,
+        show_log,
     )
 
+    show_log && @info "[$(timestamp())] Solving model"
     @timeit to "solve_model!" solve_model!(energy_problem)
 
+    show_log && @info "[$(timestamp())] Saving solution"
     @timeit to "save_solution!" save_solution!(energy_problem)
 
     if output_folder != ""
         if energy_problem.solved
+            show_log && @info "[$(timestamp())] Exporting solution tables to $output_folder"
             @timeit to "export_solution_to_csv_files" export_solution_to_csv_files(
                 output_folder,
-                energy_problem,
+                energy_problem;
+                show_log,
             )
         else
             @warn "The energy problem has not been solved yet. Skipping export solution."

@@ -264,15 +264,20 @@ mutable struct EnergyProblem
 
     Constructs a new EnergyProblem object using the `connection`.
     This will call relevant functions to generate all input that is required for the model creation.
+        Set `show_log = false` to silence progress logging.
     """
-    function EnergyProblem(connection)
+    function EnergyProblem(connection; show_log = true)
+        show_log && @info "[$(timestamp())] Creating EnergyProblem internal tables"
         @timeit to "create_internal_structure" create_internal_tables!(connection)
 
+        show_log && @info "[$(timestamp())] Computing variable indices"
         variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
 
+        show_log && @info "[$(timestamp())] Computing constraint indices"
         constraints =
             @timeit to "compute_constraints_indices" compute_constraints_indices(connection)
 
+        show_log && @info "[$(timestamp())] Preparing profiles"
         profiles = @timeit to "prepare_profiles_structure" prepare_profiles_structure(connection)
 
         energy_problem = new(
