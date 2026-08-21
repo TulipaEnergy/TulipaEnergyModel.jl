@@ -86,6 +86,46 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 end
 
 """
+    _asset_investment_discount_sql(cost, annualized, salvage, weight, end_of_horizon)
+
+Return the `SELECT` columns that compute the annualized cost, salvage value, and
+investment discount weight for the cost column `cost`, aliased as `annualized`,
+`salvage`, and `weight`. Shared by the power and storage-energy investment terms
+so both use a single formula. Requires `investment_year_discount` to be defined
+earlier in the same `SELECT`.
+"""
+function _asset_investment_discount_sql(cost, annualized, salvage, weight, end_of_horizon)
+    return """CASE
+                -- the closed-form annuity does not accept asset.discount_rate = 0 in the denominator
+                WHEN asset.discount_rate = 0
+                    THEN $cost / asset.economic_lifetime
+                ELSE asset.discount_rate / (
+                    (1 + asset.discount_rate) *
+                    (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
+                    ) * $cost
+            END AS $annualized,
+            CASE
+                WHEN asset_milestone.milestone_year + asset.economic_lifetime <= $end_of_horizon + 1
+                    THEN 0.0
+                -- the closed-form salvage does not accept asset.discount_rate = 0 in the denominator
+                WHEN asset.discount_rate = 0
+                    THEN $annualized *
+                        (asset_milestone.milestone_year + asset.economic_lifetime - $end_of_horizon - 1)
+                ELSE -$annualized * (
+                        (1 / (1 + asset.discount_rate)) ^ (
+                            asset_milestone.milestone_year + asset.economic_lifetime - $end_of_horizon - 1
+                        ) - 1
+                    ) / asset.discount_rate
+            END AS $salvage,
+            CASE
+                -- the weight does not accept $cost = 0 in the denominator
+                WHEN $cost = 0
+                    THEN 0.0 -- zero investment cost, so the weight does not matter
+                ELSE investment_year_discount * (1 - $salvage / $cost)
+            END AS $weight"""
+end
+
+"""
     prepare_objective_tables!(connection, model_parameters)
 
 Create temporary SQL tables used by objective-term builders.
@@ -188,63 +228,21 @@ function prepare_objective_tables!(connection, model_parameters)
             asset.capacity_storage_energy,
             asset_milestone.units_on_cost,
             -- computed
-            CASE
-                -- the below closed-form equation does not accept 0 in the denominator when asset.discount_rate = 0
-                WHEN asset.discount_rate = 0
-                    THEN asset_commission.investment_cost / asset.economic_lifetime
-                ELSE asset.discount_rate / (
-                    (1 + asset.discount_rate) *
-                    (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
-                    ) * asset_commission.investment_cost
-            END AS annualized_cost,
-            CASE
-                WHEN asset_milestone.milestone_year + asset.economic_lifetime <= $(model_parameters.end_of_horizon) + 1
-                    THEN 0.0
-                -- the below closed-form equation does not accept asset.discount_rate = 0 in the denominator
-                WHEN asset.discount_rate = 0
-                    THEN annualized_cost *
-                        (asset_milestone.milestone_year + asset.economic_lifetime - $(model_parameters.end_of_horizon) - 1)
-                ELSE -annualized_cost * (
-                        (1 / (1 + asset.discount_rate)) ^ (
-                            asset_milestone.milestone_year + asset.economic_lifetime - $(model_parameters.end_of_horizon) - 1
-                        ) - 1
-                    ) / asset.discount_rate
-            END AS salvage_value,
             1 / (1 + $(model_parameters.social_rate))^(asset_milestone.milestone_year - $(model_parameters.discount_year)) AS investment_year_discount,
-            CASE
-                -- the below calculation does not accept asset_commission.investment_cost = 0 in the denominator
-                WHEN asset_commission.investment_cost = 0
-                    THEN 0.0 -- in this case, the investment cost is 0, so the weight does not matter
-                ELSE investment_year_discount * (1 - salvage_value / asset_commission.investment_cost)
-            END AS weight_for_asset_investment_discount,
-            CASE
-                -- the below closed-form equation does not accept 0 in the denominator when asset.discount_rate = 0
-                WHEN asset.discount_rate = 0
-                    THEN asset_commission.investment_cost_storage_energy / asset.economic_lifetime
-                ELSE asset.discount_rate / (
-                    (1 + asset.discount_rate) *
-                    (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
-                    ) * asset_commission.investment_cost_storage_energy
-            END AS annualized_cost_storage_energy,
-            CASE
-                WHEN asset_milestone.milestone_year + asset.economic_lifetime <= $(model_parameters.end_of_horizon) + 1
-                    THEN 0.0
-                -- the below closed-form equation does not accept asset.discount_rate = 0 in the denominator
-                WHEN asset.discount_rate = 0
-                    THEN annualized_cost_storage_energy *
-                        (asset_milestone.milestone_year + asset.economic_lifetime - $(model_parameters.end_of_horizon) - 1)
-                ELSE -annualized_cost_storage_energy * (
-                        (1 / (1 + asset.discount_rate)) ^ (
-                            asset_milestone.milestone_year + asset.economic_lifetime - $(model_parameters.end_of_horizon) - 1
-                        ) - 1
-                    ) / asset.discount_rate
-            END AS salvage_value_storage_energy,
-            CASE
-                -- the below calculation does not accept asset_commission.investment_cost_storage_energy = 0 in the denominator
-                WHEN asset_commission.investment_cost_storage_energy = 0
-                    THEN 0.0 -- in this case, the energy investment cost is 0, so the weight does not matter
-                ELSE investment_year_discount * (1 - salvage_value_storage_energy / asset_commission.investment_cost_storage_energy)
-            END AS weight_for_asset_investment_energy_discount,
+            $(_asset_investment_discount_sql(
+                "asset_commission.investment_cost",
+                "annualized_cost",
+                "salvage_value",
+                "weight_for_asset_investment_discount",
+                model_parameters.end_of_horizon,
+            )),
+            $(_asset_investment_discount_sql(
+                "asset_commission.investment_cost_storage_energy",
+                "annualized_cost_storage_energy",
+                "salvage_value_storage_energy",
+                "weight_for_asset_investment_energy_discount",
+                model_parameters.end_of_horizon,
+            )),
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM asset_milestone
         LEFT JOIN asset_commission
