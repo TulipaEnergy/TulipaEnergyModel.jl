@@ -48,7 +48,7 @@ end
     @test rows[2030].weight_for_asset_investment_discount == 0.0
     @test rows[2050].weight_for_asset_investment_discount == 0.0
 
-    # Energy investment cost is positive, so its dedicated weight is not zeroed out.
-    @test rows[2030].weight_for_asset_investment_energy_discount > 0.0
-    @test rows[2050].weight_for_asset_investment_energy_discount > 0.0
+    # Energy investment cost is positive, so the weight is calculated based on the formula.
+    @test rows[2030].weight_for_asset_investment_energy_discount ≈ 0.744093915 atol = 1e-6
+    @test rows[2050].weight_for_asset_investment_energy_discount ≈ 0.050813475 atol = 1e-6
 end
