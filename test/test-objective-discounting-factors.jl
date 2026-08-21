@@ -60,13 +60,12 @@
                 "SELECT discount_rate AS social_discount_rate, discount_year FROM model_parameters",
             ),
         )
-        last_year =
-            only(
-                DuckDB.query(
-                    connection,
-                    "SELECT MAX(milestone_year) AS last_year FROM rep_periods_data",
-                ),
-            ).last_year
+        last_year = only(
+            DuckDB.query(
+                connection,
+                "SELECT MAX(milestone_year) AS last_year FROM rep_periods_data",
+            ),
+        ).last_year
         rows = collect(
             DuckDB.query(
                 connection,
