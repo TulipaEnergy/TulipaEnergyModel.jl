@@ -11,6 +11,31 @@ function _add_to_objective!(connection, objective_expr, name::String, expr)
 end
 
 """
+    _query_costs(connection, query) -> Vector{Float64}
+
+Run `query`, which must expose a `cost` column, and return that column as a
+`Vector{Float64}`.
+"""
+function _query_costs(connection, query::String)
+    return Float64[row.cost for row in DuckDB.query(connection, query)]
+end
+
+"""
+    _cost_weighted_sum(costs, terms) -> JuMP.AffExpr
+
+Return the affine expression `sum(cost * term)` over paired `costs` and `terms`,
+where `terms` is any iterable of JuMP variables or affine expressions. Returns a
+zero `AffExpr` when the inputs are empty.
+"""
+function _cost_weighted_sum(costs::Vector{Float64}, terms)
+    result = JuMP.AffExpr(0.0)
+    for (cost, term) in zip(costs, terms)
+        JuMP.add_to_expression!(result, cost, term)
+    end
+    return result
+end
+
+"""
     add_objective!(connection, model, variables, expressions, model_parameters)
 
 Build all objective components, register them in `obj_breakdown`, and set the

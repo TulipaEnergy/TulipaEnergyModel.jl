@@ -2,7 +2,7 @@ function _add_storage_assets_energy_fixed_cost!(connection, model, expressions, 
     expr_available_energy_units_aggregated_vintage_method =
         expressions[:available_energy_units_aggregated_vintage_method]
 
-    indices = DuckDB.query(
+    costs = _query_costs(
         connection,
         "SELECT
             expr.id,
@@ -24,9 +24,9 @@ function _add_storage_assets_energy_fixed_cost!(connection, model, expressions, 
     @expression(
         model,
         storage_assets_energy_fixed_cost,
-        sum(
-            row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_energy_units_aggregated_vintage_method.expressions[:energy])
+        _cost_weighted_sum(
+            costs,
+            expr_available_energy_units_aggregated_vintage_method.expressions[:energy],
         )
     )
     _add_to_objective!(
