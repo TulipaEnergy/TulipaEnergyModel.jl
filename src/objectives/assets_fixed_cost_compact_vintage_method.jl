@@ -7,7 +7,7 @@ function _add_assets_fixed_cost_compact_vintage_method!(
     expr_available_asset_units_compact_vintage_method =
         expressions[:available_asset_units_compact_vintage_method]
 
-    indices = DuckDB.query(
+    costs = _query_costs(
         connection,
         "SELECT
             expr.id,
@@ -29,9 +29,9 @@ function _add_assets_fixed_cost_compact_vintage_method!(
     @expression(
         model,
         assets_fixed_cost_compact_vintage_method,
-        sum(
-            row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_asset_units_compact_vintage_method.expressions[:assets])
+        _cost_weighted_sum(
+            costs,
+            expr_available_asset_units_compact_vintage_method.expressions[:assets],
         )
     )
     _add_to_objective!(

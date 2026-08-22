@@ -136,6 +136,9 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{charging eff}}_{a,y}$                                       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Charging efficiency of storage asset $a$ at year $y$                                                                         | [p.u.]          |
 | $p^{\text{discharging eff}}_{a,y}$                                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Discharging efficiency of storage asset $a$ at year $y$                                                                      | [p.u.]          |
 | $p^{\text{inv cost energy}}_{a,y}$                                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Overnight cost of a energy unit of asset $a$ at year $y$                                                                     | [kEUR/MWh]      |
+| $p^{\text{annualized inv cost energy}}_{a,y}$                         | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Annualized investment cost of a energy unit of asset $a$ at year $y$                                                         | [kEUR/MWh/year] |
+| $p^{\text{salvage value energy}}_{a,y}$                               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Salvage value of a energy unit of asset $a$ at year $y$                                                                      | [kEUR/MWh]      |
+| $p^{\text{discounting factor asset energy inv cost}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Discounting factor for storage-energy investment cost of a energy unit of asset $a$ at year $y$                              | [-]             |
 | $p^{\text{fixed cost energy}}_{a,y}$                                  | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Fixed cost of a energy unit of asset $a$ at year $y$                                                                         | [kEUR/MWh/year] |
 | $p^{\text{min inv limit energy}}_{a,y}$                               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Minimum storage-energy investment of asset $a$ at year $y$                                                                   | [MWh]           |
 | $p^{\text{max inv limit energy}}_{a,y}$                               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Maximum storage-energy investment of asset $a$ at year $y$                                                                   | [MWh]           |
@@ -348,6 +351,24 @@ and where annualized cost is
 p^{\text{annualized inv cost}}_{a, y} = \frac{p^{\text{technology-specific discount rate}}_{a, y}}{ (1+p^{\text{technology-specific discount rate}}_{a, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{a, y})^{p^{\text{economic lifetime}}_{a, y}} } \bigg) } p^{\text{inv cost}}_{a, y} \quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
 ```
 
+#### Discounting Factor for Storage-Energy Investment Costs
+
+```math
+p_{a, y}^{\text{discounting factor asset energy inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{a, y}^{\text{salvage value energy}}}{p_{a, y}^{\text{inv cost energy}}}) \quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
+```
+
+where salvage value is
+
+```math
+p^{\text{salvage value energy}}_{a, y} = p^{\text{annualized inv cost energy}}_{a, y} \sum_{i=y^{\text{last}}+1}^{y + p^{\text{economic lifetime}}_{a, y} - 1} \frac{1}{(1 + p^{\text{technology-specific discount rate}}_{a, y})^{i - y} } \quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
+```
+
+and where annualized cost is
+
+```math
+p^{\text{annualized inv cost energy}}_{a, y} = \frac{p^{\text{technology-specific discount rate}}_{a, y}}{ (1+p^{\text{technology-specific discount rate}}_{a, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{a, y})^{p^{\text{economic lifetime}}_{a, y}} } \bigg) } p^{\text{inv cost energy}}_{a, y} \quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
+```
+
 #### Discounting Factor for Flow Investment Costs
 
 ```math
@@ -374,7 +395,7 @@ p_{y}^{\text{discounting factor operation cost}}= \sum^{\text{next}(y)-1}_{y`=y}
 
 This definition of the discount factor at year $y$ includes the discounts for the range of years from the milestone year $y$ to the next milestone year $y+1$, i.e., \{$y$, $y$+1, ..., next($y$)-1\}, so the discounts at the non-modeled years are also correctly considered. When $y$=last($y$), only the discount at year $y$ is included.
 
-### Objective Function
+### Objective Function Definition
 
 The objective function is formulated as a two-stage stochastic optimization problem, where the investment decisions are the first-stage variables and the expected value of the operation variables is in the second stage. When the risk aversion weight $p^{\lambda} > 0$ and there are multiple stochastic scenarios ($|\mathcal{S}| > 1$), the model uses a mean-CVaR (Conditional Value at Risk) formulation to incorporate risk into the objective to the operation costs (i.e., the risk measure only applies to uncertain quantities).
 
@@ -400,7 +421,7 @@ Where:
 
 ```math
 \begin{aligned}
-assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdot p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdotp^{\text{inv cost energy}}_{a,y} \cdot p^{\text{capacity storage energy}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
+assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdot p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset energy inv cost}} \cdot p^{\text{inv cost energy}}_{a,y} \cdot p^{\text{capacity storage energy}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
 assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{aggregated}} \cup \mathcal{A}^{\text{operation}} } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units aggregated}}_{a,y} \\
 & + \sum_{(a,y,v) \in \mathcal{D}^{\text{compact profiles}} }  p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact}}_{a,y,v} \\
 & + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap (\mathcal{A}^{\text{aggregated}} \cup \mathcal{A}^{\text{operation}}) } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{capacity storage energy}}_{a} \cdot v^{\text{available energy capacity aggregated}}_{a,y} \\

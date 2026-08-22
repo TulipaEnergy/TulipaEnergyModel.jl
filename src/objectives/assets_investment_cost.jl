@@ -1,7 +1,7 @@
 function _add_assets_investment_cost!(connection, model, variables, objective_expr)
     assets_investment = variables[:assets_investment]
 
-    indices = DuckDB.query(
+    costs = _query_costs(
         connection,
         "SELECT
             var.id,
@@ -20,10 +20,7 @@ function _add_assets_investment_cost!(connection, model, variables, objective_ex
     @expression(
         model,
         assets_investment_cost,
-        sum(
-            row.cost * asset_investment for
-            (row, asset_investment) in zip(indices, assets_investment.container)
-        )
+        _cost_weighted_sum(costs, assets_investment.container)
     )
     _add_to_objective!(connection, objective_expr, "assets_investment_cost", assets_investment_cost)
 
