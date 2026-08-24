@@ -9,11 +9,10 @@ const SUITE = BenchmarkGroup()
 # can be reused as the `setup` for the corresponding benchmark.
 function input_setup(input_folder)
     connection = DBInterface.connect(DuckDB.DB)
-    TulipaIO.read_csv_folder(
-        connection,
-        input_folder;
-        schemas = TulipaEnergyModel.schema_per_table_name,
-    )
+    # Read without strict schemas and fill defaults so that case studies with
+    # intentionally-incomplete CSVs (missing optional columns) can also be loaded.
+    TulipaIO.read_csv_folder(connection, input_folder)
+    TulipaEnergyModel.populate_with_defaults!(connection)
     return connection
 end
 
