@@ -1,0 +1,4 @@
+from_asset,to_asset,milestone_year,operational_cost,commodity_price
+wind,demand,2030,0.0,0.0
+ocgt,demand,2030,50.0,0.0
+ens,demand,2030,500.0,0.0
