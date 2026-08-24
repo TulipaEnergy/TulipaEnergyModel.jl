@@ -217,7 +217,7 @@ function add_storage_constraints!(
         )
     end
 
-    # - Maximum increase and decrease of accumulated storage within a representative period (6a)
+    # - Maximum increase and decrease of accumulated storage within a representative period
     let table_name = :storage_level_intra_rep_period_bounds, cons = constraints[table_name]
         indices = DuckDB.query(connection, "FROM cons_$table_name ORDER BY id")
         attach_constraint!(
@@ -249,7 +249,7 @@ function add_storage_constraints!(
         )
     end
 
-    # - Maximum inter-period storage level (4a or 6b-6c)
+    # - Maximum inter-period storage level
     let table_name = :max_storage_level_inter_period_limit,
         cons = constraints[table_name],
         indices = _append_storage_level_inter_period_bound_data_to_indices(connection, table_name)
@@ -323,7 +323,7 @@ function add_storage_constraints!(
         )
     end
 
-    # - Minimum inter-period storage level (4b or 6d-6e)
+    # - Minimum inter-period storage level
     let table_name = :min_storage_level_inter_period_limit,
         cons = constraints[table_name],
         indices = _append_storage_level_inter_period_bound_data_to_indices(connection, table_name)
