@@ -852,7 +852,7 @@ For `demand`, consumer balance applies. This constraint operates at the highest 
 \end{aligned}
 ```
 
-#### Hub Balance Constraints
+#### Consumer Balance Constraints for the Hub
 
 For `hub`, consumer balance applies. This constraint also operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `hub` receives two incoming flows: `ccgt` to `hub` in 2h and `import` to `hub` in 2h, and an outgoing flow `hub` to `demand` in 2h. As a result, the consumer balance is enforced in 2h resolution, which is the highest of the three.
 
