@@ -1,7 +1,7 @@
-asset,type,capacity,min_operating_point,vintage_method,investment_integer,technical_lifetime,economic_lifetime,discount_rate,consumer_balance_sense,capacity_storage_energy,use_inter_period_constraints,use_binary_storage_method,unit_commitment_integer,ramping,energy_to_power_ratio,investment_integer_storage_energy,max_ramp_up,max_ramp_down,storage_method_energy,unit_commitment,minimum_down_time,minimum_up_time
-ccgt,producer,400.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1
-demand,consumer,0.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1
-ens,producer,1115.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1
-ocgt,producer,100.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1
-solar,producer,10.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1
-wind,producer,50.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1
+asset,type,capacity,min_operating_point,vintage_method,investment_integer,technical_lifetime,economic_lifetime,discount_rate,consumer_balance_sense,capacity_storage_energy,use_inter_period_constraints,use_binary_storage_method,unit_commitment_integer,ramping,energy_to_power_ratio,investment_integer_storage_energy,max_ramp_up,max_ramp_down,storage_method_energy,unit_commitment,minimum_down_time,minimum_up_time,inter_period_storage_level_bounds
+ccgt,producer,400.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1,inter_period_only
+demand,consumer,0.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1,inter_period_only
+ens,producer,1115.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1,inter_period_only
+ocgt,producer,100.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1,inter_period_only
+solar,producer,10.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1,inter_period_only
+wind,producer,50.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,false,0.0,false,,,none,none,1,1,inter_period_only

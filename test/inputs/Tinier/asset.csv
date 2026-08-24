@@ -1,7 +1,7 @@
-asset,type,capacity,vintage_method,investment_integer,technical_lifetime,discount_rate,storage_method_energy,minimum_down_time,minimum_up_time
-ccgt,producer,400.0,aggregated,true,15,0.05,none,1,1
-demand,consumer,0.0,aggregated,false,15,0.05,none,1,1
-ens,producer,1115.0,aggregated,false,15,0.05,none,1,1
-ocgt,producer,100.0,aggregated,true,15,0.05,none,1,1
-solar,producer,10.0,aggregated,true,15,0.05,none,1,1
-wind,producer,50.0,aggregated,true,15,0.05,none,1,1
+asset,type,capacity,vintage_method,investment_integer,technical_lifetime,discount_rate,storage_method_energy,minimum_down_time,minimum_up_time,inter_period_storage_level_bounds
+ccgt,producer,400.0,aggregated,true,15,0.05,none,1,1,inter_period_only
+demand,consumer,0.0,aggregated,false,15,0.05,none,1,1,inter_period_only
+ens,producer,1115.0,aggregated,false,15,0.05,none,1,1,inter_period_only
+ocgt,producer,100.0,aggregated,true,15,0.05,none,1,1,inter_period_only
+solar,producer,10.0,aggregated,true,15,0.05,none,1,1,inter_period_only
+wind,producer,50.0,aggregated,true,15,0.05,none,1,1,inter_period_only
