@@ -1768,7 +1768,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 1767,1767,BG_Pump_Hydro_Closed,2050,1,307,307,inter_period_only,0.0
 1768,1768,BG_Pump_Hydro_Closed,2050,1,308,308,inter_period_only,0.0
 1769,1769,BG_Pump_Hydro_Closed,2050,1,309,309,inter_period_only,0.0
-1770,1770,BG_Pump_Hydro_Closed,2050,1,310,310,inter_period_only,-1.5987211554602254e-14
+1770,1770,BG_Pump_Hydro_Closed,2050,1,310,310,inter_period_only,-5.329070518200751e-15
 1771,1771,BG_Pump_Hydro_Closed,2050,1,311,311,inter_period_only,0.0
 1772,1772,BG_Pump_Hydro_Closed,2050,1,312,312,inter_period_only,0.0
 1773,1773,BG_Pump_Hydro_Closed,2050,1,313,313,inter_period_only,0.0
@@ -3130,7 +3130,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 3129,3129,CZ_Hydro_Reservoir,2050,1,209,209,inter_period_only,0.0
 3130,3130,CZ_Hydro_Reservoir,2050,1,210,210,inter_period_only,0.0
 3131,3131,CZ_Hydro_Reservoir,2050,1,211,211,inter_period_only,0.0
-3132,3132,CZ_Hydro_Reservoir,2050,1,212,212,inter_period_only,-37.35869567613292
+3132,3132,CZ_Hydro_Reservoir,2050,1,212,212,inter_period_only,-37.35869567613293
 3133,3133,CZ_Hydro_Reservoir,2050,1,213,213,inter_period_only,0.0
 3134,3134,CZ_Hydro_Reservoir,2050,1,214,214,inter_period_only,0.0
 3135,3135,CZ_Hydro_Reservoir,2050,1,215,215,inter_period_only,0.0
@@ -3495,7 +3495,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 3494,3494,CZ_Pump_Hydro_Closed,2050,1,209,209,inter_period_only,0.0
 3495,3495,CZ_Pump_Hydro_Closed,2050,1,210,210,inter_period_only,0.0
 3496,3496,CZ_Pump_Hydro_Closed,2050,1,211,211,inter_period_only,0.0
-3497,3497,CZ_Pump_Hydro_Closed,2050,1,212,212,inter_period_only,-37.35869567613292
+3497,3497,CZ_Pump_Hydro_Closed,2050,1,212,212,inter_period_only,-37.35869567613293
 3498,3498,CZ_Pump_Hydro_Closed,2050,1,213,213,inter_period_only,0.0
 3499,3499,CZ_Pump_Hydro_Closed,2050,1,214,214,inter_period_only,0.0
 3500,3500,CZ_Pump_Hydro_Closed,2050,1,215,215,inter_period_only,0.0
@@ -3860,7 +3860,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 3859,3859,CZ_Pump_Hydro_Open,2050,1,209,209,inter_period_only,0.0
 3860,3860,CZ_Pump_Hydro_Open,2050,1,210,210,inter_period_only,0.0
 3861,3861,CZ_Pump_Hydro_Open,2050,1,211,211,inter_period_only,0.0
-3862,3862,CZ_Pump_Hydro_Open,2050,1,212,212,inter_period_only,-37.35869567613292
+3862,3862,CZ_Pump_Hydro_Open,2050,1,212,212,inter_period_only,-37.35869567613293
 3863,3863,CZ_Pump_Hydro_Open,2050,1,213,213,inter_period_only,0.0
 3864,3864,CZ_Pump_Hydro_Open,2050,1,214,214,inter_period_only,0.0
 3865,3865,CZ_Pump_Hydro_Open,2050,1,215,215,inter_period_only,0.0
@@ -12569,7 +12569,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 12568,12568,PL_Hydro_Reservoir,2050,1,158,158,inter_period_only,0.0
 12569,12569,PL_Hydro_Reservoir,2050,1,159,159,inter_period_only,0.0
 12570,12570,PL_Hydro_Reservoir,2050,1,160,160,inter_period_only,0.0
-12571,12571,PL_Hydro_Reservoir,2050,1,161,161,inter_period_only,7.566391606186923e-15
+12571,12571,PL_Hydro_Reservoir,2050,1,161,161,inter_period_only,-0.0
 12572,12572,PL_Hydro_Reservoir,2050,1,162,162,inter_period_only,0.0
 12573,12573,PL_Hydro_Reservoir,2050,1,163,163,inter_period_only,0.0
 12574,12574,PL_Hydro_Reservoir,2050,1,164,164,inter_period_only,0.0
@@ -16733,7 +16733,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 16732,16732,SK_Pump_Hydro_Open,2050,1,307,307,inter_period_only,0.0
 16733,16733,SK_Pump_Hydro_Open,2050,1,308,308,inter_period_only,0.0
 16734,16734,SK_Pump_Hydro_Open,2050,1,309,309,inter_period_only,0.0
-16735,16735,SK_Pump_Hydro_Open,2050,1,310,310,inter_period_only,-1.9539925233402755e-14
+16735,16735,SK_Pump_Hydro_Open,2050,1,310,310,inter_period_only,-2.6645352591003757e-14
 16736,16736,SK_Pump_Hydro_Open,2050,1,311,311,inter_period_only,0.0
 16737,16737,SK_Pump_Hydro_Open,2050,1,312,312,inter_period_only,0.0
 16738,16738,SK_Pump_Hydro_Open,2050,1,313,313,inter_period_only,0.0
