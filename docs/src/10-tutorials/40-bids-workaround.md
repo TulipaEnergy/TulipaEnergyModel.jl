@@ -133,7 +133,7 @@ energy_problem
 
 The trick to have bids is to create a new asset for each of the bids.
 Each of these bid assets is a consumer asset requesting the profile bid as a "demand" bid.
-In Tulipa, the `:consumer` assets also work as hubs, i.e., they are allowed to provide energy to other assets connected via outgoing flows.
+In Tulipa, the `:consumer` assets can also serve as balance nodes, i.e., they are allowed to provide energy to other assets connected via outgoing flows.
 So, to satisfy the "demand" of the bid assets, we create a flow from the `"Consumer"` asset to these bid assets.
 To simulate the `price` willing to be paid by a bid, we use the `operational_cost` between the "Consumer" and the bid asset.
 In summary:

@@ -12,7 +12,7 @@ _TulipaEnergyModel.jl_ uses two fundamental building blocks as the foundation of
 - **Assets**: representation of a physical asset that can produce, consume, balance, store, or convert energy. Some examples of what these assets can represent are:
   - Producer: e.g., wind turbine, solar panel
   - Consumer: e.g., electricity demand, heat demand, energy balance
-    - Note that a consumer can have 0 demand and serve as a balance or "hub"
+    - Note that a consumer can have 0 demand and serve as a balance asset
   - Storage: e.g., battery, pumped-hydro storage
   - Conversion: e.g., power plants, electrolyzers
 - **Flows**: connections between assets, e.g., pipelines, transmission lines, or simply the energy production that goes from one asset to another.
@@ -166,23 +166,23 @@ The flows coming from `balance` are defined every 3 hours. Then, _min(incoming f
 \end{aligned}
 ```
 
-#### Hub Balance
+#### Consumer Balance for the Balance Asset
 
-The balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for all 6 blocks since _min(incoming flows, outgoing flows)_ becomes _min(1,2,3,4) = 1_
+The balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the consumer balance must be imposed for all 6 blocks since _min(incoming flows, outgoing flows)_ becomes _min(1,2,3,4) = 1_
 
 ```math
 \begin{aligned}
-& \text{hub\_balance}_{\text{balance},1:1}: \\
+& \text{consumer\_balance}_{\text{balance},1:1}: \\
 & \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 1:1} + v^{\text{flow}}_{(\text{wind},\text{balance}),1:2} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \\
-& \text{hub\_balance}_{\text{balance},2:2}: \\
+& \text{consumer\_balance}_{\text{balance},2:2}: \\
 & \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 2:2} + v^{\text{flow}}_{(\text{wind},\text{balance}),1:2} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \\
-& \text{hub\_balance}_{\text{balance},3:3}: \\
+& \text{consumer\_balance}_{\text{balance},3:3}: \\
 & \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 3:3} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \\
-& \text{hub\_balance}_{\text{balance},4:4}: \\
+& \text{consumer\_balance}_{\text{balance},4:4}: \\
 & \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 4:4} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4}\\
-& \text{hub\_balance}_{\text{balance},5:5}: \\
+& \text{consumer\_balance}_{\text{balance},5:5}: \\
 & \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 5:5} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \\
-& \text{hub\_balance}_{\text{balance},6:6}: \\
+& \text{consumer\_balance}_{\text{balance},6:6}: \\
 & \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 6:6} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \\
 \end{aligned}
 ```
@@ -854,7 +854,7 @@ For `demand`, consumer balance applies. This constraint operates at the highest 
 \end{aligned}
 ```
 
-#### Hub Balance Constraints
+#### Consumer Balance Constraints for the Hub
 
 For `hub`, consumer balance applies. This constraint also operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `hub` receives two incoming flows: `ccgt` to `hub` in 2h and `import` to `hub` in 2h, and an outgoing flow `hub` to `demand` in 2h. As a result, the consumer balance is enforced in 2h resolution, which is the highest of the three.
 
