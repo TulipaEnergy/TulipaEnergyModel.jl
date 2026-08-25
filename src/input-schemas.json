@@ -61,6 +61,18 @@
       "type": "DOUBLE",
       "unit_of_measure": "h"
     },
+    "inter_period_storage_level_bounds": {
+      "constraints": {
+        "oneOf": [
+          "inter_period_only",
+          "inter_and_intra_rep_period",
+          "none"
+        ]
+      },
+      "default": "inter_period_only",
+      "description": "Storage-level bound formulation for storage assets that use inter-period constraints. Use inter_period_only for bounds between representative periods, inter_and_intra_rep_period for conservative bounds within and between representative periods, or none for no additional storage-level bounds.",
+      "type": "VARCHAR"
+    },
     "investment_integer": {
       "default": false,
       "description": "Whether investment decisions are using integer variables.",

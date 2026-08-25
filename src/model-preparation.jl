@@ -439,12 +439,13 @@ end
     add_expression_terms_inter_period_storage_constraints!(
         connection,
         cons,
-        accumulated_intra_period,
-        workspace
+        rep_period_variable,
+        workspace;
+        expr_key = :accumulated_intra_period,
     )
 
-Computes the accumulated intra period expressions per row
-of the inter period level storage constraints.
+Maps one representative-period variable per representative period to each
+inter-period constraint block and stores it under `expr_key`.
 
 This function is only used internally in the model.
 
@@ -452,17 +453,16 @@ This function is only used internally in the model.
 
 This expression computation uses a workspace to store the accumulated
 intra-period variables defined for each period.
-The idea of this algorithm is to map the last intra-period storage-level
-variable of each representative period to the original periods using the
-representative-period weights, store these weighted contributions in
+The idea of this algorithm is to map one variable from each representative
+period to the original periods using the representative-period weights, store these weighted contributions in
 `workspace[period]`, and then aggregate them over each constraint period block.
 
 The algorithm works like this:
 
 1. Loop over each group of (asset, milestone_year, scenario)
 1.1. Loop over each representative period in the group
-1.1.1. Extract the last accumulated intra-period variable of the representative period
-1.1.2. Compute the coefficient of the variable from its representative period weigth
+1.1.1. Extract the representative-period variable
+1.1.2. Compute the coefficient of the variable from its representative-period weight
 1.1.3. Loop over each original period mapped from the representative period
 1.1.3.1. Multiply the coefficient by the mapping weight
 1.1.3.2. Store (var_id, weighted_coefficient) in workspace[period]
@@ -471,20 +471,20 @@ The algorithm works like this:
 1.2.2. Compute the expression using the variable container, the ids and coefficients
 
 Note:
-- The grouped SQL query first reduces each representative period to its last
-  accumulated intra-period variable, because this is the value that propagates
-  to the inter-period storage balance.
+- The grouped SQL query uses the last indexed variable in each representative
+  period. Accumulated storage has multiple checkpoints, while envelope variables
+  have one row per representative period.
 - The workspace is indexed by original period, not by timestep, because the
   constraints operate on period blocks over `rep_periods_mapping`.
 """
 function add_expression_terms_inter_period_storage_constraints!(
-    connection,
+    connection::DuckDB.DB,
     cons::TulipaConstraint,
-    accumulated_intra_period::TulipaVariable,
-    workspace,
+    rep_period_variable::TulipaVariable,
+    workspace::Vector{Dict{Int,Float64}};
+    expr_key::Symbol = :accumulated_intra_period,
 )
     num_rows = get_num_rows(connection, cons)
-    expr_key = :accumulated_intra_period
 
     attach_expression!(cons, expr_key, Vector{JuMP.AffExpr}(undef, num_rows))
     cons.expressions[expr_key] .= JuMP.AffExpr(0.0)
@@ -508,13 +508,13 @@ function add_expression_terms_inter_period_storage_constraints!(
         order_agg_by = :period,
     )
 
-    grouped_var_table_name = "t_grouped_$(accumulated_intra_period.table_name)"
+    grouped_var_table_name = "t_grouped_$(rep_period_variable.table_name)"
     _create_group_table_if_not_exist!(
         connection,
-        accumulated_intra_period.table_name,
+        rep_period_variable.table_name,
         grouped_var_table_name,
         [:asset, :milestone_year, :rep_period],
-        [:id, :time_block_start, :time_block_end],
+        [:id],
     )
 
     sql = """
@@ -525,10 +525,8 @@ function add_expression_terms_inter_period_storage_constraints!(
                 asset,
                 milestone_year,
                 rep_period,
-            list_last(id) AS id,
-            list_last(time_block_start) AS time_block_start,
-            list_last(time_block_end) AS time_block_end,
-        FROM $grouped_var_table_name
+                list_last(id) AS id
+            FROM $grouped_var_table_name
         )
     SELECT
         cons.asset,
@@ -538,8 +536,6 @@ function add_expression_terms_inter_period_storage_constraints!(
         ANY_VALUE(cons.period_block_start) AS cons_period_block_start_vec,
         ANY_VALUE(cons.period_block_end) AS cons_period_block_end_vec,
         ARRAY_AGG(var.id ORDER BY var.rep_period) AS var_id_vec,
-        ARRAY_AGG(var.time_block_start ORDER BY var.rep_period) AS var_time_block_start_vec,
-        ARRAY_AGG(var.time_block_end ORDER BY var.rep_period) AS var_time_block_end_vec,
         ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
         ARRAY_AGG(rpdata.num_timesteps ORDER BY var.rep_period) AS num_timesteps,
         ARRAY_AGG(COALESCE(rpmap.period, []) ORDER BY var.rep_period) AS var_periods,
@@ -565,13 +561,12 @@ function add_expression_terms_inter_period_storage_constraints!(
     for group_row in DuckDB.query(connection, sql)
         empty!.(workspace)
         workspace_aggregation = Dict{Int,Float64}()
-        for (var_id, time_block_start, time_block_end, var_periods, var_weights) in zip(
-            group_row.var_id_vec,
-            group_row.var_time_block_start_vec,
-            group_row.var_time_block_end_vec,
-            group_row.var_periods,
-            group_row.var_weights,
-        )
+        for (var_id, var_periods, var_weights) in
+            zip(group_row.var_id_vec, group_row.var_periods, group_row.var_weights)
+            if ismissing(var_id)
+                continue
+            end
+            variable_id = Int(var_id)
 
             # Loop over each period in the group and add the accumulated intra-period storage levels to the workspace
             for (period, weight) in zip(var_periods, var_weights)
@@ -579,8 +574,11 @@ function add_expression_terms_inter_period_storage_constraints!(
                     continue
                 end
 
-                workspace_at_period = workspace[period]
-                workspace_at_period[var_id] = get(workspace_at_period, var_id, 0.0) + weight
+                period_id = Int(period)
+                coefficient = Float64(weight)
+                workspace_at_period = workspace[period_id]
+                workspace_at_period[variable_id] =
+                    get(workspace_at_period, variable_id, 0.0) + coefficient
             end
         end
 
@@ -602,7 +600,7 @@ function add_expression_terms_inter_period_storage_constraints!(
                     JuMP.add_to_expression!(
                         this_expr,
                         coefficient,
-                        accumulated_intra_period.container[var_id],
+                        rep_period_variable.container[var_id],
                     )
                 end
             end
@@ -744,6 +742,20 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         constraints[:balance_storage_inter_period],
         variables[:accumulated_storage_level_intra_rep_period],
         workspace,
+    )
+    @timeit to "add max-storage-level increase expressions" add_expression_terms_inter_period_storage_constraints!(
+        connection,
+        constraints[:max_storage_level_inter_period_limit],
+        variables[:max_storage_level_increase_intra_rep_period],
+        workspace;
+        expr_key = :max_storage_level_increase_intra_rep_period,
+    )
+    @timeit to "add max-storage-level decrease expressions" add_expression_terms_inter_period_storage_constraints!(
+        connection,
+        constraints[:min_storage_level_inter_period_limit],
+        variables[:max_storage_level_decrease_intra_rep_period],
+        workspace;
+        expr_key = :max_storage_level_decrease_intra_rep_period,
     )
     @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
         connection,

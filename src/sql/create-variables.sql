@@ -372,6 +372,52 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_max_storage_level_increase_intra_rep_period
+;
+
+create table var_max_storage_level_increase_intra_rep_period as
+with
+    filtered_assets as (
+        select distinct
+            var.asset,
+            var.milestone_year,
+            var.rep_period,
+        from
+            var_accumulated_storage_level_intra_rep_period as var
+            left join asset as asset_data on var.asset = asset_data.asset
+        where
+            asset_data.inter_period_storage_level_bounds = 'inter_and_intra_rep_period'
+        order by
+            var.asset,
+            var.milestone_year,
+            var.rep_period
+    )
+select
+    nextval('id') as id,
+    filtered_assets.*,
+    cast(null as float8) as solution,
+from
+    filtered_assets
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists var_max_storage_level_decrease_intra_rep_period
+;
+
+create table var_max_storage_level_decrease_intra_rep_period as
+select
+    *
+from
+    var_max_storage_level_increase_intra_rep_period
+order by
+    id
+;
+
 drop table if exists var_flows_investment
 ;
 

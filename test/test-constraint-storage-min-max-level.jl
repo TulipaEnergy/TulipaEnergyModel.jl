@@ -1,598 +1,517 @@
 @testsnippet ConsStorageMinMaxLevelSetup begin
     using DuckDB: DuckDB
+    using Statistics: mean
     using TulipaBuilder: TulipaBuilder as TB
     using TulipaClustering: TulipaClustering as TC
 
-    # Configuration struct for testing
-    @kwdef struct ConsStorageMinMaxLevelConfig
-        use_inter_period_constraints::Bool
-        storage_method_energy::String
-        name::String = "dummy_storage"
-        initial_units::Float64 = 2.0
-        initial_storage_units::Float64 = 3.0
-        capacity::Float64 = 5.0
-        capacity_storage_energy::Float64 = 47.0
-        energy_to_power_ratio::Float64 = 7.0
-        investable::Bool = true
-        vintage_method::String = "aggregated"
-        max_storage_level_profile::Dict{Tuple{Int,Int},Vector{Float64}} =
-            Dict((2030, 1) => [0.8, 0.5, 1.0])
-        min_storage_level_profile::Dict{Tuple{Int,Int},Vector{Float64}} =
-            Dict((2030, 1) => [0.1, 0.4, 0.0])
-        inflows_profile::Dict{Tuple{Int,Int},Vector{Float64}} = Dict((2030, 1) => [0.3, 0.7, 0.2])
-        num_timesteps::Int = 1
-        num_rps::Int = 2
-    end
-
-    """
-        create_storage_min_max_level_test_problem(storage_asset)
-
-    Create a storage min-max level test problem with storage asset configuration.
-    Returns the database connection with configured storage asset and clustering.
-    """
-    function create_storage_min_max_level_test_problem(storage_asset::ConsStorageMinMaxLevelConfig)
+    function create_storage_bounds_problem(;
+        assets = Tuple[],
+        num_timesteps::Int = 2,
+        num_rep_periods::Int = 2,
+    )
         tulipa = TB.TulipaData()
-
-        # Add basic producer and consumer to connect the storage
         TB.add_asset!(tulipa, "consumer", :consumer)
 
-        # Add and configure the storage asset
-        TB.add_asset!(
-            tulipa,
-            storage_asset.name,
-            :storage;
-            use_inter_period_constraints = storage_asset.use_inter_period_constraints,
-            initial_units = storage_asset.initial_units,
-            initial_storage_units = storage_asset.initial_storage_units,
-            capacity = storage_asset.capacity,
-            capacity_storage_energy = storage_asset.capacity_storage_energy,
-            storage_method_energy = storage_asset.storage_method_energy,
-            energy_to_power_ratio = storage_asset.energy_to_power_ratio,
-            investable = storage_asset.investable,
-            vintage_method = storage_asset.vintage_method,
-        )
-        TB.add_flow!(tulipa, "consumer", storage_asset.name)
-        TB.add_flow!(tulipa, storage_asset.name, "consumer")
-
-        # We need to attach at least one profile into 'assets_profiles' for the clustering. So, we attach the inflows profile.
-        for ((commission_year, scenario), values) in storage_asset.inflows_profile
+        for asset in assets
+            TB.add_asset!(
+                tulipa,
+                asset.name,
+                :storage;
+                use_inter_period_constraints = asset.use_inter_period_constraints,
+                inter_period_storage_level_bounds = get(asset, :bounds, "inter_period_only"),
+                initial_units = 2.0,
+                initial_storage_units = 3.0,
+                initial_storage_level = get(asset, :initial_storage_level, missing),
+                capacity = 5.0,
+                capacity_storage_energy = 47.0,
+                storage_method_energy = get(asset, :storage_method_energy, "none"),
+                energy_to_power_ratio = 7.0,
+                investable = get(asset, :investable, false),
+                vintage_method = "aggregated",
+                storage_loss_from_stored_energy = get(asset, :storage_loss, 0.0),
+            )
+            TB.add_flow!(tulipa, "consumer", asset.name)
+            TB.add_flow!(tulipa, asset.name, "consumer")
             TB.attach_profile!(
                 tulipa,
-                storage_asset.name,
+                asset.name,
                 :inflows,
-                commission_year,
-                values;
-                scenario = scenario,
+                2030,
+                get(asset, :inflows_profile, [0.1, 0.2, 0.3, 0.4]),
             )
-        end
 
-        if !storage_asset.use_inter_period_constraints
-            # Attach max storage level profiles to the non-seasonal storage asset, commission_year and scenario
-            for ((commission_year, scenario), values) in storage_asset.max_storage_level_profile
-                TB.attach_profile!(
-                    tulipa,
-                    storage_asset.name,
-                    :max_storage_level,
-                    commission_year,
-                    values;
-                    scenario = scenario,
-                )
-            end
-            # Attach min storage level profiles to the non-seasonal storage asset, commission_year and scenario
-            for ((commission_year, scenario), values) in storage_asset.min_storage_level_profile
-                TB.attach_profile!(
-                    tulipa,
-                    storage_asset.name,
-                    :min_storage_level,
-                    commission_year,
-                    values;
-                    scenario = scenario,
-                )
-            end
-        else
-            # Attach max storage level profiles to the seasonal storage asset, milestone_year and scenario
-            for ((milestone_year, scenario), values) in storage_asset.max_storage_level_profile
-                TB.attach_timeframe_profile!(
-                    tulipa,
-                    storage_asset.name,
-                    :max_storage_level,
-                    milestone_year,
-                    values;
-                    scenario = scenario,
-                )
-            end
-            # Attach min storage level profiles to the seasonal storage asset, milestone_year and scenario
-            for ((milestone_year, scenario), values) in storage_asset.min_storage_level_profile
-                TB.attach_timeframe_profile!(
-                    tulipa,
-                    storage_asset.name,
-                    :min_storage_level,
-                    milestone_year,
-                    values;
-                    scenario = scenario,
-                )
+            for (profile_type, key) in
+                ((:max_storage_level, :max_profile), (:min_storage_level, :min_profile))
+                profile = get(asset, key, nothing)
+                if isnothing(profile)
+                    continue
+                end
+                if asset.use_inter_period_constraints
+                    TB.attach_timeframe_profile!(tulipa, asset.name, profile_type, 2030, profile)
+                else
+                    TB.attach_profile!(tulipa, asset.name, profile_type, 2030, profile)
+                end
             end
         end
 
-        # Create connection
         connection = TB.create_connection(tulipa, TEM.schema)
-
-        # Clustering to find representative periods
         layout = TC.ProfilesTableLayout(; year = :milestone_year, cols_to_crossby = [:scenario])
-        TC.cluster!(connection, storage_asset.num_timesteps, storage_asset.num_rps; layout)
-
-        # Populate with defaults and create model
+        TC.cluster!(connection, num_timesteps, num_rep_periods; layout)
+        partition_rows = [
+            (asset.name, Int32(2030), string(get(asset, :timeframe_partition, 1)), "uniform")
+            for asset in assets
+        ]
+        _create_table_for_tests(
+            connection,
+            "assets_timeframe_partitions",
+            partition_rows,
+            [:asset, :milestone_year, :partition, :specification],
+        )
         TEM.populate_with_defaults!(connection)
         energy_problem = TEM.EnergyProblem(connection)
         TEM.create_model!(energy_problem)
-
-        return (connection, energy_problem)
+        return energy_problem
     end
 
-    function get_rep_periods_profile_value(
-        connection,
-        profile::String,
-        milestone_year::Int32,
-        rep_period::Int32,
-        timestep::Int32,
-    )
-        return TEM.get_single_element_from_query_and_ensure_its_only_one(
-            DuckDB.query(
-                connection,
-                "SELECT value
-                 FROM profiles_rep_periods
-                 WHERE profile_name LIKE '%$(profile)%' AND
-                       milestone_year = $(milestone_year) AND
-                       rep_period = $(rep_period) AND
-                       timestep = $(timestep)
-                 ORDER BY milestone_year, rep_period, timestep",
+    function constraint_assets(connection, table_name::Symbol)
+        return Set(
+            row.asset for row in
+            DuckDB.query(connection, "SELECT DISTINCT asset FROM cons_$table_name ORDER BY asset")
+        )
+    end
+
+    function expected_rep_period_bounds(energy_problem)
+        connection = energy_problem.db_connection
+        capacity =
+            energy_problem.expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
+        level = energy_problem.variables[:storage_level_intra_rep_period].container
+
+        max_rows = TEM._append_storage_level_intra_rep_period_bound_data_to_indices(
+            connection,
+            :max_storage_level_intra_rep_period_limit,
+        )
+        expected_max = [
+            begin
+                profile = TEM._profile_aggregate(
+                    energy_problem.profiles.rep_period,
+                    (row.max_storage_level_profile_name, row.milestone_year, row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    mean,
+                    1.0,
+                )
+                JuMP.@build_constraint(
+                    level[row.storage_level_id] <= profile * capacity[row.avail_energy_capacity_id]
+                )
+            end for row in max_rows
+        ]
+
+        min_rows = TEM._append_storage_level_intra_rep_period_bound_data_to_indices(
+            connection,
+            :min_storage_level_intra_rep_period_limit,
+        )
+        expected_min = [
+            begin
+                profile = TEM._profile_aggregate(
+                    energy_problem.profiles.rep_period,
+                    (row.min_storage_level_profile_name, row.milestone_year, row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    mean,
+                    0.0,
+                )
+                JuMP.@build_constraint(
+                    level[row.storage_level_id] >= profile * capacity[row.avail_energy_capacity_id]
+                )
+            end for row in min_rows
+        ]
+        return (expected_max, expected_min)
+    end
+end
+
+@testitem "Representative-period storage bounds and capacity methods" setup =
+    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
+    energy_problem = create_storage_bounds_problem(;
+        assets = [
+            (;
+                name = "fixed",
+                use_inter_period_constraints = false,
+                max_profile = fill(0.8, 4),
+                min_profile = fill(0.2, 4),
             ),
-        )
-    end
+            (;
+                name = "optimized",
+                use_inter_period_constraints = false,
+                storage_method_energy = "optimize_storage_capacity",
+                investable = true,
+                max_profile = fill(0.7, 4),
+                min_profile = fill(0.1, 4),
+            ),
+            (;
+                name = "ratio",
+                use_inter_period_constraints = false,
+                storage_method_energy = "use_fixed_energy_to_power_ratio",
+                investable = true,
+                max_profile = fill(0.9, 4),
+                min_profile = fill(0.3, 4),
+            ),
+        ],
+    )
 
-    function get_rep_periods_constraint_data(connection, storage_asset_name)
-        # min/max constraints are created using the balance_storage_rep_period info
-        return DuckDB.query(
+    expected_max, expected_min = expected_rep_period_bounds(energy_problem)
+    @test _is_constraint_equal(
+        expected_max,
+        _get_cons_object(energy_problem.model, :max_storage_level_intra_rep_period_limit),
+    )
+    @test _is_constraint_equal(
+        expected_min,
+        _get_cons_object(energy_problem.model, :min_storage_level_intra_rep_period_limit),
+    )
+end
+
+@testitem "Storage bound modes create only required objects" setup =
+    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
+    energy_problem = create_storage_bounds_problem(;
+        assets = [
+            (;
+                name = "rep_positive",
+                use_inter_period_constraints = false,
+                min_profile = fill(0.2, 4),
+            ),
+            (; name = "rep_zero", use_inter_period_constraints = false, min_profile = zeros(4)),
+            (name = "rep_missing", use_inter_period_constraints = false),
+            (;
+                name = "inter_positive",
+                use_inter_period_constraints = true,
+                bounds = "inter_period_only",
+                min_profile = fill(0.2, 4),
+            ),
+            (;
+                name = "inter_zero",
+                use_inter_period_constraints = true,
+                bounds = "inter_period_only",
+                min_profile = zeros(4),
+            ),
+            (;
+                name = "conservative",
+                use_inter_period_constraints = true,
+                bounds = "inter_and_intra_rep_period",
+                min_profile = zeros(4),
+            ),
+            (; name = "unbounded", use_inter_period_constraints = true, bounds = "none"),
+        ],
+    )
+    connection = energy_problem.db_connection
+
+    @test constraint_assets(connection, :max_storage_level_intra_rep_period_limit) ==
+          Set(["rep_missing", "rep_positive", "rep_zero"])
+    @test constraint_assets(connection, :min_storage_level_intra_rep_period_limit) ==
+          Set(["rep_positive"])
+    @test constraint_assets(connection, :max_storage_level_inter_period_limit) ==
+          Set(["conservative", "inter_positive", "inter_zero"])
+    @test constraint_assets(connection, :min_storage_level_inter_period_limit) ==
+          Set(["conservative", "inter_positive"])
+
+    increase = energy_problem.variables[:max_storage_level_increase_intra_rep_period]
+    decrease = energy_problem.variables[:max_storage_level_decrease_intra_rep_period]
+    @test length(increase.container) == 2
+    @test length(decrease.container) == 2
+    @test all(variable -> JuMP.lower_bound(variable) == 0.0, increase.container)
+    @test all(variable -> JuMP.lower_bound(variable) == 0.0, decrease.container)
+    @test length(energy_problem.model[:max_storage_level_increase_intra_rep_period_limit]) == 4
+    @test length(energy_problem.model[:max_storage_level_decrease_intra_rep_period_limit]) == 4
+    @test constraint_assets(connection, :balance_storage_inter_period) ==
+          Set(["conservative", "inter_positive", "inter_zero", "unbounded"])
+    @test constraint_assets(connection, :accumulated_storage_intra_period) ==
+          Set(["conservative", "inter_positive", "inter_zero", "unbounded"])
+end
+
+@testitem "Inter-period-only storage bounds preserve equations 4a and 4b" setup =
+    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
+    energy_problem = create_storage_bounds_problem(;
+        assets = [
+            (;
+                name = "simple_fixed",
+                use_inter_period_constraints = true,
+                bounds = "inter_period_only",
+                max_profile = fill(0.8, 4),
+                min_profile = fill(0.2, 4),
+            ),
+            (;
+                name = "simple_optimized",
+                use_inter_period_constraints = true,
+                bounds = "inter_period_only",
+                storage_method_energy = "optimize_storage_capacity",
+                investable = true,
+                max_profile = fill(0.7, 4),
+                min_profile = fill(0.1, 4),
+            ),
+            (;
+                name = "simple_ratio",
+                use_inter_period_constraints = true,
+                bounds = "inter_period_only",
+                storage_method_energy = "use_fixed_energy_to_power_ratio",
+                investable = true,
+                max_profile = fill(0.9, 4),
+                min_profile = fill(0.3, 4),
+            ),
+        ],
+    )
+    connection = energy_problem.db_connection
+    capacity =
+        energy_problem.expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
+    level = energy_problem.variables[:storage_level_inter_period].container
+
+    max_rows = TEM._append_storage_level_inter_period_bound_data_to_indices(
+        connection,
+        :max_storage_level_inter_period_limit,
+    )
+    expected_max = [
+        begin
+            profile =
+                Dict("simple_fixed" => 0.8, "simple_optimized" => 0.7, "simple_ratio" => 0.9)[row.asset]
+            JuMP.@build_constraint(
+                level[row.storage_level_id] <= profile * capacity[row.avail_energy_capacity_id]
+            )
+        end for row in max_rows
+    ]
+    min_rows = TEM._append_storage_level_inter_period_bound_data_to_indices(
+        connection,
+        :min_storage_level_inter_period_limit,
+    )
+    expected_min = [
+        begin
+            profile =
+                Dict("simple_fixed" => 0.2, "simple_optimized" => 0.1, "simple_ratio" => 0.3)[row.asset]
+            JuMP.@build_constraint(
+                level[row.storage_level_id] >= profile * capacity[row.avail_energy_capacity_id]
+            )
+        end for row in min_rows
+    ]
+
+    @test _is_constraint_equal(
+        expected_max,
+        _get_cons_object(energy_problem.model, :max_storage_level_inter_period_limit),
+    )
+    @test _is_constraint_equal(
+        expected_min,
+        _get_cons_object(energy_problem.model, :min_storage_level_inter_period_limit),
+    )
+    @test isempty(energy_problem.variables[:max_storage_level_increase_intra_rep_period].container)
+    @test isempty(energy_problem.model[:max_storage_level_increase_intra_rep_period_limit])
+end
+
+@testitem "Conservative storage bounds implement equations 6a to 6e" setup =
+    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
+    energy_problem = create_storage_bounds_problem(;
+        assets = [
+            (;
+                name = "cyclic",
+                use_inter_period_constraints = true,
+                bounds = "inter_and_intra_rep_period",
+                storage_loss = 0.1,
+                max_profile = fill(0.8, 4),
+                min_profile = zeros(4),
+            ),
+            (;
+                name = "fixed_initial",
+                use_inter_period_constraints = true,
+                bounds = "inter_and_intra_rep_period",
+                initial_storage_level = 0.25,
+                storage_method_energy = "optimize_storage_capacity",
+                investable = true,
+                storage_loss = 0.1,
+                max_profile = fill(0.7, 4),
+                min_profile = fill(0.2, 4),
+            ),
+            (;
+                name = "fixed_ratio",
+                use_inter_period_constraints = true,
+                bounds = "inter_and_intra_rep_period",
+                storage_method_energy = "use_fixed_energy_to_power_ratio",
+                investable = true,
+                storage_loss = 0.1,
+                max_profile = fill(0.6, 4),
+                min_profile = fill(0.3, 4),
+            ),
+        ],
+    )
+    connection = energy_problem.db_connection
+    accumulated = energy_problem.variables[:accumulated_storage_level_intra_rep_period].container
+    increase = energy_problem.variables[:max_storage_level_increase_intra_rep_period].container
+    decrease = energy_problem.variables[:max_storage_level_decrease_intra_rep_period].container
+
+    rows = DuckDB.query(connection, "FROM cons_storage_level_intra_rep_period_bounds ORDER BY id")
+    expected_increase = [
+        JuMP.@build_constraint(
+            accumulated[row.accumulated_storage_level_id] <=
+            increase[row.max_storage_level_increase_id]
+        ) for row in rows
+    ]
+    rows = DuckDB.query(connection, "FROM cons_storage_level_intra_rep_period_bounds ORDER BY id")
+    expected_decrease = [
+        JuMP.@build_constraint(
+            -decrease[row.max_storage_level_decrease_id] <=
+            accumulated[row.accumulated_storage_level_id]
+        ) for row in rows
+    ]
+    @test _is_constraint_equal(
+        expected_increase,
+        _get_cons_object(energy_problem.model, :max_storage_level_increase_intra_rep_period_limit),
+    )
+    @test _is_constraint_equal(
+        expected_decrease,
+        _get_cons_object(energy_problem.model, :max_storage_level_decrease_intra_rep_period_limit),
+    )
+
+    capacity =
+        energy_problem.expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
+    level = energy_problem.variables[:storage_level_inter_period].container
+    max_cons = energy_problem.constraints[:max_storage_level_inter_period_limit]
+    max_rows = TEM._append_storage_level_inter_period_bound_data_to_indices(
+        connection,
+        :max_storage_level_inter_period_limit,
+    )
+    expected_max = [
+        begin
+            initial_level = row.initial_storage_level::Union{Float64,Missing}
+            previous_level = if row.period_block_start == 1 && !ismissing(initial_level)
+                initial_level * capacity[row.avail_energy_capacity_id]
+            elseif row.period_block_start > 1
+                level[row.previous_id]
+            else
+                level[row.cycle_id]
+            end
+            profile =
+                Dict("cyclic" => 0.8, "fixed_initial" => 0.7, "fixed_ratio" => 0.6)[row.asset]
+            JuMP.@build_constraint(
+                0.9 * previous_level +
+                max_cons.expressions[:max_storage_level_increase_intra_rep_period][row.id] <=
+                profile * capacity[row.avail_energy_capacity_id]
+            )
+        end for row in max_rows
+    ]
+
+    min_cons = energy_problem.constraints[:min_storage_level_inter_period_limit]
+    min_rows = TEM._append_storage_level_inter_period_bound_data_to_indices(
+        connection,
+        :min_storage_level_inter_period_limit,
+    )
+    expected_min = [
+        begin
+            initial_level = row.initial_storage_level::Union{Float64,Missing}
+            previous_level = if row.period_block_start == 1 && !ismissing(initial_level)
+                initial_level * capacity[row.avail_energy_capacity_id]
+            elseif row.period_block_start > 1
+                level[row.previous_id]
+            else
+                level[row.cycle_id]
+            end
+            profile =
+                Dict("cyclic" => 0.0, "fixed_initial" => 0.2, "fixed_ratio" => 0.3)[row.asset]
+            loss = 0.9^Int(row.duration_period_block)
+            JuMP.@build_constraint(
+                loss * previous_level -
+                min_cons.expressions[:max_storage_level_decrease_intra_rep_period][row.id] >=
+                profile * capacity[row.avail_energy_capacity_id]
+            )
+        end for row in min_rows
+    ]
+    @test _is_constraint_equal(
+        expected_max,
+        _get_cons_object(energy_problem.model, :max_storage_level_inter_period_limit),
+    )
+    @test _is_constraint_equal(
+        expected_min,
+        _get_cons_object(energy_problem.model, :min_storage_level_inter_period_limit),
+    )
+end
+
+@testitem "Conservative bounds aggregate multi-period timeframe blocks" setup =
+    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
+    energy_problem = create_storage_bounds_problem(;
+        assets = [(;
+            name = "block_storage",
+            use_inter_period_constraints = true,
+            bounds = "inter_and_intra_rep_period",
+            timeframe_partition = 2,
+            inflows_profile = collect(0.1:0.1:0.8),
+            max_profile = [0.9, 0.8, 0.7, 0.6, 0.8, 0.7, 0.6, 0.5],
+            min_profile = [0.1, 0.2, 0.3, 0.4, 0.2, 0.3, 0.4, 0.5],
+            storage_loss = 0.1,
+        ),],
+        num_timesteps = 2,
+        num_rep_periods = 2,
+    )
+    connection = energy_problem.db_connection
+    capacity =
+        energy_problem.expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
+    level = energy_problem.variables[:storage_level_inter_period].container
+
+    max_cons = energy_problem.constraints[:max_storage_level_inter_period_limit]
+    max_rows = collect(
+        TEM._append_storage_level_inter_period_bound_data_to_indices(
             connection,
-            "SELECT id, milestone_year, rep_period, time_block_start
-             FROM cons_balance_storage_rep_period
-             WHERE asset = '$(storage_asset_name)'
-             ORDER BY milestone_year, rep_period, time_block_start",
-        )
-    end
+            :max_storage_level_inter_period_limit,
+        ),
+    )
+    @test [(row.period_block_start, row.period_block_end) for row in max_rows] == [(1, 2), (3, 4)]
+    @test all(row -> Int(row.duration_period_block) == 4, max_rows)
+    @test all(
+        expression -> sum(first, JuMP.linear_terms(expression)) == 2.0,
+        max_cons.expressions[:max_storage_level_increase_intra_rep_period],
+    )
+    expected_max = [
+        begin
+            previous = row.period_block_start == 1 ? level[row.cycle_id] : level[row.previous_id]
+            profile = TEM._profile_aggregate(
+                energy_problem.profiles.inter_period,
+                (row.max_storage_level_profile_name, row.milestone_year, row.scenario),
+                row.period_block_start:row.period_block_end,
+                minimum,
+                1.0,
+            )
+            JuMP.@build_constraint(
+                0.9 * previous +
+                max_cons.expressions[:max_storage_level_increase_intra_rep_period][row.id] <=
+                profile * capacity[row.avail_energy_capacity_id]
+            )
+        end for row in max_rows
+    ]
 
-    function get_inter_periods_constraint_data(connection, storage_asset_name)
-        # min/max constraints are created using the balance_storage_inter_period info
-        return DuckDB.query(
+    min_cons = energy_problem.constraints[:min_storage_level_inter_period_limit]
+    min_rows = collect(
+        TEM._append_storage_level_inter_period_bound_data_to_indices(
             connection,
-            "SELECT id, milestone_year, scenario, period_block_start
-             FROM cons_balance_storage_inter_period
-             WHERE asset = '$(storage_asset_name)'
-             ORDER BY milestone_year, scenario, period_block_start",
-        )
-    end
-end
-
-@testitem "Test non seasonal storage min/max constraints - no investment" setup =
-    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
-
-    # Non-seasonal storage only depends on representative periods,
-    # not on scenarios, so we test with a single scenario.
-
-    # Create storage asset config struct
-    storage_asset = ConsStorageMinMaxLevelConfig(;
-        use_inter_period_constraints = false,
-        storage_method_energy = "none",
-        investable = false,
-    )
-
-    # clustering parameters
-    num_timesteps = storage_asset.num_timesteps
-    num_rps = storage_asset.num_rps
-
-    # Setup test problem with common helper
-    connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
-
-    # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
-
-    # Verify all expected constraints exist
-    constraint_data = get_rep_periods_constraint_data(connection, storage_asset.name)
-    num_constraints = constraint_data |> collect |> length
-    @test num_constraints == num_rps * num_timesteps
-
-    # Test each constraint for proper formulation
-    for row in constraint_data
-        id, y, rp, ts = row.id, row.milestone_year, row.rep_period, row.time_block_start
-
-        # Get profile values for this representative period
-        min_profile_value =
-            get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
-
-        # Build expected min_storage_level_intra_rep_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] >=
-            storage_asset.capacity_storage_energy *
-            storage_asset.initial_storage_units *
-            min_profile_value
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :min_storage_level_intra_rep_period_limit,
-            id,
-            expected_cons,
-        )
-
-        # Get profile values for this representative period
-        max_profile_value =
-            get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
-
-        # Build expected max_storage_level_intra_rep_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] <=
-            storage_asset.capacity_storage_energy *
-            storage_asset.initial_storage_units *
-            max_profile_value
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :max_storage_level_intra_rep_period_limit,
-            id,
-            expected_cons,
-        )
-    end
-end
-
-@testitem "Test non seasonal storage min/max constraints - investment with optimize_storage_capacity" setup =
-    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
-
-    # Non-seasonal storage only depends on representative periods,
-    # not on scenarios, so we test with a single scenario.
-
-    # Create storage asset config struct
-    storage_asset = ConsStorageMinMaxLevelConfig(;
-        use_inter_period_constraints = false,
-        storage_method_energy = "optimize_storage_capacity",
-    )
-
-    # clustering parameters
-    num_timesteps = storage_asset.num_timesteps
-    num_rps = storage_asset.num_rps
-
-    # Setup test problem with common helper
-    connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
-
-    # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
-
-    # Extract energy storage investment
-    assets_investment_energy = energy_problem.variables[:assets_investment_energy].container[1]
-
-    # Verify all expected constraints exist
-    constraint_data = get_rep_periods_constraint_data(connection, storage_asset.name)
-    num_constraints = constraint_data |> collect |> length
-    @test num_constraints == num_rps * num_timesteps
-
-    # Test each constraint for proper formulation
-    for row in constraint_data
-        id, y, rp, ts = row.id, row.milestone_year, row.rep_period, row.time_block_start
-
-        # Get profile values for this representative period
-        min_profile_value =
-            get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
-
-        # Build expected min_storage_level_intra_rep_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] >=
-            min_profile_value *
-            storage_asset.capacity_storage_energy *
-            (storage_asset.initial_storage_units + assets_investment_energy)
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :min_storage_level_intra_rep_period_limit,
-            id,
-            expected_cons,
-        )
-
-        # Get profile values for this representative period
-        max_profile_value =
-            get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
-
-        # Build expected max_storage_level_intra_rep_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] <=
-            max_profile_value *
-            storage_asset.capacity_storage_energy *
-            (storage_asset.initial_storage_units + assets_investment_energy)
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :max_storage_level_intra_rep_period_limit,
-            id,
-            expected_cons,
-        )
-    end
-end
-
-@testitem "Test non seasonal storage min/max constraints - investment with use_fixed_energy_to_power_ratio" setup =
-    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
-
-    # Non-seasonal storage only depends on representative periods,
-    # not on scenarios, so we test with a single scenario.
-
-    # Create storage asset config struct
-    storage_asset = ConsStorageMinMaxLevelConfig(;
-        use_inter_period_constraints = false,
-        storage_method_energy = "use_fixed_energy_to_power_ratio",
-    )
-
-    # clustering parameters
-    num_timesteps = storage_asset.num_timesteps
-    num_rps = storage_asset.num_rps
-
-    # Setup test problem with common helper
-    connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
-
-    # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
-
-    # Extract storage investment
-    assets_investment = energy_problem.variables[:assets_investment].container[1]
-
-    # Verify all expected constraints exist
-    constraint_data = get_rep_periods_constraint_data(connection, storage_asset.name)
-    num_constraints = constraint_data |> collect |> length
-    @test num_constraints == num_rps * num_timesteps
-
-    # Test each constraint for proper formulation
-    for row in constraint_data
-        id, y, rp, ts = row.id, row.milestone_year, row.rep_period, row.time_block_start
-
-        # Get profile values for this representative period
-        min_profile_value =
-            get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
-
-        # Build expected min_storage_level_intra_rep_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] >=
-            min_profile_value * (
-                storage_asset.capacity_storage_energy * storage_asset.initial_storage_units +
-                storage_asset.capacity * storage_asset.energy_to_power_ratio * assets_investment
-            )
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :min_storage_level_intra_rep_period_limit,
-            id,
-            expected_cons,
-        )
-
-        # Get profile values for this representative period
-        max_profile_value =
-            get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
-
-        # Build expected max_storage_level_intra_rep_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] <=
-            max_profile_value * (
-                storage_asset.capacity_storage_energy * storage_asset.initial_storage_units +
-                storage_asset.capacity * storage_asset.energy_to_power_ratio * assets_investment
-            )
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :max_storage_level_intra_rep_period_limit,
-            id,
-            expected_cons,
-        )
-    end
-end
-
-@testitem "Test seasonal storage min/max constraints - no investment" setup =
-    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
-
-    # seasonal storage variables depend on the scenario
-
-    # Create storage asset config struct
-    storage_asset = ConsStorageMinMaxLevelConfig(;
-        use_inter_period_constraints = true,
-        storage_method_energy = "none",
-        investable = false,
-        max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
-        min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
-    )
-
-    # Setup test problem with common helper
-    connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
-
-    # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_inter_period].container
-
-    # Verify all expected constraints exist
-    constraint_data = get_inter_periods_constraint_data(connection, storage_asset.name)
-    num_constraints = constraint_data |> collect |> length
-    @test num_constraints == length(storage_asset.inflows_profile[(2030, 1)])
-
-    # Test each constraint for proper formulation
-    for row in constraint_data
-        y, sc, p, id =
-            Int(row.milestone_year), Int(row.scenario), Int(row.period_block_start), row.id
-
-        # Build expected min_storage_level_inter_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] >=
-            storage_asset.min_storage_level_profile[(y, sc)][p] *
-            (storage_asset.capacity_storage_energy * storage_asset.initial_storage_units)
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
             :min_storage_level_inter_period_limit,
-            id,
-            expected_cons,
-        )
-
-        # Build expected max_storage_level_inter_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] <=
-            storage_asset.max_storage_level_profile[(y, sc)][p] *
-            (storage_asset.capacity_storage_energy * storage_asset.initial_storage_units)
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :max_storage_level_inter_period_limit,
-            id,
-            expected_cons,
-        )
-    end
-end
-
-@testitem "Test seasonal storage min/max constraints - investment with optimize_storage_capacity" setup =
-    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
-
-    # seasonal storage variables depend on the scenario
-
-    # Create storage asset config struct
-    storage_asset = ConsStorageMinMaxLevelConfig(;
-        use_inter_period_constraints = true,
-        storage_method_energy = "optimize_storage_capacity",
-        max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
-        min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
+        ),
     )
-
-    # Setup test problem with common helper
-    connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
-
-    # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_inter_period].container
-
-    # Extract storage investment
-    assets_investment_energy = energy_problem.variables[:assets_investment_energy].container[1]
-
-    # Verify all expected constraints exist
-    constraint_data = get_inter_periods_constraint_data(connection, storage_asset.name)
-    num_constraints = constraint_data |> collect |> length
-    @test num_constraints == length(storage_asset.inflows_profile[(2030, 1)])
-
-    # Test each constraint for proper formulation
-    for row in constraint_data
-        y, sc, p, id =
-            Int(row.milestone_year), Int(row.scenario), Int(row.period_block_start), row.id
-
-        # Build expected min_storage_level_inter_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] >=
-            storage_asset.min_storage_level_profile[(y, sc)][p] *
-            storage_asset.capacity_storage_energy *
-            (storage_asset.initial_storage_units + assets_investment_energy)
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :min_storage_level_inter_period_limit,
-            id,
-            expected_cons,
-        )
-
-        # Build expected max_storage_level_inter_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] <=
-            storage_asset.max_storage_level_profile[(y, sc)][p] *
-            storage_asset.capacity_storage_energy *
-            (storage_asset.initial_storage_units + assets_investment_energy)
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :max_storage_level_inter_period_limit,
-            id,
-            expected_cons,
-        )
-    end
-end
-
-@testitem "Test seasonal storage min/max constraints - investment with use_fixed_energy_to_power_ratio" setup =
-    [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
-
-    # seasonal storage variables depend on the scenario
-
-    # Create storage asset config struct
-    storage_asset = ConsStorageMinMaxLevelConfig(;
-        use_inter_period_constraints = true,
-        storage_method_energy = "use_fixed_energy_to_power_ratio",
-        max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
-        min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
+    @test all(
+        expression -> sum(first, JuMP.linear_terms(expression)) == 2.0,
+        min_cons.expressions[:max_storage_level_decrease_intra_rep_period],
     )
-
-    # Setup test problem with common helper
-    connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
-
-    # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_inter_period].container
-
-    # Extract storage investment
-    assets_investment = energy_problem.variables[:assets_investment].container[1]
-
-    # Verify all expected constraints exist
-    constraint_data = get_inter_periods_constraint_data(connection, storage_asset.name)
-    num_constraints = constraint_data |> collect |> length
-    @test num_constraints == length(storage_asset.inflows_profile[(2030, 1)])
-
-    # Test each constraint for proper formulation
-    for row in constraint_data
-        y, sc, p, id =
-            Int(row.milestone_year), Int(row.scenario), Int(row.period_block_start), row.id
-
-        # Build expected min_storage_level_inter_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] >=
-            storage_asset.min_storage_level_profile[(y, sc)][p] * (
-                storage_asset.capacity_storage_energy * storage_asset.initial_storage_units +
-                storage_asset.capacity * storage_asset.energy_to_power_ratio * assets_investment
+    expected_min = [
+        begin
+            previous = row.period_block_start == 1 ? level[row.cycle_id] : level[row.previous_id]
+            profile = TEM._profile_aggregate(
+                energy_problem.profiles.inter_period,
+                (row.min_storage_level_profile_name, row.milestone_year, row.scenario),
+                row.period_block_start:row.period_block_end,
+                maximum,
+                0.0,
             )
-        )
-
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :min_storage_level_inter_period_limit,
-            id,
-            expected_cons,
-        )
-
-        # Build expected max_storage_level_inter_period_limit constraint
-        expected_cons = JuMP.@build_constraint(
-            storage_level[id] <=
-            storage_asset.max_storage_level_profile[(y, sc)][p] * (
-                storage_asset.capacity_storage_energy * storage_asset.initial_storage_units +
-                storage_asset.capacity * storage_asset.energy_to_power_ratio * assets_investment
+            JuMP.@build_constraint(
+                0.9^Int(row.duration_period_block) * previous -
+                min_cons.expressions[:max_storage_level_decrease_intra_rep_period][row.id] >=
+                profile * capacity[row.avail_energy_capacity_id]
             )
-        )
+        end for row in min_rows
+    ]
 
-        # Verify constraint matches expected form
-        @test _verify_constraint_using_id(
-            energy_problem.model,
-            :max_storage_level_inter_period_limit,
-            id,
-            expected_cons,
-        )
-    end
+    @test _is_constraint_equal(
+        expected_max,
+        _get_cons_object(energy_problem.model, :max_storage_level_inter_period_limit),
+    )
+    @test _is_constraint_equal(
+        expected_min,
+        _get_cons_object(energy_problem.model, :min_storage_level_inter_period_limit),
+    )
 end

@@ -16,6 +16,8 @@ function compute_variables_indices(connection)
             :storage_level_intra_rep_period,
             :storage_level_inter_period,
             :accumulated_storage_level_intra_rep_period,
+            :max_storage_level_increase_intra_rep_period,
+            :max_storage_level_decrease_intra_rep_period,
             :assets_investment,
             :assets_decommission,
             :flows_investment,

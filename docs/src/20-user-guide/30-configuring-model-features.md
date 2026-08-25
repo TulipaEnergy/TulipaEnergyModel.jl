@@ -30,6 +30,30 @@ The `use_inter_period_constraints` parameter enables inter-period constraints fo
     - rep-period behavior: `var_storage_level_intra_rep_period`
     - inter-period behavior: `var_storage_level_inter_period`
 
+### Choosing storage-level bounds
+
+For storage assets with `use_inter_period_constraints = true`, the
+`inter_period_storage_level_bounds` parameter controls the additional bounds on the
+inter-period storage level trajectory:
+
+- `inter_period_only` (default) bounds only the inter-period level. This is the
+  smallest bounded formulation, but levels within a representative period can
+  exceed the limits.
+  This option is recommended for long-duration storage without modeling short-duration fluctuations.
+- `inter_and_intra_rep_period` adds increase/decrease envelopes so
+  the bounds also protect the trajectory within every mapped representative period. These bounds are more conservative when there is `storage_loss_from_stored_energy` values different from zero, and can lead to a larger model size, but they ensure that the storage level never exceeds the limits.
+  This option is recommended for long-duration storage with short-duration fluctuations as well. An use case, for example, is a battery that can shift energy between the represenative periods, so we want to model it as a seasonal asset that uses the inter period constraints. But, due to its capacity limitations, we want to impose extra bounds to ensure it stays within limits inside the representative periods.
+- `none` creates no additional inter-period minimum or maximum storage-level
+  constraints. This option is only recommended for testing, debugging, or very specific cases (e.g., CO2 emissions modelled as storage asset without a specific limit), as it can lead to unbounded storage levels.
+
+Use `inter_and_intra_rep_period` when respecting reservoir limits within
+representative periods is more important than the additional variables and
+constraints. Use `inter_period_only` when the smaller formulation is sufficient.
+The value is ignored for storage assets with `use_inter_period_constraints = false`.
+Their representative-period maximum bounds remain active, while minimum bounds with
+a zero or missing profile are omitted because storage-level variables are already
+nonnegative.
+
 ## Storage constraints
 
 ### [Seasonal and non-seasonal storage](@id seasonal-setup)

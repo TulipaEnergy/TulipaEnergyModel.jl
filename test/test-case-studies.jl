@@ -53,11 +53,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 4608.730116 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4498.400658 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 4608.730116 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4498.400658 atol = 1e-5
 end
 
 @testitem "UC ramping Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
@@ -193,7 +193,7 @@ end
     # We only check the rolling horizon objectives since we cannot easily obtain
     # the objective of the full problem
     expected_objective_values =
-        [103424.0, 120393.6, 109303.0, 108443.0, 122910.4, 137268.2, 118006.6]
+        [103424.0, 120393.6, 109303.0, 108443.0, 123410.4, 137768.2, 118506.6]
 
     energy_problem = TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; show_log = false)
     for row in DuckDB.query(connection, "FROM rolling_horizon_window")

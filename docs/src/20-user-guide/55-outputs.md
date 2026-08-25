@@ -81,6 +81,18 @@ Associated input parameters: `investable`, `investment_integer`, `capacity`, `in
 
 For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level BETWEEN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 
+### `var_max_storage_level_increase_intra_rep_period`
+
+For an inter-period storage asset using `inter_and_intra_rep_period`, the maximum
+increase in accumulated storage level within a representative period. It is indexed
+by asset, milestone year, and representative period and is nonnegative.
+
+### `var_max_storage_level_decrease_intra_rep_period`
+
+For an inter-period storage asset using `inter_and_intra_rep_period`, the maximum
+decrease in accumulated storage level within a representative period. It is indexed
+by asset, milestone year, and representative period and is nonnegative.
+
 ### `var_storage_level_intra_rep_period`
 
 For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level WITHIN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
@@ -104,14 +116,31 @@ Associated input parameter: `unit_commitment_integer`
 ### `cons_balance_storage_inter_period`
 
 - `dual_balance_storage_inter_period`: Dual of the constraint ["inter-period constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#inter-period-storage-balance).
-- `dual_max_storage_level_inter_period_limit`: Dual of the constraint ["inter-period constraint for maximum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#inter-period-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_inter_period_limit`: Dual of the constraint ["inter-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#inter-period-Constraint-for-Minimum-Storage-Level-Limit)
 
 ### `cons_balance_storage_rep_period`
 
 - `dual_balance_storage_rep_period`: Dual of the constraint ["rep-period constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#rep-period-storage-balance).
-- `dual_max_storage_level_intra_rep_period_limit`: Dual of the constraint ["rep-period constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_intra_rep_period_limit`: Dual of the constraint ["rep-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Minimum-Storage-Level-Limit)
+
+### `cons_max_storage_level_intra_rep_period_limit`
+
+- `dual_max_storage_level_intra_rep_period_limit`: Dual of the representative-period maximum storage-level constraint.
+
+### `cons_min_storage_level_intra_rep_period_limit`
+
+- `dual_min_storage_level_intra_rep_period_limit`: Dual of the representative-period minimum storage-level constraint. Rows with a zero or missing minimum profile are omitted.
+
+### `cons_storage_level_intra_rep_period_bounds`
+
+- `dual_max_storage_level_increase_intra_rep_period_limit`: Dual of the upper accumulated-change envelope in the first equation in [Inter- and Intra-representative-period Storage Bounds](@ref conservative-storage-level-bounds).
+- `dual_max_storage_level_decrease_intra_rep_period_limit`: Dual of the lower accumulated-change envelope in the first equation in [Inter- and Intra-representative-period Storage Bounds](@ref conservative-storage-level-bounds).
+
+### `cons_max_storage_level_inter_period_limit`
+
+- `dual_max_storage_level_inter_period_limit`: Dual of the selected inter-period maximum storage-level formulation.
+
+### `cons_min_storage_level_inter_period_limit`
+
+- `dual_min_storage_level_inter_period_limit`: Dual of the selected inter-period minimum storage-level formulation. Zero-profile rows are retained for `inter_and_intra_rep_period` because its decrease envelope makes them nonredundant.
 
 ### `cons_capacity_incoming`
 

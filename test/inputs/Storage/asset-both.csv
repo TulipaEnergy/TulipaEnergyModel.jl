@@ -9,3 +9,4 @@ phs,2030,2030,true,1.0,1.0
 demand,2030,2030,true,0.0,0.0
 caes,2030,2030,true,1.0,1.0
 atmosphere,2030,2030,true,0.0,0.0
+flow_battery,2030,2030,true,1.0,1.0
