@@ -41,7 +41,7 @@ inter-period storage level trajectory:
   exceed the limits.
   This option is recommended for long-duration storage without modeling short-duration fluctuations.
 - `inter_and_intra_rep_period` adds increase/decrease envelopes so
-  the bounds also protect the trajectory within every mapped representative period. These bounds are more conservative when there is `storage_loss_from_stored_energy` values different from zero, and can lead to a larger model size, but they ensure that the storage level never exceeds the limits. 
+  the bounds also protect the trajectory within every mapped representative period. These bounds are more conservative when there is `storage_loss_from_stored_energy` values different from zero, and can lead to a larger model size, but they ensure that the storage level never exceeds the limits.
   This option is recommended for long-duration storage with short-duration fluctuations as well. An use case, for example, is a battery that can shift energy between the represenative periods, so we want to model it as a seasonal asset that uses the inter period constraints. But, due to its capacity limitations, we want to impose extra bounds to ensure it stays within limits inside the representative periods.
 - `none` creates no additional inter-period minimum or maximum storage-level
   constraints. This option is only recommended for testing, debugging, or very specific cases (e.g., CO2 emissions modelled as storage asset without a specific limit), as it can lead to unbounded storage levels.
