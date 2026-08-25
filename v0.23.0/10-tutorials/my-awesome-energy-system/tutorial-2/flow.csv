@@ -1,0 +1,12 @@
+from_asset,to_asset,technical_lifetime,discount_rate,is_transport,capacity
+ens,e_demand,10,0.02,false,0
+ocgt,e_demand,10,0.02,false,0
+ccgt,e_demand,10,0.02,false,0
+wind,e_demand,10,0.02,false,0
+solar,e_demand,10,0.02,false,0
+wind,electrolizer,10,0.02,false,0
+electrolizer,h2_demand,10,0.02,false,0
+smr_ccs,h2_demand,10,0.02,false,0
+wind_offshore,hub,10,0.02,false,0
+wind_offshore,electrolizer,10,0.02,false,0
+hub,e_demand,10,0.02,true,200
