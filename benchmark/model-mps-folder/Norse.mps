@@ -34728,7 +34728,7 @@ COLUMNS
     flows_investment[2030,("Asgard_E_demand",_"Midgard_E_demand")] min_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Midgard_E_demand),2030,2,22:22] 1000
     flows_investment[2030,("Asgard_E_demand",_"Midgard_E_demand")] min_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Midgard_E_demand),2030,2,23:23] 1000
     flows_investment[2030,("Asgard_E_demand",_"Midgard_E_demand")] min_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Midgard_E_demand),2030,2,24:24] 1000
-    flows_investment[2030,("Asgard_E_demand",_"Midgard_E_demand")] OBJ 2000000
+    flows_investment[2030,("Asgard_E_demand",_"Midgard_E_demand")] OBJ 2040000
     MARKER    'MARKER'                 'INTEND'
     flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] max_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Valhalla_E_balance),2030,1,1:1] -950
     flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] max_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Valhalla_E_balance),2030,1,2:2] -950
@@ -35114,7 +35114,7 @@ COLUMNS
     flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] min_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Valhalla_E_balance),2030,2,22:22] 980
     flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] min_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Valhalla_E_balance),2030,2,23:23] 980
     flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] min_transport_flow_limit_aggregated_vintage_method[(Asgard_E_demand,Valhalla_E_balance),2030,2,24:24] 980
-    flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] OBJ 5000000
+    flows_investment[2030,("Asgard_E_demand",_"Valhalla_E_balance")] OBJ 5100000
     MARKER    'MARKER'                 'INTORG'
     flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] max_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,1:1] -1000
     flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] max_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,2:2] -1000
@@ -35500,7 +35500,7 @@ COLUMNS
     flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,2,22:22] 1000
     flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,2,23:23] 1000
     flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,2,24:24] 1000
-    flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] OBJ 3500000
+    flows_investment[2030,("Midgard_E_demand",_"Valhalla_E_balance")] OBJ 3570000
     assets_investment[2030,Asgard_CCGT] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,1,1:1] -500
     assets_investment[2030,Asgard_CCGT] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,1,2:2] -500
     assets_investment[2030,Asgard_CCGT] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,1,3:3] -500
@@ -35886,7 +35886,7 @@ COLUMNS
     assets_investment[2030,Asgard_CCGT] limit_units_on_aggregated_vintage_method[Asgard_CCGT,2030,2,23:23] -1
     assets_investment[2030,Asgard_CCGT] limit_units_on_aggregated_vintage_method[Asgard_CCGT,2030,2,24:24] -1
     assets_investment[2030,Asgard_CCGT] investment_group[ccgt_min,2030] 500
-    assets_investment[2030,Asgard_CCGT] OBJ 325000
+    assets_investment[2030,Asgard_CCGT] OBJ 341250
     assets_investment[2030,Midgard_Wind] max_output_flows_limit_aggregated_vintage_method[Midgard_Wind,2030,1,1:1] -1.107
     assets_investment[2030,Midgard_Wind] max_output_flows_limit_aggregated_vintage_method[Midgard_Wind,2030,1,2:2] -1.059
     assets_investment[2030,Midgard_Wind] max_output_flows_limit_aggregated_vintage_method[Midgard_Wind,2030,1,3:3] -1.083
@@ -36080,7 +36080,7 @@ COLUMNS
     assets_investment[2030,Midgard_Wind] max_output_flows_limit_aggregated_vintage_method[Midgard_Wind,2030,2,23:23] -2.3031
     assets_investment[2030,Midgard_Wind] max_output_flows_limit_aggregated_vintage_method[Midgard_Wind,2030,2,24:24] -2.3354999999999997
     assets_investment[2030,Midgard_Wind] investment_group[renewables_max,2030] 3
-    assets_investment[2030,Midgard_Wind] OBJ 3900
+    assets_investment[2030,Midgard_Wind] OBJ 4095
     assets_investment[2030,Midgard_PHS] max_output_flows_limit_aggregated_vintage_method[Midgard_PHS,2030,1,1:1] -200
     assets_investment[2030,Midgard_PHS] max_output_flows_limit_aggregated_vintage_method[Midgard_PHS,2030,1,2:2] -200
     assets_investment[2030,Midgard_PHS] max_output_flows_limit_aggregated_vintage_method[Midgard_PHS,2030,1,3:3] -200
@@ -36465,7 +36465,7 @@ COLUMNS
     assets_investment[2030,Midgard_PHS] max_input_flows_limit_aggregated_vintage_method[Midgard_PHS,2030,2,22:22] -200
     assets_investment[2030,Midgard_PHS] max_input_flows_limit_aggregated_vintage_method[Midgard_PHS,2030,2,23:23] -200
     assets_investment[2030,Midgard_PHS] max_input_flows_limit_aggregated_vintage_method[Midgard_PHS,2030,2,24:24] -200
-    assets_investment[2030,Midgard_PHS] OBJ 160000
+    assets_investment[2030,Midgard_PHS] OBJ 168000
     assets_investment[2030,Valhalla_Fuel_cell] max_output_flows_limit_aggregated_vintage_method[Valhalla_Fuel_cell,2030,1,1:1] -100
     assets_investment[2030,Valhalla_Fuel_cell] max_output_flows_limit_aggregated_vintage_method[Valhalla_Fuel_cell,2030,1,2:2] -100
     assets_investment[2030,Valhalla_Fuel_cell] max_output_flows_limit_aggregated_vintage_method[Valhalla_Fuel_cell,2030,1,3:3] -100
@@ -36658,7 +36658,7 @@ COLUMNS
     assets_investment[2030,Valhalla_Fuel_cell] max_output_flows_limit_aggregated_vintage_method[Valhalla_Fuel_cell,2030,2,22:22] -100
     assets_investment[2030,Valhalla_Fuel_cell] max_output_flows_limit_aggregated_vintage_method[Valhalla_Fuel_cell,2030,2,23:23] -100
     assets_investment[2030,Valhalla_Fuel_cell] max_output_flows_limit_aggregated_vintage_method[Valhalla_Fuel_cell,2030,2,24:24] -100
-    assets_investment[2030,Valhalla_Fuel_cell] OBJ 80000
+    assets_investment[2030,Valhalla_Fuel_cell] OBJ 84000
     assets_investment[2030,Asgard_Solar] max_output_flows_limit_aggregated_vintage_method[Asgard_Solar,2030,1,9:9] -4.3999999999999995
     assets_investment[2030,Asgard_Solar] max_output_flows_limit_aggregated_vintage_method[Asgard_Solar,2030,1,10:10] -12.6
     assets_investment[2030,Asgard_Solar] max_output_flows_limit_aggregated_vintage_method[Asgard_Solar,2030,1,11:11] -17.5
@@ -36724,7 +36724,7 @@ COLUMNS
     assets_investment[2030,Asgard_Solar] max_output_flows_limit_aggregated_vintage_method[Asgard_Solar,2030,2,13:15] -17.875
     assets_investment[2030,Asgard_Solar] max_output_flows_limit_aggregated_vintage_method[Asgard_Solar,2030,2,16:16] -0.25
     assets_investment[2030,Asgard_Solar] investment_group[renewables_max,2030] 100
-    assets_investment[2030,Asgard_Solar] OBJ 35000
+    assets_investment[2030,Asgard_Solar] OBJ 36750
     assets_investment[2030,Asgard_Battery] max_output_flows_limit_aggregated_vintage_method[Asgard_Battery,2030,1,1:3] -100
     assets_investment[2030,Asgard_Battery] max_output_flows_limit_aggregated_vintage_method[Asgard_Battery,2030,1,4:6] -100
     assets_investment[2030,Asgard_Battery] max_output_flows_limit_aggregated_vintage_method[Asgard_Battery,2030,1,7:9] -100
@@ -37130,7 +37130,7 @@ COLUMNS
     assets_investment[2030,Asgard_Battery] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,13:16] -10000
     assets_investment[2030,Asgard_Battery] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,17:20] -10000
     assets_investment[2030,Asgard_Battery] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,21:24] -10000
-    assets_investment[2030,Asgard_Battery] OBJ 30000
+    assets_investment[2030,Asgard_Battery] OBJ 31500
     assets_investment[2030,Valhalla_H2_generator] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_generator,2030,1,1:1] -100
     assets_investment[2030,Valhalla_H2_generator] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_generator,2030,1,2:2] -100
     assets_investment[2030,Valhalla_H2_generator] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_generator,2030,1,3:3] -100
@@ -37323,7 +37323,7 @@ COLUMNS
     assets_investment[2030,Valhalla_H2_generator] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_generator,2030,2,22:22] -100
     assets_investment[2030,Valhalla_H2_generator] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_generator,2030,2,23:23] -100
     assets_investment[2030,Valhalla_H2_generator] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_generator,2030,2,24:24] -100
-    assets_investment[2030,Valhalla_H2_generator] OBJ 47900
+    assets_investment[2030,Valhalla_H2_generator] OBJ 50295.00000000001
     MARKER    'MARKER'                 'INTEND'
     assets_investment[2030,Midgard_Nuclear_SMR] max_output_flows_limit_aggregated_vintage_method[Midgard_Nuclear_SMR,2030,1,1:1] -150
     assets_investment[2030,Midgard_Nuclear_SMR] max_output_flows_limit_aggregated_vintage_method[Midgard_Nuclear_SMR,2030,1,2:2] -150
@@ -37517,7 +37517,7 @@ COLUMNS
     assets_investment[2030,Midgard_Nuclear_SMR] max_output_flows_limit_aggregated_vintage_method[Midgard_Nuclear_SMR,2030,2,22:22] -150
     assets_investment[2030,Midgard_Nuclear_SMR] max_output_flows_limit_aggregated_vintage_method[Midgard_Nuclear_SMR,2030,2,23:23] -150
     assets_investment[2030,Midgard_Nuclear_SMR] max_output_flows_limit_aggregated_vintage_method[Midgard_Nuclear_SMR,2030,2,24:24] -150
-    assets_investment[2030,Midgard_Nuclear_SMR] OBJ 900000
+    assets_investment[2030,Midgard_Nuclear_SMR] OBJ 945000
     assets_investment[2030,Midgard_CCGT] max_output_flows_limit_aggregated_vintage_method[Midgard_CCGT,2030,1,1:1] -500
     assets_investment[2030,Midgard_CCGT] max_output_flows_limit_aggregated_vintage_method[Midgard_CCGT,2030,1,2:2] -500
     assets_investment[2030,Midgard_CCGT] max_output_flows_limit_aggregated_vintage_method[Midgard_CCGT,2030,1,3:3] -500
@@ -37903,7 +37903,7 @@ COLUMNS
     assets_investment[2030,Midgard_CCGT] limit_units_on_aggregated_vintage_method[Midgard_CCGT,2030,2,23:23] -1
     assets_investment[2030,Midgard_CCGT] limit_units_on_aggregated_vintage_method[Midgard_CCGT,2030,2,24:24] -1
     assets_investment[2030,Midgard_CCGT] investment_group[ccgt_min,2030] 500
-    assets_investment[2030,Midgard_CCGT] OBJ 325000
+    assets_investment[2030,Midgard_CCGT] OBJ 341250
     MARKER    'MARKER'                 'INTORG'
     assets_investment[2030,Valhalla_GT] max_output_flows_limit_aggregated_vintage_method[Valhalla_GT,2030,1,1:1] -500
     assets_investment[2030,Valhalla_GT] max_output_flows_limit_aggregated_vintage_method[Valhalla_GT,2030,1,2:2] -500
@@ -38097,7 +38097,7 @@ COLUMNS
     assets_investment[2030,Valhalla_GT] max_output_flows_limit_aggregated_vintage_method[Valhalla_GT,2030,2,22:22] -500
     assets_investment[2030,Valhalla_GT] max_output_flows_limit_aggregated_vintage_method[Valhalla_GT,2030,2,23:23] -500
     assets_investment[2030,Valhalla_GT] max_output_flows_limit_aggregated_vintage_method[Valhalla_GT,2030,2,24:24] -500
-    assets_investment[2030,Valhalla_GT] OBJ 200000
+    assets_investment[2030,Valhalla_GT] OBJ 210000
     assets_investment[2030,Valhalla_H2_storage] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_storage,2030,1,1:1] -500
     assets_investment[2030,Valhalla_H2_storage] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_storage,2030,1,2:2] -500
     assets_investment[2030,Valhalla_H2_storage] max_output_flows_limit_aggregated_vintage_method[Valhalla_H2_storage,2030,1,3:3] -500
@@ -38482,7 +38482,7 @@ COLUMNS
     assets_investment[2030,Valhalla_H2_storage] max_input_flows_limit_aggregated_vintage_method[Valhalla_H2_storage,2030,2,22:22] -500
     assets_investment[2030,Valhalla_H2_storage] max_input_flows_limit_aggregated_vintage_method[Valhalla_H2_storage,2030,2,23:23] -500
     assets_investment[2030,Valhalla_H2_storage] max_input_flows_limit_aggregated_vintage_method[Valhalla_H2_storage,2030,2,24:24] -500
-    assets_investment[2030,Valhalla_H2_storage] OBJ 50
+    assets_investment[2030,Valhalla_H2_storage] OBJ 52.50000000000001
     assets_investment[2030,Valhalla_Electrolyser] max_output_flows_limit_aggregated_vintage_method[Valhalla_Electrolyser,2030,1,1:1] -100
     assets_investment[2030,Valhalla_Electrolyser] max_output_flows_limit_aggregated_vintage_method[Valhalla_Electrolyser,2030,1,2:2] -100
     assets_investment[2030,Valhalla_Electrolyser] max_output_flows_limit_aggregated_vintage_method[Valhalla_Electrolyser,2030,1,3:3] -100
@@ -38675,7 +38675,7 @@ COLUMNS
     assets_investment[2030,Valhalla_Electrolyser] max_output_flows_limit_aggregated_vintage_method[Valhalla_Electrolyser,2030,2,22:22] -100
     assets_investment[2030,Valhalla_Electrolyser] max_output_flows_limit_aggregated_vintage_method[Valhalla_Electrolyser,2030,2,23:23] -100
     assets_investment[2030,Valhalla_Electrolyser] max_output_flows_limit_aggregated_vintage_method[Valhalla_Electrolyser,2030,2,24:24] -100
-    assets_investment[2030,Valhalla_Electrolyser] OBJ 126000
+    assets_investment[2030,Valhalla_Electrolyser] OBJ 132300
     assets_investment[2030,Valhalla_Heat_pump] max_output_flows_limit_aggregated_vintage_method[Valhalla_Heat_pump,2030,1,1:1] -100
     assets_investment[2030,Valhalla_Heat_pump] max_output_flows_limit_aggregated_vintage_method[Valhalla_Heat_pump,2030,1,2:2] -100
     assets_investment[2030,Valhalla_Heat_pump] max_output_flows_limit_aggregated_vintage_method[Valhalla_Heat_pump,2030,1,3:3] -100
@@ -38868,7 +38868,7 @@ COLUMNS
     assets_investment[2030,Valhalla_Heat_pump] max_output_flows_limit_aggregated_vintage_method[Valhalla_Heat_pump,2030,2,22:22] -100
     assets_investment[2030,Valhalla_Heat_pump] max_output_flows_limit_aggregated_vintage_method[Valhalla_Heat_pump,2030,2,23:23] -100
     assets_investment[2030,Valhalla_Heat_pump] max_output_flows_limit_aggregated_vintage_method[Valhalla_Heat_pump,2030,2,24:24] -100
-    assets_investment[2030,Valhalla_Heat_pump] OBJ 30000
+    assets_investment[2030,Valhalla_Heat_pump] OBJ 31500
     MARKER    'MARKER'                 'INTEND'
     assets_investment_energy[2030,Midgard_PHS] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,1:1] -100
     assets_investment_energy[2030,Midgard_PHS] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,2:2] -100
@@ -39062,7 +39062,7 @@ COLUMNS
     assets_investment_energy[2030,Midgard_PHS] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,22:22] -100
     assets_investment_energy[2030,Midgard_PHS] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,23:23] -100
     assets_investment_energy[2030,Midgard_PHS] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,24:24] -100
-    assets_investment_energy[2030,Midgard_PHS] OBJ 50500
+    assets_investment_energy[2030,Midgard_PHS] OBJ 53000
     assets_decommission[G_imports,2030,2030] max_output_flows_limit_aggregated_vintage_method[G_imports,2030,1,1:1] 75000
     assets_decommission[G_imports,2030,2030] max_output_flows_limit_aggregated_vintage_method[G_imports,2030,1,2:2] 75000
     assets_decommission[G_imports,2030,2030] max_output_flows_limit_aggregated_vintage_method[G_imports,2030,1,3:3] 75000

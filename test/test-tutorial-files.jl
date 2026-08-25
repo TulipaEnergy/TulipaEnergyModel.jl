@@ -140,33 +140,33 @@ end
     [:integration, :slow] begin
     connection = _tutorial_connection("tutorial-6-simple-method")
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 8.502460892530702e6 atol = 1e-5
+    @test energy_problem.objective_value ≈ 8511709.40963 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 8.502460892530702e6 atol = 1e-5
+    @test energy_problem.objective_value ≈ 8511709.40963 atol = 1e-5
 end
 
 @testitem "Tutorial 6 compact method objective value" setup = [CommonSetup, TutorialSetup] tags =
     [:integration, :slow] begin
     connection = _tutorial_connection("tutorial-6-compact-method")
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 8.619710327700023e6 atol = 1e-5
+    @test energy_problem.objective_value ≈ 8629317.65966 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 8.619710327700023e6 atol = 1e-5
+    @test energy_problem.objective_value ≈ 8629317.65966 atol = 1e-5
 end
 
 @testitem "Tutorial 9 objective value" setup = [CommonSetup, TutorialSetup] tags =
     [:integration, :slow] begin
     connection = _tutorial_connection("tutorial-9"; preprocess! = _cluster_tutorial_9!)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 499.24509272162777 atol = 1e-5
+    @test energy_problem.objective_value ≈ 512.84209 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 499.24509272162777 atol = 1e-5
+    @test energy_problem.objective_value ≈ 512.84209 atol = 1e-5
 end
 
 @testitem "Tutorial CVaR objective value" setup = [CommonSetup, TutorialSetup] tags =

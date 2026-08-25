@@ -110,8 +110,7 @@ function _investment_discount_sql(;
                 WHEN $discount_rate = 0
                     THEN $cost / $economic_lifetime
                 ELSE $discount_rate / (
-                    (1 + $discount_rate) *
-                    (1 - 1 / ((1 + $discount_rate) ** $economic_lifetime))
+                    1 - 1 / ((1 + $discount_rate) ** $economic_lifetime)
                     ) * $cost
             END AS $annualized,
             CASE
@@ -131,7 +130,7 @@ function _investment_discount_sql(;
                 -- the weight does not accept a zero cost in the denominator
                 WHEN $cost = 0
                     THEN 0.0 -- zero investment cost, so the weight does not matter
-                ELSE investment_year_discount * (1 - $salvage / $cost)
+                ELSE investment_year_discount * (1 + $discount_rate - $salvage / $cost)
             END AS $weight"""
 end
 
