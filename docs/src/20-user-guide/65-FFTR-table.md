@@ -42,4 +42,4 @@ Below is the table outlining the details for each type of constraint.
 | DC-OPF Constraint                              | flow, electricity_angle        | -                | power           | min(neighboring assets, flow)                                                            | -                   |
 | Flows relationships                            | flow 1, flow 2                 | -                | energy          | max(flow1, flow2)                                                                        | -                   |
 
-[^1]: Only inputs or outputs with [`conversion coefficient`](@ref coefficient-for-conversion-constraints) $\geq 0$ are considered to determine the resolution of the conversion balance constraint.
+[^1]: Only inputs or outputs with [`conversion coefficient`](@ref coefficient-for-conversion-constraints) ``\geq 0`` are considered to determine the resolution of the conversion balance constraint.
