@@ -228,9 +228,10 @@ function parse_arguments()
         return tag
     end
 
-    tag_transform(list_of_tags) = map(split(list_of_tags, ",")) do tag
-        return ensure_tag_existence(Symbol(tag))
-    end
+    tag_transform(list_of_tags) =
+        map(split(list_of_tags, ",")) do tag
+            return ensure_tag_existence(Symbol(tag))
+        end
 
     tags_filter = _parse_argument_with_value("--tags", tag_transform)
     exclude_filter = _parse_argument_with_value("--exclude", tag_transform)
@@ -276,7 +277,7 @@ function _create_filter(args)
             filters,
             test_item ->
                 contains(test_item.name, args.pattern) ||
-                contains(test_item.filename, args.pattern),
+                    contains(test_item.filename, args.pattern),
         )
     end
 

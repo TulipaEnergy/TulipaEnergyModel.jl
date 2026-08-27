@@ -356,9 +356,9 @@ function add_storage_constraints!(
                     if conservative
                         initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
                         loss_coefficient =
-                            (1.0 - (row.storage_loss_from_stored_energy::Float64))^(Int(
-                                row.duration_period_block,
-                            ))
+                            (
+                                1.0 - (row.storage_loss_from_stored_energy::Float64)
+                            )^(Int(row.duration_period_block))
                         max_decrease =
                             cons.expressions[:max_storage_level_decrease_intra_rep_period][row.id]
                         if row.period_block_start == 1 && !ismissing(initial_storage_level)
