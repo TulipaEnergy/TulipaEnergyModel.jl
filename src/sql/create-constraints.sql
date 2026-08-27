@@ -519,7 +519,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.ramping
-    and asset.unit_commitment = 'basic'
+    and asset.unit_commitment != 'none'
 ;
 
 drop sequence id
