@@ -21,10 +21,10 @@ jobs:
     uses: ./.github/workflows/ReusableTest.yml
     with:
       os: ${{ matrix.os }}
-      version: "1"
+      version: ${{ matrix.version }}
       arch: x64
       allow_failure: false
-      run_codecov: ${{ matrix.os == 'ubuntu-latest' }}
+      run_codecov: ${{ matrix.os == 'ubuntu-latest' && matrix.version == '1' }}
     secrets:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
     strategy:
@@ -34,6 +34,8 @@ jobs:
           - ubuntu-latest
           - macOS-latest
           - windows-latest
+        version:
+          - "1"
         has_test_all_label:
           - ${{ contains(github.event.pull_request.labels.*.name, 'pr-test-all') }}
         exclude: # If there is no label (`false`), the other OSs are excluded. If there is label (`true`), exclude doesn't match anything
@@ -41,3 +43,7 @@ jobs:
             os: macOS-latest
           - has_test_all_label: false
             os: windows-latest
+        include: # Always test the Julia LTS version on Ubuntu
+          - os: ubuntu-latest
+            version: "lts"
+            has_test_all_label: false
