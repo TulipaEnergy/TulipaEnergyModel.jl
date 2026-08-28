@@ -43,7 +43,6 @@ jobs:
             os: macOS-latest
           - has_test_all_label: false
             os: windows-latest
-        include: # Always test the Julia LTS version on Ubuntu
+        include: # Always test the Julia LTS version on Ubuntu, regardless of the label
           - os: ubuntu-latest
             version: "lts"
-            has_test_all_label: false
