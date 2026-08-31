@@ -27,7 +27,7 @@
             distance = TC.Distances.CosineDist(),
             weight_type = :convex,
             tol = 1e-6,
-            weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 1000),
+            weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 2000),
             layout = TC.ProfilesTableLayout(; year = :milestone_year),
         )
         return nothing
@@ -48,7 +48,7 @@
             distance = TC.Distances.CosineDist(),
             weight_type = :convex,
             tol = 1e-6,
-            weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 1000),
+            weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 2000),
             layout = TC.ProfilesTableLayout(; year = :milestone_year),
         )
         return nothing
@@ -74,7 +74,7 @@
             distance = TC.Distances.CosineDist(),
             weight_type = :convex,
             tol = 1e-6,
-            weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 1000),
+            weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 2000),
             layout,
         )
         return nothing
@@ -118,22 +118,22 @@ end
     [:integration, :slow] begin
     connection = _tutorial_connection("tutorial-4"; preprocess! = _cluster_tutorial_4!)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 1.7546138830254573e8 atol = 1e-5
+    @test energy_problem.objective_value ≈ 1.6628272019781297e8 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 1.7546138830254573e8 atol = 1e-5
+    @test energy_problem.objective_value ≈ 1.6628272019781297e8 atol = 1e-5
 end
 
 @testitem "Tutorial 5 objective value" setup = [CommonSetup, TutorialSetup] tags =
     [:integration, :slow] begin
     connection = _tutorial_connection("tutorial-5"; preprocess! = _cluster_tutorial_5!)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 3.05072872119844e8 atol = 1e-5
+    @test energy_problem.objective_value ≈ 3.3675960187027e8 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 3.05072872119844e8 atol = 1e-5
+    @test energy_problem.objective_value ≈ 3.3675960187027e8 atol = 1e-5
 end
 
 @testitem "Tutorial 6 simple method objective value" setup = [CommonSetup, TutorialSetup] tags =
@@ -162,11 +162,11 @@ end
     [:integration, :slow] begin
     connection = _tutorial_connection("tutorial-9"; preprocess! = _cluster_tutorial_9!)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 512.84209 atol = 1e-5
+    @test energy_problem.objective_value ≈ 531.19287 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 512.84209 atol = 1e-5
+    @test energy_problem.objective_value ≈ 531.19287 atol = 1e-5
 end
 
 @testitem "Tutorial CVaR objective value" setup = [CommonSetup, TutorialSetup] tags =
