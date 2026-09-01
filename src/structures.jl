@@ -233,7 +233,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `variables`: A dictionary of [TulipaVariable](@ref TulipaVariable)s containing the variables of the model.
 - `expressions`: A dictionary of [TulipaExpression](@ref TulipaExpression)s containing the expressions of the model attached to tables.
 - `constraints`: A dictionary of [TulipaConstraint](@ref TulipaConstraint)s containing the constraints of the model.
-- `profiles`: Holds the profiles per `rep_period` or `inter_period` in dictionary format. See [ProfileLookup](@ref).
+- `profiles`: Holds the profiles per `rep_period` or `inter_period` in dictionary format. See [ProfileLookup](@ref ProfileLookup).
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem (Float64).
