@@ -17,8 +17,8 @@ authors:
       orcid: "0000-0003-4451-281X"
     - given-names: Diego A.
       surname: Tejada-Arango
-      email: diego.tejadaarango@tno.nl
-      affiliation: 2, 6
+      email: dtejada@epri.com
+      affiliation: 9
       orcid: "0000-0002-3278-9283"
     - given-names: Grigory
       surname: Neustroev
@@ -86,6 +86,9 @@ affiliations:
     index: 7
   - name: Open Energy Transition
     index: 8
+  - name: Electric Power Research Institute
+    index: 9
+    ror: 02dqztz06
 date: 04 October 2025
 bibliography: paper.bib
 ---
