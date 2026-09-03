@@ -80,8 +80,6 @@ export
     add_ramping_constraints!,
     add_dc_power_flow_constraints!,
     add_investment_group_constraints!,
-    add_start_up_upper_bound_constraints!,
-    add_shut_down_upper_bound_constraints!,
     add_minimum_down_time_constraints!,
     add_minimum_up_time_constraints!,
 

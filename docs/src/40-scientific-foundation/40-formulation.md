@@ -633,10 +633,6 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 ```math
 v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\text{start up}}_{a, k_y, b_{k_y}} - v^{\text{shut down}}_{a, k_y, b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
-\\ v^{\text{start up}}_{a, k_y, b_{k_y}} \leq v^{\text{on}}_{a, k_y, b_{k_y}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
-\\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \leq v^{\text{available units}}_{a,y} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
 #### Minimum Up and Down Time Constraints

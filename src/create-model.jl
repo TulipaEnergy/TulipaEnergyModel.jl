@@ -318,24 +318,6 @@ function create_model(
         constraints,
     )
 
-    show_log && @info "[$(timestamp())] Adding start-up upper bound constraints"
-    @timeit to "add_start_up_upper_bound_constraints!" add_start_up_upper_bound_constraints!(
-        connection,
-        model,
-        variables,
-        expressions,
-        constraints,
-    )
-
-    show_log && @info "[$(timestamp())] Adding shut-down upper bound constraints"
-    @timeit to "add_shut_down_upper_bound_constraints!" add_shut_down_upper_bound_constraints!(
-        connection,
-        model,
-        variables,
-        expressions,
-        constraints,
-    )
-
     show_log && @info "[$(timestamp())] Adding unit commitment logic constraints"
     @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
         connection,

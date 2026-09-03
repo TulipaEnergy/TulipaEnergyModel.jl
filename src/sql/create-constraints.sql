@@ -519,7 +519,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.ramping
-    and asset.unit_commitment = 'basic'
+    and asset.unit_commitment != 'none'
 ;
 
 drop sequence id
@@ -1026,20 +1026,20 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_start_up_upper_bound
+drop table if exists cons_unit_commitment_logic
 ;
 
-create table cons_start_up_upper_bound as
-select
+create table cons_unit_commitment_logic as
+select distinct
     nextval('id') as id,
     sub.*
 from (
-    select
+    select distinct
         t_high.asset,
         t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start,
-        t_high.time_block_end
+        t_high.time_block_end,
     from
         t_highest_assets_and_out_flows as t_high
         inner join asset_time_resolution_rep_period as atr
@@ -1066,10 +1066,26 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_shut_down_upper_bound_aggregated_vintage_method
+drop table if exists cons_minimum_up_time
 ;
 
-create table cons_shut_down_upper_bound_aggregated_vintage_method as
+create table cons_minimum_up_time as
+select
+    nextval('id') as id,
+    uc.* EXCLUDE (id)
+from cons_unit_commitment_logic as uc
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_minimum_down_time_aggregated_vintage_method
+;
+
+create table cons_minimum_down_time_aggregated_vintage_method as
 select
     nextval('id') as id,
     sub.*
@@ -1108,10 +1124,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_shut_down_upper_bound_compact_vintage_method
+drop table if exists cons_minimum_down_time_compact_vintage_method
 ;
 
-create table cons_shut_down_upper_bound_compact_vintage_method as
+create table cons_minimum_down_time_compact_vintage_method as
 with sub as
 (select distinct
     t_high.asset,
@@ -1149,46 +1165,6 @@ from sub
 drop sequence id
 ;
 
-create sequence id start 1
-;
-
-drop table if exists cons_unit_commitment_logic
-;
-
-create table cons_unit_commitment_logic as
-select distinct
-    nextval('id') as id,
-    sub.*
-from (
-    select distinct
-        t_high.asset,
-        t_high.milestone_year,
-        t_high.rep_period,
-        t_high.time_block_start,
-        t_high.time_block_end,
-    from
-        t_highest_assets_and_out_flows as t_high
-        inner join asset_time_resolution_rep_period as atr
-            on
-                t_high.asset = atr.asset
-                and t_high.milestone_year = atr.milestone_year
-                and t_high.rep_period = atr.rep_period
-                and t_high.time_block_start = atr.time_block_start
-        left join asset on asset.asset = atr.asset
-    where
-        asset.type in ('producer', 'conversion')
-        and asset.unit_commitment LIKE '3var%'
-    order by
-        t_high.asset,
-        t_high.milestone_year,
-        t_high.rep_period,
-        t_high.time_block_start
-) as sub
-;
-
-drop sequence id
-;
-
 drop table if exists cons_scenario_tail_excess
 ;
 
@@ -1197,55 +1173,4 @@ select
     *
 from
     var_tail_excess_slack_xi
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_minimum_up_time
-;
-
-create table cons_minimum_up_time as
-select
-    nextval('id') as id,
-    uc.* EXCLUDE (id)
-from cons_start_up_upper_bound as uc
-join asset using (asset)
-where asset.minimum_up_time > 1;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_minimum_down_time_aggregated_vintage_method
-;
-
-create table cons_minimum_down_time_aggregated_vintage_method as
-select
-    nextval('id') as id,
-    uc.* EXCLUDE (id)
-from cons_shut_down_upper_bound_aggregated_vintage_method as uc
-join asset using (asset)
-where asset.minimum_up_time > 1;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_minimum_down_time_compact_vintage_method
-;
-
-create table cons_minimum_down_time_compact_vintage_method as
-select
-    nextval('id') as id,
-    uc.* EXCLUDE (id)
-from cons_shut_down_upper_bound_compact_vintage_method as uc
-join asset using (asset)
-where asset.minimum_up_time > 1;
-
-drop sequence id
 ;
