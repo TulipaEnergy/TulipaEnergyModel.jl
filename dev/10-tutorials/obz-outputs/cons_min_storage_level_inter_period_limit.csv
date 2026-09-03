@@ -1942,7 +1942,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 2154,15812,SK_Hydro_Reservoir,2050,1,117,117,inter_period_only,0.0
 2153,15813,SK_Hydro_Reservoir,2050,1,118,118,inter_period_only,0.0
 2152,15814,SK_Hydro_Reservoir,2050,1,119,119,inter_period_only,0.0
-2151,15815,SK_Hydro_Reservoir,2050,1,120,120,inter_period_only,2.3092638912203256e-14
+2151,15815,SK_Hydro_Reservoir,2050,1,120,120,inter_period_only,1.4210854715202004e-14
 2150,15816,SK_Hydro_Reservoir,2050,1,121,121,inter_period_only,0.0
 2149,15817,SK_Hydro_Reservoir,2050,1,122,122,inter_period_only,0.0
 2148,15818,SK_Hydro_Reservoir,2050,1,123,123,inter_period_only,0.0
@@ -2027,7 +2027,7 @@ id,storage_level_id,asset,milestone_year,scenario,period_block_start,period_bloc
 2069,15897,SK_Hydro_Reservoir,2050,1,202,202,inter_period_only,0.0
 2068,15898,SK_Hydro_Reservoir,2050,1,203,203,inter_period_only,0.0
 2067,15899,SK_Hydro_Reservoir,2050,1,204,204,inter_period_only,0.0
-2066,15900,SK_Hydro_Reservoir,2050,1,205,205,inter_period_only,-1.5987211554602254e-14
+2066,15900,SK_Hydro_Reservoir,2050,1,205,205,inter_period_only,-2.4868995751603507e-14
 2065,15901,SK_Hydro_Reservoir,2050,1,206,206,inter_period_only,0.0
 2064,15902,SK_Hydro_Reservoir,2050,1,207,207,inter_period_only,0.0
 2063,15903,SK_Hydro_Reservoir,2050,1,208,208,inter_period_only,0.0
