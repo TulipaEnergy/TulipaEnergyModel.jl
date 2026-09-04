@@ -18,7 +18,7 @@ authors:
     - given-names: Diego A.
       surname: Tejada-Arango
       email: dtejada@epri.com
-      affiliation: 9
+      affiliation: 6,9
       orcid: "0000-0002-3278-9283"
     - given-names: Grigory
       surname: Neustroev
