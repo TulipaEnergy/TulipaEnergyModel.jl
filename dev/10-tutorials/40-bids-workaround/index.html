@@ -321,309 +321,309 @@ energy_problem</code></pre><pre class="documenter-example-output"><code class="n
       - units_on_operational_cost: 0.0
       - vintage_flows_operational_cost: 0.0
 </code></pre><p>Now that we have a function that runs the whole process based on the given bid blocks, the generator capacity, and the operational cost to deliver the generated energy, we can verify these cases:</p><ul><li>There is enough capacity to accept all bids and there is no generation cost, so we expect the all bids to be accepted. Notice that bids 2 and 3 are exclusive, so only bids 1, 2, and 4 are accepted.</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 0.0)
-@assert accepted_bids == [1, 2, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:41.519 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:41.925 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:41.965 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:42.063 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:42.071 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:42.071 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:42.077 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:42.078 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:42.081 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:42.082 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:42.083 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:42.639 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:42.639 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:42.657 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:42.661 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:42.694 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:42.721 UTC] Adding objective
-[ Info: [2026-09-03T11:59:42.735 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:42.736 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:42.760 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:42.763 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:42.769 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:42.810 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:42.812 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:42.814 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:42.824 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:42.828 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:42.842 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:42.846 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:42.850 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:42.853 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:42.856 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:42.858 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:42.859 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:42.862 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:42.870 UTC] Optimization model creation finished</code></pre><ul><li>By restricting the capacity, we accepted bids will eventually change. The first breakpoint is at capacity = 50, because bids 2 and 4 requires 50 KW at time steps 2 and 3.</li></ul><p>When capacity is slightly less than 50, bid 3 is dropped:</p><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 49.9, operational_cost = 0.0)
-@assert accepted_bids == [1, 2]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:43.351 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:43.749 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:43.789 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:43.884 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:43.891 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:43.891 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:43.896 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:43.897 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:43.899 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:43.901 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:44.394 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:44.394 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:44.410 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:44.414 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:44.444 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:44.467 UTC] Adding objective
-[ Info: [2026-09-03T11:59:44.480 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:44.481 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:44.501 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:44.504 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:44.508 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:44.543 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:44.544 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:44.546 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:44.554 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:44.557 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:44.570 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:44.573 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:44.576 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:44.579 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:44.581 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:44.584 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:44.584 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:44.587 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:44.595 UTC] Optimization model creation finished</code></pre><ul><li>We also expect bid 4 to be dropped if the price is not higher than the operational cost:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 1.0)
-@assert accepted_bids == [1, 2]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:44.774 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:45.162 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:45.199 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:45.289 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:45.296 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:45.296 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:45.301 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:45.302 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:45.304 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:45.306 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:45.781 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:45.781 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:45.797 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:45.800 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:45.830 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:45.854 UTC] Adding objective
-[ Info: [2026-09-03T11:59:45.867 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:45.868 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:45.888 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:45.891 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:45.895 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:45.932 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:45.933 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:45.935 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:45.944 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:45.948 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:45.961 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:45.965 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:45.968 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:45.971 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:45.973 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:45.976 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:45.977 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:45.980 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:45.988 UTC] Optimization model creation finished</code></pre><ul><li>Decreasing the capacity to slightly less than 40 KW, also makes us drop bid 2, but allows us to have more space to accept bids 3 and 4:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 39.9, operational_cost = 0.0)
-@assert accepted_bids == [1, 3, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:46.163 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:46.537 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:46.576 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:46.665 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:46.671 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:46.671 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:46.676 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:46.677 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:46.679 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:46.681 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:47.155 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:47.155 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:47.171 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:47.175 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:47.205 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:47.228 UTC] Adding objective
-[ Info: [2026-09-03T11:59:47.241 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:47.242 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:47.262 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:47.265 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:47.269 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:47.305 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:47.307 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:47.309 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:47.317 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:47.320 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:47.333 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:47.336 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:47.339 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:47.343 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:47.345 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:47.347 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:47.348 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:47.351 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:47.359 UTC] Optimization model creation finished</code></pre><ul><li>In fact, because bid 3 can be curtailed to 80%, we can further decrease the capacity. Up to 35 KW, the same bids are still accepted:</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 35.0, operational_cost = 0.0)
-@assert accepted_bids == [1, 3, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:47.529 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:47.900 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:47.936 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:48.024 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:48.030 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:48.030 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:48.035 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:48.036 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:48.039 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:48.040 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:48.040 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:48.041 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:48.041 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:48.041 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:48.041 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:48.041 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:48.041 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:48.501 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:48.501 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:48.516 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:48.519 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:48.548 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:48.571 UTC] Adding objective
-[ Info: [2026-09-03T11:59:48.583 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:48.584 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:48.603 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:48.606 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:48.610 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:48.643 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:48.645 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:48.647 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:48.655 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:48.658 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:48.669 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:48.673 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:48.676 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:48.678 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:48.680 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:48.683 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:48.683 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:48.686 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:48.693 UTC] Optimization model creation finished</code></pre><ul><li>Slight less capacity forces the model to drop another bid. Although bid 4 is cheaper per KW, is requests more energy, to it is better.</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost = 0.0)
-@assert accepted_bids == [3, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:48.864 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:49.241 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:49.294 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:49.383 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:49.389 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:49.389 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:49.394 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:49.395 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:49.397 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:49.398 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:49.399 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:49.854 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:49.854 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:49.868 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:49.872 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:49.900 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:49.922 UTC] Adding objective
-[ Info: [2026-09-03T11:59:49.934 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:49.935 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:49.955 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:49.957 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:49.961 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:49.996 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:49.997 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:49.999 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:50.007 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:50.010 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:50.022 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:50.025 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:50.028 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:50.031 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:50.033 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:50.035 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:50.036 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:50.039 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:50.046 UTC] Optimization model creation finished</code></pre><ul><li>But if the generation cost is too high, then bid 4 is dropped in favour of bid 1.</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost = 1.0)
-@assert accepted_bids == [1, 3]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-03T11:59:50.215 UTC] Creating EnergyProblem internal tables
-[ Info: [2026-09-03T11:59:50.577 UTC] Computing variable indices
-[ Info: [2026-09-03T11:59:50.611 UTC] Computing constraint indices
-[ Info: [2026-09-03T11:59:50.695 UTC] Preparing profiles
-[ Info: [2026-09-03T11:59:50.701 UTC] Creating optimization model
-[ Info: [2026-09-03T11:59:50.701 UTC] Preparing optimization model
-[ Info: [2026-09-03T11:59:50.706 UTC] Preparing model parameters
-[ Info: [2026-09-03T11:59:50.706 UTC] Adding flow variables
-[ Info: [2026-09-03T11:59:50.709 UTC] Adding vintage flow variables
-[ Info: [2026-09-03T11:59:50.710 UTC] Adding investment variables
-[ Info: [2026-09-03T11:59:50.710 UTC] Adding decommission variables
-[ Info: [2026-09-03T11:59:50.710 UTC] Adding unit commitment variables
-[ Info: [2026-09-03T11:59:50.710 UTC] Adding start-up and shut-down variables
-[ Info: [2026-09-03T11:59:50.710 UTC] Adding power flow variables
-[ Info: [2026-09-03T11:59:50.711 UTC] Adding storage variables
-[ Info: [2026-09-03T11:59:50.711 UTC] Adding conditional value-at-risk variables
-[ Info: [2026-09-03T11:59:50.711 UTC] Adding expressions to constraints
-[ Info: [2026-09-03T11:59:51.158 UTC] Creating model expressions
-[ Info: [2026-09-03T11:59:51.158 UTC] Creating multi-year expressions
-[ Info: [2026-09-03T11:59:51.173 UTC] Adding storage expressions
-[ Info: [2026-09-03T11:59:51.176 UTC] Preparing objective tables
-[ Info: [2026-09-03T11:59:51.203 UTC] Adding operational cost expressions
-[ Info: [2026-09-03T11:59:51.225 UTC] Adding objective
-[ Info: [2026-09-03T11:59:51.237 UTC] Adding scenario tail excess expressions
-[ Info: [2026-09-03T11:59:51.238 UTC] Adding capacity constraints
-[ Info: [2026-09-03T11:59:51.257 UTC] Adding energy constraints
-[ Info: [2026-09-03T11:59:51.260 UTC] Adding consumer constraints
-[ Info: [2026-09-03T11:59:51.264 UTC] Adding storage constraints
-[ Info: [2026-09-03T11:59:51.295 UTC] Adding conversion constraints
-[ Info: [2026-09-03T11:59:51.296 UTC] Adding transport constraints
-[ Info: [2026-09-03T11:59:51.298 UTC] Adding investment group constraints
-[ Info: [2026-09-03T11:59:51.306 UTC] Adding available asset units constraints
-[ Info: [2026-09-03T11:59:51.309 UTC] Adding ramping constraints
-[ Info: [2026-09-03T11:59:51.320 UTC] Adding minimum output flow constraints
-[ Info: [2026-09-03T11:59:51.323 UTC] Adding flow relationship constraints
-[ Info: [2026-09-03T11:59:51.326 UTC] Adding DC power flow constraints
-[ Info: [2026-09-03T11:59:51.329 UTC] Adding vintage flow sum constraints
-[ Info: [2026-09-03T11:59:51.331 UTC] Adding unit commitment logic constraints
-[ Info: [2026-09-03T11:59:51.333 UTC] Adding scenario tail excess constraints
-[ Info: [2026-09-03T11:59:51.333 UTC] Adding minimum up time constraints
-[ Info: [2026-09-03T11:59:51.336 UTC] Adding minimum down time constraints
-[ Info: [2026-09-03T11:59:51.343 UTC] Optimization model creation finished</code></pre><h3 id="Visualization-of-the-results"><a class="docs-heading-anchor" href="#Visualization-of-the-results">Visualization of the results</a><a id="Visualization-of-the-results-1"></a><a class="docs-heading-anchor-permalink" href="#Visualization-of-the-results" title="Permalink"></a></h3><p>To help visualize the use of bids, we will vary the value of generator&#39;s capacity and the operational cost to get from the generator to the bid and create a few plots of the solutions. We are doing the same as in the previous section, but systematically.</p><p>We will use some longer code that we&#39;ll hide, but that can be inspected in the <a href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/40-bids-workaround.md">code for this file</a>. The code simply loops over many cases, like the section above, and saves data to be used in the plots below:</p><pre><code class="language-julia hljs"># plts and dim2 are defined in the hidden code
+@assert accepted_bids == [1, 2, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:05.943 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:06.220 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:06.249 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:06.320 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:06.325 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:06.325 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:06.329 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:06.330 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:06.332 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:06.333 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:06.672 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:06.672 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:06.684 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:06.687 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:06.707 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:06.724 UTC] Adding objective
+[ Info: [2026-09-04T14:29:06.734 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:06.735 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:06.750 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:06.752 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:06.755 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:06.780 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:06.781 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:06.782 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:06.788 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:06.790 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:06.800 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:06.802 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:06.805 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:06.807 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:06.808 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:06.810 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:06.811 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:06.813 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:06.818 UTC] Optimization model creation finished</code></pre><ul><li>By restricting the capacity, we accepted bids will eventually change. The first breakpoint is at capacity = 50, because bids 2 and 4 requires 50 KW at time steps 2 and 3.</li></ul><p>When capacity is slightly less than 50, bid 3 is dropped:</p><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 49.9, operational_cost = 0.0)
+@assert accepted_bids == [1, 2]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:07.166 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:07.433 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:07.462 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:07.531 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:07.535 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:07.535 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:07.538 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:07.539 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:07.541 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:07.542 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:07.857 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:07.858 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:07.869 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:07.871 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:07.891 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:07.907 UTC] Adding objective
+[ Info: [2026-09-04T14:29:07.916 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:07.917 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:07.930 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:07.932 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:07.935 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:07.958 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:07.959 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:07.960 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:07.966 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:07.968 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:07.977 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:07.979 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:07.981 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:07.983 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:07.985 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:07.986 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:07.987 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:07.989 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:07.994 UTC] Optimization model creation finished</code></pre><ul><li>We also expect bid 4 to be dropped if the price is not higher than the operational cost:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 1.0)
+@assert accepted_bids == [1, 2]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:08.122 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:08.385 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:08.412 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:08.479 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:08.484 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:08.484 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:08.487 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:08.488 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:08.490 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:08.491 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:08.808 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:08.808 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:08.820 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:08.823 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:08.844 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:08.862 UTC] Adding objective
+[ Info: [2026-09-04T14:29:08.872 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:08.873 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:08.887 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:08.890 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:08.893 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:08.918 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:08.919 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:08.920 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:08.926 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:08.929 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:08.938 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:08.940 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:08.943 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:08.945 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:08.946 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:08.948 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:08.949 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:08.951 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:08.956 UTC] Optimization model creation finished</code></pre><ul><li>Decreasing the capacity to slightly less than 40 KW, also makes us drop bid 2, but allows us to have more space to accept bids 3 and 4:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 39.9, operational_cost = 0.0)
+@assert accepted_bids == [1, 3, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:09.086 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:09.349 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:09.377 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:09.444 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:09.448 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:09.448 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:09.452 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:09.452 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:09.454 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:09.455 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:09.768 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:09.768 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:09.779 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:09.781 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:09.801 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:09.817 UTC] Adding objective
+[ Info: [2026-09-04T14:29:09.826 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:09.827 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:09.840 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:09.842 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:09.844 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:09.867 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:09.868 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:09.869 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:09.875 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:09.877 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:09.885 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:09.887 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:09.890 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:09.892 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:09.893 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:09.894 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:09.895 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:09.897 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:09.902 UTC] Optimization model creation finished</code></pre><ul><li>In fact, because bid 3 can be curtailed to 80%, we can further decrease the capacity. Up to 35 KW, the same bids are still accepted:</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 35.0, operational_cost = 0.0)
+@assert accepted_bids == [1, 3, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:10.030 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:10.296 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:10.323 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:10.389 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:10.394 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:10.394 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:10.398 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:10.398 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:10.400 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:10.401 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:10.706 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:10.706 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:10.717 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:10.719 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:10.737 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:10.752 UTC] Adding objective
+[ Info: [2026-09-04T14:29:10.761 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:10.762 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:10.775 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:10.776 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:10.779 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:10.800 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:10.801 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:10.802 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:10.808 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:10.810 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:10.818 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:10.820 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:10.822 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:10.824 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:10.825 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:10.827 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:10.827 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:10.829 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:10.834 UTC] Optimization model creation finished</code></pre><ul><li>Slight less capacity forces the model to drop another bid. Although bid 4 is cheaper per KW, is requests more energy, to it is better.</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost = 0.0)
+@assert accepted_bids == [3, 4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:10.958 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:11.214 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:11.241 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:11.306 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:11.310 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:11.310 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:11.313 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:11.314 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:11.316 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:11.317 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:11.615 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:11.616 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:11.627 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:11.629 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:11.647 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:11.662 UTC] Adding objective
+[ Info: [2026-09-04T14:29:11.671 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:11.672 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:11.684 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:11.686 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:11.689 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:11.711 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:11.711 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:11.713 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:11.718 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:11.720 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:11.728 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:11.730 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:11.732 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:11.734 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:11.736 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:11.737 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:11.738 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:11.739 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:11.744 UTC] Optimization model creation finished</code></pre><ul><li>But if the generation cost is too high, then bid 4 is dropped in favour of bid 1.</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost = 1.0)
+@assert accepted_bids == [1, 3]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: [2026-09-04T14:29:11.867 UTC] Creating EnergyProblem internal tables
+[ Info: [2026-09-04T14:29:12.121 UTC] Computing variable indices
+[ Info: [2026-09-04T14:29:12.148 UTC] Computing constraint indices
+[ Info: [2026-09-04T14:29:12.213 UTC] Preparing profiles
+[ Info: [2026-09-04T14:29:12.217 UTC] Creating optimization model
+[ Info: [2026-09-04T14:29:12.218 UTC] Preparing optimization model
+[ Info: [2026-09-04T14:29:12.221 UTC] Preparing model parameters
+[ Info: [2026-09-04T14:29:12.221 UTC] Adding flow variables
+[ Info: [2026-09-04T14:29:12.223 UTC] Adding vintage flow variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding investment variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding decommission variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding unit commitment variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding start-up and shut-down variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding power flow variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding storage variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding conditional value-at-risk variables
+[ Info: [2026-09-04T14:29:12.224 UTC] Adding expressions to constraints
+[ Info: [2026-09-04T14:29:12.524 UTC] Creating model expressions
+[ Info: [2026-09-04T14:29:12.524 UTC] Creating multi-year expressions
+[ Info: [2026-09-04T14:29:12.535 UTC] Adding storage expressions
+[ Info: [2026-09-04T14:29:12.537 UTC] Preparing objective tables
+[ Info: [2026-09-04T14:29:12.555 UTC] Adding operational cost expressions
+[ Info: [2026-09-04T14:29:12.570 UTC] Adding objective
+[ Info: [2026-09-04T14:29:12.578 UTC] Adding scenario tail excess expressions
+[ Info: [2026-09-04T14:29:12.579 UTC] Adding capacity constraints
+[ Info: [2026-09-04T14:29:12.592 UTC] Adding energy constraints
+[ Info: [2026-09-04T14:29:12.594 UTC] Adding consumer constraints
+[ Info: [2026-09-04T14:29:12.596 UTC] Adding storage constraints
+[ Info: [2026-09-04T14:29:12.617 UTC] Adding conversion constraints
+[ Info: [2026-09-04T14:29:12.618 UTC] Adding transport constraints
+[ Info: [2026-09-04T14:29:12.619 UTC] Adding investment group constraints
+[ Info: [2026-09-04T14:29:12.625 UTC] Adding available asset units constraints
+[ Info: [2026-09-04T14:29:12.627 UTC] Adding ramping constraints
+[ Info: [2026-09-04T14:29:12.635 UTC] Adding minimum output flow constraints
+[ Info: [2026-09-04T14:29:12.637 UTC] Adding flow relationship constraints
+[ Info: [2026-09-04T14:29:12.639 UTC] Adding DC power flow constraints
+[ Info: [2026-09-04T14:29:12.641 UTC] Adding vintage flow sum constraints
+[ Info: [2026-09-04T14:29:12.642 UTC] Adding unit commitment logic constraints
+[ Info: [2026-09-04T14:29:12.644 UTC] Adding scenario tail excess constraints
+[ Info: [2026-09-04T14:29:12.644 UTC] Adding minimum up time constraints
+[ Info: [2026-09-04T14:29:12.646 UTC] Adding minimum down time constraints
+[ Info: [2026-09-04T14:29:12.651 UTC] Optimization model creation finished</code></pre><h3 id="Visualization-of-the-results"><a class="docs-heading-anchor" href="#Visualization-of-the-results">Visualization of the results</a><a id="Visualization-of-the-results-1"></a><a class="docs-heading-anchor-permalink" href="#Visualization-of-the-results" title="Permalink"></a></h3><p>To help visualize the use of bids, we will vary the value of generator&#39;s capacity and the operational cost to get from the generator to the bid and create a few plots of the solutions. We are doing the same as in the previous section, but systematically.</p><p>We will use some longer code that we&#39;ll hide, but that can be inspected in the <a href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/40-bids-workaround.md">code for this file</a>. The code simply loops over many cases, like the section above, and saves data to be used in the plots below:</p><pre><code class="language-julia hljs"># plts and dim2 are defined in the hidden code
 plot(
     plts...;
     size = (300 * dim2, 3 * 200),
     layout = grid(3, dim2),
     leftmargin = 5Plots.mm,
     bottommargin = 4Plots.mm,
-)</code></pre><img src="6811c47e.svg" alt="Example block output"/><p>The plot has three columns and three rows. The columns vary in operational cost, and the rows show three different kinds of plots. The x-axis of all plots is the capacity.</p><p>The first row of plots show the profit made accepting these bids, per capacity. The second row of plots show the accepted bids per capacity. The plots in the third row show the profit made per capacity, but grouped per bid.</p><p>Some noteworthy points in the plots above:</p><ul><li>For operational cost = <span>$</span> 0.1 / KW, around capacity 35, bid 1 is slightly less profitable than bid 4, and there is only capacity for one of them (and bid 3), so the accepted bids change accordingly.</li><li>For operational cost = <span>$</span> 0.6 / KW, this is not the case anymore, and thus bid 1 is always accepted.</li><li>For operational cost = <span>$</span> 1.1 / KW, then it is never profitable to accept bid 4.</li><li>The profit generated by bid 3 around capacity 16 to 20, and 31 to 35 is linearly increasing, since the bid 3 can be curtailed.</li></ul><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+)</code></pre><img src="a767b06c.svg" alt="Example block output"/><p>The plot has three columns and three rows. The columns vary in operational cost, and the rows show three different kinds of plots. The x-axis of all plots is the capacity.</p><p>The first row of plots show the profit made accepting these bids, per capacity. The second row of plots show the accepted bids per capacity. The plots in the third row show the profit made per capacity, but grouped per bid.</p><p>Some noteworthy points in the plots above:</p><ul><li>For operational cost = <span>$</span> 0.1 / KW, around capacity 35, bid 1 is slightly less profitable than bid 4, and there is only capacity for one of them (and bid 3), so the accepted bids change accordingly.</li><li>For operational cost = <span>$</span> 0.6 / KW, this is not the case anymore, and thus bid 1 is always accepted.</li><li>For operational cost = <span>$</span> 1.1 / KW, then it is never profitable to accept bid 4.</li><li>The profit generated by bid 3 around capacity 16 to 20, and 31 to 35 is linearly increasing, since the bid 3 can be curtailed.</li></ul><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 mermaid.initialize({
     startOnLoad: true,
     theme: "neutral"
 });
-</script></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../31-rolling-horizon/">« Rolling Horizon</a><a class="docs-footer-nextpage" href="../99-manual-steps/">Advanced Control »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.19.0 on <span class="colophon-date" title="Thursday 3 September 2026 12:04">Thursday 3 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+</script></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../31-rolling-horizon/">« Rolling Horizon</a><a class="docs-footer-nextpage" href="../99-manual-steps/">Advanced Control »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.19.0 on <span class="colophon-date" title="Friday 4 September 2026 14:32">Friday 4 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
