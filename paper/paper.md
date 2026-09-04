@@ -17,13 +17,13 @@ authors:
       orcid: "0000-0003-4451-281X"
     - given-names: Diego A.
       surname: Tejada-Arango
-      email: diego.tejadaarango@tno.nl
-      affiliation: 2, 6
+      email: dtejada@epri.com
+      affiliation: 9
       orcid: "0000-0002-3278-9283"
     - given-names: Grigory
       surname: Neustroev
-      email: g.neustroev@tudelft.nl
-      affiliation: 3
+      email: greg.neustroev@zeroth.org
+      affiliation: 7
       orcid: "0000-0002-7706-7778"
     - given-names: Juha
       surname:  Kiviluoma
@@ -32,13 +32,14 @@ authors:
       orcid: "0000-0002-1299-9056"
     - given-names: Lauren
       surname: Clisby
-      email: lauren.clisby@tno.nl
-      affiliation: 2
+      email: lauren.clisby@openenergytransition.org
+      affiliation: 8
       orcid: "0009-0008-7848-4144"
     - given-names: Maaike
       surname: Elgersma
       email: m.b.elgersma@tudelft.nl
       affiliation: 3
+      orcid: "0009-0007-1417-8757"
     - given-names: Ni
       surname: Wang
       email: ni.wang@tno.nl
@@ -81,6 +82,13 @@ affiliations:
   - name: Universidad Pontificia Comillas
     ror: 017mdc710
     index: 6
+  - name: Zeroth Research
+    index: 7
+  - name: Open Energy Transition
+    index: 8
+  - name: Electric Power Research Institute
+    index: 9
+    ror: 02dqztz06
 date: 04 October 2025
 bibliography: paper.bib
 ---
@@ -93,10 +101,10 @@ TulipaEnergyModel.jl focuses on model quality and efficient implementation, allo
 
 ## Statement of Need
 
-Existing models and frameworks in Energy System Optimisation include [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nlr.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
-However, they run into computational limits when solving large-scale problems and must resort to (over)simplifying the model to reduce computational burden. The common misconception is that the only strategy to speed up solving times without sacrificing model fidelity is through faster solvers or computers.
-However, the strategy that is widely overlooked is improving the quality of the mathematical formulations, which increases model fidelity while simultaneously solving faster than standard formulations.
-This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by: 1) lowering computational cost while maintaining model fidelity, by reducing the problem size [@Tejada2025], and by creating tighter mixed-integer programs (MIP) [@MoralesEspana2013]. 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations [@Elgersma2025; @gentile2016; @MoralesEspana2022]. Finally, 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in various parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions.
+Existing open-source frameworks for Energy System Optimisation include [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nlr.gov/analysis/sienna) ecosystem [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], [Calliope](https://github.com/calliope-project/calliope) [@Calliope], and [AnyMOD](https://github.com/leonardgoeke/AnyMOD.jl) [@AnyMOD2021].
+These frameworks have advanced the field through different modelling approaches, including flexible formulations. Nevertheless, increasing model detail can still create computational challenges in large-scale applications.
+Alongside advances in solvers and computing, improving mathematical formulations can help increase model fidelity while simultaneously solving faster than standard formulations.
+This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by: 1) lowering computational cost while maintaining model fidelity, by reducing the problem size [@Tejada2025], and by creating tighter mixed-integer programs (MIP) [@MoralesEspana2013]. 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations [@Elgersma2026; @gentile2016; @MoralesEspana2022]. Finally, 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in various parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions.
 These modelling strategies offer significant computational benefits, especially when handling large-scale problems: covering a continent with multiple energy carriers, and optimising over decades while maintaining hourly resolution for key aspects (e.g., renewable generation).
 TulipaEnergyModel.jl had to be developed from scratch to be able to include all of these modelling breakthroughs, since they alter the foundation and structure of the model.
 Below, we present some of core modelling and software design innovations.
@@ -116,9 +124,9 @@ For the fully flexible temporal resolution, consider the 6-hour duration of this
 
 For the direct connection between assets, the storage “phs” is directly connected to the “wind“ to charge, and to “balance” to discharge. This direct connection between assets completely avoids intermediate elements (connections/nodes), thereby eliminating unnecessary variables and constraints. Thus, accelerating solving times without any loss of accuracy [@Tejada2025].
 
-TulipaEnergyModel.jl is fundamentally focused on high-quality mathematical formulations. The model also includes other key features such as seasonal storage modelling using representative periods [@Tejada2018; @greg2025], tight and compact MIP formulations for storage [@Elgersma2025], unit commitment [@MoralesEspana2013], and compact formulations for multi-year investment [@wang2025a; @wang2025b].
+TulipaEnergyModel.jl is fundamentally focused on high-quality mathematical formulations. The model also includes other key features such as seasonal storage modelling using representative periods [@Tejada2018; @greg2025], tight and compact MIP formulations for storage [@Elgersma2026], unit commitment [@MoralesEspana2013], and compact formulations for multi-year investment [@wang2025a; @wang2025b].
 
-Although TulipaEnergyModel.jl is a relatively young package, it already shows promising results in breaking the trade-off between computational burden and model details. As presented in initial benchmark results, TulipaEnergyModel.jl allows to: 1) solve large capacity expansion problems faster [@greg2025], 2) include uncertainty through more computationally demanding stochastic programming [@Kremer2025], 3) create computationally efficient approximations by exploiting the flexible temporal resolution [Gao2025], and 4) reduce the problem size without sacrificing any accuracy [@Tejada2025]. All these studies demonstrate how TulipaEnergyModel.jl does not rely on (over)simplifying the problem, leading to unreliable results/conclusions, to solve more computationally demanding problems.
+Although TulipaEnergyModel.jl is a relatively young package, it already shows promising results in breaking the trade-off between computational burden and model details. As presented in initial benchmark results, TulipaEnergyModel.jl allows to: 1) solve large capacity expansion problems faster [@greg2025], 2) include uncertainty through more computationally demanding stochastic programming [@Kremer2025], 3) create computationally efficient approximations by exploiting the flexible temporal resolution [@Gao2025], and 4) reduce the problem size without sacrificing any accuracy [@Tejada2025]. All these studies demonstrate how TulipaEnergyModel.jl does not rely on (over)simplifying the problem, leading to unreliable results/conclusions, to solve more computationally demanding problems.
 
 ## Software Design Innovations
 
