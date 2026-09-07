@@ -255,7 +255,7 @@ The parameter `specification` allows three values: `uniform`,`math`, or `explici
 
 Some examples on how to set it up are in the docs for the [`TulipaEnergyModel._parse_rp_partition`](https://tulipaenergy.github.io/TulipaEnergyModel.jl/v0.10/95-reference/#TulipaEnergyModel._parse_rp_partition) function.
 
-What is the equialent of a partition of 6 in a `uniform` specification in a `math` specification?
+What is the equivalent of a partition of 6 in a `uniform` specification in a `math` specification?
 
 ### Compare with the hourly case from the Assets & Flows tutorial
 

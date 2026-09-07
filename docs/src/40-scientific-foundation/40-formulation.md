@@ -276,7 +276,7 @@ The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer a
 
 There are two types of vintage methods for multi-year investment modelling: the aggregated method and the compact method. The aggregated method (`vintage_method = "aggregated"`) aggregates all units available in a year, regardless of when they were invested. The compact method (`vintage_method = "compact_profiles"` or `"compact_efficiencies"`) tracks availability by investment and operational year, enabling vintage-specific constraints while reducing model size. For more information on this topic, refer to the [vintage modeling](@ref vintage-modeling) concept, the [How to use](@ref multi-year-setup) guide, or [Wang and Morales-España (2025)](@ref scientific-refs).
 
-For available units across years, we define the following expresssions:
+For available units across years, we define the following expressions:
 
 ```math
 \begin{aligned}

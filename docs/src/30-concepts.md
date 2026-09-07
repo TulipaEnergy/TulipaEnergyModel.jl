@@ -398,7 +398,7 @@ Let's now take a look at the resulting constraints in the model.
 \end{aligned}
 ```
 
-For the maximum ramp down we have similiar constraints as the ones shown above.
+For the maximum ramp down we have similar constraints as the ones shown above.
 
 ### Unit Commitment in Assets with Constant Time Resolution
 
@@ -602,7 +602,7 @@ filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity"
 
 The `use_inter_period_constraints` parameter specifies whether a storage asset employs inter-period constraints. The `phs` has a capacity of 100 MW and a storage capacity of 4,800 MWh, corresponding to a 48-hour discharge duration, and utilizes `inter_period_only` bounds. The `flow_battery` has a capacity of 50 MW and 500 MWh of storage capacity, equating to a 10-hour discharge duration, and employs `inter_and_intra_rep_period` because it manages energy both within and across periods. This option applies conservative intra-representative-period envelopes on top of the inter-period storage bounds, enabling the mid-duration flow battery to use the inter-period storage-level formulation while maintaining intra-period chronological tracking. As a result, the 10-hour flow battery can transfer energy between periods while keeping storage levels within the specified bounds inside each period.
 
-In contrast, the `battery` and the `caes` only use rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), so they cannot shift energy between periods. In addition, both have 10 MW capacity with 20 MWh of storage capacity (i.e., 2-hour discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance to represent its CO2 emmissions; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
+In contrast, the `battery` and the `caes` only use rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), so they cannot shift energy between periods. In addition, both have 10 MW capacity with 20 MWh of storage capacity (i.e., 2-hour discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance to represent its CO2 emissions; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -970,7 +970,7 @@ In this section, we show how flexible time resolution is applied when considerin
 
 ![mimo-example](./figs/mimo-example.png)
 
-The example has two sources of energy `biomass` and `gas_market`, three conversion assets `power_plant`, `chp_backpressure`, and `chp_extraction`, two demands of energy represented by `electricity_demand` and `heat_demand`, and finally a by-product CO2 emmisions that goes to the asset `atmosphere`. The table below shows the type of each asset. Notice that the `biomass` asset is modeled as a storage and the `atmosphere` as a consumer. We will return to these definitions later in this section, but bear with us and keep this in mind.
+The example has two sources of energy `biomass` and `gas_market`, three conversion assets `power_plant`, `chp_backpressure`, and `chp_extraction`, two demands of energy represented by `electricity_demand` and `heat_demand`, and finally a by-product CO2 emissions that goes to the asset `atmosphere`. The table below shows the type of each asset. Notice that the `biomass` asset is modeled as a storage and the `atmosphere` as a consumer. We will return to these definitions later in this section, but bear with us and keep this in mind.
 
 ```@example mimo
 using DataFrames # hide
@@ -1087,7 +1087,7 @@ That looks cool 🤓 but, wait a minute! What about the flexible temporal resolu
 
 It's straightforward: When it comes to the constraints created by the flow relationships, the resulting resolution follows the highest resolution of the flows involved in the relationship. In simpler terms, this means it is determined by `max(flow1 resolution, flow2 resolution)`. Consequently, the resulting constraints are considered as energy constraints. Where do I find this information? Remember, the table in the section titled [`flexible time resolution`](@ref flex-time-res) summarizes all the rules 😉 .Now, let’s examine each relationship ($x \in \mathcal{X}$) closely:
 
-- Relationship $x_1$ = **flow_1(power_plant, electricity_demand) and flow_2(power_plant, heat_demand)**: both flows have an hourly resolution (i.e., deafult value) since they don't have any definition in the `flows-rep-periods-partitions` file. Therefore, the flows relationship constraint is also hourly.
+- Relationship $x_1$ = **flow_1(power_plant, electricity_demand) and flow_2(power_plant, heat_demand)**: both flows have an hourly resolution (i.e., default value) since they don't have any definition in the `flows-rep-periods-partitions` file. Therefore, the flows relationship constraint is also hourly.
 
 ```math
 \begin{aligned}
@@ -1174,7 +1174,7 @@ It's straightforward: When it comes to the constraints created by the flow relat
 \end{aligned}
 ```
 
-- Relationship $x_9$ = **flow_1(chp_extraction, heat_demand) and flow_2(chp_extraction, electricity_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly. This constraint reprsents a simple limit for the maximum heat flow.
+- Relationship $x_9$ = **flow_1(chp_extraction, heat_demand) and flow_2(chp_extraction, electricity_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly. This constraint represents a simple limit for the maximum heat flow.
 
 ```math
 \begin{aligned}
@@ -1249,7 +1249,7 @@ consumers = assets_data[!,"type"] .== "consumer" #hide
 filtered_df_joined = df_joined[consumers, ["asset", "consumer_balance_sense", "peak_demand"]] # hide
 ```
 
-In addition, the resolution of all the flows comming into the `atmosphere` asset is 24h, i.e., daily, meaning that the resolution of the consumer balance for this asset is also 24h:
+In addition, the resolution of all the flows coming into the `atmosphere` asset is 24h, i.e., daily, meaning that the resolution of the consumer balance for this asset is also 24h:
 
 ```math
 \begin{aligned}

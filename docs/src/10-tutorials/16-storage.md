@@ -58,7 +58,7 @@ energy_problem = TEM.run_scenario(connection)
 !!! tip
     Remember that you can always define and create the output directory if it doesn't exist to export the results to csv files. Then you can use the `output_folder` keyword argument in the `run_scenario` function to save the results in that folder.
 
-At this point, everything should work similiar as Tutorial 4.
+At this point, everything should work similar as Tutorial 4.
 
 ## Results
 
