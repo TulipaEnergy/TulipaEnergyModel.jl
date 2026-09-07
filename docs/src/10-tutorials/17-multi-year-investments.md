@@ -4,7 +4,7 @@ Let's explore the multi-year investments in Tulipa. We will talk about discount 
 
 ## 1. Set up
 
-1. Paste the code below that add the packages and instantiate your enviroment (if you don't have it already)
+1. Paste the code below that add the packages and instantiate your environment (if you don't have it already)
 
 ```julia
 using Pkg: Pkg       # Julia package manager (like pip for Python)

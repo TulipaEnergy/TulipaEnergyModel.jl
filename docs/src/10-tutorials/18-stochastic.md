@@ -21,7 +21,7 @@ Let's see how to implement two-stage stochastic optimization with TulipaEnergyMo
 We import the necessary packages, and load the data in the DuckDB.
 
 !!! tip "Remember!"
-    1. Activate your local enviroment and instantiate the project, if you haven't already.
+    1. Activate your local environment and instantiate the project, if you haven't already.
     2. Adjust the path to where you have the data stored.
 
 ```@example stochastic
