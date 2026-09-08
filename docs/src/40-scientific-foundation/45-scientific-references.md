@@ -41,6 +41,8 @@ Wang, N., & Tejada-Arango, D. A. (2025). Discounting approaches in multi-year in
 
 Wang, N., & Morales-España, G. (2025). Vintage-based formulations in multi-year investment modelling for energy systems. ArXiv. <https://arxiv.org/abs/2505.00379>
 
+Huang, J., Wang, N., Heymann, F., Morales-España, G., & McKenna, R. (2026). Modelling technology vintage in multi-year investment planning: Compact formulation for capacity-factor-constrained generators. 2026 22nd International Conference on the European Energy Market (EEM), 1–8. <https://doi.org/10.1109/EEM68581.2026.11589861>
+
 ## Two-Stage Stochastic Programming
 
 Kremer, L.A.A., de Weerdt, M.M., Neustroev, G., Morales-España, G. (2025). Stochastic programming for energy models: A blended cross-scenario representative periods approach. Master Thesis, TU Delft - Electrical Engineering, Mathematics and Computer Science. <https://resolver.tudelft.nl/uuid:0e87f306-1c92-4eec-805f-72377ed57fb2>
