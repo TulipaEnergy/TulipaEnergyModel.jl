@@ -42,6 +42,8 @@ function compute_constraints_indices(connection)
             :flows_relationships,
             :dc_power_flow,
             :limit_decommission_compact_vintage_method,
+            :limit_decommission_initial_units_aggregated_vintage_method,
+            :limit_decommission_invested_units_aggregated_vintage_method,
             :vintage_flow_sum_compact_efficiencies_vintage_method,
             :unit_commitment_logic,
             :scenario_tail_excess,

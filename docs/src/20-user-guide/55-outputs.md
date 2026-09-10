@@ -47,6 +47,8 @@ Associated input parameters: `investment_integer_storage_energy`, `capacity_stor
 
 For an asset commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
 
+For assets with `vintage_method = 'aggregated'`, rows with `commission_year = milestone_year` decommission existing units (`initial_units` of that milestone year), and rows with `commission_year < milestone_year` decommission the units invested in `commission_year` (`initial_units` is empty for these rows).
+
 Associated input parameters: `decommissionable`, `initial_units`, `investment_integer`, `capacity`
 
 ### `var_assets_investment_energy`

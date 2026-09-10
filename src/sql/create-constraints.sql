@@ -1001,6 +1001,84 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_limit_decommission_initial_units_aggregated_vintage_method
+;
+
+-- One row per aggregated asset and milestone year that has at least one
+-- decommission decision of existing (initial) units still within the technical
+-- lifetime window, i.e., taken at a milestone year i with
+-- milestone_year - technical_lifetime + 1 <= i <= milestone_year.
+create table cons_limit_decommission_initial_units_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    sub.*
+from
+    (
+        select
+            asset_both.asset,
+            asset_both.milestone_year,
+            asset_both.initial_units,
+        from
+            asset_both
+            left join asset on asset.asset = asset_both.asset
+        where
+            asset.vintage_method = 'aggregated'
+            and asset.type != 'consumer'
+            and exists (
+                select
+                    1
+                from
+                    var_assets_decommission as var_dec
+                where
+                    var_dec.asset = asset_both.asset
+                    and var_dec.commission_year = var_dec.milestone_year
+                    and var_dec.milestone_year <= asset_both.milestone_year
+                    and var_dec.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
+            )
+        order by
+            asset_both.asset,
+            asset_both.milestone_year
+    ) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_limit_decommission_invested_units_aggregated_vintage_method
+;
+
+-- One row per aggregated asset and investment vintage (commission_year) that
+-- has at least one decommission decision in a later milestone year.
+create table cons_limit_decommission_invested_units_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    sub.*
+from
+    (
+        select distinct
+            var_dec.asset,
+            var_dec.commission_year,
+        from
+            var_assets_decommission as var_dec
+            left join asset on asset.asset = var_dec.asset
+        where
+            asset.vintage_method = 'aggregated'
+            and var_dec.commission_year < var_dec.milestone_year
+        order by
+            var_dec.asset,
+            var_dec.commission_year
+    ) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists cons_vintage_flow_sum_compact_efficiencies_vintage_method
 ;
 

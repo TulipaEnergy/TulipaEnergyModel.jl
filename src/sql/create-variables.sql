@@ -481,22 +481,72 @@ create sequence id start 1
 drop table if exists var_assets_decommission
 ;
 
+-- The decommission variable is indexed by the milestone year of the decision and
+-- by the commission year of the decommissioned units, for every vintage method.
+-- For the compact methods, asset_both already lists the vintages, so one row per
+-- decommissionable asset_both row is enough.
+-- For the aggregated method, asset_both only has milestone_year = commission_year
+-- rows, which hold the existing (initial) units. Units invested in an earlier
+-- milestone year need their own rows, so that the available units expression can
+-- stop subtracting them once their vintage reaches its technical lifetime.
 create table var_assets_decommission as
+with
+    existing_units as (
+        select
+            asset_both.asset,
+            asset_both.milestone_year,
+            asset_both.commission_year,
+            asset_both.decommissionable,
+            asset_both.initial_units,
+            asset.investment_integer,
+        from
+            asset_both
+            left join asset on asset.asset = asset_both.asset
+        where
+            asset_both.decommissionable
+            and asset.type != 'consumer'
+    ),
+    invested_units_aggregated_vintage_method as (
+        select
+            asset_both.asset,
+            asset_both.milestone_year,
+            asset_milestone.milestone_year as commission_year,
+            asset_both.decommissionable,
+            cast(null as float8) as initial_units,
+            asset.investment_integer,
+        from
+            asset_both
+            left join asset on asset.asset = asset_both.asset
+            inner join asset_milestone on asset_milestone.asset = asset_both.asset
+            and asset_milestone.investable
+            and asset_milestone.milestone_year < asset_both.milestone_year
+            and asset_milestone.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
+        where
+            asset_both.decommissionable
+            and asset.type != 'consumer'
+            and asset.vintage_method = 'aggregated'
+    ),
+    all_units as (
+        select
+            *
+        from
+            existing_units
+        union all
+        select
+            *
+        from
+            invested_units_aggregated_vintage_method
+        order by
+            asset,
+            milestone_year,
+            commission_year
+    )
 select
     nextval('id') as id,
-    asset_both.asset,
-    asset_both.milestone_year,
-    asset_both.commission_year,
-    asset_both.decommissionable,
-    asset_both.initial_units,
-    asset.investment_integer,
+    all_units.*,
     cast(null as float8) as solution,
 from
-    asset_both
-    left join asset on asset.asset = asset_both.asset
-where
-    asset_both.decommissionable
-    and asset.type != 'consumer'
+    all_units
 ;
 
 drop sequence id
