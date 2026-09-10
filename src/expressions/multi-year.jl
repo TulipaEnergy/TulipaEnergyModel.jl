@@ -65,6 +65,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     # The assets_decommission[a, past_my, past_my] (existing units) are only subtracted if past_my + technical_lifetime - 1 ≥ milestone_year
     # The assets_decommission[a, past_my, cy] (units invested in cy) are only subtracted if cy + technical_lifetime - 1 ≥ milestone_year
     # Both conditions are the same test on the commission_year column of the variable
+    # The same applies to the storage energy units and to the transport flow units.
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
@@ -343,6 +344,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_assets_decommission_energy AS var_energy_dec
             ON asset_both.asset = var_energy_dec.asset
             AND asset_both.milestone_year >= var_energy_dec.milestone_year
+            AND var_energy_dec.commission_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
         LEFT JOIN var_assets_investment_energy AS var_energy_inv
             ON asset_both.asset = var_energy_inv.asset
             AND asset_both.milestone_year >= var_energy_inv.milestone_year
@@ -376,6 +378,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ON flow_both.to_asset = var_dec.to_asset
             AND flow_both.from_asset = var_dec.from_asset
             AND var_dec.milestone_year <= flow_both.milestone_year
+            AND var_dec.commission_year + flow.technical_lifetime - 1 >= flow_both.milestone_year
         LEFT JOIN var_flows_investment AS var_inv
             ON flow_both.to_asset = var_inv.to_asset
             AND flow_both.from_asset = var_inv.from_asset

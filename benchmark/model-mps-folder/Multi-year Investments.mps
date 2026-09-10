@@ -1374,6 +1374,14 @@ ROWS
  G  limit_decommission_initial_units_aggregated_vintage_method[battery,2030]
  G  limit_decommission_initial_units_aggregated_vintage_method[battery,2050]
  G  limit_decommission_invested_units_aggregated_vintage_method[battery,2030]
+ G  limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2030]
+ G  limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2050]
+ G  limit_decommission_energy_invested_units_aggregated_vintage_method[battery,2030]
+ G  limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2030]
+ G  limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2050]
+ G  limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2030]
+ G  limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2050]
+ G  limit_decommission_flows_invested_units_aggregated_vintage_method[ccgt,demand,2030]
  G  min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,1:1]
  G  min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,2:2]
  G  min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,3:3]
@@ -6199,6 +6207,7 @@ COLUMNS
     flows_investment[2030,("ccgt",_"demand")] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,22:22] -100
     flows_investment[2030,("ccgt",_"demand")] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,23:23] -100
     flows_investment[2030,("ccgt",_"demand")] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,24:24] -100
+    flows_investment[2030,("ccgt",_"demand")] limit_decommission_flows_invested_units_aggregated_vintage_method[ccgt,demand,2030] 1
     flows_investment[2030,("ccgt",_"demand")] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,1:1] 100
     flows_investment[2030,("ccgt",_"demand")] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,2:2] 100
     flows_investment[2030,("ccgt",_"demand")] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,3:3] 100
@@ -7509,6 +7518,7 @@ COLUMNS
     assets_investment_energy[2030,battery] max_storage_level_intra_rep_period_limit[battery,2050,3,22:22] -100
     assets_investment_energy[2030,battery] max_storage_level_intra_rep_period_limit[battery,2050,3,23:23] -100
     assets_investment_energy[2030,battery] max_storage_level_intra_rep_period_limit[battery,2050,3,24:24] -100
+    assets_investment_energy[2030,battery] limit_decommission_energy_invested_units_aggregated_vintage_method[battery,2030] 1
     assets_investment_energy[2030,battery] OBJ 42408.526598791614
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,1,1:1] -100
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,1,2:2] -100
@@ -8460,6 +8470,10 @@ COLUMNS
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,22:22] 100
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,23:23] 100
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,24:24] 100
+    flows_decommission[("ccgt",_"demand"),2030,2030] limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2030] -1
+    flows_decommission[("ccgt",_"demand"),2030,2030] limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2050] -1
+    flows_decommission[("ccgt",_"demand"),2030,2030] limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2030] -1
+    flows_decommission[("ccgt",_"demand"),2030,2030] limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2050] -1
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,1:1] -100
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,2:2] -100
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,3:3] -100
@@ -8605,6 +8619,152 @@ COLUMNS
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,23:23] -100
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,24:24] -100
     flows_decommission[("ccgt",_"demand"),2030,2030] OBJ -2404.065161469724
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,1:1] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,2:2] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,3:3] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,4:4] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,5:5] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,6:6] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,7:7] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,8:8] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,9:9] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,10:10] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,11:11] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,12:12] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,13:13] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,14:14] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,15:15] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,16:16] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,17:17] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,18:18] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,19:19] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,20:20] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,21:21] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,22:22] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,23:23] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,24:24] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,1:1] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,2:2] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,3:3] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,4:4] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,5:5] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,6:6] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,7:7] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,8:8] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,9:9] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,10:10] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,11:11] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,12:12] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,13:13] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,14:14] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,15:15] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,16:16] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,17:17] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,18:18] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,19:19] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,20:20] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,21:21] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,22:22] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,23:23] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,24:24] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,1:1] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,2:2] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,3:3] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,4:4] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,5:5] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,6:6] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,7:7] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,8:8] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,9:9] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,10:10] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,11:11] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,12:12] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,13:13] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,14:14] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,15:15] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,16:16] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,17:17] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,18:18] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,19:19] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,20:20] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,21:21] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,22:22] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,23:23] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,24:24] 100
+    flows_decommission[("ccgt",_"demand"),2050,2030] limit_decommission_flows_invested_units_aggregated_vintage_method[ccgt,demand,2030] -1
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,1:1] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,2:2] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,3:3] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,4:4] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,5:5] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,6:6] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,7:7] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,8:8] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,9:9] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,10:10] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,11:11] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,12:12] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,13:13] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,14:14] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,15:15] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,16:16] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,17:17] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,18:18] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,19:19] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,20:20] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,21:21] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,22:22] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,23:23] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,24:24] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,1:1] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,2:2] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,3:3] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,4:4] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,5:5] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,6:6] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,7:7] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,8:8] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,9:9] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,10:10] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,11:11] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,12:12] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,13:13] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,14:14] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,15:15] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,16:16] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,17:17] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,18:18] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,19:19] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,20:20] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,21:21] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,22:22] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,23:23] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,2,24:24] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,1:1] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,2:2] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,3:3] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,4:4] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,5:5] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,6:6] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,7:7] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,8:8] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,9:9] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,10:10] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,11:11] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,12:12] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,13:13] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,14:14] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,15:15] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,16:16] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,17:17] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,18:18] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,19:19] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,20:20] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,21:21] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,22:22] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,23:23] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,24:24] -100
+    flows_decommission[("ccgt",_"demand"),2050,2030] OBJ -123.5960278547719
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,1:1] 100
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,2:2] 100
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,3:3] 100
@@ -8677,6 +8837,8 @@ COLUMNS
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,22:22] 100
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,23:23] 100
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,3,24:24] 100
+    flows_decommission[("ccgt",_"demand"),2050,2050] limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2050] -1
+    flows_decommission[("ccgt",_"demand"),2050,2050] limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2050] -1
     flows_decommission[("ccgt",_"demand"),2050,2050] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,1:1] -100
     flows_decommission[("ccgt",_"demand"),2050,2050] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,2:2] -100
     flows_decommission[("ccgt",_"demand"),2050,2050] min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2050,1,3:3] -100
@@ -8894,7 +9056,83 @@ COLUMNS
     assets_decommission_energy[battery,2030,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,22:22] 100
     assets_decommission_energy[battery,2030,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,23:23] 100
     assets_decommission_energy[battery,2030,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,24:24] 100
+    assets_decommission_energy[battery,2030,2030] limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2030] -1
+    assets_decommission_energy[battery,2030,2030] limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2050] -1
     assets_decommission_energy[battery,2030,2030] OBJ -42174.137015599146
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,1:1] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,2:2] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,3:3] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,4:4] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,5:5] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,6:6] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,7:7] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,8:8] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,9:9] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,10:10] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,11:11] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,12:12] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,13:13] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,14:14] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,15:15] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,16:16] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,17:17] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,18:18] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,19:19] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,20:20] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,21:21] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,22:22] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,23:23] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,1,24:24] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,1:1] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,2:2] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,3:3] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,4:4] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,5:5] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,6:6] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,7:7] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,8:8] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,9:9] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,10:10] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,11:11] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,12:12] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,13:13] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,14:14] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,15:15] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,16:16] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,17:17] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,18:18] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,19:19] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,20:20] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,21:21] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,22:22] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,23:23] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,2,24:24] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,1:1] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,2:2] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,3:3] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,4:4] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,5:5] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,6:6] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,7:7] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,8:8] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,9:9] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,10:10] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,11:11] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,12:12] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,13:13] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,14:14] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,15:15] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,16:16] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,17:17] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,18:18] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,19:19] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,20:20] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,21:21] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,22:22] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,23:23] 100
+    assets_decommission_energy[battery,2050,2030] max_storage_level_intra_rep_period_limit[battery,2050,3,24:24] 100
+    assets_decommission_energy[battery,2050,2030] limit_decommission_energy_invested_units_aggregated_vintage_method[battery,2030] -1
+    assets_decommission_energy[battery,2050,2030] OBJ -2265.927177337485
     assets_decommission_energy[battery,2050,2050] max_storage_level_intra_rep_period_limit[battery,2050,1,1:1] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_intra_rep_period_limit[battery,2050,1,2:2] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_intra_rep_period_limit[battery,2050,1,3:3] 100
@@ -8967,6 +9205,7 @@ COLUMNS
     assets_decommission_energy[battery,2050,2050] max_storage_level_intra_rep_period_limit[battery,2050,3,22:22] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_intra_rep_period_limit[battery,2050,3,23:23] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_intra_rep_period_limit[battery,2050,3,24:24] 100
+    assets_decommission_energy[battery,2050,2050] limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2050] -1
     assets_decommission_energy[battery,2050,2050] OBJ -2265.927177337485
     storage_level_intra_rep_period[battery,2030,1,1:1] max_storage_level_intra_rep_period_limit[battery,2030,1,1:1] 1
     storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,1:1] 1
@@ -10768,6 +11007,14 @@ RHS
     rhs       limit_decommission_initial_units_aggregated_vintage_method[battery,2030] -1.09
     rhs       limit_decommission_initial_units_aggregated_vintage_method[battery,2050] -2.02
     rhs       limit_decommission_invested_units_aggregated_vintage_method[battery,2030] 0
+    rhs       limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2030] 0
+    rhs       limit_decommission_energy_initial_units_aggregated_vintage_method[battery,2050] 0
+    rhs       limit_decommission_energy_invested_units_aggregated_vintage_method[battery,2030] 0
+    rhs       limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2030] -1
+    rhs       limit_decommission_flows_initial_units_aggregated_vintage_method_export[ccgt,demand,2050] 0
+    rhs       limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2030] -1
+    rhs       limit_decommission_flows_initial_units_aggregated_vintage_method_import[ccgt,demand,2050] 0
+    rhs       limit_decommission_flows_invested_units_aggregated_vintage_method[ccgt,demand,2030] 0
     rhs       min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,1:1] -100
     rhs       min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,2:2] -100
     rhs       min_transport_flow_limit_aggregated_vintage_method[(ccgt,demand),2030,1,3:3] -100
@@ -13687,10 +13934,14 @@ BOUNDS
  PL bounds    assets_decommission[wind,2050,2030]
  LO bounds    flows_decommission[("ccgt",_"demand"),2030,2030] 0
  PL bounds    flows_decommission[("ccgt",_"demand"),2030,2030]
+ LO bounds    flows_decommission[("ccgt",_"demand"),2050,2030] 0
+ PL bounds    flows_decommission[("ccgt",_"demand"),2050,2030]
  LO bounds    flows_decommission[("ccgt",_"demand"),2050,2050] 0
  PL bounds    flows_decommission[("ccgt",_"demand"),2050,2050]
  LO bounds    assets_decommission_energy[battery,2030,2030] 0
  PL bounds    assets_decommission_energy[battery,2030,2030]
+ LO bounds    assets_decommission_energy[battery,2050,2030] 0
+ PL bounds    assets_decommission_energy[battery,2050,2030]
  LO bounds    assets_decommission_energy[battery,2050,2050] 0
  PL bounds    assets_decommission_energy[battery,2050,2050]
  LO bounds    storage_level_intra_rep_period[battery,2030,1,1:1] 0

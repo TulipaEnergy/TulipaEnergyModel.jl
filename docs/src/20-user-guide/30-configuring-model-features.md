@@ -170,7 +170,7 @@ Existing capacities and decommissioning are taken care of in `asset-both.csv`:
 
 - In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
 - Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
-- For the `aggregated` vintage method, `decommissionable` at a `milestone_year` allows decommissioning both the existing units of that year and the units invested in earlier milestone years that are still within their technical lifetime. The decommission variable keeps track of which of the two it is through its `commission_year`, so that a decommission is not counted again after the units reach their technical lifetime.
+- For the `aggregated` vintage method, `decommissionable` at a `milestone_year` allows decommissioning both the existing units of that year and the units invested in earlier milestone years that are still within their technical lifetime. The decommission variable keeps track of which of the two it is through its `commission_year`, so that a decommission is not counted again after the units reach their technical lifetime. The same holds for the storage energy units (`asset-both.csv`) and for transport flows (`flow-both.csv`).
 
 Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
 

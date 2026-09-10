@@ -80,10 +80,43 @@
     columns = [:id, :asset, :commission_year]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    # The storage energy and transport flow limits are built by the same function; give them empty tables
+    _create_empty_table_for_tests(
+        connection,
+        "cons_limit_decommission_energy_initial_units_aggregated_vintage_method",
+        [:id => Int, :asset => String, :milestone_year => Int, :initial_storage_units => Float64],
+    )
+    _create_empty_table_for_tests(
+        connection,
+        "cons_limit_decommission_energy_invested_units_aggregated_vintage_method",
+        [:id => Int, :asset => String, :commission_year => Int],
+    )
+    _create_empty_table_for_tests(
+        connection,
+        "cons_limit_decommission_flows_initial_units_aggregated_vintage_method",
+        [
+            :id => Int,
+            :from_asset => String,
+            :to_asset => String,
+            :milestone_year => Int,
+            :initial_export_units => Float64,
+            :initial_import_units => Float64,
+        ],
+    )
+    _create_empty_table_for_tests(
+        connection,
+        "cons_limit_decommission_flows_invested_units_aggregated_vintage_method",
+        [:id => Int, :from_asset => String, :to_asset => String, :commission_year => Int],
+    )
+
     constraints = Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
         key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key") for key in (
             :limit_decommission_initial_units_aggregated_vintage_method,
             :limit_decommission_invested_units_aggregated_vintage_method,
+            :limit_decommission_energy_initial_units_aggregated_vintage_method,
+            :limit_decommission_energy_invested_units_aggregated_vintage_method,
+            :limit_decommission_flows_initial_units_aggregated_vintage_method,
+            :limit_decommission_flows_invested_units_aggregated_vintage_method,
         )
     )
 
@@ -291,5 +324,132 @@ end
     @test _is_constraint_equal(
         JuMP.@build_constraint(inv_2030 - dec_2050_2030 ≥ 0),
         only(cons_invested),
+    )
+end
+
+@testitem "Storage energy and transport flow decommissions track the vintage too" setup =
+    [CommonSetup, DecommissionAggregatedSetup] tags = [:integration, :constraint, :fast] begin
+    # Battery energy: optimize_storage_capacity, technical lifetime 30, investable and
+    # decommissionable in 2030 and 2050. Transport flow ccgt -> demand: technical lifetime 40,
+    # investable and decommissionable in 2030 and 2050.
+    energy_problem = _create_multi_year_problem()
+    connection = energy_problem.db_connection
+    model = energy_problem.model
+
+    energy_rows = [
+        (row.milestone_year, row.commission_year) for row in DuckDB.query(
+            connection,
+            "SELECT milestone_year, commission_year FROM var_assets_decommission_energy
+            WHERE asset = 'battery' ORDER BY milestone_year, commission_year",
+        )
+    ]
+    @test energy_rows == [(2030, 2030), (2050, 2030), (2050, 2050)]
+
+    flow_rows = [
+        (row.milestone_year, row.commission_year) for row in DuckDB.query(
+            connection,
+            "SELECT milestone_year, commission_year FROM var_flows_decommission
+            WHERE from_asset = 'ccgt' AND to_asset = 'demand'
+            ORDER BY milestone_year, commission_year",
+        )
+    ]
+    @test flow_rows == [(2030, 2030), (2050, 2030), (2050, 2050)]
+
+    # Energy limits
+    inv_energy_2030 = _variable(
+        energy_problem,
+        "var_assets_investment_energy",
+        :assets_investment_energy;
+        asset = "battery",
+        milestone_year = 2030,
+    )
+    dec_energy = (
+        (year, vintage) -> _variable(
+            energy_problem,
+            "var_assets_decommission_energy",
+            :assets_decommission_energy;
+            asset = "battery",
+            milestone_year = year,
+            commission_year = vintage,
+        )
+    )
+    @test _is_constraint_equal(
+        [
+            JuMP.@build_constraint(0.0 - dec_energy(2030, 2030) ≥ 0),
+            JuMP.@build_constraint(0.0 - dec_energy(2030, 2030) - dec_energy(2050, 2050) ≥ 0),
+        ],
+        _get_cons_object(model, :limit_decommission_energy_initial_units_aggregated_vintage_method),
+    )
+    @test _is_constraint_equal(
+        [JuMP.@build_constraint(inv_energy_2030 - dec_energy(2050, 2030) ≥ 0)],
+        _get_cons_object(
+            model,
+            :limit_decommission_energy_invested_units_aggregated_vintage_method,
+        ),
+    )
+
+    # Flow limits: one existing units limit per direction, sharing the decommission variable
+    inv_flow_2030 = _variable(
+        energy_problem,
+        "var_flows_investment",
+        :flows_investment;
+        from_asset = "ccgt",
+        to_asset = "demand",
+        milestone_year = 2030,
+    )
+    dec_flow = (
+        (year, vintage) -> _variable(
+            energy_problem,
+            "var_flows_decommission",
+            :flows_decommission;
+            from_asset = "ccgt",
+            to_asset = "demand",
+            milestone_year = year,
+            commission_year = vintage,
+        )
+    )
+    for direction in (:export, :import)
+        @test _is_constraint_equal(
+            [
+                JuMP.@build_constraint(1.0 - dec_flow(2030, 2030) ≥ 0),
+                JuMP.@build_constraint(0.0 - dec_flow(2030, 2030) - dec_flow(2050, 2050) ≥ 0),
+            ],
+            _get_cons_object(
+                model,
+                Symbol(
+                    "limit_decommission_flows_initial_units_aggregated_vintage_method_",
+                    direction,
+                ),
+            ),
+        )
+    end
+    @test _is_constraint_equal(
+        [JuMP.@build_constraint(inv_flow_2030 - dec_flow(2050, 2030) ≥ 0)],
+        _get_cons_object(model, :limit_decommission_flows_invested_units_aggregated_vintage_method),
+    )
+
+    # The 2050 expressions subtract the 2030 vintage rows while the vintage is alive
+    expr_energy = energy_problem.expressions[:available_energy_units_aggregated_vintage_method]
+    id = only([
+        row.id for row in DuckDB.query(
+            connection,
+            "FROM expr_available_energy_units_aggregated_vintage_method
+            WHERE asset = 'battery' AND milestone_year = 2050",
+        )
+    ])
+    inv_energy_2050 = _variable(
+        energy_problem,
+        "var_assets_investment_energy",
+        :assets_investment_energy;
+        asset = "battery",
+        milestone_year = 2050,
+    )
+    @test JuMP.isequal_canonical(
+        expr_energy.expressions[:energy][id],
+        JuMP.@expression(
+            model,
+            0.0 + inv_energy_2030 + inv_energy_2050 - dec_energy(2030, 2030) -
+            dec_energy(2050, 2030) - dec_energy(2050, 2050)
+        ),
     )
 end

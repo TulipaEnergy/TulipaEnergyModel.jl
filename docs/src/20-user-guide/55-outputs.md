@@ -41,6 +41,8 @@ Each output table has three types of columns:
 
 For a storage asset with `storage_method_energy = 'optimize_storage_capacity'` commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity storage energy in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
 
+Rows with `commission_year = milestone_year` decommission existing units (`initial_storage_units` of that milestone year), and rows with `commission_year < milestone_year` decommission the units invested in `commission_year`.
+
 Associated input parameters: `investment_integer_storage_energy`, `capacity_storage_energy`
 
 ### `var_assets_decommission`
@@ -70,6 +72,8 @@ For a flow, the optimal flow (of energy) during a particular `rep_period` betwee
 ### `var_flows_decommission`
 
 For a transport flow commissioned in `commission_year`, the optimal decommissioning (decrease) of flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
+
+Rows with `commission_year = milestone_year` decommission existing units (`initial_export_units` and `initial_import_units` of that milestone year), and rows with `commission_year < milestone_year` decommission the units invested in `commission_year`.
 
 Associated input parameter: `decommissionable`, `investment_integer`, `capacity`
 

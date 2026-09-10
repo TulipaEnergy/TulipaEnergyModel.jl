@@ -1079,6 +1079,154 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_limit_decommission_energy_initial_units_aggregated_vintage_method
+;
+
+-- Storage energy counterpart of cons_limit_decommission_initial_units_aggregated_vintage_method
+create table cons_limit_decommission_energy_initial_units_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    sub.*
+from
+    (
+        select
+            asset_both.asset,
+            asset_both.milestone_year,
+            asset_both.initial_storage_units,
+        from
+            asset_both
+            left join asset on asset.asset = asset_both.asset
+        where
+            exists (
+                select
+                    1
+                from
+                    var_assets_decommission_energy as var_dec
+                where
+                    var_dec.asset = asset_both.asset
+                    and var_dec.commission_year = var_dec.milestone_year
+                    and var_dec.milestone_year <= asset_both.milestone_year
+                    and var_dec.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
+            )
+        order by
+            asset_both.asset,
+            asset_both.milestone_year
+    ) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_limit_decommission_energy_invested_units_aggregated_vintage_method
+;
+
+-- Storage energy counterpart of cons_limit_decommission_invested_units_aggregated_vintage_method
+create table cons_limit_decommission_energy_invested_units_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    sub.*
+from
+    (
+        select distinct
+            var_dec.asset,
+            var_dec.commission_year,
+        from
+            var_assets_decommission_energy as var_dec
+        where
+            var_dec.commission_year < var_dec.milestone_year
+        order by
+            var_dec.asset,
+            var_dec.commission_year
+    ) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_limit_decommission_flows_initial_units_aggregated_vintage_method
+;
+
+-- Transport flow counterpart of cons_limit_decommission_initial_units_aggregated_vintage_method.
+-- The same decommission variable reduces both the export and the import units.
+create table cons_limit_decommission_flows_initial_units_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    sub.*
+from
+    (
+        select
+            flow_both.from_asset,
+            flow_both.to_asset,
+            flow_both.milestone_year,
+            flow_both.initial_export_units,
+            flow_both.initial_import_units,
+        from
+            flow_both
+            left join flow on flow.from_asset = flow_both.from_asset
+            and flow.to_asset = flow_both.to_asset
+        where
+            exists (
+                select
+                    1
+                from
+                    var_flows_decommission as var_dec
+                where
+                    var_dec.from_asset = flow_both.from_asset
+                    and var_dec.to_asset = flow_both.to_asset
+                    and var_dec.commission_year = var_dec.milestone_year
+                    and var_dec.milestone_year <= flow_both.milestone_year
+                    and var_dec.milestone_year + flow.technical_lifetime - 1 >= flow_both.milestone_year
+            )
+        order by
+            flow_both.from_asset,
+            flow_both.to_asset,
+            flow_both.milestone_year
+    ) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_limit_decommission_flows_invested_units_aggregated_vintage_method
+;
+
+-- Transport flow counterpart of cons_limit_decommission_invested_units_aggregated_vintage_method
+create table cons_limit_decommission_flows_invested_units_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    sub.*
+from
+    (
+        select distinct
+            var_dec.from_asset,
+            var_dec.to_asset,
+            var_dec.commission_year,
+        from
+            var_flows_decommission as var_dec
+        where
+            var_dec.commission_year < var_dec.milestone_year
+        order by
+            var_dec.from_asset,
+            var_dec.to_asset,
+            var_dec.commission_year
+    ) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists cons_vintage_flow_sum_compact_efficiencies_vintage_method
 ;
 

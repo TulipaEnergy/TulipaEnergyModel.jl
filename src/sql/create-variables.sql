@@ -558,22 +558,68 @@ create sequence id start 1
 drop table if exists var_flows_decommission
 ;
 
+-- Same structure as var_assets_decommission: flow_both only has
+-- milestone_year = commission_year rows (existing units), and units invested in
+-- an earlier milestone year get their own rows while within the technical lifetime.
 create table var_flows_decommission as
+with
+    existing_units as (
+        select
+            flow.from_asset,
+            flow.to_asset,
+            flow_both.milestone_year,
+            flow_both.commission_year,
+            flow.investment_integer,
+        from
+            flow_both
+            left join flow on flow.from_asset = flow_both.from_asset
+            and flow.to_asset = flow_both.to_asset
+        where
+            flow.is_transport = true
+            and flow_both.decommissionable
+    ),
+    invested_units as (
+        select
+            flow.from_asset,
+            flow.to_asset,
+            flow_both.milestone_year,
+            flow_milestone.milestone_year as commission_year,
+            flow.investment_integer,
+        from
+            flow_both
+            left join flow on flow.from_asset = flow_both.from_asset
+            and flow.to_asset = flow_both.to_asset
+            inner join flow_milestone on flow_milestone.from_asset = flow_both.from_asset
+            and flow_milestone.to_asset = flow_both.to_asset
+            and flow_milestone.investable
+            and flow_milestone.milestone_year < flow_both.milestone_year
+            and flow_milestone.milestone_year + flow.technical_lifetime - 1 >= flow_both.milestone_year
+        where
+            flow.is_transport = true
+            and flow_both.decommissionable
+    ),
+    all_units as (
+        select
+            *
+        from
+            existing_units
+        union all
+        select
+            *
+        from
+            invested_units
+        order by
+            from_asset,
+            to_asset,
+            milestone_year,
+            commission_year
+    )
 select
     nextval('id') as id,
-    flow.from_asset,
-    flow.to_asset,
-    flow_both.milestone_year,
-    flow_both.commission_year,
-    flow.investment_integer,
+    all_units.*,
     cast(null as float8) as solution,
 from
-    flow_both
-    left join flow on flow.from_asset = flow_both.from_asset
-    and flow.to_asset = flow_both.to_asset
-where
-    flow.is_transport = true
-    and flow_both.decommissionable
+    all_units
 ;
 
 drop sequence id
@@ -616,22 +662,66 @@ create sequence id start 1
 drop table if exists var_assets_decommission_energy
 ;
 
+-- Same structure as var_assets_decommission for the aggregated method: existing
+-- units rows from asset_both, plus one row per invested vintage still within its
+-- technical lifetime.
 create table var_assets_decommission_energy as
+with
+    existing_units as (
+        select
+            asset.asset,
+            asset_both.milestone_year,
+            asset_both.commission_year,
+            asset.investment_integer_storage_energy,
+        from
+            asset_both
+            left join asset on asset.asset = asset_both.asset
+        where
+            asset.storage_method_energy = 'optimize_storage_capacity'
+            and asset.type = 'storage'
+            and asset_both.decommissionable
+            and asset.vintage_method = 'aggregated'
+    ),
+    invested_units as (
+        select
+            asset.asset,
+            asset_both.milestone_year,
+            asset_milestone.milestone_year as commission_year,
+            asset.investment_integer_storage_energy,
+        from
+            asset_both
+            left join asset on asset.asset = asset_both.asset
+            inner join asset_milestone on asset_milestone.asset = asset_both.asset
+            and asset_milestone.investable
+            and asset_milestone.milestone_year < asset_both.milestone_year
+            and asset_milestone.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
+        where
+            asset.storage_method_energy = 'optimize_storage_capacity'
+            and asset.type = 'storage'
+            and asset_both.decommissionable
+            and asset.vintage_method = 'aggregated'
+    ),
+    all_units as (
+        select
+            *
+        from
+            existing_units
+        union all
+        select
+            *
+        from
+            invested_units
+        order by
+            asset,
+            milestone_year,
+            commission_year
+    )
 select
     nextval('id') as id,
-    asset.asset,
-    asset_both.milestone_year,
-    asset_both.commission_year,
-    asset.investment_integer_storage_energy,
+    all_units.*,
     cast(null as float8) as solution,
 from
-    asset_both
-    left join asset on asset.asset = asset_both.asset
-where
-    asset.storage_method_energy = 'optimize_storage_capacity'
-    and asset.type = 'storage'
-    and asset_both.decommissionable
-    and asset.vintage_method = 'aggregated'
+    all_units
 ;
 
 drop sequence id

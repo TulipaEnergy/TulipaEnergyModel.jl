@@ -22,6 +22,8 @@ ROWS
  G  limit_decommission_initial_units_aggregated_vintage_method[ccgt,2030]
  G  limit_decommission_initial_units_aggregated_vintage_method[phs,2030]
  G  limit_decommission_initial_units_aggregated_vintage_method[wind,2030]
+ G  limit_decommission_flows_initial_units_aggregated_vintage_method_export[balance,demand,2030]
+ G  limit_decommission_flows_initial_units_aggregated_vintage_method_import[balance,demand,2030]
  G  min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3]
  G  min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6]
  E  consumer_balance[balance,2030,1,1:1]
@@ -128,6 +130,8 @@ COLUMNS
     assets_decommission[wind,2030,2030] limit_decommission_initial_units_aggregated_vintage_method[wind,2030] -1
     flows_decommission[("balance",_"demand"),2030,2030] max_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3] 200
     flows_decommission[("balance",_"demand"),2030,2030] max_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6] 200
+    flows_decommission[("balance",_"demand"),2030,2030] limit_decommission_flows_initial_units_aggregated_vintage_method_export[balance,demand,2030] -1
+    flows_decommission[("balance",_"demand"),2030,2030] limit_decommission_flows_initial_units_aggregated_vintage_method_import[balance,demand,2030] -1
     flows_decommission[("balance",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3] -200
     flows_decommission[("balance",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6] -200
     storage_level_intra_rep_period[phs,2030,1,1:6] max_storage_level_intra_rep_period_limit[phs,2030,1,1:6] 1
@@ -154,6 +158,8 @@ RHS
     rhs       limit_decommission_initial_units_aggregated_vintage_method[ccgt,2030] -1
     rhs       limit_decommission_initial_units_aggregated_vintage_method[phs,2030] -1
     rhs       limit_decommission_initial_units_aggregated_vintage_method[wind,2030] -2
+    rhs       limit_decommission_flows_initial_units_aggregated_vintage_method_export[balance,demand,2030] -1
+    rhs       limit_decommission_flows_initial_units_aggregated_vintage_method_import[balance,demand,2030] -1
     rhs       min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3] -200
     rhs       min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6] -200
     rhs       consumer_balance[balance,2030,1,1:1] 0
