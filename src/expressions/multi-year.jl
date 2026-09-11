@@ -25,9 +25,11 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #   available_units[a, my, cy] =
     #       initial_units[a, my, cy] +
     #       investment_units[a, cy]* -
-    #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my, cy]
+    #       ∑_{past_my: cy < past_my ≤ my} assets_decommission[a, past_my, cy]
     #
     # The investment_units[a, cy] are only added if cy + technical_lifetime - 1 ≥ milestone_year
+    # The initial_units[a, my, cy] are data given by the user and are never decommissioned by the model,
+    # so assets_decommission only exists for investable commission years cy
     #
     # Assumption:
     # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
@@ -58,13 +60,11 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #   available_units[a, my] =
     #       initial_units[a, my] +
     #       ∑_{past_my: past_my ≤ my} investment_units[a, past_my]* -
-    #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my, past_my]** -
     #       ∑_{past_my: past_my ≤ my} ∑_{cy < past_my} assets_decommission[a, past_my, cy]*
     #
     # The investment_units[a, past_my] are only added if past_my + technical_lifetime - 1 ≥ milestone_year
-    # The assets_decommission[a, past_my, past_my] (existing units) are only subtracted if past_my + technical_lifetime - 1 ≥ milestone_year
     # The assets_decommission[a, past_my, cy] (units invested in cy) are only subtracted if cy + technical_lifetime - 1 ≥ milestone_year
-    # Both conditions are the same test on the commission_year column of the variable
+    # The initial_units[a, my] are data given by the user for each milestone year and are never decommissioned by the model.
     # The same applies to the storage energy units and to the transport flow units.
 
     _create_multi_year_expressions_indices!(connection, expressions)
@@ -304,10 +304,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN asset
             ON asset_both.asset = asset.asset
         -- A decommission row is subtracted only while the decommissioned units could still exist:
-        -- - existing units (commission_year = milestone_year of the decision) were commissioned at or
-        --   before the decision year, so none of them outlives the technical lifetime counted from it
-        -- - invested units (commission_year < milestone_year of the decision) leave the investment
-        --   sum at the end of their vintage's technical lifetime, so their decommission leaves too
+        -- the units invested in commission_year leave the investment sum at the end of their
+        -- vintage's technical lifetime, so their decommission leaves too
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
             AND asset_both.milestone_year >= var_dec.milestone_year

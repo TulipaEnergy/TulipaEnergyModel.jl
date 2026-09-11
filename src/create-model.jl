@@ -215,7 +215,7 @@ function create_model(
     )
 
     show_log && @info "[$(timestamp())] Adding limit decommission constraints"
-    @timeit to "add_limit_decommission_aggregated_method_constraints!" add_limit_decommission_aggregated_method_constraints!(
+    @timeit to "add_limit_decommission_constraints!" add_limit_decommission_constraints!(
         connection,
         model,
         variables,

@@ -318,9 +318,6 @@ ROWS
  L  max_ramp_up_without_unit_commitment[gas,2030,1,22:22]
  L  max_ramp_up_without_unit_commitment[gas,2030,1,23:23]
  L  max_ramp_up_without_unit_commitment[gas,2030,1,24:24]
- G  limit_decommission_initial_units_aggregated_vintage_method[ens,2030]
- G  limit_decommission_initial_units_aggregated_vintage_method[gas,2030]
- G  limit_decommission_initial_units_aggregated_vintage_method[smr,2030]
  G  min_output_flow_with_unit_commitment[ccgt,2030,1,1:2]
  G  min_output_flow_with_unit_commitment[ccgt,2030,1,3:3]
  G  min_output_flow_with_unit_commitment[ccgt,2030,1,4:4]
@@ -1526,87 +1523,6 @@ COLUMNS
     assets_investment[2030,ocgt] limit_units_on_aggregated_vintage_method[ocgt,2030,1,23:23] -1
     assets_investment[2030,ocgt] limit_units_on_aggregated_vintage_method[ocgt,2030,1,24:24] -1
     assets_investment[2030,ocgt] OBJ 2625
-    MARKER    'MARKER'                 'INTEND'
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,1:1] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,2:2] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,3:3] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,4:4] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,5:5] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,6:6] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,7:7] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,8:8] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,9:9] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,10:10] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,11:11] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,12:12] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,13:13] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,14:14] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,15:15] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,16:16] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,17:17] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,18:18] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,19:19] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,20:20] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,21:21] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,22:22] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,23:23] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_aggregated_vintage_method[ens,2030,1,24:24] 1150
-    assets_decommission[ens,2030,2030] limit_decommission_initial_units_aggregated_vintage_method[ens,2030] -1
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,1:1] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,2:2] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,3:3] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,4:4] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,5:5] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,6:6] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,7:7] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,8:8] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,9:9] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,10:10] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,11:11] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,12:12] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,13:13] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,14:14] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,15:15] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,16:16] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,17:17] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,18:18] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,19:19] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,20:20] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,21:21] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,22:22] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,23:23] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,24:24] 1800
-    assets_decommission[gas,2030,2030] limit_decommission_initial_units_aggregated_vintage_method[gas,2030] -1
-    MARKER    'MARKER'                 'INTORG'
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,1:1] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,2:2] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,3:3] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,4:4] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,5:5] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,6:6] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,7:7] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,8:8] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,9:9] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,10:10] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,11:11] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,12:12] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,13:13] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,14:14] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,15:15] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,16:16] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,17:17] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,18:18] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,19:19] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,20:20] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,21:21] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,22:22] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,23:23] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,24:24] 200
-    assets_decommission[smr,2030,2030] limit_units_on_aggregated_vintage_method[smr,2030,1,1:6] 1
-    assets_decommission[smr,2030,2030] limit_units_on_aggregated_vintage_method[smr,2030,1,7:12] 1
-    assets_decommission[smr,2030,2030] limit_units_on_aggregated_vintage_method[smr,2030,1,13:18] 1
-    assets_decommission[smr,2030,2030] limit_units_on_aggregated_vintage_method[smr,2030,1,19:24] 1
-    assets_decommission[smr,2030,2030] limit_decommission_initial_units_aggregated_vintage_method[smr,2030] -1
     units_on[ccgt,2030,1,1:3] limit_units_on_aggregated_vintage_method[ccgt,2030,1,1:3] 1
     units_on[ccgt,2030,1,1:3] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,1:2] -200
     units_on[ccgt,2030,1,1:3] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,3:3] -200
@@ -2222,9 +2138,6 @@ RHS
     rhs       max_ramp_up_without_unit_commitment[gas,2030,1,22:22] 1494
     rhs       max_ramp_up_without_unit_commitment[gas,2030,1,23:23] 1494
     rhs       max_ramp_up_without_unit_commitment[gas,2030,1,24:24] 1494
-    rhs       limit_decommission_initial_units_aggregated_vintage_method[ens,2030] -1
-    rhs       limit_decommission_initial_units_aggregated_vintage_method[gas,2030] -1
-    rhs       limit_decommission_initial_units_aggregated_vintage_method[smr,2030] -1
     rhs       min_output_flow_with_unit_commitment[ccgt,2030,1,1:2] 0
     rhs       min_output_flow_with_unit_commitment[ccgt,2030,1,3:3] 0
     rhs       min_output_flow_with_unit_commitment[ccgt,2030,1,4:4] 0
@@ -2762,12 +2675,6 @@ BOUNDS
  PL bounds    assets_investment[2030,solar]
  LO bounds    assets_investment[2030,ocgt] 0
  PL bounds    assets_investment[2030,ocgt]
- LO bounds    assets_decommission[ens,2030,2030] 0
- PL bounds    assets_decommission[ens,2030,2030]
- LO bounds    assets_decommission[gas,2030,2030] 0
- PL bounds    assets_decommission[gas,2030,2030]
- LO bounds    assets_decommission[smr,2030,2030] 0
- PL bounds    assets_decommission[smr,2030,2030]
  LO bounds    units_on[ccgt,2030,1,1:3] 0
  PL bounds    units_on[ccgt,2030,1,1:3]
  LO bounds    units_on[ccgt,2030,1,4:6] 0

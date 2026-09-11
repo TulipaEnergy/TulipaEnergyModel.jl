@@ -142,7 +142,7 @@ You need to choose a `vintage_method` for the asset. The default is `aggregated`
 In addition, you control whether investment and decommissioning are allowed through separate parameters:
 
 - `investable` (in `asset-milestone.csv`): whether the model can invest in new units of this asset at a given milestone year.
-- `decommissionable` (in `asset-both.csv`): whether existing or invested units can be decommissioned.
+- `decommissionable` (in `asset-both.csv`): whether the units invested by the model in earlier milestone years can be decommissioned at a given milestone year. Existing units (`initial_units`) are never decommissioned by the model.
 
 Below is an overview of the important set-ups regarding the vintage methods.
 
@@ -169,8 +169,8 @@ Fill in the parameters related to the commission year, e.g., investment costs an
 Existing capacities and decommissioning are taken care of in `asset-both.csv`:
 
 - In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
-- Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
-- For the `aggregated` vintage method, `decommissionable` at a `milestone_year` allows decommissioning both the existing units of that year and the units invested in earlier milestone years that are still within their technical lifetime. The decommission variable keeps track of which of the two it is through its `commission_year`, so that a decommission is not counted again after the units reach their technical lifetime. The same holds for the storage energy units (`asset-both.csv`) and for transport flows (`flow-both.csv`).
+- The existing units are your responsibility: you decide how many units are still available at each `milestone_year`, taking into account the retirement of old units. The model takes them as given and never decommissions them.
+- Whether the model allows decommissioning at a `milestone_year` of the units it invested in `commission_year` is set by the parameter `decommissionable`. For the `aggregated` vintage method, `decommissionable` at a `milestone_year` (where `milestone_year = commission_year`) allows decommissioning the units invested in any earlier milestone year that is still within the technical lifetime. For the compact methods, it allows decommissioning the units invested in `commission_year`, so it only has an effect when `commission_year` is an investable milestone year earlier than `milestone_year`. The same holds for the storage energy units (`asset-both.csv`) and for transport flows (`flow-both.csv`).
 
 Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
 
@@ -182,10 +182,10 @@ assets_data = CSV.read(input_asset_file, DataFrame) # hide
 assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
 ```
 
-- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. Both units can be decommissioned.
-- `ccgt` has 1 existing unit in 2030 and 2050. Neither can be decommissioned.
+- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. The units invested in 2030 can be decommissioned in 2050.
+- `ccgt` has 1 existing unit in 2030 and 2050. Its investments cannot be decommissioned.
 - `demand` is a consumer, so it has no initial units and you only have data where `milestone_year = commission_year`.
-- `ens` has 1 existing unit in 2030 and 2050. Neither can be decommissioned.
+- `ens` has 1 existing unit in 2030 and 2050. It is not investable, so `decommissionable` has no effect.
 - `ocgt` has no existing units.
 - `solar` has no existing units.
 - `wind` has 0.07 existing units, commissioned in 2020, and still available in 2030 but not in 2050. Another 0.02 existing units, commissioned in 2030, available in 2030 and 2050. There are no initial units commissioned in 2050.

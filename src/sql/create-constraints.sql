@@ -979,80 +979,12 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_limit_decommission_compact_vintage_method
+drop table if exists cons_limit_decommission_assets
 ;
 
-create table cons_limit_decommission_compact_vintage_method as
-select
-    nextval('id') as id,
-    var_assets_decommission.asset,
-    var_assets_decommission.milestone_year,
-    var_assets_decommission.commission_year,
-from
-    var_assets_decommission
-left join asset on asset.asset = var_assets_decommission.asset
-where
-    asset.vintage_method = 'compact_profiles'
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_limit_decommission_initial_units_aggregated_vintage_method
-;
-
--- One row per aggregated asset and milestone year that has at least one
--- decommission decision of existing (initial) units still within the technical
--- lifetime window, i.e., taken at a milestone year i with
--- milestone_year - technical_lifetime + 1 <= i <= milestone_year.
-create table cons_limit_decommission_initial_units_aggregated_vintage_method as
-select
-    nextval('id') as id,
-    sub.*
-from
-    (
-        select
-            asset_both.asset,
-            asset_both.milestone_year,
-            asset_both.initial_units,
-        from
-            asset_both
-            left join asset on asset.asset = asset_both.asset
-        where
-            asset.vintage_method = 'aggregated'
-            and asset.type != 'consumer'
-            and exists (
-                select
-                    1
-                from
-                    var_assets_decommission as var_dec
-                where
-                    var_dec.asset = asset_both.asset
-                    and var_dec.commission_year = var_dec.milestone_year
-                    and var_dec.milestone_year <= asset_both.milestone_year
-                    and var_dec.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
-            )
-        order by
-            asset_both.asset,
-            asset_both.milestone_year
-    ) as sub
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_limit_decommission_invested_units_aggregated_vintage_method
-;
-
--- One row per aggregated asset and investment vintage (commission_year) that
--- has at least one decommission decision in a later milestone year.
-create table cons_limit_decommission_invested_units_aggregated_vintage_method as
+-- One row per asset and investment vintage (commission_year) that has at least
+-- one decommission decision in a later milestone year, for every vintage method.
+create table cons_limit_decommission_assets as
 select
     nextval('id') as id,
     sub.*
@@ -1063,10 +995,6 @@ from
             var_dec.commission_year,
         from
             var_assets_decommission as var_dec
-            left join asset on asset.asset = var_dec.asset
-        where
-            asset.vintage_method = 'aggregated'
-            and var_dec.commission_year < var_dec.milestone_year
         order by
             var_dec.asset,
             var_dec.commission_year
@@ -1079,52 +1007,11 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_limit_decommission_energy_initial_units_aggregated_vintage_method
+drop table if exists cons_limit_decommission_storage_energy
 ;
 
--- Storage energy counterpart of cons_limit_decommission_initial_units_aggregated_vintage_method
-create table cons_limit_decommission_energy_initial_units_aggregated_vintage_method as
-select
-    nextval('id') as id,
-    sub.*
-from
-    (
-        select
-            asset_both.asset,
-            asset_both.milestone_year,
-            asset_both.initial_storage_units,
-        from
-            asset_both
-            left join asset on asset.asset = asset_both.asset
-        where
-            exists (
-                select
-                    1
-                from
-                    var_assets_decommission_energy as var_dec
-                where
-                    var_dec.asset = asset_both.asset
-                    and var_dec.commission_year = var_dec.milestone_year
-                    and var_dec.milestone_year <= asset_both.milestone_year
-                    and var_dec.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
-            )
-        order by
-            asset_both.asset,
-            asset_both.milestone_year
-    ) as sub
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_limit_decommission_energy_invested_units_aggregated_vintage_method
-;
-
--- Storage energy counterpart of cons_limit_decommission_invested_units_aggregated_vintage_method
-create table cons_limit_decommission_energy_invested_units_aggregated_vintage_method as
+-- Storage energy counterpart of cons_limit_decommission_assets
+create table cons_limit_decommission_storage_energy as
 select
     nextval('id') as id,
     sub.*
@@ -1135,8 +1022,6 @@ from
             var_dec.commission_year,
         from
             var_assets_decommission_energy as var_dec
-        where
-            var_dec.commission_year < var_dec.milestone_year
         order by
             var_dec.asset,
             var_dec.commission_year
@@ -1149,58 +1034,11 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_limit_decommission_flows_initial_units_aggregated_vintage_method
+drop table if exists cons_limit_decommission_flows
 ;
 
--- Transport flow counterpart of cons_limit_decommission_initial_units_aggregated_vintage_method.
--- The same decommission variable reduces both the export and the import units.
-create table cons_limit_decommission_flows_initial_units_aggregated_vintage_method as
-select
-    nextval('id') as id,
-    sub.*
-from
-    (
-        select
-            flow_both.from_asset,
-            flow_both.to_asset,
-            flow_both.milestone_year,
-            flow_both.initial_export_units,
-            flow_both.initial_import_units,
-        from
-            flow_both
-            left join flow on flow.from_asset = flow_both.from_asset
-            and flow.to_asset = flow_both.to_asset
-        where
-            exists (
-                select
-                    1
-                from
-                    var_flows_decommission as var_dec
-                where
-                    var_dec.from_asset = flow_both.from_asset
-                    and var_dec.to_asset = flow_both.to_asset
-                    and var_dec.commission_year = var_dec.milestone_year
-                    and var_dec.milestone_year <= flow_both.milestone_year
-                    and var_dec.milestone_year + flow.technical_lifetime - 1 >= flow_both.milestone_year
-            )
-        order by
-            flow_both.from_asset,
-            flow_both.to_asset,
-            flow_both.milestone_year
-    ) as sub
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_limit_decommission_flows_invested_units_aggregated_vintage_method
-;
-
--- Transport flow counterpart of cons_limit_decommission_invested_units_aggregated_vintage_method
-create table cons_limit_decommission_flows_invested_units_aggregated_vintage_method as
+-- Transport flow counterpart of cons_limit_decommission_assets
+create table cons_limit_decommission_flows as
 select
     nextval('id') as id,
     sub.*
@@ -1212,8 +1050,6 @@ from
             var_dec.commission_year,
         from
             var_flows_decommission as var_dec
-        where
-            var_dec.commission_year < var_dec.milestone_year
         order by
             var_dec.from_asset,
             var_dec.to_asset,

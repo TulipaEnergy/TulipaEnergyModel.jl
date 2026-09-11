@@ -39,17 +39,13 @@ Each output table has three types of columns:
 
 ### `var_assets_decommission_energy`
 
-For a storage asset with `storage_method_energy = 'optimize_storage_capacity'` commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity storage energy in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
-
-Rows with `commission_year = milestone_year` decommission existing units (`initial_storage_units` of that milestone year), and rows with `commission_year < milestone_year` decommission the units invested in `commission_year`.
+For a storage asset with `storage_method_energy = 'optimize_storage_capacity'`, the optimal decommissioning (decrease) in `milestone_year` of the asset capacity storage energy invested in `commission_year`, expressed in the same units as `capacity_storage_energy` of asset. Existing units (`initial_storage_units`) are never decommissioned by the model, so `commission_year` is always an earlier investable milestone year.
 
 Associated input parameters: `investment_integer_storage_energy`, `capacity_storage_energy`
 
 ### `var_assets_decommission`
 
-For an asset commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
-
-For assets with `vintage_method = 'aggregated'`, rows with `commission_year = milestone_year` decommission existing units (`initial_units` of that milestone year), and rows with `commission_year < milestone_year` decommission the units invested in `commission_year` (`initial_units` is empty for these rows).
+For an asset, the optimal decommissioning (decrease) in `milestone_year` of the asset capacity invested in `commission_year`, expressed in the same units as `capacity` of asset. Existing units (`initial_units`) are never decommissioned by the model, so `commission_year` is always an earlier investable milestone year, for every `vintage_method`.
 
 Associated input parameters: `decommissionable`, `initial_units`, `investment_integer`, `capacity`
 
@@ -71,9 +67,7 @@ For a flow, the optimal flow (of energy) during a particular `rep_period` betwee
 
 ### `var_flows_decommission`
 
-For a transport flow commissioned in `commission_year`, the optimal decommissioning (decrease) of flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
-
-Rows with `commission_year = milestone_year` decommission existing units (`initial_export_units` and `initial_import_units` of that milestone year), and rows with `commission_year < milestone_year` decommission the units invested in `commission_year`.
+For a transport flow, the optimal decommissioning (decrease) in `milestone_year` of the flow capacity invested in `commission_year`, expressed in the same units as `capacity` of flow. Existing units (`initial_export_units` and `initial_import_units`) are never decommissioned by the model, so `commission_year` is always an earlier investable milestone year.
 
 Associated input parameter: `decommissionable`, `investment_integer`, `capacity`
 
