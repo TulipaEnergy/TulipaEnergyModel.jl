@@ -751,7 +751,7 @@ The `vintage_method` parameter in the `asset` table determines which method is u
 !!! tip "Vintage method vs. investment decisions"
     The `vintage_method` parameter only controls **how vintage units are represented** in the model (i.e., whether they are aggregated or tracked individually). It does **not** control whether investment or decommissioning occurs. Those decisions are governed by separate parameters:
     - `investable` (in `asset_milestone`): whether new investment is allowed at a given milestone year.
-    - `decommissionable` (in `asset_both`): whether existing or invested units can be decommissioned.
+    - `decommissionable` (in `asset_both`): whether the units invested by the model can be decommissioned at a given milestone year. Existing units (`initial_units`) are given by the user for each milestone year and are never decommissioned by the model.
 
 For the full mathematical formulation of the vintage methods, including the expressions for available units and the capacity constraints under each method, see the [`mathematical formulation`](@ref formulation). For instructions on how to set up the input data, see [multi-year investments setup](@ref multi-year-setup). For more details on the theory, see [Wang and Morales-España (2025)](@ref scientific-refs).
 

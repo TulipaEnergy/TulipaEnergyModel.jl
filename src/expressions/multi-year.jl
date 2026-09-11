@@ -25,9 +25,11 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #   available_units[a, my, cy] =
     #       initial_units[a, my, cy] +
     #       investment_units[a, cy]* -
-    #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my, cy]
+    #       ∑_{past_my: cy < past_my ≤ my} assets_decommission[a, past_my, cy]
     #
     # The investment_units[a, cy] are only added if cy + technical_lifetime - 1 ≥ milestone_year
+    # The initial_units[a, my, cy] are data given by the user and are never decommissioned by the model,
+    # so assets_decommission only exists for investable commission years cy
     #
     # Assumption:
     # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
@@ -58,9 +60,12 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #   available_units[a, my] =
     #       initial_units[a, my] +
     #       ∑_{past_my: past_my ≤ my} investment_units[a, past_my]* -
-    #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my]
+    #       ∑_{past_my: past_my ≤ my} ∑_{cy < past_my} assets_decommission[a, past_my, cy]*
     #
     # The investment_units[a, past_my] are only added if past_my + technical_lifetime - 1 ≥ milestone_year
+    # The assets_decommission[a, past_my, cy] (units invested in cy) are only subtracted if cy + technical_lifetime - 1 ≥ milestone_year
+    # The initial_units[a, my] are data given by the user for each milestone year and are never decommissioned by the model.
+    # The same applies to the storage energy units and to the transport flow units.
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
@@ -298,9 +303,13 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         FROM asset_both
         LEFT JOIN asset
             ON asset_both.asset = asset.asset
+        -- A decommission row is subtracted only while the decommissioned units could still exist:
+        -- the units invested in commission_year leave the investment sum at the end of their
+        -- vintage's technical lifetime, so their decommission leaves too
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
             AND asset_both.milestone_year >= var_dec.milestone_year
+            AND var_dec.commission_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
         LEFT JOIN var_assets_investment AS var_inv
             ON asset_both.asset = var_inv.asset
             AND asset_both.milestone_year >= var_inv.milestone_year
@@ -333,6 +342,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_assets_decommission_energy AS var_energy_dec
             ON asset_both.asset = var_energy_dec.asset
             AND asset_both.milestone_year >= var_energy_dec.milestone_year
+            AND var_energy_dec.commission_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
         LEFT JOIN var_assets_investment_energy AS var_energy_inv
             ON asset_both.asset = var_energy_inv.asset
             AND asset_both.milestone_year >= var_energy_inv.milestone_year
@@ -366,6 +376,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ON flow_both.to_asset = var_dec.to_asset
             AND flow_both.from_asset = var_dec.from_asset
             AND var_dec.milestone_year <= flow_both.milestone_year
+            AND var_dec.commission_year + flow.technical_lifetime - 1 >= flow_both.milestone_year
         LEFT JOIN var_flows_investment AS var_inv
             ON flow_both.to_asset = var_inv.to_asset
             AND flow_both.from_asset = var_inv.from_asset

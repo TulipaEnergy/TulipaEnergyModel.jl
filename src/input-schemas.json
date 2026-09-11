@@ -225,18 +225,18 @@
     },
     "decommissionable": {
       "default": false,
-      "description": "Whether or not the asset can be decommissioned.",
+      "description": "Whether or not the units of the asset invested by the model can be decommissioned. Existing units (initial_units) are never decommissioned by the model.",
       "type": "BOOLEAN"
     },
     "initial_storage_units": {
       "default": 0,
-      "description": "Number of existing storage units",
+      "description": "Number of existing storage units at the milestone year, given by the user and never decommissioned by the model",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
     "initial_units": {
       "default": 0,
-      "description": "Number of existing units",
+      "description": "Number of existing units at the milestone year, given by the user and never decommissioned by the model",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
@@ -616,7 +616,7 @@
     },
     "decommissionable": {
       "default": false,
-      "description": "Whether the transport asset can be decomission or not.",
+      "description": "Whether or not the units of the transport flow invested by the model can be decommissioned. Existing units are never decommissioned by the model.",
       "type": "BOOLEAN"
     },
     "from_asset": {
@@ -625,13 +625,13 @@
     },
     "initial_export_units": {
       "default": 0,
-      "description": "Number of existing units in `from_asset` -> `to_asset` direction",
+      "description": "Number of existing units in `from_asset` -> `to_asset` direction at the milestone year, given by the user and never decommissioned by the model",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
     "initial_import_units": {
       "default": 0,
-      "description": "Number of existing units in `to_asset` -> `from_asset` direction",
+      "description": "Number of existing units in `to_asset` -> `from_asset` direction at the milestone year, given by the user and never decommissioned by the model",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },

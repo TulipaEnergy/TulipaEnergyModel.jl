@@ -103,11 +103,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 4633702.87318 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4638117.55008 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 4633702.87318 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4638117.55008 atol = 1e-5
 end
 
 @testitem "Power Flow Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
