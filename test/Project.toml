@@ -25,7 +25,7 @@ TulipaEnergyModel = { path = ".." }
 [compat]
 Aqua = "0.8.14"
 BenchmarkTools = "1"
-CSV = "0.10"
+CSV = "0.10, 1.1"
 DataFrames = " 1"
 DuckDB = "1"
 GLPK = "1"
