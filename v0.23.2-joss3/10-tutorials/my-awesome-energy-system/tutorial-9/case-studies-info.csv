@@ -1,0 +1,13 @@
+base_name,period_duration,method,distance,weight_type,niters,learning_rate,stochastic_method,run_case
+convex_dirac_cross,24,convex_hull,Euclidean,dirac,2000,0.001,cross_scenario,true
+convex_dirac_per,24,convex_hull,Euclidean,dirac,2000,0.001,per_scenario,true
+convex_convex_cross,24,convex_hull,Euclidean,convex,2000,0.001,cross_scenario,true
+convex_convex_per,24,convex_hull,Euclidean,convex,2000,0.001,per_scenario,true
+conical_dirac_cross,24,conical_hull,Euclidean,dirac,2000,0.001,cross_scenario,true
+conical_dirac_per,24,conical_hull,Euclidean,dirac,2000,0.001,per_scenario,true
+conical_conical_cross,24,conical_hull,Euclidean,conical,2000,0.001,cross_scenario,true
+conical_conical_per,24,conical_hull,Euclidean,conical,2000,0.001,per_scenario,true
+conicalb_dirac_cross,24,convex_hull_with_null,Euclidean,dirac,2000,0.001,cross_scenario,true
+conicalb_dirac_per,24,convex_hull_with_null,Euclidean,dirac,2000,0.001,per_scenario,true
+conicalb_conicalb_cross,24,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,cross_scenario,true
+conicalb_conicalb_per,24,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,per_scenario,true

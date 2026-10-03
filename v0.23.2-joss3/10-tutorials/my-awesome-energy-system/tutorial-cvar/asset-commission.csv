@@ -1,0 +1,5 @@
+asset,commission_year,investment_cost,investment_max_limit,investment_min_limit,investment_max_limit_storage_energy,investment_min_limit_storage_energy
+wind,2030,100.0,100.0,0.0,,0.0
+ocgt,2030,0.0,,0.0,,0.0
+demand,2030,0.0,,0.0,,0.0
+ens,2030,0.0,,0.0,,0.0
