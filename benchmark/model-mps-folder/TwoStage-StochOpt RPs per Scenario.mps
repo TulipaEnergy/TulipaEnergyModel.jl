@@ -51166,7 +51166,7 @@ COLUMNS
     assets_investment[2050,electrolizer] max_output_flows_limit_aggregated_vintage_method[electrolizer,2050,24,22:22] -100
     assets_investment[2050,electrolizer] max_output_flows_limit_aggregated_vintage_method[electrolizer,2050,24,23:23] -100
     assets_investment[2050,electrolizer] max_output_flows_limit_aggregated_vintage_method[electrolizer,2050,24,24:24] -100
-    assets_investment[2050,electrolizer] OBJ 2.9525202029114207e6
+    assets_investment[2050,electrolizer] OBJ 2.9525202029114245e6
     assets_investment[2050,wind_offshore] max_output_flows_limit_aggregated_vintage_method[wind_offshore,2050,9,1:1] -17.52841064075125
     assets_investment[2050,wind_offshore] max_output_flows_limit_aggregated_vintage_method[wind_offshore,2050,9,2:2] -8.917436496002512
     assets_investment[2050,wind_offshore] max_output_flows_limit_aggregated_vintage_method[wind_offshore,2050,9,3:3] -6.743069121657956
@@ -51431,7 +51431,7 @@ COLUMNS
     assets_investment[2050,wind_offshore] max_output_flows_limit_aggregated_vintage_method[wind_offshore,2050,24,22:22] -234.6514929245678
     assets_investment[2050,wind_offshore] max_output_flows_limit_aggregated_vintage_method[wind_offshore,2050,24,23:23] -76.12589582395655
     assets_investment[2050,wind_offshore] max_output_flows_limit_aggregated_vintage_method[wind_offshore,2050,24,24:24] -36.30678159137165
-    assets_investment[2050,wind_offshore] OBJ 1.3473477032315403e8
+    assets_investment[2050,wind_offshore] OBJ 1.3473477032315356e8
     assets_investment[2050,battery] max_output_flows_limit_aggregated_vintage_method[battery,2050,9,1:1] -50
     assets_investment[2050,battery] max_output_flows_limit_aggregated_vintage_method[battery,2050,9,2:2] -50
     assets_investment[2050,battery] max_output_flows_limit_aggregated_vintage_method[battery,2050,9,3:3] -50
@@ -52008,7 +52008,7 @@ COLUMNS
     assets_investment[2050,battery] max_input_flows_limit_aggregated_vintage_method[battery,2050,24,22:22] -50
     assets_investment[2050,battery] max_input_flows_limit_aggregated_vintage_method[battery,2050,24,23:23] -50
     assets_investment[2050,battery] max_input_flows_limit_aggregated_vintage_method[battery,2050,24,24:24] -50
-    assets_investment[2050,battery] OBJ 3.0875202029114207e6
+    assets_investment[2050,battery] OBJ 3.0875202029114245e6
     assets_investment_energy[2030,battery] max_storage_level_intra_rep_period_limit[battery,2030,1,1:1] -100
     assets_investment_energy[2030,battery] max_storage_level_intra_rep_period_limit[battery,2030,1,2:2] -100
     assets_investment_energy[2030,battery] max_storage_level_intra_rep_period_limit[battery,2030,1,3:3] -100
@@ -52874,7 +52874,7 @@ COLUMNS
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,24,22:22] -100
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,24,23:23] -100
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,24,24:24] -100
-    assets_investment_energy[2050,battery] OBJ 248752.02029114208
+    assets_investment_energy[2050,battery] OBJ 248752.02029114275
     storage_level_intra_rep_period[battery,2030,1,1:1] max_storage_level_intra_rep_period_limit[battery,2030,1,1:1] 1
     storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,1:1] 1
     storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,2:2] -1

@@ -69,6 +69,7 @@ export
     # Constraints
     compute_constraints_indices,
     add_capacity_constraints!,
+    add_limit_decommission_constraints!,
     add_energy_constraints!,
     add_storage_constraints!,
     add_consumer_constraints!,

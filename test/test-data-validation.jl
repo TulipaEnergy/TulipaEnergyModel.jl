@@ -101,6 +101,42 @@ end
     @test occursin("expected >= 0", only(error_messages))
 end
 
+@testitem "Test schema numeric constraints - initial units are non-negative" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    # The decommission limits only bound the decommissions by the investments, so the available
+    # units stay non-negative only when the user-provided initial units are non-negative.
+    connection = _multi_year_fixture()
+    DuckDB.query(
+        connection,
+        "UPDATE asset_both
+        SET initial_units = -1.0, initial_storage_units = -0.5
+        WHERE asset = 'battery' AND milestone_year = 2030 AND commission_year = 2030",
+    )
+    DuckDB.query(
+        connection,
+        "UPDATE flow_both
+        SET initial_export_units = -2.0, initial_import_units = -3.0
+        WHERE from_asset = 'ccgt' AND to_asset = 'demand'
+            AND milestone_year = 2030 AND commission_year = 2030",
+    )
+
+    error_messages = TEM._validate_schema_min_max_constraints!(String[], connection)
+    @test length(error_messages) == 4
+    for (table, column, value) in (
+        ("asset_both", "initial_units", "-1.0"),
+        ("asset_both", "initial_storage_units", "-0.5"),
+        ("flow_both", "initial_export_units", "-2.0"),
+        ("flow_both", "initial_import_units", "-3.0"),
+    )
+        @test any(
+            occursin(
+                "Table '$table' has out-of-range value for column '$column': '$value' (expected >= 0)",
+                msg,
+            ) for msg in error_messages
+        )
+    end
+end
+
 @testitem "Test schema numeric constraints - maximum" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _storage_fixture()
