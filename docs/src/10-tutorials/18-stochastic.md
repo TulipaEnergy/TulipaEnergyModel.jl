@@ -42,7 +42,7 @@ TIO.read_csv_folder(connection, input_dir)
 
 Here is a schematic of the energy system we are modeling:
 
-![Energy system of the stochastic case study. ](../figs/stochastic-case-study-network.png)
+![Energy system of the stochastic case study](../figs/stochastic-case-study-network.png)
 
 ## Profiles Depending on the Scenario
 
