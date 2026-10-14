@@ -42,25 +42,7 @@ TIO.read_csv_folder(connection, input_dir)
 
 Here is a schematic of the energy system we are modeling:
 
-```mermaid
-flowchart TD
-ens            --> e_demand
-ocgt           --> e_demand
-ccgt           --> e_demand
-wind           --> e_demand
-solar          --> e_demand
-electrolizer   --> h2_demand
-e_demand       --> electrolizer
-smr_ccs        --> h2_demand
-wind_offshore  --> e_demand
-wind_offshore  --> electrolizer
-battery        --> e_demand
-e_demand       --> battery
-h2_storage     --> h2_demand
-h2_demand      --> h2_storage
-hydro_reservoir--> e_demand
-hydro_reservoir--> spillage
-```
+![Energy system of the stochastic case study](../figs/stochastic-case-study-network.png)
 
 ## Profiles Depending on the Scenario
 
