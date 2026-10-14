@@ -46,12 +46,7 @@ The system has four assets:
 
 Wind is the **only investable asset** with investment cost 100 €/MW. The optimizer decides how much wind capacity to build (up to 100 MW = 1 unit) before the scenarios are revealed.
 
-```mermaid
-flowchart LR
-    wind    -->|free| demand
-    ocgt    -->|50 €/MWh| demand
-    ens     -->|500 €/MWh| demand
-```
+![Energy system of the CVaR case study](../figs/cvar-case-study-network.png)
 
 ## Loading the Data
 
