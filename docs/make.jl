@@ -1,6 +1,5 @@
 using TulipaEnergyModel
 using Documenter
-using DocumenterMermaid
 
 DocMeta.setdocmeta!(TulipaEnergyModel, :DocTestSetup, :(using TulipaEnergyModel); recursive = true)
 
