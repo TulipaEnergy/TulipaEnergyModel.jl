@@ -95,18 +95,18 @@ bibliography: paper.bib
 
 ## Summary
 
-`TulipaEnergyModel.jl` is a modelling framework for analysing investment and operational decisions of future energy systems through capacity expansion and dispatch optimisation. `TulipaEnergyModel.jl` is the main package of the Tulipa Energy ecosystem, and it is developed in [Julia](https://julialang.org) [@Julia] using [JuMP.jl](https://jump.dev) [@JuMP].
+`TulipaEnergyModel.jl` is a modelling framework for analysing investment and operational decisions of future energy systems through capacity expansion and dispatch optimisation. `TulipaEnergyModel.jl` is the main package of the Tulipa Energy ecosystem, and it is developed in [Julia](https://julialang.org) [@Julia] using [`JuMP.jl`](https://jump.dev) [@JuMP].
 As a framework, Tulipa formulates models entirely based on input data. This allows users to analyse virtually any system using the generalised building blocks – production, consumption, conversion, storage, and transport.
-TulipaEnergyModel.jl focuses on model quality and efficient implementation, allowing it to break the tradeoff between model fidelity and computational load through: tighter MIP formulations; exact LP reformulations with fewer constraints and variables; more accurate LP approximations; and flexible model fidelity across temporal, technological, and spatial dimensions.
+`TulipaEnergyModel.jl` focuses on model quality and efficient implementation, allowing it to break the tradeoff between model fidelity and computational load through: tighter MIP formulations; exact LP reformulations with fewer constraints and variables; more accurate LP approximations; and flexible model fidelity across temporal, technological, and spatial dimensions.
 
 ## Statement of Need
 
 Existing open-source frameworks for Energy System Optimisation include [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nlr.gov/analysis/sienna) ecosystem [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], [Calliope](https://github.com/calliope-project/calliope) [@Calliope], and [AnyMOD](https://github.com/leonardgoeke/AnyMOD.jl) [@AnyMOD2021].
 These frameworks have advanced the field through different modelling approaches, including flexible formulations. Nevertheless, increasing model detail can still create computational challenges in large-scale applications.
 Alongside advances in solvers and computing, improving mathematical formulations can help increase model fidelity while simultaneously solving faster than standard formulations.
-This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by: 1) lowering computational cost while maintaining model fidelity, by reducing the problem size [@Tejada2025], and by creating tighter mixed-integer programs (MIP) [@MoralesEspana2013]. 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations [@Elgersma2026; @gentile2016; @MoralesEspana2022]. Finally, 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in various parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions.
+This insight inspired the development of `TulipaEnergyModel.jl`, with the core philosophy of advancing the state-of-the-art in formulation quality by: 1) lowering computational cost while maintaining model fidelity, by reducing the problem size [@Tejada2025], and by creating tighter mixed-integer programs (MIP) [@MoralesEspana2013]. 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations [@Elgersma2026; @gentile2016; @MoralesEspana2022]. Finally, 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in various parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions.
 These modelling strategies offer significant computational benefits, especially when handling large-scale problems: covering a continent with multiple energy carriers, and optimising over decades while maintaining hourly resolution for key aspects (e.g., renewable generation).
-TulipaEnergyModel.jl had to be developed from scratch to be able to include all of these modelling breakthroughs, since they alter the foundation and structure of the model.
+`TulipaEnergyModel.jl` had to be developed from scratch to be able to include all of these modelling breakthroughs, since they alter the foundation and structure of the model.
 Below, we present some of core modelling and software design innovations.
 
 ## Modelling Innovations
@@ -120,13 +120,13 @@ The following example illustrates these concepts:
 
 ![Example of network with flexible resolution of assets and flows \label{fig:flexible-time-resolution}](images/flexible-time-resolution.png)
 
-For the fully flexible temporal resolution, consider the 6-hour duration of this system. The flow between "H2" and "ccgt" has a resolution of 6 hours, while the flow between "ccgt" and "balance" is 1 hour. The resolution from "wind" to "phs" is 3 hours, and from "phs" to "balance" is irregular, a 4-hour block followed by a 2-hour block. Tulipa allows different temporal resolutions throughout the model, thereby reducing the number of variables and constraints. This feature can drastically speed up solving with little loss in accuracy [@Gao2025].
+For the fully flexible temporal resolution, consider the 6-hour duration of this system. The flow between `H2` and `ccgt` has a resolution of 6 hours, while the flow between `ccgt` and `balance` is 1 hour. The resolution from `wind` to `phs` is 3 hours, and from `phs` to `balance` is irregular, a 4-hour block followed by a 2-hour block. Tulipa allows different temporal resolutions throughout the model, thereby reducing the number of variables and constraints. This feature can drastically speed up solving with little loss in accuracy [@Gao2025].
 
-For the direct connection between assets, the storage “phs” is directly connected to the “wind“ to charge, and to “balance” to discharge. This direct connection between assets completely avoids intermediate elements (connections/nodes), thereby eliminating unnecessary variables and constraints. Thus, accelerating solving times without any loss of accuracy [@Tejada2025].
+For the direct connection between assets, the storage `phs` is directly connected to the `wind` to charge, and to `balance` to discharge. This direct connection between assets completely avoids intermediate elements (connections/nodes), thereby eliminating unnecessary variables and constraints. Thus, accelerating solving times without any loss of accuracy [@Tejada2025].
 
-TulipaEnergyModel.jl is fundamentally focused on high-quality mathematical formulations. The model also includes other key features such as seasonal storage modelling using representative periods [@Tejada2018; @greg2025], tight and compact MIP formulations for storage [@Elgersma2026], unit commitment [@MoralesEspana2013], and compact formulations for multi-year investment [@wang2025a; @wang2025b].
+`TulipaEnergyModel.jl` is fundamentally focused on high-quality mathematical formulations. The model also includes other key features such as seasonal storage modelling using representative periods [@Tejada2018; @greg2025], tight and compact MIP formulations for storage [@Elgersma2026], unit commitment [@MoralesEspana2013], and compact formulations for multi-year investment [@wang2025a; @wang2025b].
 
-Although TulipaEnergyModel.jl is a relatively young package, it already shows promising results in breaking the trade-off between computational burden and model details. As presented in initial benchmark results, TulipaEnergyModel.jl allows to: 1) solve large capacity expansion problems faster [@greg2025], 2) include uncertainty through more computationally demanding stochastic programming [@Kremer2025], 3) create computationally efficient approximations by exploiting the flexible temporal resolution [@Gao2025], and 4) reduce the problem size without sacrificing any accuracy [@Tejada2025]. All these studies demonstrate how TulipaEnergyModel.jl does not rely on (over)simplifying the problem, leading to unreliable results/conclusions, to solve more computationally demanding problems.
+Although `TulipaEnergyModel.jl` is a relatively young package, it already shows promising results in breaking the trade-off between computational burden and model details. As presented in initial benchmark results, `TulipaEnergyModel.jl` allows to: 1) solve large capacity expansion problems faster [@greg2025], 2) include uncertainty through more computationally demanding stochastic programming [@Kremer2025], 3) create computationally efficient approximations by exploiting the flexible temporal resolution [@Gao2025], and 4) reduce the problem size without sacrificing any accuracy [@Tejada2025]. All these studies demonstrate how `TulipaEnergyModel.jl` does not rely on (over)simplifying the problem, leading to unreliable results/conclusions, to solve more computationally demanding problems.
 
 ## Software Design Innovations
 
@@ -150,11 +150,11 @@ Returning to the example system, the first three rows of the flow variable defin
 
 | id   | from asset   | to asset   | time block start   | time block end   |
 | ---- | ------------ | ---------- | ------------------ | ---------------- |
-| 1    | H2           | ccgt       | 1                  | 6                |
-| 2    | phs          | balance    | 1                  | 4                |
-| 3    | phs          | balance    | 5                  | 6                |
+| 1    | `H2`         | `ccgt`     | 1                  | 6                |
+| 2    | `phs`        | `balance`  | 1                  | 4                |
+| 3    | `phs`        | `balance`  | 5                  | 6                |
 
-Table: "Example of linearised tabular indices of the `var_flow` table"\label{tab:linearised}
+Table: Example of linearised tabular indices of the `var_flow` table\label{tab:linearised}
 
 Storing the indices in tables avoids the sparse storage of JuMP objects, which can instead be stored in an array with their positions matching the IDs in the index tables.
 Figure \ref{fig:indices} illustrates this method of storage.

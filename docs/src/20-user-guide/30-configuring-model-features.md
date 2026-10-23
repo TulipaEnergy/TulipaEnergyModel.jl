@@ -503,14 +503,7 @@ Since `max_energy_timeframe_partition` is defined **per period**, and the profil
 
 A CCS plant burns gas to produce electricity, releases part of the resulting CO2 to the atmosphere, and captures the rest for permanent storage. The capture rate is the split between the two CO2 outputs.
 
-```mermaid
-flowchart LR
-    gas_supply -->|gas| ccs
-    ccs -->|electricity| electricity_demand
-    ccs -->|"released CO2"| atmosphere
-    ccs -->|"captured CO2"| co2_storage
-    atmosphere -->|"total CO2"| co2_cap
-```
+![CCS example](../figs/emissions-ccs-example.png)
 
 The assets are set up as follows:
 
@@ -537,16 +530,7 @@ Finally, `use_inter_period_constraints = true` and `max_energy_timeframe_partiti
 
 BECCS (bioenergy with carbon capture and storage) differs from CCS in one respect: the biomass it burns has already removed CO2 from the atmosphere while growing. That removal is modeled as a flow that goes **into** the plant **from** the atmosphere, so the atmosphere node sees both a release and an uptake.
 
-```mermaid
-flowchart LR
-    biomass_supply -->|biomass| beccs
-    beccs -->|electricity| electricity_demand
-    beccs -->|"released CO2"| atmosphere
-    atmosphere -->|"CO2 absorbed while growing"| beccs
-    beccs -->|"stored CO2"| co2_storage
-    atmosphere -->|"net CO2"| atmosphere_net
-    atmosphere_net -->|"net CO2"| co2_cap
-```
+![BECCS example](../figs/emissions-beccs-example.png)
 
 The `atmosphere` node is a pass-through node, so its balance reads
 
@@ -571,13 +555,7 @@ If a case study needs more than one accounting scheme, for instance the physical
 
 Once each emitting asset has its emission flows, the system-wide cap is a single chain. All emitters send their CO2 to the same accounting node, which forwards the total to a sink.
 
-```mermaid
-flowchart LR
-    ccs -->|CO2| atmosphere
-    beccs -->|CO2| atmosphere
-    other_emitters -->|CO2| atmosphere
-    atmosphere -->|"total CO2"| co2_cap
-```
+![System-wide emission cap](../figs/emissions-cap-example.png)
 
 The cap is then a single row in `asset` and a single row in `asset_milestone` for the `atmosphere` node:
 
