@@ -142,7 +142,7 @@ You need to choose a `vintage_method` for the asset. The default is `aggregated`
 In addition, you control whether investment and decommissioning are allowed through separate parameters:
 
 - `investable` (in `asset-milestone.csv`): whether the model can invest in new units of this asset at a given milestone year.
-- `decommissionable` (in `asset-both.csv`): whether the units invested by the model in earlier milestone years can be decommissioned at a given milestone year. Only units invested by the model can be decommissioned; existing units (`initial_units`) are never decommissioned by the model.
+- `decommissionable` (in `asset-both.csv`): whether existing or invested units can be decommissioned.
 
 Below is an overview of the important set-ups regarding the vintage methods.
 
@@ -155,6 +155,9 @@ Below is an overview of the important set-ups regarding the vintage methods.
 
 !!! info "Which asset types support which methods?"
     The `compact_profiles` methods can only be applied to producer and the `compact_efficiencies` method to conversion assets. Transport, storage, and consumer assets always use the `aggregated` method. For more details on the constraints that apply when selecting these methods, see the [`mathematical formulation`](@ref formulation).
+
+!!! warning "Planning horizon longer than the technical lifetime"
+    If the planning horizon is longer than the `technical_lifetime` of a decommissionable asset, use a compact method for it. The aggregated method underestimates the available units in that case, because it does not track which vintage the decommissioned units belong to. Transport and storage assets only support the aggregated method, so keep their planning horizon within their technical lifetime or set `decommissionable = false`. See [vintage modeling](@ref vintage-modeling) for an example.
 
 #### Asset milestone year data
 
@@ -169,8 +172,8 @@ Fill in the parameters related to the commission year, e.g., investment costs an
 Existing capacities and decommissioning are taken care of in `asset-both.csv`:
 
 - In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
-- The existing units are your responsibility: you decide how many units are still available at each `milestone_year`, taking into account the retirement of old units. The model takes them as given and never decommissions them.
-- Whether the model allows decommissioning at a `milestone_year` of the units it invested in `commission_year` is set by the parameter `decommissionable`. For the `aggregated` vintage method, `decommissionable` at a `milestone_year` (where `milestone_year = commission_year`) allows decommissioning the units invested in any earlier milestone year that is still within the technical lifetime. For the compact methods, it allows decommissioning the units invested in `commission_year`, so it only has an effect when `commission_year` is an investable milestone year earlier than `milestone_year`. The same holds for the storage energy units (`asset-both.csv`) and for transport flows (`flow-both.csv`).
+- Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
+- For the compact methods, list a `commission_year` in a `milestone_year` only while that vintage is within its technical lifetime, also for the vintages the model can invest in. This is how the compact methods know when a vintage, together with its decommissions, leaves the available units.
 
 Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
 
@@ -182,10 +185,10 @@ assets_data = CSV.read(input_asset_file, DataFrame) # hide
 assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
 ```
 
-- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. The units invested in 2030 can be decommissioned in 2050.
-- `ccgt` has 1 existing unit in 2030 and 2050. Its investments cannot be decommissioned.
+- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. Both units can be decommissioned.
+- `ccgt` has 1 existing unit in 2030 and 2050. Neither can be decommissioned.
 - `demand` is a consumer, so it has no initial units and you only have data where `milestone_year = commission_year`.
-- `ens` has 1 existing unit in 2030 and 2050. It is not investable, so `decommissionable` has no effect.
+- `ens` has 1 existing unit in 2030 and 2050. Neither can be decommissioned.
 - `ocgt` has no existing units.
 - `solar` has no existing units.
 - `wind` has 0.07 existing units, commissioned in 2020, and still available in 2030 but not in 2050. Another 0.02 existing units, commissioned in 2030, available in 2030 and 2050. There are no initial units commissioned in 2050.
@@ -342,7 +345,7 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 
 !!! info
     Assets in `use_only_investment_units` groups have to allow investment (`asset_milestone.investable = true` for the corresponding year) and must not be consumers (`asset.type != "consumer"`).
-    Assets in `use_available_units` groups may be non-investable, which allows customised limits also accounting for existing capacity (`initial_units`).
+    Assets in `use_available_units` groups may be non-investable, which allows limits on existing capacity and decommissioning trajectories.
     Assets in `use_available_units` groups may be have different `vintage_method`, i.e., they can be `aggregated` or `compact_profiles` and the group constraints will be applied accordingly.
 
 ## [Flow Coefficients](@id flow-coefficient)

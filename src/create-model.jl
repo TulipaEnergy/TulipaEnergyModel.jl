@@ -214,14 +214,6 @@ function create_model(
         profiles,
     )
 
-    show_log && @info "[$(timestamp())] Adding limit decommission constraints"
-    @timeit to "add_limit_decommission_constraints!" add_limit_decommission_constraints!(
-        connection,
-        model,
-        variables,
-        constraints,
-    )
-
     show_log && @info "[$(timestamp())] Adding energy constraints"
     @timeit to "add_energy_constraints!" add_energy_constraints!(
         connection,

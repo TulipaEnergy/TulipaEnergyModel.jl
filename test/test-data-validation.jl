@@ -103,8 +103,7 @@ end
 
 @testitem "Test schema numeric constraints - initial units are non-negative" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
-    # The decommission limits only bound the decommissions by the investments, so the available
-    # units stay non-negative only when the user-provided initial units are non-negative.
+    # Negative existing units have no physical meaning and would let the available units go negative.
     connection = _multi_year_fixture()
     DuckDB.query(
         connection,

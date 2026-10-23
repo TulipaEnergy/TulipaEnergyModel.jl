@@ -979,82 +979,20 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_limit_decommission_assets
+drop table if exists cons_limit_decommission_compact_vintage_method
 ;
 
--- One row per asset and investment vintage (commission_year) that has at least
--- one decommission decision in a later milestone year, for every vintage method.
-create table cons_limit_decommission_assets as
+create table cons_limit_decommission_compact_vintage_method as
 select
     nextval('id') as id,
-    sub.*
+    var_assets_decommission.asset,
+    var_assets_decommission.milestone_year,
+    var_assets_decommission.commission_year,
 from
-    (
-        select distinct
-            var_dec.asset,
-            var_dec.commission_year,
-        from
-            var_assets_decommission as var_dec
-        order by
-            var_dec.asset,
-            var_dec.commission_year
-    ) as sub
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_limit_decommission_storage_energy
-;
-
--- Storage energy counterpart of cons_limit_decommission_assets
-create table cons_limit_decommission_storage_energy as
-select
-    nextval('id') as id,
-    sub.*
-from
-    (
-        select distinct
-            var_dec.asset,
-            var_dec.commission_year,
-        from
-            var_assets_decommission_energy as var_dec
-        order by
-            var_dec.asset,
-            var_dec.commission_year
-    ) as sub
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_limit_decommission_flows
-;
-
--- Transport flow counterpart of cons_limit_decommission_assets
-create table cons_limit_decommission_flows as
-select
-    nextval('id') as id,
-    sub.*
-from
-    (
-        select distinct
-            var_dec.from_asset,
-            var_dec.to_asset,
-            var_dec.commission_year,
-        from
-            var_flows_decommission as var_dec
-        order by
-            var_dec.from_asset,
-            var_dec.to_asset,
-            var_dec.commission_year
-    ) as sub
+    var_assets_decommission
+left join asset on asset.asset = var_assets_decommission.asset
+where
+    asset.vintage_method = 'compact_profiles'
 ;
 
 drop sequence id

@@ -225,7 +225,7 @@
     },
     "decommissionable": {
       "default": false,
-      "description": "Whether or not the units of the asset invested by the model can be decommissioned. Existing units (initial_units) are never decommissioned by the model.",
+      "description": "Whether or not the asset can be decommissioned.",
       "type": "BOOLEAN"
     },
     "initial_storage_units": {
@@ -233,7 +233,7 @@
         "minimum": 0
       },
       "default": 0,
-      "description": "Number of existing storage units at the milestone year, given by the user and never decommissioned by the model",
+      "description": "Number of existing storage units",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
@@ -242,7 +242,7 @@
         "minimum": 0
       },
       "default": 0,
-      "description": "Number of existing units at the milestone year, given by the user and never decommissioned by the model",
+      "description": "Number of existing units",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
@@ -622,7 +622,7 @@
     },
     "decommissionable": {
       "default": false,
-      "description": "Whether or not the units of the transport flow invested by the model can be decommissioned. Existing units are never decommissioned by the model.",
+      "description": "Whether the transport asset can be decomission or not.",
       "type": "BOOLEAN"
     },
     "from_asset": {
@@ -634,7 +634,7 @@
         "minimum": 0
       },
       "default": 0,
-      "description": "Number of existing units in `from_asset` -> `to_asset` direction at the milestone year, given by the user and never decommissioned by the model",
+      "description": "Number of existing units in `from_asset` -> `to_asset` direction",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
@@ -643,7 +643,7 @@
         "minimum": 0
       },
       "default": 0,
-      "description": "Number of existing units in `to_asset` -> `from_asset` direction at the milestone year, given by the user and never decommissioned by the model",
+      "description": "Number of existing units in `to_asset` -> `from_asset` direction",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
