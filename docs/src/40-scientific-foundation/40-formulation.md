@@ -294,6 +294,11 @@ For available units across years, we define the following expressions:
 \end{aligned}
 ```
 
+!!! warning "Planning horizon longer than the technical lifetime"
+    The aggregated decommission variables $v^{\text{decom aggregated}}_{a,i}$ do not record the commission year of the units they remove. Units invested in year $v$ and decommissioned in a later year $i$ leave the investment sum after year $v + p^{\text{technical lifetime}}_{a} - 1$, but they keep being subtracted through the decommission sum after that year. When the planning horizon is longer than the technical lifetime, these units are therefore subtracted twice, and $v^{\text{available units aggregated}}_{a,y}$ underestimates (and may even turn negative) the available units. The same holds for the storage energy units and for the transport flow units. This simplification keeps the aggregated method small.
+
+The compact expression does not have this issue. The variable $v^{\text{decom compact profiles}}_{a,i,v}$ carries the commission year $v$, and $v^{\text{available units compact}}_{a,y,v}$ only exists for $(a,y,v) \in \mathcal{D}^{\text{compact profiles}}$, i.e., while vintage $v$ is within its technical lifetime in year $y$. The decommissions of a vintage therefore leave the available units together with the vintage. Use a compact method for decommissionable assets whose technical lifetime is shorter than the planning horizon. See [vintage modeling](@ref vintage-modeling) for the asset types this applies to.
+
 In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses the aggregated or compact profiles method.
 
 - If the asset uses aggregated method

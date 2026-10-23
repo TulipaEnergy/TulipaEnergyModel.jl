@@ -748,6 +748,16 @@ The `vintage_method` parameter in the `asset` table determines which method is u
 !!! info "Which asset types support which methods?"
     The `compact_profiles` methods can only be applied to **producer** and the `compact_efficiencies` method to **conversion** assets. **Consumer**, **storage**, and **transport** assets always use the `aggregated` method.
 
+The aggregated method keeps the model small by not tracking which vintage the decommissioned units belong to. This is exact as long as no decommissioned vintage reaches the end of its technical lifetime within the planning horizon. When the planning horizon is longer than the technical lifetime of a decommissionable asset, the units invested in a year and decommissioned later leave the available units twice: once when they are decommissioned, and again when their vintage reaches the end of its technical lifetime. The available units are then underestimated, which discourages decommissioning or leads to extra investments.
+
+For example, take an asset with a technical lifetime of 20 years and milestone years 2030, 2040, and 2050. The model invests in 2 units in 2030 and decommissions 1 of them in 2040. In 2050, both 2030 units are gone, so the available units should be 0, but the aggregated method computes $0 - 1 = -1$. The compact methods track the decommissions per vintage and do not have this issue.
+
+!!! warning "Decommissioning when the planning horizon is longer than the technical lifetime"
+    Choose the vintage method as follows when the planning horizon is longer than the technical lifetime of a decommissionable asset:
+    - For **producer** and **conversion** assets, use `compact_profiles` or `compact_efficiencies`.
+    - For **storage** and **transport** assets, which only support the `aggregated` method, either keep the planning horizon within their technical lifetime or do not make them decommissionable.
+    - **Consumer** assets are not affected, because the model neither invests in nor decommissions them.
+
 !!! tip "Vintage method vs. investment decisions"
     The `vintage_method` parameter only controls **how vintage units are represented** in the model (i.e., whether they are aggregated or tracked individually). It does **not** control whether investment or decommissioning occurs. Those decisions are governed by separate parameters:
     - `investable` (in `asset_milestone`): whether new investment is allowed at a given milestone year.

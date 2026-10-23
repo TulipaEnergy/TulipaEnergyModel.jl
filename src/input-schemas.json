@@ -229,12 +229,18 @@
       "type": "BOOLEAN"
     },
     "initial_storage_units": {
+      "constraints": {
+        "minimum": 0
+      },
       "default": 0,
       "description": "Number of existing storage units",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
     "initial_units": {
+      "constraints": {
+        "minimum": 0
+      },
       "default": 0,
       "description": "Number of existing units",
       "type": "DOUBLE",
@@ -624,12 +630,18 @@
       "type": "VARCHAR"
     },
     "initial_export_units": {
+      "constraints": {
+        "minimum": 0
+      },
       "default": 0,
       "description": "Number of existing units in `from_asset` -> `to_asset` direction",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
     "initial_import_units": {
+      "constraints": {
+        "minimum": 0
+      },
       "default": 0,
       "description": "Number of existing units in `to_asset` -> `from_asset` direction",
       "type": "DOUBLE",
