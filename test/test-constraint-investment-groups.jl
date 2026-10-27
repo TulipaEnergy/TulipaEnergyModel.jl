@@ -224,17 +224,19 @@ end
             profiles = [(2030, ones(6)), (2050, ones(6))],
         ),
     ]
-    groups = [(;
-        name = "group1",
-        milestone_year = 2050,
-        constraint_sense = "<=",
-        rhs = 100.0,
-        invest_method = "use_available_units",
-        memberships = [
-            (asset = "aggregated_asset", coefficient = 2.0),
-            (asset = "compact_asset", coefficient = 3.0),
-        ],
-    ),]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 100.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "aggregated_asset", coefficient = 2.0),
+                (asset = "compact_asset", coefficient = 3.0),
+            ],
+        ),
+    ]
     connection, ep = create_investment_group_problem(assets, groups)
 
     expr_available_asset_units_aggregated =
@@ -277,17 +279,19 @@ end
             profiles = [(2050, ones(6))],
         ),
     ]
-    groups = [(;
-        name = "group1",
-        milestone_year = 2050,
-        constraint_sense = "<=",
-        rhs = 100.0,
-        invest_method = "use_available_units",
-        memberships = [
-            (asset = "aggregated_asset_1", coefficient = 2.0),
-            (asset = "aggregated_asset_2", coefficient = 3.0),
-        ],
-    ),]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 100.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "aggregated_asset_1", coefficient = 2.0),
+                (asset = "aggregated_asset_2", coefficient = 3.0),
+            ],
+        ),
+    ]
     connection, ep = create_investment_group_problem(assets, groups)
 
     expr_available_asset_units_aggregated =
@@ -324,17 +328,19 @@ end
             profiles = [(2030, ones(6)), (2050, ones(6))],
         ),
     ]
-    groups = [(;
-        name = "group1",
-        milestone_year = 2050,
-        constraint_sense = "<=",
-        rhs = 100.0,
-        invest_method = "use_available_units",
-        memberships = [
-            (asset = "compact_asset_1", coefficient = 2.0),
-            (asset = "compact_asset_2", coefficient = 3.0),
-        ],
-    ),]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 100.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "compact_asset_1", coefficient = 2.0),
+                (asset = "compact_asset_2", coefficient = 3.0),
+            ],
+        ),
+    ]
     connection, ep = create_investment_group_problem(assets, groups)
 
     expr_available_asset_units_compact =

@@ -35,15 +35,17 @@ end
 @testitem "Available asset units constraints use aggregated expressions" setup =
     [CommonSetup, ConsAvailableAssetUnitsSetup] tags = [:unit, :constraint, :fast] begin
     energy_problem = create_available_asset_units_problem(;
-        assets = [(;
-            name = "aggregated_asset",
-            type = :producer,
-            investable = true,
-            vintage_method = "aggregated",
-            profiles = [(2050, ones(6))],
-            max_available_units = 5.0,
-            min_available_units = 2.0,
-        ),],
+        assets = [
+            (;
+                name = "aggregated_asset",
+                type = :producer,
+                investable = true,
+                vintage_method = "aggregated",
+                profiles = [(2050, ones(6))],
+                max_available_units = 5.0,
+                min_available_units = 2.0,
+            ),
+        ],
     )
 
     expr_aggregated = energy_problem.expressions[:available_asset_units_aggregated_vintage_method]
@@ -65,15 +67,17 @@ end
 @testitem "Available asset units constraints use compact expressions" setup =
     [CommonSetup, ConsAvailableAssetUnitsSetup] tags = [:unit, :constraint, :fast] begin
     energy_problem = create_available_asset_units_problem(;
-        assets = [(;
-            name = "compact_asset",
-            type = :producer,
-            investable = true,
-            vintage_method = "compact_profiles",
-            profiles = [(2030, ones(6)), (2050, ones(6))],
-            max_available_units = 7.0,
-            min_available_units = 3.0,
-        ),],
+        assets = [
+            (;
+                name = "compact_asset",
+                type = :producer,
+                investable = true,
+                vintage_method = "compact_profiles",
+                profiles = [(2030, ones(6)), (2050, ones(6))],
+                max_available_units = 7.0,
+                min_available_units = 3.0,
+            ),
+        ],
     )
 
     expr_compact = energy_problem.expressions[:available_asset_units_compact_vintage_method]

@@ -750,7 +750,13 @@ The `vintage_method` parameter in the `asset` table determines which method is u
 
 The aggregated method keeps the model small by not tracking which vintage the decommissioned units belong to. This is exact as long as no decommissioned vintage reaches the end of its technical lifetime within the planning horizon. When the planning horizon is longer than the technical lifetime of a decommissionable asset, the units invested in a year and decommissioned later leave the available units twice: once when they are decommissioned, and again when their vintage reaches the end of its technical lifetime. The available units are then underestimated, which discourages decommissioning or leads to extra investments.
 
-For example, take an asset with a technical lifetime of 20 years and milestone years 2030, 2040, and 2050. The model invests in 2 units in 2030, then invests in another 2 units and decommissions 1 of the 2030 units in 2040. In 2050, the 2030 vintage has expired, so 2 units should remain available. However, the aggregated method still subtracts the earlier decommissioning and computes $2 - 1 = 1$. The compact methods track decommissioning by vintage and do not have this issue.
+For example, take an asset with a technical lifetime of 20 years and milestone years: 2030, 2040, and 2050, as shown in the table below. (w/o considering initial units) The model invests in 2 units in 2030, then invests in another 2 units and decommissions 1 of the 2030 units in 2040. In 2050, the remaining unit of 2030 vintage has expired, so 2 units should remain available. However, the aggregated method subtracts again the earlier decommissioned 2030 vintage unit and computes $2 - 1 = 1$, because it doesn't distinguish the origin (vintage) of units decommissioned in milestone year 2040. The compact methods track decommissioning by vintage and do not have this issue.
+
+| milestone_year | $v^{inv}$ | $v^{decom}$        | $v_{a,y}^{avail}$ (aggregated) | $v_{a,y}^{avail}$ (compact vintage) |
+|:--------------:|:---------:|:------------------:|:------------------------------:|:-----------------------------------:|
+| 2030 (10Y)     | 2 [v30]   | 0                  | 2                              | 2                                   |
+| 2040 (10Y)     | 2 [v40]   | 1 [v30], 0 [v40]   | 3 = 2 + 2 - 1                  | 3 = (2 - 1) [v30] + (2 - 0) [v40]   |
+| 2050 (10Y)     | 0         | 0                  | 1 = 2 - 1                      | 2 = 2 - 0 [v40]                     |
 
 !!! warning "Decommissioning when the planning horizon is longer than the technical lifetime"
     Choose the vintage method as follows when the planning horizon is longer than the technical lifetime of a decommissionable asset:
