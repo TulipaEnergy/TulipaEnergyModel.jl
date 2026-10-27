@@ -72,7 +72,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 
    ```julia
    pkg> activate
-   pkg> add JuliaFormatter@v1 # NOTE: We currently have to manually force v1 (see issue #1233)
+   pkg> add JuliaFormatter # The github CI now uses the latest JuliaFormatter (PR #1677)
    ```
 
    In VSCode, you can activate "Format on Save" for `JuliaFormatter`:
