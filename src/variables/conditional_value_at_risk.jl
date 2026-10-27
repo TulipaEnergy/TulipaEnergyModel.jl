@@ -12,7 +12,6 @@ Check the SQL query in `src/sql/create-variables.sql` for the details.
 
 The units are the currency of the objective function
 """
-
 function add_conditional_value_at_risk_variables!(model, variables)
     # Add variable for the Value at Risk threshold mu
     value_at_risk_threshold_mu_indices = variables[:value_at_risk_threshold_mu].indices
