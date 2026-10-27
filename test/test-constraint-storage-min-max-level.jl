@@ -428,18 +428,16 @@ end
 @testitem "Conservative bounds aggregate multi-period timeframe blocks" setup =
     [CommonSetup, ConsStorageMinMaxLevelSetup] tags = [:unit, :constraint, :fast] begin
     energy_problem = create_storage_bounds_problem(;
-        assets = [
-            (;
-                name = "block_storage",
-                use_inter_period_constraints = true,
-                bounds = "inter_and_intra_rep_period",
-                timeframe_partition = 2,
-                inflows_profile = collect(0.1:0.1:0.8),
-                max_profile = [0.9, 0.8, 0.7, 0.6, 0.8, 0.7, 0.6, 0.5],
-                min_profile = [0.1, 0.2, 0.3, 0.4, 0.2, 0.3, 0.4, 0.5],
-                storage_loss = 0.1,
-            ),
-        ],
+        assets = [(;
+            name = "block_storage",
+            use_inter_period_constraints = true,
+            bounds = "inter_and_intra_rep_period",
+            timeframe_partition = 2,
+            inflows_profile = collect(0.1:0.1:0.8),
+            max_profile = [0.9, 0.8, 0.7, 0.6, 0.8, 0.7, 0.6, 0.5],
+            min_profile = [0.1, 0.2, 0.3, 0.4, 0.2, 0.3, 0.4, 0.5],
+            storage_loss = 0.1,
+        ),],
         num_timesteps = 2,
         num_rep_periods = 2,
     )
