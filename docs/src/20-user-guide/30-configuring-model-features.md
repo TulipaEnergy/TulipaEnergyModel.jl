@@ -157,7 +157,7 @@ Below is an overview of the important set-ups regarding the vintage methods.
     The `compact_profiles` methods can only be applied to producer and the `compact_efficiencies` method to conversion assets. Transport, storage, and consumer assets always use the `aggregated` method. For more details on the constraints that apply when selecting these methods, see the [`mathematical formulation`](@ref formulation).
 
 !!! warning "Planning horizon longer than the technical lifetime"
-    If the planning horizon is longer than the `technical_lifetime` of a decommissionable asset, use a compact method for it. The aggregated method underestimates the available units in that case, because it does not track which vintage the decommissioned units belong to. Transport and storage assets only support the aggregated method, so keep their planning horizon within their technical lifetime or set `decommissionable = false`. See [vintage modeling](@ref vintage-modeling) for an example.
+    If the planning horizon is longer than the `technical_lifetime` of a decommissionable asset, the aggregated method may underestimate the available units, because it does not track which vintage the decommissioned units belong to. The compact methods avoid this at the cost of a larger model. Transport and storage assets only support the aggregated method, so this limitation applies to them whenever they are decommissionable. See [vintage modeling](@ref vintage-modeling) for an example.
 
 #### Asset milestone year data
 
