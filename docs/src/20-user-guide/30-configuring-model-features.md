@@ -156,6 +156,9 @@ Below is an overview of the important set-ups regarding the vintage methods.
 !!! info "Which asset types support which methods?"
     The `compact_profiles` methods can only be applied to producer and the `compact_efficiencies` method to conversion assets. Transport, storage, and consumer assets always use the `aggregated` method. For more details on the constraints that apply when selecting these methods, see the [`mathematical formulation`](@ref formulation).
 
+!!! warning "Planning horizon longer than the technical lifetime"
+    If the planning horizon is longer than the `technical_lifetime` of a decommissionable asset, the aggregated method may underestimate the available units, because it does not track which vintage the decommissioned units belong to. The compact methods avoid this at the cost of a larger model. Transport and storage assets only support the aggregated method, so this limitation applies to them whenever they are decommissionable. See [vintage modeling](@ref vintage-modeling) for an example.
+
 #### Asset milestone year data
 
 Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years. Optional `min_available_units` and `max_available_units` constrain the total number of available asset units in that milestone year. Leave either value `missing` to omit that bound. These limits apply to assets only.
@@ -170,6 +173,7 @@ Existing capacities and decommissioning are taken care of in `asset-both.csv`:
 
 - In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
 - Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
+- For the compact methods, list a `commission_year` in a `milestone_year` only while that vintage is within its technical lifetime, also for the vintages the model can invest in. This is how the compact methods know when a vintage, together with its decommissions, leaves the available units.
 
 Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
 

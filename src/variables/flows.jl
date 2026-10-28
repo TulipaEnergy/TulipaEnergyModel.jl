@@ -52,7 +52,6 @@ Adds vintage flow variables to the optimization `model` based on data from the `
 The vintage flow variables are created using the `@variable` macro for each row in the `:vintage_flow` table.
 
 """
-
 function add_vintage_flow_variables!(connection, model, variables)
     # Unpacking the variable indices
     indices = _create_vintage_flow_table(connection)

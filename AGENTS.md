@@ -24,9 +24,9 @@ Julia package for modeling and optimization of electric energy systems. Uses Duc
 - `src/input-schemas.jl` + `src/input-schemas.json` — Table schema definitions
 - `src/solver-parameters.jl` — Solver parameter handling
 - `src/utils.jl` — Utility functions
-- `src/variables/` (7 files) — Variable creation (flows, investments, storage, etc.)
-- `src/constraints/` (16 files) — Constraint creation (capacity, energy, transport, etc.)
-- `src/expressions/` (3 files) — Expression creation (storage, intersection, multi-year)
+- `src/variables/` (8 files) — Variable creation (flows, investments, storage, etc.)
+- `src/constraints/` (18 files) — Constraint creation (capacity, energy, transport, etc.)
+- `src/expressions/` (5 files) — Expression creation (storage, intersection, multi-year, etc.)
 - `src/rolling-horizon/` (4 files) — Rolling horizon implementation
 - `src/sql/` (3 SQL files) — SQL templates for creating tables
 
