@@ -3,7 +3,12 @@
     using TulipaBuilder: TulipaBuilder as TB
     using TulipaClustering: TulipaClustering as TC
 
-    function create_minimum_up_down_time_problem(resolution; partitioned = false)
+    function create_minimum_up_down_time_problem(
+        resolution;
+        partitioned = false,
+        minimum_up_time = 4,
+        minimum_down_time = 4,
+    )
         tulipa = TB.TulipaData()
         if partitioned
             TB.add_asset!(tulipa, "sink", :consumer)
@@ -18,8 +23,8 @@
                 vintage_method = vintage_method,
                 unit_commitment = "3var",
                 unit_commitment_integer = true,
-                minimum_up_time = 4,
-                minimum_down_time = 4,
+                minimum_up_time,
+                minimum_down_time,
                 initial_units = 1.0,
             )
             TB.attach_profile!(tulipa, name, :availability, 2050, ones(partitioned ? 7 : 9))
@@ -42,6 +47,60 @@
 
         return energy_problem
     end
+end
+
+@testitem "Test minimum up/down time constraints with different durations" setup =
+    [CommonSetup, ConsMinUpDownTimeSetup] tags = [:unit, :validation, :fast] begin
+    minimum_up_time = 2
+    minimum_down_time = 4
+    energy_problem = create_minimum_up_down_time_problem(1.0; minimum_up_time, minimum_down_time)
+    model = energy_problem.model
+    variables = energy_problem.variables
+
+    var_units_on = variables[:units_on].container
+    var_start_up = variables[:start_up].container
+    var_shut_down = variables[:shut_down].container
+
+    function window_constraints(variable, units, blocks, duration)
+        return vcat(
+            [
+                [
+                    JuMP.@build_constraint(
+                        sum(variable[j] for j in max(first(block), i-duration+1):i) <= units[i]
+                    ) for i in block
+                ] for block in blocks
+            ]...,
+        )
+    end
+
+    expected_up_time =
+        [window_constraints(var_start_up, var_units_on, [1:9, 10:18, 19:27], minimum_up_time)...]
+    @test _is_constraint_equal(expected_up_time, _get_cons_object(model, :minimum_up_time))
+
+    function down_time_constraints(blocks)
+        return vcat(
+            [
+                [
+                    JuMP.@build_constraint(
+                        sum(var_shut_down[j] for j in max(first(block), i-minimum_down_time+1):i) <=
+                        1 - var_units_on[i]
+                    ) for i in block
+                ] for block in blocks
+            ]...,
+        )
+    end
+
+    expected_aggregated_down_time = [down_time_constraints([1:9, 19:27])...]
+    @test _is_constraint_equal(
+        expected_aggregated_down_time,
+        _get_cons_object(model, :minimum_down_time_aggregated_vintage_method),
+    )
+
+    expected_compact_down_time = [down_time_constraints([10:18])...]
+    @test _is_constraint_equal(
+        expected_compact_down_time,
+        _get_cons_object(model, :minimum_down_time_compact_vintage_method),
+    )
 end
 
 @testitem "Test minimum up/down time constraints" setup = [CommonSetup, ConsMinUpDownTimeSetup] tags =
