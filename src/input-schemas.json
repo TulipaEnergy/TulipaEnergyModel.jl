@@ -176,7 +176,7 @@
         ]
       },
       "default": "none",
-      "description": "Which unit commitment method to use. 'none' -> no unit commitment variables or constraints are created.",
+      "description": "Which unit commitment method to use. 'none' -> no unit commitment variables or constraints are created; 'basic' -> units-on output limits; '3var' -> units-on, start-up, shut-down, and minimum up/down time constraints.",
       "type": "VARCHAR"
     },
     "unit_commitment_integer": {
