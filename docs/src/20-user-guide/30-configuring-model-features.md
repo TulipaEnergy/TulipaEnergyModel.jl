@@ -224,11 +224,13 @@ For economic representation, the following parameters need to be set up. For con
 
 ## [Unit Commitment constraints](@id unit-commitment-setup)
 
-The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options. Additionally, the following parameters should be set in that same file:
+The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter selects `basic` (units-on variable and output limits) or `3var` (units-on, start-up, shut-down, and minimum up/down time constraints). Additionally, the following parameters should be set in that same file:
 
 - `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
 - `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
+- `minimum_up_time`: Minimum time a unit must remain on after start-up; applies to `3var`.
+- `minimum_down_time`: Minimum time a unit must remain off after shut-down; applies to `3var`.
 
 !!! info "Minimum operating point constraints without unit commitment"
     Even when `unit_commitment = 'none'`, producer and conversion assets with `min_operating_point > 0` still receive a minimum output-flow constraint (for aggregated and compact profiles vintage methods). This is useful to represent must-run conditions without the full unit commitment formulation.
@@ -240,7 +242,9 @@ For more details on the constraints that apply when selecting this method, pleas
 The ramping constraints are only applied to producer and conversion assets. The `ramping` parameter must be set to `true` to include the constraints. Additionally, the following parameters should be set in that same file:
 
 - `max_ramp_up`: Maximum ramping up rate as a portion of the capacity of asset (p.u./h)
-- `max_ramp_down:`Maximum ramping down rate as a portion of the capacity of asset (p.u./h)
+- `max_ramp_down`: Maximum ramping down rate as a portion of the capacity of asset (p.u./h)
+
+For assets without unit commitment, the ramping limit is multiplied by the number of available units.
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
