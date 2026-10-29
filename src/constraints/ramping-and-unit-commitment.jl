@@ -15,15 +15,31 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         table_name => _append_ramping_data_to_indices(connection, table_name, allow_consumers)
         for (table_name, allow_consumers) in (
             (:min_output_flow_with_unit_commitment, true),
-            (:max_ramp_without_unit_commitment, false),
+            (:max_ramp_without_unit_commitment_aggregated_vintage_method, false),
+            (:max_ramp_without_unit_commitment_compact_vintage_method, false),
             (:max_ramp_with_unit_commitment, false),
-            (:max_output_flow_with_basic_unit_commitment, true),
+            (:max_output_flow_with_unit_commitment, true),
         )
     )
 
+    expr_avail_aggregated_vintage_method =
+        expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets]
+    expr_avail_compact_method =
+        expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
+    indices_dict[:max_ramp_without_unit_commitment_aggregated_vintage_method] =
+        _append_ramping_data_to_indices_aggregated_vintage_method(
+            connection,
+            :max_ramp_without_unit_commitment_aggregated_vintage_method,
+        )
+    indices_dict[:max_ramp_without_unit_commitment_compact_vintage_method] =
+        _append_ramping_data_to_indices_compact_vintage_method(
+            connection,
+            :max_ramp_without_unit_commitment_compact_vintage_method,
+        )
+
     ## Expressions used by the ramping and unit commitment constraints
     # - Expression to have the product of the profile and the capacity paramters
-    profile_times_capacity = Dict(
+    profile_times_capacity = Dict{Symbol,Vector}(
         table_name => begin
             indices = indices_dict[table_name]
             [
@@ -37,16 +53,40 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             ]
         end for table_name in (
             :min_output_flow_with_unit_commitment,
-            :max_ramp_without_unit_commitment,
             :max_ramp_with_unit_commitment,
-            :max_output_flow_with_basic_unit_commitment,
+            :max_output_flow_with_unit_commitment,
         )
     )
+
+    profile_times_capacity[:max_ramp_without_unit_commitment_aggregated_vintage_method] = [
+        _profile_aggregate(
+            profiles.rep_period,
+            (row.profile_name, row.milestone_year, row.rep_period),
+            row.time_block_start:row.time_block_end,
+            Statistics.mean,
+            1.0,
+        ) *
+        row.capacity *
+        expr_avail_aggregated_vintage_method[row.avail_id] for
+        row in indices_dict[:max_ramp_without_unit_commitment_aggregated_vintage_method]
+    ]
+    profile_times_capacity[:max_ramp_without_unit_commitment_compact_vintage_method] = [
+        row.capacity * sum(
+            _profile_aggregate(
+                profiles.rep_period,
+                (profile_name, row.milestone_year, row.rep_period),
+                row.time_block_start:row.time_block_end,
+                Statistics.mean,
+                1.0,
+            ) * expr_avail_compact_method[avail_id] for
+            (profile_name, avail_id) in zip(row.avail_profile_name, row.avail_indices)
+        ) for row in indices_dict[:max_ramp_without_unit_commitment_compact_vintage_method]
+    ]
 
     # - Flow that is above the minimum operating point of the asset
     for table_name in (
         :min_output_flow_with_unit_commitment,
-        :max_output_flow_with_basic_unit_commitment,
+        :max_output_flow_with_unit_commitment,
         :max_ramp_with_unit_commitment,
     )
         cons = constraints[table_name]
@@ -65,7 +105,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         )
     end
 
-    ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
+    ## Unit commitment constraints
     # - Limit to the units on (i.e. commitment)
     # - For compact investment method
     let table_name = :limit_units_on_compact_vintage_method,
@@ -132,7 +172,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     end
 
     # - Maximum output flow above the minimum operating point
-    let table_name = :max_output_flow_with_basic_unit_commitment, cons = constraints[table_name]
+    let table_name = :max_output_flow_with_unit_commitment, cons = constraints[table_name]
         indices = indices_dict[table_name]
         attach_constraint!(
             model,
@@ -145,7 +185,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                     (1 - row.min_operating_point) *
                     profile_times_capacity[table_name][row.id] *
                     units_on,
-                    base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "max_output_flow_with_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, flow_above_min_operating_point, units_on) in zip(
                     indices,
                     cons.expressions[:flow_above_min_operating_point],
@@ -212,20 +252,23 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         )
     end
 
-    let table_name = :max_ramp_without_unit_commitment, cons = constraints[table_name]
+    for table_name in (
+        :max_ramp_without_unit_commitment_aggregated_vintage_method,
+        :max_ramp_without_unit_commitment_compact_vintage_method,
+    )
+        cons = constraints[table_name]
         indices = indices_dict[table_name]
-        ## Ramping Constraints without unit commitment
-        # Note: We start ramping constraints from the second timesteps_block
-        # We filter and group the indices per asset and representative period that does not have the unit_commitment methods
+        suffix = replace(string(table_name), "max_ramp_without_unit_commitment" => "")
+        max_ramp_up_name = Symbol("max_ramp_up_without_unit_commitment$suffix")
+        max_ramp_down_name = Symbol("max_ramp_down_without_unit_commitment$suffix")
 
-        # - Maximum ramp-up rate limit to the flow (no unit commitment variables)
         attach_constraint!(
             model,
-            constraints[table_name],
-            :max_ramp_up_without_unit_commitment,
+            cons,
+            max_ramp_up_name,
             [
                 if row.time_block_start == 1
-                    @constraint(model, 0 == 0) # Placeholder for case k = 1
+                    @constraint(model, 0 == 0)
                 else
                     @constraint(
                         model,
@@ -243,11 +286,11 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
         attach_constraint!(
             model,
-            constraints[table_name],
-            :max_ramp_down_without_unit_commitment,
+            cons,
+            max_ramp_down_name,
             [
                 if row.time_block_start == 1
-                    @constraint(model, 0 == 0) # Placeholder for case k = 1
+                    @constraint(model, 0 == 0)
                 else
                     @constraint(
                         model,
@@ -293,6 +336,60 @@ function _append_ramping_data_to_indices(connection, table_name, allow_consumers
             ON cons.asset = assets_profiles.asset
             AND cons.milestone_year = assets_profiles.commission_year
             AND $profile_type_condition
+        ORDER BY cons.id
+        ",
+    )
+end
+
+function _append_ramping_data_to_indices_aggregated_vintage_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.*,
+            asset.capacity,
+            asset.max_ramp_up,
+            asset.max_ramp_down,
+            expr_avail.id AS avail_id,
+            avail_profile.profile_name
+        FROM cons_$table_name AS cons
+        LEFT JOIN asset ON cons.asset = asset.asset
+        LEFT JOIN expr_available_asset_units_aggregated_vintage_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+        LEFT OUTER JOIN assets_profiles AS avail_profile
+            ON cons.asset = avail_profile.asset
+            AND expr_avail.commission_year = avail_profile.commission_year
+            AND avail_profile.profile_type = 'availability'
+        ORDER BY cons.id
+        ",
+    )
+end
+
+function _append_ramping_data_to_indices_compact_vintage_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.id,
+            ANY_VALUE(cons.asset) AS asset,
+            ANY_VALUE(cons.milestone_year) AS milestone_year,
+            ANY_VALUE(cons.rep_period) AS rep_period,
+            ANY_VALUE(cons.time_block_start) AS time_block_start,
+            ANY_VALUE(cons.time_block_end) AS time_block_end,
+            ANY_VALUE(asset.capacity) AS capacity,
+            ANY_VALUE(asset.max_ramp_up) AS max_ramp_up,
+            ANY_VALUE(asset.max_ramp_down) AS max_ramp_down,
+            ARRAY_AGG(expr_avail.id ORDER BY expr_avail.commission_year) AS avail_indices,
+            ARRAY_AGG(avail_profile.profile_name ORDER BY expr_avail.commission_year) AS avail_profile_name
+        FROM cons_$table_name AS cons
+        LEFT JOIN asset ON cons.asset = asset.asset
+        LEFT JOIN expr_available_asset_units_compact_vintage_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+        LEFT OUTER JOIN assets_profiles AS avail_profile
+            ON cons.asset = avail_profile.asset
+            AND expr_avail.commission_year = avail_profile.commission_year
+            AND avail_profile.profile_type = 'availability'
+        GROUP BY cons.id
         ORDER BY cons.id
         ",
     )
