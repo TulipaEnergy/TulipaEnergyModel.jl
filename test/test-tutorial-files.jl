@@ -179,3 +179,21 @@ end
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 39700.0 atol = 1e-5
 end
+
+@testitem "Tutorial unit commitment objective value" setup = [CommonSetup, TutorialSetup] tags =
+    [:integration, :slow] begin
+    connection = _tutorial_connection("tutorial-uc")
+    energy_problem = TulipaEnergyModel.run_scenario(
+        connection;
+        optimizer_parameters = Dict("output_flag" => false, "mip_rel_gap" => 0.0),
+        show_log = false,
+    )
+    @test energy_problem.objective_value ≈ 4.052096980606e6 atol = 1e-5
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(
+        connection;
+        optimizer_parameters = Dict("output_flag" => false, "mip_rel_gap" => 0.0),
+        show_log = false,
+    )
+    @test energy_problem.objective_value ≈ 4.052096980606e6 atol = 1e-5
+end

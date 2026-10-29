@@ -123,6 +123,8 @@ Depending on the configuration of the energy storage assets, it may or may not b
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
+For a worked comparison of the available methods and their time resolutions, see the [Unit Commitment tutorial](@ref unit-commitment-tutorial).
+
 ## [Multi-year Investments and Vintage Modeling](@id multi-year-setup)
 
 It is possible to simultaneously model different milestone years, which is essential for modeling multi-year investment pathways. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled but representing each year is not practical, or when investment decisions must be made at different points in time.
