@@ -333,7 +333,7 @@ In the previous section, we have seen how the flexible temporal resolution is ha
 
 ![unit-commitment-case-study](./figs/unit-commitment-case-study.png)
 
-The example demonstrates various assets that supply demand. Each asset has different input data files, which activates different sets of constraints based on the method. For example, the `gas` producer has ramping constraints but not unit commitment constraints, while the `ocgt` conversion has unit commitment constraints but not ramping constraints. Lastly, the `ccgt` and `smr` assets both have unit commitment and ramping constraints. Moreover, `ccgt`, `wind`, `solar`, and `ocgt` are investable, meaning that the investment variable will only appear on the constraints related to those assets.
+The example demonstrates various assets that supply demand. Each asset has different input data files, which activates different sets of constraints based on the method. For example, the `gas` producer has ramping constraints but not unit commitment constraints, while the `ocgt` asset has unit commitment constraints but not ramping constraints. Lastly, the `ccgt` and `smr` assets both have unit commitment and ramping constraints. Moreover, `ccgt`, `wind`, `solar`, and `ocgt` are investable, meaning that the investment variable will only appear on the constraints related to those assets.
 
 ```@example unit-commitment
 using DataFrames # hide
@@ -374,6 +374,7 @@ With this information, we can analyze the constraints in each of the following c
 - Unit commitment in assets with constant time resolution
 - Unit commitment and ramping in assets with flexible time resolution that are multiples of each other
 - Unit commitment and ramping in assets with flexible time resolution that are not multiples of each other
+- Three-variable unit commitment with flexible time resolution
 
 We will analyze each case in the following sections, considering the constraints resolution defined in the summary table in the [flexible time resolution](@ref flex-time-res) section. For the sake of simplicity, we only show the asset $a$ and timestep block $b_k$ index and the constraints as they appear in the .lp file of the example, i.e., with all the coefficients and RHS values calculated from the input parameters. The .lp file can be exported using the keyword argument `model_file_name = "model.lp"` in the [`run_scenario`](@ref) function.
 
@@ -572,6 +573,155 @@ Let's now examine the hourly production balance in the results. We can see that 
 ![unit-commitment-balance](./figs/unit-commitment-balance.png)
 
 In this example, we demonstrated the use of unit commitment and ramping constraints with flexible time resolution in the model, and we illustrated what the results look like. The flexible time resolution applied to the unit commitment variables aids in minimizing the number of binary/integer variables in the model and simplifies the representation of the assets' minimum up and down times.
+
+### Three-Variable Unit Commitment with Flexible Time Resolution
+
+The previous examples use the `units_on` variable to show how basic unit commitment follows the asset resolution. The `3var` method adds `start_up` and `shut_down` variables and uses them to enforce minimum up and down times. We keep the `test/inputs/UC-ramping` files unchanged and change only the relevant asset parameters in this example, so the effect of the temporal resolution is easy to isolate.
+
+```@example unit-commitment-3var
+using DuckDB
+using DataFrames
+using Plots
+import TulipaIO as TIO
+import TulipaEnergyModel as TEM
+
+input_dir = "../../test/inputs/UC-ramping"
+connection_3var = DBInterface.connect(DuckDB.DB)
+TIO.read_csv_folder(connection_3var, input_dir)
+
+DuckDB.query(connection_3var, """
+    UPDATE asset
+    SET unit_commitment = '3var',
+        minimum_up_time = CASE asset
+            WHEN 'ccgt' THEN 5
+            WHEN 'smr' THEN 12
+            WHEN 'ocgt' THEN 3
+            ELSE minimum_up_time
+        END,
+        minimum_down_time = CASE asset
+            WHEN 'ccgt' THEN 1
+            WHEN 'smr' THEN 6
+            WHEN 'ocgt' THEN 2
+            ELSE minimum_down_time
+        END
+    WHERE asset IN ('ccgt', 'smr', 'ocgt')
+""")
+
+TIO.get_table(connection_3var, "asset")
+```
+
+After the update, `ocgt` has hourly commitment blocks, `smr` has six-hour commitment blocks, and `ccgt` has three-hour commitment blocks. The output flows remain at their original resolutions: hourly for `smr`, and two-hour blocks for `ccgt`.
+
+```@example unit-commitment-3var
+TEM.populate_with_defaults!(connection_3var)
+energy_problem_3var = TEM.EnergyProblem(connection_3var)
+TEM.create_model!(energy_problem_3var)
+
+DataFrame(DuckDB.query(connection_3var, """
+    SELECT asset, time_block_start, time_block_end
+    FROM var_units_on
+    WHERE asset IN ('ocgt', 'smr', 'ccgt')
+    ORDER BY asset, time_block_start
+"""))
+```
+
+!!! info "Where do start-ups and shut-downs live?"
+    There is one `start_up` and one `shut_down` variable for each `units_on` block. The variables are indexed by the start of the commitment block, but their displayed `time_block_end` follows the highest-resolution block used to create the constraint. Therefore, a `ccgt` transition can be labelled `7:8` even though its `units_on` block is `7:9`. The first block has no previous state, so its unit-commitment logic is a placeholder rather than a transition equation.
+
+The three-variable method links the variables with the following logical equation for every non-initial commitment block:
+
+```math
+v^{\text{units on}}_{a,b} - v^{\text{units on}}_{a,b-1} = v^{\text{start up}}_{a,b} - v^{\text{shut down}}_{a,b}
+```
+
+Minimum up and down times count elapsed hours, then convert those hours into commitment blocks using the resolution of `units_on`:
+
+```math
+\sum_{i:\,\text{start}(i) \geq \text{start}(b)-\lceil T^{\text{up}}_a / \Delta_a \rceil+1}^{\text{start}(b)} v^{\text{start up}}_{a,i} \leq v^{\text{units on}}_{a,b}
+```
+
+```math
+\sum_{i:\,\text{start}(i) \geq \text{start}(b)-\lceil T^{\text{down}}_a / \Delta_a \rceil+1}^{\text{start}(b)} v^{\text{shut down}}_{a,i} \leq v^{\text{available units}}_{a,b} - v^{\text{units on}}_{a,b}
+```
+
+Here, $\Delta_a$ is the asset's commitment-block duration. The ceiling is important: a five-hour minimum up time on a three-hour commitment resolution occupies two commitment blocks, or six hours in the discretized model.
+
+#### Hourly 3var: `ocgt`
+
+The `ocgt` commitment and flow variables are hourly. With a three-hour minimum up time, the block at hour 5 includes the start-ups at hours 3, 4, and 5:
+
+```math
+v^{\text{start up}}_{\text{ocgt},3} + v^{\text{start up}}_{\text{ocgt},4} + v^{\text{start up}}_{\text{ocgt},5} \leq v^{\text{units on}}_{\text{ocgt},5}
+```
+
+With a two-hour minimum down time, the same block includes the shut-downs at hours 4 and 5:
+
+```math
+v^{\text{shut down}}_{\text{ocgt},4} + v^{\text{shut down}}_{\text{ocgt},5} \leq v^{\text{available units}}_{\text{ocgt},5} - v^{\text{units on}}_{\text{ocgt},5}
+```
+
+#### Six-hour 3var: `smr`
+
+The `smr` `units_on`, `start_up`, and `shut_down` variables use blocks `1:6`, `7:12`, `13:18`, and `19:24`, while its output flow remains hourly. A 12-hour minimum up time therefore spans two commitment blocks. At the second block:
+
+```math
+v^{\text{start up}}_{\text{smr},1:6} + v^{\text{start up}}_{\text{smr},7:12} \leq v^{\text{units on}}_{\text{smr},7:12}
+```
+
+The six-hour minimum down time spans one commitment block:
+
+```math
+v^{\text{shut down}}_{\text{smr},7:12} \leq v^{\text{available units}}_{\text{smr},7:12} - v^{\text{units on}}_{\text{smr},7:12}
+```
+
+The output constraints still use the hourly flow blocks and the `units_on` value belonging to the six-hour block that contains each hour.
+
+#### Three-hour 3var with two-hour flows: `ccgt`
+
+The `ccgt` commitment blocks are `1:3`, `4:6`, `7:9`, and so on. Its two-hour output flow creates the highest-resolution blocks used by the output, logic, and ramping constraints. This is why the transition variables can be displayed with ranges such as `1:2`, `4:4`, and `7:8`, while the commitment variables remain indexed by `1:3`, `4:6`, and `7:9`.
+
+The five-hour minimum up time becomes two three-hour commitment blocks. At the block starting at hour 7:
+
+```math
+v^{\text{start up}}_{\text{ccgt},4:4} + v^{\text{start up}}_{\text{ccgt},7:8} \leq v^{\text{units on}}_{\text{ccgt},7:9}
+```
+
+The one-hour minimum down time occupies only the current commitment block:
+
+```math
+v^{\text{shut down}}_{\text{ccgt},7:8} \leq v^{\text{available units}}_{\text{ccgt},7:9} - v^{\text{units on}}_{\text{ccgt},7:9}
+```
+
+This example shows why minimum times should be chosen with the asset resolution in mind. If a five-hour minimum is materially different from six hours, a three-hour commitment resolution is too coarse to represent it exactly.
+
+The three cases can be summarized as follows:
+
+- `ocgt`: hourly commitment and output blocks; 3 h minimum up time occupies three blocks, and 2 h minimum down time occupies two blocks.
+- `smr`: six-hour commitment blocks with hourly output; 12 h minimum up time occupies two commitment blocks, and 6 h minimum down time occupies one block.
+- `ccgt`: three-hour commitment blocks with two-hour output; 5 h minimum up time occupies two commitment blocks (an effective 6 h), and 1 h minimum down time occupies one block.
+
+Finally, solve the modified case and inspect the transition variables. The plots use the same timeline as the previous examples, but now the markers identify the discrete transition decisions explicitly.
+
+```@example unit-commitment-3var
+TEM.solve_model!(energy_problem_3var)
+TEM.save_solution!(energy_problem_3var)
+
+units_on_3var = TIO.get_table(connection_3var, "var_units_on")
+start_up_3var = TIO.get_table(connection_3var, "var_start_up")
+shut_down_3var = TIO.get_table(connection_3var, "var_shut_down")
+
+plot(; layout = (3, 1), size = (900, 750), link = :x)
+for (subplot, asset) in enumerate(("ocgt", "smr", "ccgt"))
+    on = filter(row -> row.asset == asset, units_on_3var)
+    startup = filter(row -> row.asset == asset, start_up_3var)
+    shutdown = filter(row -> row.asset == asset, shut_down_3var)
+    plot!(subplot, on.time_block_start, on.solution; seriestype = :steppost, label = "units on", xlabel = "Hour", ylabel = asset)
+    scatter!(subplot, startup.time_block_start, startup.solution; label = "start-up", marker = :utriangle)
+    scatter!(subplot, shutdown.time_block_start, shutdown.solution; label = "shut-down", marker = :dtriangle)
+end
+```
+
+The key rules are therefore: asset partitions determine the commitment variables, flow partitions determine the output and ramping blocks, and minimum up/down times are rounded to whole commitment blocks. The `3var` formulation adds transition logic to the same flexible-resolution structure; it does not change how the underlying temporal intersections are constructed.
 
 ## [Storage Modeling](@id storage-modeling)
 

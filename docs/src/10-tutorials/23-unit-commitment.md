@@ -8,7 +8,7 @@ In this tutorial you will:
 2. Inspect `units_on`, `start_up`, and `shut_down`.
 3. Coarsen the resolution of unit commitment variables and measure the resulting size and accuracy tradeoff.
 
-For the formulation, see [Unit Commitment Constraints](@ref uc-constraints). The configuration parameters are described in [Unit Commitment constraints](@ref unit-commitment-setup), and the resolution details are covered in [Flexible Time Resolution in the Unit Commitment and Ramping Constraints](@ref flex-time-uc).
+For the formulation, see [Unit Commitment Constraints](@ref uc-constraints). The configuration parameters are described in [Unit Commitment constraints](@ref unit-commitment-setup), and the resolution details are covered in [Flexible Time Resolution in the Unit Commitment and Ramping Constraints](@ref flex-time-res-uc).
 
 ## The energy system
 
@@ -279,7 +279,7 @@ function partition_sweep(; coarsen_flows = false)
                 problem.model;
                 count_variable_in_set_constraints = false,
             ),
-            units_on_rows = length(TIO.get_table(connection, "var_units_on")),
+            units_on_rows = DataFrames.nrow(TIO.get_table(connection, "var_units_on")),
         ))
     end
     return DataFrame(rows)

@@ -49,6 +49,120 @@
     end
 end
 
+@testitem "Test 3var constraints with flexible resolutions" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "UC-ramping"))
+    DuckDB.query(
+        connection,
+        """
+        UPDATE asset
+        SET unit_commitment = '3var',
+            minimum_up_time = CASE asset
+                WHEN 'ccgt' THEN 5
+                WHEN 'smr' THEN 12
+                WHEN 'ocgt' THEN 3
+                ELSE minimum_up_time
+            END,
+            minimum_down_time = CASE asset
+                WHEN 'ccgt' THEN 1
+                WHEN 'smr' THEN 6
+                WHEN 'ocgt' THEN 2
+                ELSE minimum_down_time
+            END
+        WHERE asset IN ('ccgt', 'smr', 'ocgt')
+        """,
+    )
+    TEM.populate_with_defaults!(connection)
+    energy_problem = TEM.EnergyProblem(connection)
+    TEM.create_model!(energy_problem)
+
+    function ids(table_name, asset)
+        return [
+            row.time_block_start for row in DuckDB.query(
+                connection,
+                "SELECT time_block_start FROM $table_name WHERE asset = '$asset' ORDER BY id",
+            )
+        ]
+    end
+
+    @test ids("var_units_on", "ocgt") == collect(1:24)
+    @test ids("var_units_on", "smr") == [1, 7, 13, 19]
+    @test ids("var_units_on", "ccgt") == [1, 4, 7, 10, 13, 16, 19, 22]
+    @test [
+        row.time_block_end for row in DuckDB.query(
+            connection,
+            "SELECT time_block_end FROM var_start_up WHERE asset = 'ccgt' ORDER BY id",
+        )
+    ] == [2, 4, 8, 10, 14, 16, 20, 22]
+
+    function variable(table_name, asset, time_block_start)
+        row = first(
+            DuckDB.query(
+                connection,
+                "SELECT id FROM $table_name WHERE asset = '$asset' AND time_block_start = $time_block_start",
+            ),
+        )
+        return energy_problem.variables[Symbol(replace(table_name, "var_"=>""))].container[row.id]
+    end
+
+    function constraint_id(table_name, asset, time_block_start)
+        row = first(
+            DuckDB.query(
+                connection,
+                "SELECT id FROM $table_name WHERE asset = '$asset' AND time_block_start = $time_block_start",
+            ),
+        )
+        return row.id
+    end
+
+    logic_id = constraint_id("cons_unit_commitment_logic", "ccgt", 4)
+    @test _is_constraint_equal(
+        JuMP.@build_constraint(
+            variable("var_units_on", "ccgt", 4) - variable("var_units_on", "ccgt", 1) ==
+            variable("var_start_up", "ccgt", 4) - variable("var_shut_down", "ccgt", 4)
+        ),
+        JuMP.constraint_object(energy_problem.model[:unit_commitment_logic][logic_id]),
+    )
+
+    up_id = constraint_id("cons_minimum_up_time", "smr", 7)
+    @test _is_constraint_equal(
+        JuMP.@build_constraint(
+            variable("var_start_up", "smr", 1) + variable("var_start_up", "smr", 7) <=
+            variable("var_units_on", "smr", 7)
+        ),
+        JuMP.constraint_object(energy_problem.model[:minimum_up_time][up_id]),
+    )
+
+    ccgt_up_id = constraint_id("cons_minimum_up_time", "ccgt", 7)
+    @test _is_constraint_equal(
+        JuMP.@build_constraint(
+            variable("var_start_up", "ccgt", 4) + variable("var_start_up", "ccgt", 7) <=
+            variable("var_units_on", "ccgt", 7)
+        ),
+        JuMP.constraint_object(energy_problem.model[:minimum_up_time][ccgt_up_id]),
+    )
+
+    ocgt_down_id = constraint_id("cons_minimum_down_time_aggregated_vintage_method", "ocgt", 5)
+    available_units_id = first(
+        DuckDB.query(
+            connection,
+            "SELECT id FROM expr_available_asset_units_aggregated_vintage_method WHERE asset = 'ocgt' AND milestone_year = 2030",
+        ),
+    ).id
+    available_units =
+        energy_problem.expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets][available_units_id]
+    @test _is_constraint_equal(
+        JuMP.@build_constraint(
+            variable("var_shut_down", "ocgt", 4) + variable("var_shut_down", "ocgt", 5) <=
+            available_units - variable("var_units_on", "ocgt", 5)
+        ),
+        JuMP.constraint_object(
+            energy_problem.model[:minimum_down_time_aggregated_vintage_method][ocgt_down_id],
+        ),
+    )
+end
+
 @testitem "Test minimum up/down time constraints with different durations" setup =
     [CommonSetup, ConsMinUpDownTimeSetup] tags = [:unit, :validation, :fast] begin
     minimum_up_time = 2
