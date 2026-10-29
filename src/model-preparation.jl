@@ -771,7 +771,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     )
     for table_name in (
         :min_output_flow_with_unit_commitment,
-        :max_output_flow_with_basic_unit_commitment,
+        :max_output_flow_with_unit_commitment,
         :max_ramp_with_unit_commitment,
     )
         @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(

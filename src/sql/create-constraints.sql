@@ -485,10 +485,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_max_output_flow_with_basic_unit_commitment
+drop table if exists cons_max_output_flow_with_unit_commitment
 ;
 
-create table cons_max_output_flow_with_basic_unit_commitment as
+create table cons_max_output_flow_with_unit_commitment as
 select
     nextval('id') as id,
     t_high.*
@@ -497,7 +497,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion', 'consumer')
-    and asset.unit_commitment = 'basic'
+    and asset.unit_commitment != 'none'
 ;
 
 drop sequence id
