@@ -35,6 +35,8 @@ Below is the table outlining the details for each type of constraint.
 | Minimum Energy Limits (outgoing)               | outputs                        | min_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
 | Maximum Output Flow with Unit Commitment       | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
 | Minimum Output Flow with Unit Commitment       | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
+
+For `3var` unit commitment, the `unit_commitment_logic`, `minimum_up_time`, and `minimum_down_time` constraints use the asset resolution of `units_on`. The minimum-time windows are rounded up to whole `units_on` blocks; start-up and shut-down variables are indexed by those same commitment blocks.
 | Maximum Ramp Up Flow with Unit Commitment      | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
 | Maximum Ramp Down Flow with Unit Commitment    | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
 | Maximum Ramp Up Flow without Unit Commitment   | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |

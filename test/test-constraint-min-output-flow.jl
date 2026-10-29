@@ -320,6 +320,50 @@ end
     ) == 0
 end
 
+@testitem "Test max output flow constraint applies to basic and 3var UC" setup =
+    [CommonSetup, ConsMinOutputFlowSetup] tags = [:unit, :constraint, :fast] begin
+    for unit_commitment in ("basic", "3var")
+        config =
+            ConsMinOutputFlowConfig(; name = "ccgt_$unit_commitment", unit_commitment, num_rps = 1)
+        connection, energy_problem = create_min_output_flow_test_problem(config)
+        flow = energy_problem.variables[:flow].container
+        units_on = energy_problem.variables[:units_on].container
+
+        rows = DuckDB.query(
+            connection,
+            """SELECT id FROM cons_max_output_flow_with_unit_commitment
+               WHERE asset = '$(config.name)' ORDER BY id""",
+        )
+        @test length(collect(rows)) == 1
+        row = first(rows)
+        flow_id = get_flow_var_id(connection, config.name, "demand", 1, 1)
+        units_on_id = first(
+            row.id for
+            row in energy_problem.variables[:units_on].indices if row.asset == config.name
+        )
+        expected_cons =
+            JuMP.@build_constraint(flow[flow_id] - config.capacity * units_on[units_on_id] <= 0)
+        @test _verify_constraint_using_id(
+            energy_problem.model,
+            :max_output_flow_with_unit_commitment,
+            row.id,
+            expected_cons,
+        )
+    end
+
+    config = ConsMinOutputFlowConfig(; name = "ccgt_none", num_rps = 1)
+    connection, _ = create_min_output_flow_test_problem(config)
+    @test isempty(
+        collect(
+            DuckDB.query(
+                connection,
+                """SELECT id FROM cons_max_output_flow_with_unit_commitment
+                   WHERE asset = '$(config.name)'""",
+            ),
+        ),
+    )
+end
+
 @testitem "Test min output flow constraint - zero min operating point is excluded" setup =
     [CommonSetup, ConsMinOutputFlowSetup] tags = [:unit, :constraint, :fast] begin
 

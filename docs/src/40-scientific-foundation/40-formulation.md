@@ -603,7 +603,7 @@ When the compact efficiencies method is selected, the model introduces vintage f
 
 Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](@ref scientific-refs) and [Morales-España et al. (2014)](@ref scientific-refs).
 
-The current version of the code only incorporates a basic unit commitment version of the constraints (i.e., utilizing only the unit commitment variable $v^{\text{units on}}$). However, upcoming versions will include more detailed constraints, incorporating startup and shutdown variables.
+The model supports a basic unit commitment version using only $v^{\text{units on}}$ and a 3var version using $v^{\text{units on}}$, $v^{\text{start up}}$, and $v^{\text{shut down}}$. The output and ramping limits apply to both versions; the logical and minimum up/down time constraints apply to the 3var version.
 
 For the unit commitment constraints, we define the following expression for the flow that is above the minimum operating point of the asset:
 
@@ -623,14 +623,14 @@ v^{\text{on}}_{a,k_y,b_{k_y}} \leq v^{\text{available units}}_{a,y}  \quad
 
 ```math
 e^{\text{flow above min}}_{a,y,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot \left(1 - p^{\text{min operating point}}_{a,y} \right) \cdot v^{\text{on}}_{a,k_y,b_{k_y}}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
 #### Minimum output flow above the minimum operating point
 
 ```math
 e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
 #### Tight logical constraints for start-up and shut-down variables
@@ -669,7 +669,7 @@ The formulation applies only to assets with `unit_commitment = 'none'`. It uses 
 
 Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}_y$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
 
-Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref scientific-refs). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
+Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref scientific-refs). They apply to all assets in the set $\mathcal{A}^{\text{uc}}_y$.
 
 !!! info "Duration parameter"
     The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
@@ -678,14 +678,14 @@ Ramping constraints that take into account unit commitment variables are based o
 
 ```math
 e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{k_y}-1} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{on}}_{a,k_y,b_{k_y}}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Down Rate Limit WITH Unit Commmitment Method
 
 ```math
 e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{k_y}-1} \geq - p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{on}}_{a,k_y,b_{k_y}-1}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Up Rate Limit WITHOUT Unit Commitment Method

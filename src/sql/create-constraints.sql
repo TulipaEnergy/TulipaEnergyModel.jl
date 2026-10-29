@@ -485,10 +485,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_max_output_flow_with_basic_unit_commitment
+drop table if exists cons_max_output_flow_with_unit_commitment
 ;
 
-create table cons_max_output_flow_with_basic_unit_commitment as
+create table cons_max_output_flow_with_unit_commitment as
 select
     nextval('id') as id,
     t_high.*
@@ -497,7 +497,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion', 'consumer')
-    and asset.unit_commitment = 'basic'
+    and asset.unit_commitment != 'none'
 ;
 
 drop sequence id
@@ -528,10 +528,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_max_ramp_without_unit_commitment
+drop table if exists cons_max_ramp_without_unit_commitment_aggregated_vintage_method
 ;
 
-create table cons_max_ramp_without_unit_commitment as
+create table cons_max_ramp_without_unit_commitment_aggregated_vintage_method as
 select
     nextval('id') as id,
     t_high.*
@@ -541,7 +541,31 @@ from
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.ramping
-    and asset.unit_commitment == 'none'
+    and asset.unit_commitment = 'none'
+    and asset.vintage_method = 'aggregated'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_max_ramp_without_unit_commitment_compact_vintage_method
+;
+
+create table cons_max_ramp_without_unit_commitment_compact_vintage_method as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment = 'none'
+    and asset.vintage_method in ('compact_profiles', 'compact_efficiencies')
 ;
 
 drop table if exists cons_balance_storage_rep_period

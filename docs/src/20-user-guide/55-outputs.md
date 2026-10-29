@@ -156,9 +156,9 @@ Associated input parameter: `unit_commitment_integer`
 
 Associated input parameter: `unit_commitment_integer`
 
-### `cons_max_output_flow_with_basic_unit_commitment`
+### `cons_max_output_flow_with_unit_commitment`
 
-- `dual_max_output_flow_with_basic_unit_commitment`: Dual of the constraint ["maximum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Maximum-output-flow-above-the-minimum-operating-point).
+- `dual_max_output_flow_with_unit_commitment`: Dual of the constraint ["maximum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Maximum-output-flow-above-the-minimum-operating-point).
 
 ### `cons_max_ramp_with_unit_commitment`
 
@@ -166,6 +166,16 @@ Associated input parameter: `unit_commitment_integer`
 - `dual_max_ramp_down_with_unit_commitment`: Dual of the constraint ["maximum ramp-down rate limit with unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Maximum-Ramp-Down-Rate-Limit-WITH-Unit-Commmitment-Method).
 
 ### `cons_min_output_flow_with_unit_commitment`
+
+### `cons_max_ramp_without_unit_commitment_aggregated_vintage_method`
+
+- `dual_max_ramp_up_without_unit_commitment_aggregated_vintage_method`: Dual of the aggregated-vintage maximum ramp-up constraint.
+- `dual_max_ramp_down_without_unit_commitment_aggregated_vintage_method`: Dual of the aggregated-vintage maximum ramp-down constraint.
+
+### `cons_max_ramp_without_unit_commitment_compact_vintage_method`
+
+- `dual_max_ramp_up_without_unit_commitment_compact_vintage_method`: Dual of the compact-vintage maximum ramp-up constraint.
+- `dual_max_ramp_down_without_unit_commitment_compact_vintage_method`: Dual of the compact-vintage maximum ramp-down constraint.
 
 - `dual_min_output_flow_with_unit_commitment`: Dual of the constraint ["minimum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Minimum-output-flow-above-the-minimum-operating-point).
 
