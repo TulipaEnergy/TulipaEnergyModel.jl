@@ -427,9 +427,9 @@ end
         (row.asset, row.time_block_start) => row.id for
         row in energy_problem.constraints[:min_output_flow_with_unit_commitment].indices
     )
-    cons_max_output_flow_with_basic_unit_commitment_lookup = Dict(
+    cons_max_output_flow_with_unit_commitment_lookup = Dict(
         (row.asset, row.time_block_start) => row.id for
-        row in energy_problem.constraints[:max_output_flow_with_basic_unit_commitment].indices
+        row in energy_problem.constraints[:max_output_flow_with_unit_commitment].indices
     )
 
     var_flow_lookup = Dict(
@@ -467,7 +467,7 @@ end
         end
     end
 
-    # min_output_flow_with_unit_commitment and max_output_flow_with_basic_unit_commitment
+    # min_output_flow_with_unit_commitment and max_output_flow_with_unit_commitment
     for timestep in 1:12
         for (bid_id, bid) in enumerate(bid_list)
             flow = var_flow_lookup[(bid, bid, timestep)]
@@ -490,9 +490,9 @@ end
             # max
             expected_cons = JuMP.@build_constraint(flow <= units_on * demand_agg)
 
-            cons_id = cons_max_output_flow_with_basic_unit_commitment_lookup[(bid, timestep)]
+            cons_id = cons_max_output_flow_with_unit_commitment_lookup[(bid, timestep)]
             observed_cons =
-                _get_cons_object(energy_problem.model, :max_output_flow_with_basic_unit_commitment)[cons_id]
+                _get_cons_object(energy_problem.model, :max_output_flow_with_unit_commitment)[cons_id]
 
             @test _is_constraint_equal(expected_cons, observed_cons)
         end
