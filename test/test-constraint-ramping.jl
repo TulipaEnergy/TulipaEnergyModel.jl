@@ -165,21 +165,71 @@ end
            SET ramping = true, max_ramp_up = 0.5, max_ramp_down = 0.5
            WHERE asset IN ('wind', 'ccgt')""",
     )
+    DuckDB.query(
+        connection,
+        """UPDATE profiles_rep_periods
+           SET value = CASE profile_name
+               WHEN 'availability-wind2020' THEN 0.2
+               WHEN 'availability-wind2030' THEN 0.5
+           END
+           WHERE milestone_year = 2030
+               AND profile_name IN ('availability-wind2020', 'availability-wind2030')""",
+    )
     TEM.populate_with_defaults!(connection)
     energy_problem = TEM.EnergyProblem(connection)
     TEM.create_model!(energy_problem)
 
-    compact_rows = collect(
+    model = energy_problem.model
+    cons = energy_problem.constraints[:max_ramp_without_unit_commitment_compact_vintage_method]
+    investment_id = only(DuckDB.query(
+        connection,
+        """SELECT id FROM var_assets_investment
+           WHERE asset = 'wind' AND milestone_year = 2030""",
+    )).id
+    decommission_id = only(
         DuckDB.query(
             connection,
-            """SELECT asset FROM cons_max_ramp_without_unit_commitment_compact_vintage_method
-               ORDER BY asset""",
+            """SELECT id FROM var_assets_decommission
+               WHERE asset = 'wind' AND milestone_year = 2030 AND commission_year = 2020""",
         ),
+    ).id
+    investment = energy_problem.variables[:assets_investment].container[investment_id]
+    decommission = energy_problem.variables[:assets_decommission].container[decommission_id]
+
+    for (asset, ramp_limit) in (
+        ("wind", JuMP.@expression(model, 0.6 + 12.5 * investment - 5.0 * decommission)),
+        ("ccgt", 400.0),
     )
-    @test !isempty(compact_rows)
-    @test haskey(energy_problem.model, :max_ramp_up_without_unit_commitment_compact_vintage_method)
-    @test haskey(
-        energy_problem.model,
-        :max_ramp_down_without_unit_commitment_compact_vintage_method,
-    )
+        rows = collect(
+            DuckDB.query(
+                connection,
+                """SELECT id, time_block_start, time_block_end
+                   FROM cons_max_ramp_without_unit_commitment_compact_vintage_method
+                   WHERE asset = '$asset' AND milestone_year = 2030 AND rep_period = 1
+                       AND time_block_start IN (1, 2)
+                   ORDER BY time_block_start""",
+            ),
+        )
+        previous, current = rows
+        @test (previous.time_block_start, previous.time_block_end) == (1, 1)
+        @test (current.time_block_start, current.time_block_end) == (2, 2)
+        @test cons.coefficients[:min_outgoing_flow_duration][current.id] == 1.0
+        outgoing = cons.expressions[:outgoing]
+        expected_up =
+            JuMP.@build_constraint(outgoing[current.id] - outgoing[previous.id] <= ramp_limit)
+        expected_down =
+            JuMP.@build_constraint(outgoing[current.id] - outgoing[previous.id] >= -ramp_limit)
+        @test _verify_constraint_using_id(
+            model,
+            :max_ramp_up_without_unit_commitment_compact_vintage_method,
+            current.id,
+            expected_up,
+        )
+        @test _verify_constraint_using_id(
+            model,
+            :max_ramp_down_without_unit_commitment_compact_vintage_method,
+            current.id,
+            expected_down,
+        )
+    end
 end
