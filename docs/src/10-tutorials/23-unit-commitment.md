@@ -111,8 +111,16 @@ function run_uc_case(
     end
 
     TEM.populate_with_defaults!(connection)
-    energy_problem = TEM.run_scenario(connection; show_log = false)
-    return connection, energy_problem
+    energy_problem = nothing
+    model_build_time = @elapsed begin
+        energy_problem = TEM.EnergyProblem(connection; show_log = false)
+        TEM.create_model!(energy_problem; show_log = false)
+    end
+    TEM.solve_model!(energy_problem)
+    solver_time = JuMP.solve_time(energy_problem.model)
+    TEM.save_solution!(energy_problem)
+    timings = (; model_build_time, solver_time)
+    return connection, energy_problem, timings
 end
 ```
 
@@ -121,7 +129,7 @@ end
 With `unit_commitment = "none"`, the model dispatches the available capacity economically. It does not create `units_on`, `start_up`, or `shut_down` variables.
 
 ```@example unit-commitment
-none_connection, none_problem = run_uc_case("none")
+none_connection, none_problem, _ = run_uc_case("none")
 (none_objective = none_problem.objective_value,
  variables = JuMP.num_variables(none_problem.model),
  constraints = JuMP.num_constraints(none_problem.model; count_variable_in_set_constraints = false))
@@ -134,7 +142,7 @@ none_connection, none_problem = run_uc_case("none")
 The `basic` formulation adds `units_on`. Output is bounded below by the minimum operating point and above by the capacity of the units that are on.
 
 ```@example unit-commitment
-basic_connection, basic_problem = run_uc_case("basic")
+basic_connection, basic_problem, _ = run_uc_case("basic")
 units_on_basic = TIO.get_table(basic_connection, "var_units_on")
 first(units_on_basic, 8)
 ```
@@ -172,7 +180,7 @@ The `3var` formulation adds `start_up` and `shut_down` and links them to changes
 First use one-hour minimum times. This isolates the difference between the variable sets: the objective should match `basic` for this case.
 
 ```@example unit-commitment
-threevar_hourly_connection, threevar_hourly_problem = run_uc_case(
+threevar_hourly_connection, threevar_hourly_problem, _ = run_uc_case(
     "3var";
     minimum_up_time = 1,
     minimum_down_time = 1,
@@ -184,7 +192,7 @@ threevar_hourly_problem.objective_value
 Now use the tutorial defaults: `ccgt` has a 6-hour minimum up time and 4-hour minimum down time, while `ocgt` keeps 1-hour limits:
 
 ```@example unit-commitment
-threevar_connection, threevar_problem = run_uc_case(
+threevar_connection, threevar_problem, _ = run_uc_case(
     "3var";
 )
 
@@ -260,12 +268,12 @@ We use the hourly 3var case as the reference and measure the objective gap:
 
 ```@example unit-commitment
 hourly_reference = threevar_problem.objective_value
-partitions = [1, 2, 3, 4, 6, 8, 12, 24]
+partitions = [1, 2, 3, 4]
 
 function partition_sweep(; coarsen_flows = false)
     rows = NamedTuple[]
     for partition in partitions
-        connection, problem = run_uc_case(
+        connection, problem, timings = run_uc_case(
             "3var";
             asset_partition = partition,
             flow_partition = coarsen_flows ? partition : nothing,
@@ -280,6 +288,8 @@ function partition_sweep(; coarsen_flows = false)
                 count_variable_in_set_constraints = false,
             ),
             units_on_rows = DataFrames.nrow(TIO.get_table(connection, "var_units_on")),
+            model_build_time = timings.model_build_time,
+            solver_time = timings.solver_time,
         ))
     end
     return DataFrame(rows)
@@ -314,7 +324,7 @@ plot(
     asset_partition_results.partition,
     asset_partition_results.objective_gap;
     marker = :circle,
-    label = "UC assets only",
+    label = "Output flows: hourly",
     xlabel = "Partition (hours)",
     ylabel = "Objective gap (%)",
 )
@@ -322,15 +332,46 @@ plot!(
     flow_partition_results.partition,
     flow_partition_results.objective_gap;
     marker = :diamond,
-    label = "UC assets and output flows",
+    label = "Output flows: same as UC partition",
 )
-hline!([1.0]; linestyle = :dash, label = "1% limit")
+hline!([1.0]; linestyle = :dash, label = "1% objective gap vs fully hourly model")
 ```
 
 A coarser partition reduces integer variables and structural constraints, but it restricts when a unit can change state. Always compare against a sufficiently resolved reference and choose the coarsest partition that preserves the accuracy needed for the study.
 
+The same sweep also illustrates the scalability trade-off. Model-build time measures the creation of `EnergyProblem` and the JuMP model. Solver time is reported by the optimizer and excludes model creation and solution extraction.
+
+```@example unit-commitment
+timing_plot = plot(; layout = (2, 1), size = (800, 700), link = :x)
+for (results, label, marker) in (
+    (asset_partition_results, "Output flows: hourly", :circle),
+    (flow_partition_results, "Output flows: same as UC partition", :diamond),
+)
+    plot!(
+        timing_plot[1],
+        results.partition,
+        results.model_build_time;
+        marker,
+        label,
+        ylabel = "Model-build time (s)",
+    )
+    plot!(
+        timing_plot[2],
+        results.partition,
+        results.solver_time;
+        marker,
+        label,
+        xlabel = "Partition (hours)",
+        ylabel = "Solver time (s)",
+    )
+end
+timing_plot
+```
+
+These timings are illustrative and machine-dependent. The earlier examples warm up the model-building code before the sweep, while `JuMP.solve_time` reports time inside the optimizer and excludes Julia compilation.
+
 !!! tip
-    The 1% threshold used here is a decision criterion for this tutorial case, not a universal guarantee. Validate the selected resolution for the scenarios, assets, and objective components in your own model.
+    The 1% objective-gap threshold is measured against the fully hourly model and is a decision criterion for this tutorial case, not a universal guarantee. Validate the selected resolution for the scenarios, assets, and objective components in your own model.
 
 !!! info "Try it yourself"
     1. Change `minimum_up_time` and `minimum_down_time` and repeat the partition sweep.

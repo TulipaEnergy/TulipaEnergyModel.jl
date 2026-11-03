@@ -439,11 +439,9 @@ Let's now take a look at the resulting constraints in the model. Because everyth
 \end{aligned}
 ```
 
-For the maximum ramp down we have similiar constraints as the ones shown above.
-
 ### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are Multiples of Each Other
 
-In this case, the `smr` asset has an output $v^{\text{flow}}_{(\text{smr,demand}),b_k}$ in a hourly basis, but its time resolution (i.e., partition) is every six hours. Therefore, the `unist_on` variables are defined in timestep block of every six hours. As a result, the unit commitment and ramping constraints are set on highest resolution of both, i.e., the hourly resolution of the $v^{\text{flow}}_{(\text{smr,demand}),b_k}$. The figure below illustrates this situation.
+In this case, the `smr` asset has an output $v^{\text{flow}}_{(\text{smr,demand}),b_k}$ on an hourly basis, but its time resolution (i.e., partition) is every six hours. Therefore, the `units_on` variables are defined in timestep blocks of six hours. As a result, the unit commitment and ramping constraints are set at the highest resolution of both, i.e., the hourly resolution of the $v^{\text{flow}}_{(\text{smr,demand}),b_k}$. The figure below illustrates this situation.
 
 ![unit-commitment-smr-asset](./figs/unit-commitment-smr.png)
 
@@ -499,7 +497,21 @@ Let's now take a look at the resulting constraints in the model.
 \end{aligned}
 ```
 
-For the maximum ramp down we have similiar constraints as the ones shown above.
+The ramp-difference constraint is not sufficient by itself when several units are represented by the same `units_on` variable. The model also limits output during start-up and shut-down. At the transition from `1:6` to `7:12`, these limits are
+
+```math
+\begin{aligned}
+& b_{k = 7:7}: v^{\text{flow}}_{(\text{smr,demand}),7:7}
+\leq 170 \cdot v^{\text{units on}}_{\text{smr},7:12}
++ 30 \cdot v^{\text{units on}}_{\text{smr},1:6}, \\
+& b_{k = 7:7}: v^{\text{flow}}_{(\text{smr,demand}),6:6}
+\leq 170 \cdot v^{\text{units on}}_{\text{smr},1:6}
++ 30 \cdot v^{\text{units on}}_{\text{smr},7:12}.
+\end{aligned}
+```
+
+!!! info "Start-Up and Shut-Down Output Limits in Clustered Unit Commitment"
+    For a hypothetical clustered asset (i.e., initial units greater than 1 or investment limit that allows to invest more than 1 unit) with the same per-unit parameters, suppose one unit is online in `1:6` and two units are online in `7:12`. The ramp-difference constraint alone permits $v^{\text{flow}}_{7:7} = 390$ MW after $v^{\text{flow}}_{6:6} = 200$ MW. The start-up output limit instead gives $v^{\text{flow}}_{7:7} \leq 170 \cdot 2 + 30 \cdot 1 = 370$ MW: the unit that remains online can produce up to 200 MW, while the newly started unit can produce up to 170 MW. The second inequality applies the same logic to a unit that shuts down.
 
 ### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are NOT Multiples of Each Other
 
@@ -543,7 +555,7 @@ Let's now take a look at the resulting constraints in the model.
 \end{aligned}
 ```
 
-`max_ramp_up(ccgt)`: The ramping capacity is 120MW, so the change in the output flow above the minimum operating point needs to be below that value when the asset is online. When the time resolutions of the flow and `units_on` are not multiples of each other, we encounter some counterintuitive constraints. For example, consider the constraint at timestep block `4:4`. This constraint only involves `units_on` variables because the flow above the minimum operating point at timestep block `4:4` differs from the previous timestep block `3:3` only in terms of the `units_on` variables. As a result, the ramping-up constraint establishes a relationship between the `units_on` variable at `1:3` and `4:6`.
+`max_ramp_up(ccgt)`: The ramp-up rate is $0.3$ p.u./h. For a 200 MW unit and a two-hour output-flow block, the duration-scaled allowance is $0.3 \cdot 200 \cdot 2 = 120$ MW. The change in output above the minimum operating point must remain below this value when the asset is online. When the time resolutions of the flow and `units_on` are not multiples of each other, we encounter some counterintuitive constraints. For example, consider the constraint at timestep block `4:4`. This constraint only involves `units_on` variables because the flow above the minimum operating point at timestep block `4:4` differs from the previous timestep block `3:3` only in terms of the `units_on` variables. As a result, the ramping-up constraint establishes a relationship between the `units_on` variable at `1:3` and `4:6`.
 This means that if the unit is on at timestep `1:3`, then it must also be on at timestep `4:6`. However, this is redundant because there is already a flow variable defined for `3:4` that ensures this, thanks to the minimum operating point and maximum capacity constraints. Therefore, although this constraint is not incorrect, it is unnecessary due to the flexible time resolutions that are not multiples of each other.
 
 ```math
@@ -557,10 +569,22 @@ This means that if the unit is on at timestep `1:3`, then it must also be on at 
 \end{aligned}
 ```
 
-For the maximum ramp down we have similiar constraints as the ones shown above.
+The start-up output bound uses the same duration-scaled allowance. The commitment state changes at the `4:4` intersection, where the bound constrains the shared `3:4` flow variable:
+
+```math
+\begin{aligned}
+& b_{k = 4:4}: v^{\text{flow}}_{(\text{ccgt,demand}),3:4}
+\leq 170 \cdot v^{\text{units on}}_{\text{ccgt},4:6}
++ 30 \cdot v^{\text{units on}}_{\text{ccgt},1:3}.
+\end{aligned}
+```
+
+At `5:6`, the current and previous intersections use the same `units_on` block, so the start-up output bound reduces to the ordinary maximum-output bound. The model applies the ramp rate to the minimum duration of the outgoing flow variables in the block. Thus, the coefficient remains 120 MW for the `3:3`, `4:4`, and `5:6` intersections because each refers to a two-hour flow variable. This convention treats each flow variable as the average power over its complete block; it does not replace the duration-scaled allowance with an average reachable-output calculation.
+
+Maximum ramp-down constraints and shut-down output bounds follow the same construction. Here, the two-hour ramp-down allowance is $0.4 \cdot 200 \cdot 2 = 160$ MW, which exceeds the 150 MW range above minimum output. The effective allowance is therefore capped at 150 MW, making the shut-down output bound equivalent to the ordinary maximum-output bound.
 
 !!! warning "Avoiding redundant constraints"
-    The time resolutions of the unit commitment constraints do not have to be multiples of each other. However, using multiples of each other can help avoid extra redundant constraints.
+    The time resolutions of the unit commitment constraints do not have to be multiples of each other. However, using multiples of each other can help avoid extra redundant constraints, such as the `4:4` ramp-difference constraint shown above. That constraint is harmless and distinct from the start-up output bound at the same intersection, which provides the clustered-unit tightening.
 
 ### Unit Commitment and Ramping Case Study Results
 
@@ -648,17 +672,19 @@ Here, $\Delta_a$ is the asset's commitment-block duration. The ceiling is import
 
 #### Hourly 3var: `ocgt`
 
-The `ocgt` commitment and flow variables are hourly. With a three-hour minimum up time, the block at hour 5 includes the start-ups at hours 3, 4, and 5:
+The `ocgt` commitment and flow variables are hourly. With a three-hour minimum up time, the block `5:5` includes the start-ups in blocks `3:3`, `4:4`, and `5:5`:
 
 ```math
-v^{\text{start up}}_{\text{ocgt},3} + v^{\text{start up}}_{\text{ocgt},4} + v^{\text{start up}}_{\text{ocgt},5} \leq v^{\text{units on}}_{\text{ocgt},5}
+v^{\text{start up}}_{\text{ocgt},3:3} + v^{\text{start up}}_{\text{ocgt},4:4} + v^{\text{start up}}_{\text{ocgt},5:5} \leq v^{\text{units on}}_{\text{ocgt},5:5}
 ```
 
-With a two-hour minimum down time, the same block includes the shut-downs at hours 4 and 5:
+With a two-hour minimum down time, the same block includes the shut-downs in blocks `4:4` and `5:5`:
 
 ```math
-v^{\text{shut down}}_{\text{ocgt},4} + v^{\text{shut down}}_{\text{ocgt},5} \leq v^{\text{available units}}_{\text{ocgt},5} - v^{\text{units on}}_{\text{ocgt},5}
+v^{\text{shut down}}_{\text{ocgt},4:4} + v^{\text{shut down}}_{\text{ocgt},5:5} \leq v^{\text{available units}}_{\text{ocgt},5:5} - v^{\text{units on}}_{\text{ocgt},5:5}
 ```
+
+These are representative instances; the model creates the corresponding minimum up- and down-time constraints for every applicable hourly block.
 
 #### Six-hour 3var: `smr`
 
