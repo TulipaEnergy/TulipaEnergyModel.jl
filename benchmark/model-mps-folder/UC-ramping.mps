@@ -295,6 +295,82 @@ ROWS
  L  max_ramp_up_with_unit_commitment[smr,2030,1,22:22]
  L  max_ramp_up_with_unit_commitment[smr,2030,1,23:23]
  L  max_ramp_up_with_unit_commitment[smr,2030,1,24:24]
+ L  max_output_flow_during_start_up[ccgt,2030,1,3:3]
+ L  max_output_flow_during_start_up[ccgt,2030,1,4:4]
+ L  max_output_flow_during_start_up[ccgt,2030,1,5:6]
+ L  max_output_flow_during_start_up[ccgt,2030,1,7:8]
+ L  max_output_flow_during_start_up[ccgt,2030,1,9:9]
+ L  max_output_flow_during_start_up[ccgt,2030,1,10:10]
+ L  max_output_flow_during_start_up[ccgt,2030,1,11:12]
+ L  max_output_flow_during_start_up[ccgt,2030,1,13:14]
+ L  max_output_flow_during_start_up[ccgt,2030,1,15:15]
+ L  max_output_flow_during_start_up[ccgt,2030,1,16:16]
+ L  max_output_flow_during_start_up[ccgt,2030,1,17:18]
+ L  max_output_flow_during_start_up[ccgt,2030,1,19:20]
+ L  max_output_flow_during_start_up[ccgt,2030,1,21:21]
+ L  max_output_flow_during_start_up[ccgt,2030,1,22:22]
+ L  max_output_flow_during_start_up[ccgt,2030,1,23:24]
+ L  max_output_flow_during_start_up[smr,2030,1,2:2]
+ L  max_output_flow_during_start_up[smr,2030,1,3:3]
+ L  max_output_flow_during_start_up[smr,2030,1,4:4]
+ L  max_output_flow_during_start_up[smr,2030,1,5:5]
+ L  max_output_flow_during_start_up[smr,2030,1,6:6]
+ L  max_output_flow_during_start_up[smr,2030,1,7:7]
+ L  max_output_flow_during_start_up[smr,2030,1,8:8]
+ L  max_output_flow_during_start_up[smr,2030,1,9:9]
+ L  max_output_flow_during_start_up[smr,2030,1,10:10]
+ L  max_output_flow_during_start_up[smr,2030,1,11:11]
+ L  max_output_flow_during_start_up[smr,2030,1,12:12]
+ L  max_output_flow_during_start_up[smr,2030,1,13:13]
+ L  max_output_flow_during_start_up[smr,2030,1,14:14]
+ L  max_output_flow_during_start_up[smr,2030,1,15:15]
+ L  max_output_flow_during_start_up[smr,2030,1,16:16]
+ L  max_output_flow_during_start_up[smr,2030,1,17:17]
+ L  max_output_flow_during_start_up[smr,2030,1,18:18]
+ L  max_output_flow_during_start_up[smr,2030,1,19:19]
+ L  max_output_flow_during_start_up[smr,2030,1,20:20]
+ L  max_output_flow_during_start_up[smr,2030,1,21:21]
+ L  max_output_flow_during_start_up[smr,2030,1,22:22]
+ L  max_output_flow_during_start_up[smr,2030,1,23:23]
+ L  max_output_flow_during_start_up[smr,2030,1,24:24]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,3:3]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,4:4]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,5:6]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,7:8]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,9:9]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,10:10]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,11:12]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,13:14]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,15:15]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,16:16]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,17:18]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,19:20]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,21:21]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,22:22]
+ L  max_output_flow_during_shut_down[ccgt,2030,1,23:24]
+ L  max_output_flow_during_shut_down[smr,2030,1,2:2]
+ L  max_output_flow_during_shut_down[smr,2030,1,3:3]
+ L  max_output_flow_during_shut_down[smr,2030,1,4:4]
+ L  max_output_flow_during_shut_down[smr,2030,1,5:5]
+ L  max_output_flow_during_shut_down[smr,2030,1,6:6]
+ L  max_output_flow_during_shut_down[smr,2030,1,7:7]
+ L  max_output_flow_during_shut_down[smr,2030,1,8:8]
+ L  max_output_flow_during_shut_down[smr,2030,1,9:9]
+ L  max_output_flow_during_shut_down[smr,2030,1,10:10]
+ L  max_output_flow_during_shut_down[smr,2030,1,11:11]
+ L  max_output_flow_during_shut_down[smr,2030,1,12:12]
+ L  max_output_flow_during_shut_down[smr,2030,1,13:13]
+ L  max_output_flow_during_shut_down[smr,2030,1,14:14]
+ L  max_output_flow_during_shut_down[smr,2030,1,15:15]
+ L  max_output_flow_during_shut_down[smr,2030,1,16:16]
+ L  max_output_flow_during_shut_down[smr,2030,1,17:17]
+ L  max_output_flow_during_shut_down[smr,2030,1,18:18]
+ L  max_output_flow_during_shut_down[smr,2030,1,19:19]
+ L  max_output_flow_during_shut_down[smr,2030,1,20:20]
+ L  max_output_flow_during_shut_down[smr,2030,1,21:21]
+ L  max_output_flow_during_shut_down[smr,2030,1,22:22]
+ L  max_output_flow_during_shut_down[smr,2030,1,23:23]
+ L  max_output_flow_during_shut_down[smr,2030,1,24:24]
  L  max_ramp_up_without_unit_commitment[gas,2030,1,2:2]
  L  max_ramp_up_without_unit_commitment[gas,2030,1,3:3]
  L  max_ramp_up_without_unit_commitment[gas,2030,1,4:4]
@@ -509,10 +585,15 @@ ROWS
  E  c64
  E  c65
  E  c66
+ E  c67
+ E  c68
+ E  c69
+ E  c70
 COLUMNS
     flow[(ccgt,demand),2030,1,1:2] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,1,1:2] 1
     flow[(ccgt,demand),2030,1,1:2] max_output_flow_with_unit_commitment[ccgt,2030,1,1:2] 1
     flow[(ccgt,demand),2030,1,1:2] max_ramp_up_with_unit_commitment[ccgt,2030,1,3:3] -1
+    flow[(ccgt,demand),2030,1,1:2] max_output_flow_during_shut_down[ccgt,2030,1,3:3] 1
     flow[(ccgt,demand),2030,1,1:2] min_output_flow_with_unit_commitment[ccgt,2030,1,1:2] 1
     flow[(ccgt,demand),2030,1,1:2] max_ramp_down_with_unit_commitment[ccgt,2030,1,3:3] -1
     flow[(ccgt,demand),2030,1,1:2] consumer_balance[demand,2030,1,1:1] 1
@@ -524,6 +605,10 @@ COLUMNS
     flow[(ccgt,demand),2030,1,3:4] max_output_flow_with_unit_commitment[ccgt,2030,1,4:4] 1
     flow[(ccgt,demand),2030,1,3:4] max_ramp_up_with_unit_commitment[ccgt,2030,1,3:3] 1
     flow[(ccgt,demand),2030,1,3:4] max_ramp_up_with_unit_commitment[ccgt,2030,1,5:6] -1
+    flow[(ccgt,demand),2030,1,3:4] max_output_flow_during_start_up[ccgt,2030,1,3:3] 1
+    flow[(ccgt,demand),2030,1,3:4] max_output_flow_during_start_up[ccgt,2030,1,4:4] 1
+    flow[(ccgt,demand),2030,1,3:4] max_output_flow_during_shut_down[ccgt,2030,1,4:4] 1
+    flow[(ccgt,demand),2030,1,3:4] max_output_flow_during_shut_down[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,3:4] min_output_flow_with_unit_commitment[ccgt,2030,1,3:3] 1
     flow[(ccgt,demand),2030,1,3:4] min_output_flow_with_unit_commitment[ccgt,2030,1,4:4] 1
     flow[(ccgt,demand),2030,1,3:4] max_ramp_down_with_unit_commitment[ccgt,2030,1,3:3] 1
@@ -536,6 +621,8 @@ COLUMNS
     flow[(ccgt,demand),2030,1,5:6] max_output_flow_with_unit_commitment[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] max_ramp_up_with_unit_commitment[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] max_ramp_up_with_unit_commitment[ccgt,2030,1,7:8] -1
+    flow[(ccgt,demand),2030,1,5:6] max_output_flow_during_start_up[ccgt,2030,1,5:6] 1
+    flow[(ccgt,demand),2030,1,5:6] max_output_flow_during_shut_down[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,5:6] min_output_flow_with_unit_commitment[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] max_ramp_down_with_unit_commitment[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] max_ramp_down_with_unit_commitment[ccgt,2030,1,7:8] -1
@@ -547,6 +634,8 @@ COLUMNS
     flow[(ccgt,demand),2030,1,7:8] max_output_flow_with_unit_commitment[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] max_ramp_up_with_unit_commitment[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] max_ramp_up_with_unit_commitment[ccgt,2030,1,9:9] -1
+    flow[(ccgt,demand),2030,1,7:8] max_output_flow_during_start_up[ccgt,2030,1,7:8] 1
+    flow[(ccgt,demand),2030,1,7:8] max_output_flow_during_shut_down[ccgt,2030,1,9:9] 1
     flow[(ccgt,demand),2030,1,7:8] min_output_flow_with_unit_commitment[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] max_ramp_down_with_unit_commitment[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] max_ramp_down_with_unit_commitment[ccgt,2030,1,9:9] -1
@@ -559,6 +648,10 @@ COLUMNS
     flow[(ccgt,demand),2030,1,9:10] max_output_flow_with_unit_commitment[ccgt,2030,1,10:10] 1
     flow[(ccgt,demand),2030,1,9:10] max_ramp_up_with_unit_commitment[ccgt,2030,1,9:9] 1
     flow[(ccgt,demand),2030,1,9:10] max_ramp_up_with_unit_commitment[ccgt,2030,1,11:12] -1
+    flow[(ccgt,demand),2030,1,9:10] max_output_flow_during_start_up[ccgt,2030,1,9:9] 1
+    flow[(ccgt,demand),2030,1,9:10] max_output_flow_during_start_up[ccgt,2030,1,10:10] 1
+    flow[(ccgt,demand),2030,1,9:10] max_output_flow_during_shut_down[ccgt,2030,1,10:10] 1
+    flow[(ccgt,demand),2030,1,9:10] max_output_flow_during_shut_down[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,9:10] min_output_flow_with_unit_commitment[ccgt,2030,1,9:9] 1
     flow[(ccgt,demand),2030,1,9:10] min_output_flow_with_unit_commitment[ccgt,2030,1,10:10] 1
     flow[(ccgt,demand),2030,1,9:10] max_ramp_down_with_unit_commitment[ccgt,2030,1,9:9] 1
@@ -571,6 +664,8 @@ COLUMNS
     flow[(ccgt,demand),2030,1,11:12] max_output_flow_with_unit_commitment[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] max_ramp_up_with_unit_commitment[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] max_ramp_up_with_unit_commitment[ccgt,2030,1,13:14] -1
+    flow[(ccgt,demand),2030,1,11:12] max_output_flow_during_start_up[ccgt,2030,1,11:12] 1
+    flow[(ccgt,demand),2030,1,11:12] max_output_flow_during_shut_down[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,11:12] min_output_flow_with_unit_commitment[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] max_ramp_down_with_unit_commitment[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] max_ramp_down_with_unit_commitment[ccgt,2030,1,13:14] -1
@@ -582,6 +677,8 @@ COLUMNS
     flow[(ccgt,demand),2030,1,13:14] max_output_flow_with_unit_commitment[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] max_ramp_up_with_unit_commitment[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] max_ramp_up_with_unit_commitment[ccgt,2030,1,15:15] -1
+    flow[(ccgt,demand),2030,1,13:14] max_output_flow_during_start_up[ccgt,2030,1,13:14] 1
+    flow[(ccgt,demand),2030,1,13:14] max_output_flow_during_shut_down[ccgt,2030,1,15:15] 1
     flow[(ccgt,demand),2030,1,13:14] min_output_flow_with_unit_commitment[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] max_ramp_down_with_unit_commitment[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] max_ramp_down_with_unit_commitment[ccgt,2030,1,15:15] -1
@@ -594,6 +691,10 @@ COLUMNS
     flow[(ccgt,demand),2030,1,15:16] max_output_flow_with_unit_commitment[ccgt,2030,1,16:16] 1
     flow[(ccgt,demand),2030,1,15:16] max_ramp_up_with_unit_commitment[ccgt,2030,1,15:15] 1
     flow[(ccgt,demand),2030,1,15:16] max_ramp_up_with_unit_commitment[ccgt,2030,1,17:18] -1
+    flow[(ccgt,demand),2030,1,15:16] max_output_flow_during_start_up[ccgt,2030,1,15:15] 1
+    flow[(ccgt,demand),2030,1,15:16] max_output_flow_during_start_up[ccgt,2030,1,16:16] 1
+    flow[(ccgt,demand),2030,1,15:16] max_output_flow_during_shut_down[ccgt,2030,1,16:16] 1
+    flow[(ccgt,demand),2030,1,15:16] max_output_flow_during_shut_down[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,15:16] min_output_flow_with_unit_commitment[ccgt,2030,1,15:15] 1
     flow[(ccgt,demand),2030,1,15:16] min_output_flow_with_unit_commitment[ccgt,2030,1,16:16] 1
     flow[(ccgt,demand),2030,1,15:16] max_ramp_down_with_unit_commitment[ccgt,2030,1,15:15] 1
@@ -606,6 +707,8 @@ COLUMNS
     flow[(ccgt,demand),2030,1,17:18] max_output_flow_with_unit_commitment[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] max_ramp_up_with_unit_commitment[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] max_ramp_up_with_unit_commitment[ccgt,2030,1,19:20] -1
+    flow[(ccgt,demand),2030,1,17:18] max_output_flow_during_start_up[ccgt,2030,1,17:18] 1
+    flow[(ccgt,demand),2030,1,17:18] max_output_flow_during_shut_down[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,17:18] min_output_flow_with_unit_commitment[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] max_ramp_down_with_unit_commitment[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] max_ramp_down_with_unit_commitment[ccgt,2030,1,19:20] -1
@@ -617,6 +720,8 @@ COLUMNS
     flow[(ccgt,demand),2030,1,19:20] max_output_flow_with_unit_commitment[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] max_ramp_up_with_unit_commitment[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] max_ramp_up_with_unit_commitment[ccgt,2030,1,21:21] -1
+    flow[(ccgt,demand),2030,1,19:20] max_output_flow_during_start_up[ccgt,2030,1,19:20] 1
+    flow[(ccgt,demand),2030,1,19:20] max_output_flow_during_shut_down[ccgt,2030,1,21:21] 1
     flow[(ccgt,demand),2030,1,19:20] min_output_flow_with_unit_commitment[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] max_ramp_down_with_unit_commitment[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] max_ramp_down_with_unit_commitment[ccgt,2030,1,21:21] -1
@@ -629,6 +734,10 @@ COLUMNS
     flow[(ccgt,demand),2030,1,21:22] max_output_flow_with_unit_commitment[ccgt,2030,1,22:22] 1
     flow[(ccgt,demand),2030,1,21:22] max_ramp_up_with_unit_commitment[ccgt,2030,1,21:21] 1
     flow[(ccgt,demand),2030,1,21:22] max_ramp_up_with_unit_commitment[ccgt,2030,1,23:24] -1
+    flow[(ccgt,demand),2030,1,21:22] max_output_flow_during_start_up[ccgt,2030,1,21:21] 1
+    flow[(ccgt,demand),2030,1,21:22] max_output_flow_during_start_up[ccgt,2030,1,22:22] 1
+    flow[(ccgt,demand),2030,1,21:22] max_output_flow_during_shut_down[ccgt,2030,1,22:22] 1
+    flow[(ccgt,demand),2030,1,21:22] max_output_flow_during_shut_down[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,21:22] min_output_flow_with_unit_commitment[ccgt,2030,1,21:21] 1
     flow[(ccgt,demand),2030,1,21:22] min_output_flow_with_unit_commitment[ccgt,2030,1,22:22] 1
     flow[(ccgt,demand),2030,1,21:22] max_ramp_down_with_unit_commitment[ccgt,2030,1,21:21] 1
@@ -640,6 +749,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,23:24] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] max_output_flow_with_unit_commitment[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] max_ramp_up_with_unit_commitment[ccgt,2030,1,23:24] 1
+    flow[(ccgt,demand),2030,1,23:24] max_output_flow_during_start_up[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] min_output_flow_with_unit_commitment[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] max_ramp_down_with_unit_commitment[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] consumer_balance[demand,2030,1,23:23] 1
@@ -1085,6 +1195,7 @@ COLUMNS
     flow[(smr,demand),2030,1,1:1] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,1:1] 1
     flow[(smr,demand),2030,1,1:1] max_output_flow_with_unit_commitment[smr,2030,1,1:1] 1
     flow[(smr,demand),2030,1,1:1] max_ramp_up_with_unit_commitment[smr,2030,1,2:2] -1
+    flow[(smr,demand),2030,1,1:1] max_output_flow_during_shut_down[smr,2030,1,2:2] 1
     flow[(smr,demand),2030,1,1:1] min_output_flow_with_unit_commitment[smr,2030,1,1:1] 1
     flow[(smr,demand),2030,1,1:1] max_ramp_down_with_unit_commitment[smr,2030,1,2:2] -1
     flow[(smr,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
@@ -1093,6 +1204,8 @@ COLUMNS
     flow[(smr,demand),2030,1,2:2] max_output_flow_with_unit_commitment[smr,2030,1,2:2] 1
     flow[(smr,demand),2030,1,2:2] max_ramp_up_with_unit_commitment[smr,2030,1,2:2] 1
     flow[(smr,demand),2030,1,2:2] max_ramp_up_with_unit_commitment[smr,2030,1,3:3] -1
+    flow[(smr,demand),2030,1,2:2] max_output_flow_during_start_up[smr,2030,1,2:2] 1
+    flow[(smr,demand),2030,1,2:2] max_output_flow_during_shut_down[smr,2030,1,3:3] 1
     flow[(smr,demand),2030,1,2:2] min_output_flow_with_unit_commitment[smr,2030,1,2:2] 1
     flow[(smr,demand),2030,1,2:2] max_ramp_down_with_unit_commitment[smr,2030,1,2:2] 1
     flow[(smr,demand),2030,1,2:2] max_ramp_down_with_unit_commitment[smr,2030,1,3:3] -1
@@ -1102,6 +1215,8 @@ COLUMNS
     flow[(smr,demand),2030,1,3:3] max_output_flow_with_unit_commitment[smr,2030,1,3:3] 1
     flow[(smr,demand),2030,1,3:3] max_ramp_up_with_unit_commitment[smr,2030,1,3:3] 1
     flow[(smr,demand),2030,1,3:3] max_ramp_up_with_unit_commitment[smr,2030,1,4:4] -1
+    flow[(smr,demand),2030,1,3:3] max_output_flow_during_start_up[smr,2030,1,3:3] 1
+    flow[(smr,demand),2030,1,3:3] max_output_flow_during_shut_down[smr,2030,1,4:4] 1
     flow[(smr,demand),2030,1,3:3] min_output_flow_with_unit_commitment[smr,2030,1,3:3] 1
     flow[(smr,demand),2030,1,3:3] max_ramp_down_with_unit_commitment[smr,2030,1,3:3] 1
     flow[(smr,demand),2030,1,3:3] max_ramp_down_with_unit_commitment[smr,2030,1,4:4] -1
@@ -1111,6 +1226,8 @@ COLUMNS
     flow[(smr,demand),2030,1,4:4] max_output_flow_with_unit_commitment[smr,2030,1,4:4] 1
     flow[(smr,demand),2030,1,4:4] max_ramp_up_with_unit_commitment[smr,2030,1,4:4] 1
     flow[(smr,demand),2030,1,4:4] max_ramp_up_with_unit_commitment[smr,2030,1,5:5] -1
+    flow[(smr,demand),2030,1,4:4] max_output_flow_during_start_up[smr,2030,1,4:4] 1
+    flow[(smr,demand),2030,1,4:4] max_output_flow_during_shut_down[smr,2030,1,5:5] 1
     flow[(smr,demand),2030,1,4:4] min_output_flow_with_unit_commitment[smr,2030,1,4:4] 1
     flow[(smr,demand),2030,1,4:4] max_ramp_down_with_unit_commitment[smr,2030,1,4:4] 1
     flow[(smr,demand),2030,1,4:4] max_ramp_down_with_unit_commitment[smr,2030,1,5:5] -1
@@ -1120,6 +1237,8 @@ COLUMNS
     flow[(smr,demand),2030,1,5:5] max_output_flow_with_unit_commitment[smr,2030,1,5:5] 1
     flow[(smr,demand),2030,1,5:5] max_ramp_up_with_unit_commitment[smr,2030,1,5:5] 1
     flow[(smr,demand),2030,1,5:5] max_ramp_up_with_unit_commitment[smr,2030,1,6:6] -1
+    flow[(smr,demand),2030,1,5:5] max_output_flow_during_start_up[smr,2030,1,5:5] 1
+    flow[(smr,demand),2030,1,5:5] max_output_flow_during_shut_down[smr,2030,1,6:6] 1
     flow[(smr,demand),2030,1,5:5] min_output_flow_with_unit_commitment[smr,2030,1,5:5] 1
     flow[(smr,demand),2030,1,5:5] max_ramp_down_with_unit_commitment[smr,2030,1,5:5] 1
     flow[(smr,demand),2030,1,5:5] max_ramp_down_with_unit_commitment[smr,2030,1,6:6] -1
@@ -1129,6 +1248,8 @@ COLUMNS
     flow[(smr,demand),2030,1,6:6] max_output_flow_with_unit_commitment[smr,2030,1,6:6] 1
     flow[(smr,demand),2030,1,6:6] max_ramp_up_with_unit_commitment[smr,2030,1,6:6] 1
     flow[(smr,demand),2030,1,6:6] max_ramp_up_with_unit_commitment[smr,2030,1,7:7] -1
+    flow[(smr,demand),2030,1,6:6] max_output_flow_during_start_up[smr,2030,1,6:6] 1
+    flow[(smr,demand),2030,1,6:6] max_output_flow_during_shut_down[smr,2030,1,7:7] 1
     flow[(smr,demand),2030,1,6:6] min_output_flow_with_unit_commitment[smr,2030,1,6:6] 1
     flow[(smr,demand),2030,1,6:6] max_ramp_down_with_unit_commitment[smr,2030,1,6:6] 1
     flow[(smr,demand),2030,1,6:6] max_ramp_down_with_unit_commitment[smr,2030,1,7:7] -1
@@ -1138,6 +1259,8 @@ COLUMNS
     flow[(smr,demand),2030,1,7:7] max_output_flow_with_unit_commitment[smr,2030,1,7:7] 1
     flow[(smr,demand),2030,1,7:7] max_ramp_up_with_unit_commitment[smr,2030,1,7:7] 1
     flow[(smr,demand),2030,1,7:7] max_ramp_up_with_unit_commitment[smr,2030,1,8:8] -1
+    flow[(smr,demand),2030,1,7:7] max_output_flow_during_start_up[smr,2030,1,7:7] 1
+    flow[(smr,demand),2030,1,7:7] max_output_flow_during_shut_down[smr,2030,1,8:8] 1
     flow[(smr,demand),2030,1,7:7] min_output_flow_with_unit_commitment[smr,2030,1,7:7] 1
     flow[(smr,demand),2030,1,7:7] max_ramp_down_with_unit_commitment[smr,2030,1,7:7] 1
     flow[(smr,demand),2030,1,7:7] max_ramp_down_with_unit_commitment[smr,2030,1,8:8] -1
@@ -1147,6 +1270,8 @@ COLUMNS
     flow[(smr,demand),2030,1,8:8] max_output_flow_with_unit_commitment[smr,2030,1,8:8] 1
     flow[(smr,demand),2030,1,8:8] max_ramp_up_with_unit_commitment[smr,2030,1,8:8] 1
     flow[(smr,demand),2030,1,8:8] max_ramp_up_with_unit_commitment[smr,2030,1,9:9] -1
+    flow[(smr,demand),2030,1,8:8] max_output_flow_during_start_up[smr,2030,1,8:8] 1
+    flow[(smr,demand),2030,1,8:8] max_output_flow_during_shut_down[smr,2030,1,9:9] 1
     flow[(smr,demand),2030,1,8:8] min_output_flow_with_unit_commitment[smr,2030,1,8:8] 1
     flow[(smr,demand),2030,1,8:8] max_ramp_down_with_unit_commitment[smr,2030,1,8:8] 1
     flow[(smr,demand),2030,1,8:8] max_ramp_down_with_unit_commitment[smr,2030,1,9:9] -1
@@ -1156,6 +1281,8 @@ COLUMNS
     flow[(smr,demand),2030,1,9:9] max_output_flow_with_unit_commitment[smr,2030,1,9:9] 1
     flow[(smr,demand),2030,1,9:9] max_ramp_up_with_unit_commitment[smr,2030,1,9:9] 1
     flow[(smr,demand),2030,1,9:9] max_ramp_up_with_unit_commitment[smr,2030,1,10:10] -1
+    flow[(smr,demand),2030,1,9:9] max_output_flow_during_start_up[smr,2030,1,9:9] 1
+    flow[(smr,demand),2030,1,9:9] max_output_flow_during_shut_down[smr,2030,1,10:10] 1
     flow[(smr,demand),2030,1,9:9] min_output_flow_with_unit_commitment[smr,2030,1,9:9] 1
     flow[(smr,demand),2030,1,9:9] max_ramp_down_with_unit_commitment[smr,2030,1,9:9] 1
     flow[(smr,demand),2030,1,9:9] max_ramp_down_with_unit_commitment[smr,2030,1,10:10] -1
@@ -1165,6 +1292,8 @@ COLUMNS
     flow[(smr,demand),2030,1,10:10] max_output_flow_with_unit_commitment[smr,2030,1,10:10] 1
     flow[(smr,demand),2030,1,10:10] max_ramp_up_with_unit_commitment[smr,2030,1,10:10] 1
     flow[(smr,demand),2030,1,10:10] max_ramp_up_with_unit_commitment[smr,2030,1,11:11] -1
+    flow[(smr,demand),2030,1,10:10] max_output_flow_during_start_up[smr,2030,1,10:10] 1
+    flow[(smr,demand),2030,1,10:10] max_output_flow_during_shut_down[smr,2030,1,11:11] 1
     flow[(smr,demand),2030,1,10:10] min_output_flow_with_unit_commitment[smr,2030,1,10:10] 1
     flow[(smr,demand),2030,1,10:10] max_ramp_down_with_unit_commitment[smr,2030,1,10:10] 1
     flow[(smr,demand),2030,1,10:10] max_ramp_down_with_unit_commitment[smr,2030,1,11:11] -1
@@ -1174,6 +1303,8 @@ COLUMNS
     flow[(smr,demand),2030,1,11:11] max_output_flow_with_unit_commitment[smr,2030,1,11:11] 1
     flow[(smr,demand),2030,1,11:11] max_ramp_up_with_unit_commitment[smr,2030,1,11:11] 1
     flow[(smr,demand),2030,1,11:11] max_ramp_up_with_unit_commitment[smr,2030,1,12:12] -1
+    flow[(smr,demand),2030,1,11:11] max_output_flow_during_start_up[smr,2030,1,11:11] 1
+    flow[(smr,demand),2030,1,11:11] max_output_flow_during_shut_down[smr,2030,1,12:12] 1
     flow[(smr,demand),2030,1,11:11] min_output_flow_with_unit_commitment[smr,2030,1,11:11] 1
     flow[(smr,demand),2030,1,11:11] max_ramp_down_with_unit_commitment[smr,2030,1,11:11] 1
     flow[(smr,demand),2030,1,11:11] max_ramp_down_with_unit_commitment[smr,2030,1,12:12] -1
@@ -1183,6 +1314,8 @@ COLUMNS
     flow[(smr,demand),2030,1,12:12] max_output_flow_with_unit_commitment[smr,2030,1,12:12] 1
     flow[(smr,demand),2030,1,12:12] max_ramp_up_with_unit_commitment[smr,2030,1,12:12] 1
     flow[(smr,demand),2030,1,12:12] max_ramp_up_with_unit_commitment[smr,2030,1,13:13] -1
+    flow[(smr,demand),2030,1,12:12] max_output_flow_during_start_up[smr,2030,1,12:12] 1
+    flow[(smr,demand),2030,1,12:12] max_output_flow_during_shut_down[smr,2030,1,13:13] 1
     flow[(smr,demand),2030,1,12:12] min_output_flow_with_unit_commitment[smr,2030,1,12:12] 1
     flow[(smr,demand),2030,1,12:12] max_ramp_down_with_unit_commitment[smr,2030,1,12:12] 1
     flow[(smr,demand),2030,1,12:12] max_ramp_down_with_unit_commitment[smr,2030,1,13:13] -1
@@ -1192,6 +1325,8 @@ COLUMNS
     flow[(smr,demand),2030,1,13:13] max_output_flow_with_unit_commitment[smr,2030,1,13:13] 1
     flow[(smr,demand),2030,1,13:13] max_ramp_up_with_unit_commitment[smr,2030,1,13:13] 1
     flow[(smr,demand),2030,1,13:13] max_ramp_up_with_unit_commitment[smr,2030,1,14:14] -1
+    flow[(smr,demand),2030,1,13:13] max_output_flow_during_start_up[smr,2030,1,13:13] 1
+    flow[(smr,demand),2030,1,13:13] max_output_flow_during_shut_down[smr,2030,1,14:14] 1
     flow[(smr,demand),2030,1,13:13] min_output_flow_with_unit_commitment[smr,2030,1,13:13] 1
     flow[(smr,demand),2030,1,13:13] max_ramp_down_with_unit_commitment[smr,2030,1,13:13] 1
     flow[(smr,demand),2030,1,13:13] max_ramp_down_with_unit_commitment[smr,2030,1,14:14] -1
@@ -1201,6 +1336,8 @@ COLUMNS
     flow[(smr,demand),2030,1,14:14] max_output_flow_with_unit_commitment[smr,2030,1,14:14] 1
     flow[(smr,demand),2030,1,14:14] max_ramp_up_with_unit_commitment[smr,2030,1,14:14] 1
     flow[(smr,demand),2030,1,14:14] max_ramp_up_with_unit_commitment[smr,2030,1,15:15] -1
+    flow[(smr,demand),2030,1,14:14] max_output_flow_during_start_up[smr,2030,1,14:14] 1
+    flow[(smr,demand),2030,1,14:14] max_output_flow_during_shut_down[smr,2030,1,15:15] 1
     flow[(smr,demand),2030,1,14:14] min_output_flow_with_unit_commitment[smr,2030,1,14:14] 1
     flow[(smr,demand),2030,1,14:14] max_ramp_down_with_unit_commitment[smr,2030,1,14:14] 1
     flow[(smr,demand),2030,1,14:14] max_ramp_down_with_unit_commitment[smr,2030,1,15:15] -1
@@ -1210,6 +1347,8 @@ COLUMNS
     flow[(smr,demand),2030,1,15:15] max_output_flow_with_unit_commitment[smr,2030,1,15:15] 1
     flow[(smr,demand),2030,1,15:15] max_ramp_up_with_unit_commitment[smr,2030,1,15:15] 1
     flow[(smr,demand),2030,1,15:15] max_ramp_up_with_unit_commitment[smr,2030,1,16:16] -1
+    flow[(smr,demand),2030,1,15:15] max_output_flow_during_start_up[smr,2030,1,15:15] 1
+    flow[(smr,demand),2030,1,15:15] max_output_flow_during_shut_down[smr,2030,1,16:16] 1
     flow[(smr,demand),2030,1,15:15] min_output_flow_with_unit_commitment[smr,2030,1,15:15] 1
     flow[(smr,demand),2030,1,15:15] max_ramp_down_with_unit_commitment[smr,2030,1,15:15] 1
     flow[(smr,demand),2030,1,15:15] max_ramp_down_with_unit_commitment[smr,2030,1,16:16] -1
@@ -1219,6 +1358,8 @@ COLUMNS
     flow[(smr,demand),2030,1,16:16] max_output_flow_with_unit_commitment[smr,2030,1,16:16] 1
     flow[(smr,demand),2030,1,16:16] max_ramp_up_with_unit_commitment[smr,2030,1,16:16] 1
     flow[(smr,demand),2030,1,16:16] max_ramp_up_with_unit_commitment[smr,2030,1,17:17] -1
+    flow[(smr,demand),2030,1,16:16] max_output_flow_during_start_up[smr,2030,1,16:16] 1
+    flow[(smr,demand),2030,1,16:16] max_output_flow_during_shut_down[smr,2030,1,17:17] 1
     flow[(smr,demand),2030,1,16:16] min_output_flow_with_unit_commitment[smr,2030,1,16:16] 1
     flow[(smr,demand),2030,1,16:16] max_ramp_down_with_unit_commitment[smr,2030,1,16:16] 1
     flow[(smr,demand),2030,1,16:16] max_ramp_down_with_unit_commitment[smr,2030,1,17:17] -1
@@ -1228,6 +1369,8 @@ COLUMNS
     flow[(smr,demand),2030,1,17:17] max_output_flow_with_unit_commitment[smr,2030,1,17:17] 1
     flow[(smr,demand),2030,1,17:17] max_ramp_up_with_unit_commitment[smr,2030,1,17:17] 1
     flow[(smr,demand),2030,1,17:17] max_ramp_up_with_unit_commitment[smr,2030,1,18:18] -1
+    flow[(smr,demand),2030,1,17:17] max_output_flow_during_start_up[smr,2030,1,17:17] 1
+    flow[(smr,demand),2030,1,17:17] max_output_flow_during_shut_down[smr,2030,1,18:18] 1
     flow[(smr,demand),2030,1,17:17] min_output_flow_with_unit_commitment[smr,2030,1,17:17] 1
     flow[(smr,demand),2030,1,17:17] max_ramp_down_with_unit_commitment[smr,2030,1,17:17] 1
     flow[(smr,demand),2030,1,17:17] max_ramp_down_with_unit_commitment[smr,2030,1,18:18] -1
@@ -1237,6 +1380,8 @@ COLUMNS
     flow[(smr,demand),2030,1,18:18] max_output_flow_with_unit_commitment[smr,2030,1,18:18] 1
     flow[(smr,demand),2030,1,18:18] max_ramp_up_with_unit_commitment[smr,2030,1,18:18] 1
     flow[(smr,demand),2030,1,18:18] max_ramp_up_with_unit_commitment[smr,2030,1,19:19] -1
+    flow[(smr,demand),2030,1,18:18] max_output_flow_during_start_up[smr,2030,1,18:18] 1
+    flow[(smr,demand),2030,1,18:18] max_output_flow_during_shut_down[smr,2030,1,19:19] 1
     flow[(smr,demand),2030,1,18:18] min_output_flow_with_unit_commitment[smr,2030,1,18:18] 1
     flow[(smr,demand),2030,1,18:18] max_ramp_down_with_unit_commitment[smr,2030,1,18:18] 1
     flow[(smr,demand),2030,1,18:18] max_ramp_down_with_unit_commitment[smr,2030,1,19:19] -1
@@ -1246,6 +1391,8 @@ COLUMNS
     flow[(smr,demand),2030,1,19:19] max_output_flow_with_unit_commitment[smr,2030,1,19:19] 1
     flow[(smr,demand),2030,1,19:19] max_ramp_up_with_unit_commitment[smr,2030,1,19:19] 1
     flow[(smr,demand),2030,1,19:19] max_ramp_up_with_unit_commitment[smr,2030,1,20:20] -1
+    flow[(smr,demand),2030,1,19:19] max_output_flow_during_start_up[smr,2030,1,19:19] 1
+    flow[(smr,demand),2030,1,19:19] max_output_flow_during_shut_down[smr,2030,1,20:20] 1
     flow[(smr,demand),2030,1,19:19] min_output_flow_with_unit_commitment[smr,2030,1,19:19] 1
     flow[(smr,demand),2030,1,19:19] max_ramp_down_with_unit_commitment[smr,2030,1,19:19] 1
     flow[(smr,demand),2030,1,19:19] max_ramp_down_with_unit_commitment[smr,2030,1,20:20] -1
@@ -1255,6 +1402,8 @@ COLUMNS
     flow[(smr,demand),2030,1,20:20] max_output_flow_with_unit_commitment[smr,2030,1,20:20] 1
     flow[(smr,demand),2030,1,20:20] max_ramp_up_with_unit_commitment[smr,2030,1,20:20] 1
     flow[(smr,demand),2030,1,20:20] max_ramp_up_with_unit_commitment[smr,2030,1,21:21] -1
+    flow[(smr,demand),2030,1,20:20] max_output_flow_during_start_up[smr,2030,1,20:20] 1
+    flow[(smr,demand),2030,1,20:20] max_output_flow_during_shut_down[smr,2030,1,21:21] 1
     flow[(smr,demand),2030,1,20:20] min_output_flow_with_unit_commitment[smr,2030,1,20:20] 1
     flow[(smr,demand),2030,1,20:20] max_ramp_down_with_unit_commitment[smr,2030,1,20:20] 1
     flow[(smr,demand),2030,1,20:20] max_ramp_down_with_unit_commitment[smr,2030,1,21:21] -1
@@ -1264,6 +1413,8 @@ COLUMNS
     flow[(smr,demand),2030,1,21:21] max_output_flow_with_unit_commitment[smr,2030,1,21:21] 1
     flow[(smr,demand),2030,1,21:21] max_ramp_up_with_unit_commitment[smr,2030,1,21:21] 1
     flow[(smr,demand),2030,1,21:21] max_ramp_up_with_unit_commitment[smr,2030,1,22:22] -1
+    flow[(smr,demand),2030,1,21:21] max_output_flow_during_start_up[smr,2030,1,21:21] 1
+    flow[(smr,demand),2030,1,21:21] max_output_flow_during_shut_down[smr,2030,1,22:22] 1
     flow[(smr,demand),2030,1,21:21] min_output_flow_with_unit_commitment[smr,2030,1,21:21] 1
     flow[(smr,demand),2030,1,21:21] max_ramp_down_with_unit_commitment[smr,2030,1,21:21] 1
     flow[(smr,demand),2030,1,21:21] max_ramp_down_with_unit_commitment[smr,2030,1,22:22] -1
@@ -1273,6 +1424,8 @@ COLUMNS
     flow[(smr,demand),2030,1,22:22] max_output_flow_with_unit_commitment[smr,2030,1,22:22] 1
     flow[(smr,demand),2030,1,22:22] max_ramp_up_with_unit_commitment[smr,2030,1,22:22] 1
     flow[(smr,demand),2030,1,22:22] max_ramp_up_with_unit_commitment[smr,2030,1,23:23] -1
+    flow[(smr,demand),2030,1,22:22] max_output_flow_during_start_up[smr,2030,1,22:22] 1
+    flow[(smr,demand),2030,1,22:22] max_output_flow_during_shut_down[smr,2030,1,23:23] 1
     flow[(smr,demand),2030,1,22:22] min_output_flow_with_unit_commitment[smr,2030,1,22:22] 1
     flow[(smr,demand),2030,1,22:22] max_ramp_down_with_unit_commitment[smr,2030,1,22:22] 1
     flow[(smr,demand),2030,1,22:22] max_ramp_down_with_unit_commitment[smr,2030,1,23:23] -1
@@ -1282,6 +1435,8 @@ COLUMNS
     flow[(smr,demand),2030,1,23:23] max_output_flow_with_unit_commitment[smr,2030,1,23:23] 1
     flow[(smr,demand),2030,1,23:23] max_ramp_up_with_unit_commitment[smr,2030,1,23:23] 1
     flow[(smr,demand),2030,1,23:23] max_ramp_up_with_unit_commitment[smr,2030,1,24:24] -1
+    flow[(smr,demand),2030,1,23:23] max_output_flow_during_start_up[smr,2030,1,23:23] 1
+    flow[(smr,demand),2030,1,23:23] max_output_flow_during_shut_down[smr,2030,1,24:24] 1
     flow[(smr,demand),2030,1,23:23] min_output_flow_with_unit_commitment[smr,2030,1,23:23] 1
     flow[(smr,demand),2030,1,23:23] max_ramp_down_with_unit_commitment[smr,2030,1,23:23] 1
     flow[(smr,demand),2030,1,23:23] max_ramp_down_with_unit_commitment[smr,2030,1,24:24] -1
@@ -1290,6 +1445,7 @@ COLUMNS
     flow[(smr,demand),2030,1,24:24] max_output_flows_limit_aggregated_vintage_method[smr,2030,1,24:24] 1
     flow[(smr,demand),2030,1,24:24] max_output_flow_with_unit_commitment[smr,2030,1,24:24] 1
     flow[(smr,demand),2030,1,24:24] max_ramp_up_with_unit_commitment[smr,2030,1,24:24] 1
+    flow[(smr,demand),2030,1,24:24] max_output_flow_during_start_up[smr,2030,1,24:24] 1
     flow[(smr,demand),2030,1,24:24] min_output_flow_with_unit_commitment[smr,2030,1,24:24] 1
     flow[(smr,demand),2030,1,24:24] max_ramp_down_with_unit_commitment[smr,2030,1,24:24] 1
     flow[(smr,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
@@ -1654,6 +1810,10 @@ COLUMNS
     units_on[ccgt,2030,1,1:3] max_output_flow_with_unit_commitment[ccgt,2030,1,3:3] -200
     units_on[ccgt,2030,1,1:3] max_ramp_up_with_unit_commitment[ccgt,2030,1,3:3] -120
     units_on[ccgt,2030,1,1:3] max_ramp_up_with_unit_commitment[ccgt,2030,1,4:4] 50
+    units_on[ccgt,2030,1,1:3] max_output_flow_during_start_up[ccgt,2030,1,3:3] -200
+    units_on[ccgt,2030,1,1:3] max_output_flow_during_start_up[ccgt,2030,1,4:4] -30.000000000000004
+    units_on[ccgt,2030,1,1:3] max_output_flow_during_shut_down[ccgt,2030,1,3:3] -200
+    units_on[ccgt,2030,1,1:3] max_output_flow_during_shut_down[ccgt,2030,1,4:4] -200
     units_on[ccgt,2030,1,1:3] min_output_flow_with_unit_commitment[ccgt,2030,1,1:2] -50
     units_on[ccgt,2030,1,1:3] min_output_flow_with_unit_commitment[ccgt,2030,1,3:3] -50
     units_on[ccgt,2030,1,1:3] max_ramp_down_with_unit_commitment[ccgt,2030,1,3:3] 160
@@ -1665,6 +1825,11 @@ COLUMNS
     units_on[ccgt,2030,1,4:6] max_ramp_up_with_unit_commitment[ccgt,2030,1,4:4] -170
     units_on[ccgt,2030,1,4:6] max_ramp_up_with_unit_commitment[ccgt,2030,1,5:6] -120
     units_on[ccgt,2030,1,4:6] max_ramp_up_with_unit_commitment[ccgt,2030,1,7:8] 50
+    units_on[ccgt,2030,1,4:6] max_output_flow_during_start_up[ccgt,2030,1,4:4] -170
+    units_on[ccgt,2030,1,4:6] max_output_flow_during_start_up[ccgt,2030,1,5:6] -200
+    units_on[ccgt,2030,1,4:6] max_output_flow_during_start_up[ccgt,2030,1,7:8] -30.000000000000004
+    units_on[ccgt,2030,1,4:6] max_output_flow_during_shut_down[ccgt,2030,1,5:6] -200
+    units_on[ccgt,2030,1,4:6] max_output_flow_during_shut_down[ccgt,2030,1,7:8] -200
     units_on[ccgt,2030,1,4:6] min_output_flow_with_unit_commitment[ccgt,2030,1,4:4] -50
     units_on[ccgt,2030,1,4:6] min_output_flow_with_unit_commitment[ccgt,2030,1,5:6] -50
     units_on[ccgt,2030,1,4:6] max_ramp_down_with_unit_commitment[ccgt,2030,1,4:4] -50
@@ -1677,6 +1842,11 @@ COLUMNS
     units_on[ccgt,2030,1,7:9] max_ramp_up_with_unit_commitment[ccgt,2030,1,7:8] -170
     units_on[ccgt,2030,1,7:9] max_ramp_up_with_unit_commitment[ccgt,2030,1,9:9] -120
     units_on[ccgt,2030,1,7:9] max_ramp_up_with_unit_commitment[ccgt,2030,1,10:10] 50
+    units_on[ccgt,2030,1,7:9] max_output_flow_during_start_up[ccgt,2030,1,7:8] -170
+    units_on[ccgt,2030,1,7:9] max_output_flow_during_start_up[ccgt,2030,1,9:9] -200
+    units_on[ccgt,2030,1,7:9] max_output_flow_during_start_up[ccgt,2030,1,10:10] -30.000000000000004
+    units_on[ccgt,2030,1,7:9] max_output_flow_during_shut_down[ccgt,2030,1,9:9] -200
+    units_on[ccgt,2030,1,7:9] max_output_flow_during_shut_down[ccgt,2030,1,10:10] -200
     units_on[ccgt,2030,1,7:9] min_output_flow_with_unit_commitment[ccgt,2030,1,7:8] -50
     units_on[ccgt,2030,1,7:9] min_output_flow_with_unit_commitment[ccgt,2030,1,9:9] -50
     units_on[ccgt,2030,1,7:9] max_ramp_down_with_unit_commitment[ccgt,2030,1,7:8] -50
@@ -1689,6 +1859,11 @@ COLUMNS
     units_on[ccgt,2030,1,10:12] max_ramp_up_with_unit_commitment[ccgt,2030,1,10:10] -170
     units_on[ccgt,2030,1,10:12] max_ramp_up_with_unit_commitment[ccgt,2030,1,11:12] -120
     units_on[ccgt,2030,1,10:12] max_ramp_up_with_unit_commitment[ccgt,2030,1,13:14] 50
+    units_on[ccgt,2030,1,10:12] max_output_flow_during_start_up[ccgt,2030,1,10:10] -170
+    units_on[ccgt,2030,1,10:12] max_output_flow_during_start_up[ccgt,2030,1,11:12] -200
+    units_on[ccgt,2030,1,10:12] max_output_flow_during_start_up[ccgt,2030,1,13:14] -30.000000000000004
+    units_on[ccgt,2030,1,10:12] max_output_flow_during_shut_down[ccgt,2030,1,11:12] -200
+    units_on[ccgt,2030,1,10:12] max_output_flow_during_shut_down[ccgt,2030,1,13:14] -200
     units_on[ccgt,2030,1,10:12] min_output_flow_with_unit_commitment[ccgt,2030,1,10:10] -50
     units_on[ccgt,2030,1,10:12] min_output_flow_with_unit_commitment[ccgt,2030,1,11:12] -50
     units_on[ccgt,2030,1,10:12] max_ramp_down_with_unit_commitment[ccgt,2030,1,10:10] -50
@@ -1701,6 +1876,11 @@ COLUMNS
     units_on[ccgt,2030,1,13:15] max_ramp_up_with_unit_commitment[ccgt,2030,1,13:14] -170
     units_on[ccgt,2030,1,13:15] max_ramp_up_with_unit_commitment[ccgt,2030,1,15:15] -120
     units_on[ccgt,2030,1,13:15] max_ramp_up_with_unit_commitment[ccgt,2030,1,16:16] 50
+    units_on[ccgt,2030,1,13:15] max_output_flow_during_start_up[ccgt,2030,1,13:14] -170
+    units_on[ccgt,2030,1,13:15] max_output_flow_during_start_up[ccgt,2030,1,15:15] -200
+    units_on[ccgt,2030,1,13:15] max_output_flow_during_start_up[ccgt,2030,1,16:16] -30.000000000000004
+    units_on[ccgt,2030,1,13:15] max_output_flow_during_shut_down[ccgt,2030,1,15:15] -200
+    units_on[ccgt,2030,1,13:15] max_output_flow_during_shut_down[ccgt,2030,1,16:16] -200
     units_on[ccgt,2030,1,13:15] min_output_flow_with_unit_commitment[ccgt,2030,1,13:14] -50
     units_on[ccgt,2030,1,13:15] min_output_flow_with_unit_commitment[ccgt,2030,1,15:15] -50
     units_on[ccgt,2030,1,13:15] max_ramp_down_with_unit_commitment[ccgt,2030,1,13:14] -50
@@ -1713,6 +1893,11 @@ COLUMNS
     units_on[ccgt,2030,1,16:18] max_ramp_up_with_unit_commitment[ccgt,2030,1,16:16] -170
     units_on[ccgt,2030,1,16:18] max_ramp_up_with_unit_commitment[ccgt,2030,1,17:18] -120
     units_on[ccgt,2030,1,16:18] max_ramp_up_with_unit_commitment[ccgt,2030,1,19:20] 50
+    units_on[ccgt,2030,1,16:18] max_output_flow_during_start_up[ccgt,2030,1,16:16] -170
+    units_on[ccgt,2030,1,16:18] max_output_flow_during_start_up[ccgt,2030,1,17:18] -200
+    units_on[ccgt,2030,1,16:18] max_output_flow_during_start_up[ccgt,2030,1,19:20] -30.000000000000004
+    units_on[ccgt,2030,1,16:18] max_output_flow_during_shut_down[ccgt,2030,1,17:18] -200
+    units_on[ccgt,2030,1,16:18] max_output_flow_during_shut_down[ccgt,2030,1,19:20] -200
     units_on[ccgt,2030,1,16:18] min_output_flow_with_unit_commitment[ccgt,2030,1,16:16] -50
     units_on[ccgt,2030,1,16:18] min_output_flow_with_unit_commitment[ccgt,2030,1,17:18] -50
     units_on[ccgt,2030,1,16:18] max_ramp_down_with_unit_commitment[ccgt,2030,1,16:16] -50
@@ -1725,6 +1910,11 @@ COLUMNS
     units_on[ccgt,2030,1,19:21] max_ramp_up_with_unit_commitment[ccgt,2030,1,19:20] -170
     units_on[ccgt,2030,1,19:21] max_ramp_up_with_unit_commitment[ccgt,2030,1,21:21] -120
     units_on[ccgt,2030,1,19:21] max_ramp_up_with_unit_commitment[ccgt,2030,1,22:22] 50
+    units_on[ccgt,2030,1,19:21] max_output_flow_during_start_up[ccgt,2030,1,19:20] -170
+    units_on[ccgt,2030,1,19:21] max_output_flow_during_start_up[ccgt,2030,1,21:21] -200
+    units_on[ccgt,2030,1,19:21] max_output_flow_during_start_up[ccgt,2030,1,22:22] -30.000000000000004
+    units_on[ccgt,2030,1,19:21] max_output_flow_during_shut_down[ccgt,2030,1,21:21] -200
+    units_on[ccgt,2030,1,19:21] max_output_flow_during_shut_down[ccgt,2030,1,22:22] -200
     units_on[ccgt,2030,1,19:21] min_output_flow_with_unit_commitment[ccgt,2030,1,19:20] -50
     units_on[ccgt,2030,1,19:21] min_output_flow_with_unit_commitment[ccgt,2030,1,21:21] -50
     units_on[ccgt,2030,1,19:21] max_ramp_down_with_unit_commitment[ccgt,2030,1,19:20] -50
@@ -1736,6 +1926,9 @@ COLUMNS
     units_on[ccgt,2030,1,22:24] max_output_flow_with_unit_commitment[ccgt,2030,1,23:24] -200
     units_on[ccgt,2030,1,22:24] max_ramp_up_with_unit_commitment[ccgt,2030,1,22:22] -170
     units_on[ccgt,2030,1,22:24] max_ramp_up_with_unit_commitment[ccgt,2030,1,23:24] -120
+    units_on[ccgt,2030,1,22:24] max_output_flow_during_start_up[ccgt,2030,1,22:22] -170
+    units_on[ccgt,2030,1,22:24] max_output_flow_during_start_up[ccgt,2030,1,23:24] -200
+    units_on[ccgt,2030,1,22:24] max_output_flow_during_shut_down[ccgt,2030,1,23:24] -200
     units_on[ccgt,2030,1,22:24] min_output_flow_with_unit_commitment[ccgt,2030,1,22:22] -50
     units_on[ccgt,2030,1,22:24] min_output_flow_with_unit_commitment[ccgt,2030,1,23:24] -50
     units_on[ccgt,2030,1,22:24] max_ramp_down_with_unit_commitment[ccgt,2030,1,22:22] -50
@@ -1850,6 +2043,18 @@ COLUMNS
     units_on[smr,2030,1,1:6] max_ramp_up_with_unit_commitment[smr,2030,1,5:5] -20
     units_on[smr,2030,1,1:6] max_ramp_up_with_unit_commitment[smr,2030,1,6:6] -20
     units_on[smr,2030,1,1:6] max_ramp_up_with_unit_commitment[smr,2030,1,7:7] 150
+    units_on[smr,2030,1,1:6] max_output_flow_during_start_up[smr,2030,1,2:2] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_start_up[smr,2030,1,3:3] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_start_up[smr,2030,1,4:4] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_start_up[smr,2030,1,5:5] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_start_up[smr,2030,1,6:6] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_start_up[smr,2030,1,7:7] -30
+    units_on[smr,2030,1,1:6] max_output_flow_during_shut_down[smr,2030,1,2:2] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_shut_down[smr,2030,1,3:3] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_shut_down[smr,2030,1,4:4] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_shut_down[smr,2030,1,5:5] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_shut_down[smr,2030,1,6:6] -200
+    units_on[smr,2030,1,1:6] max_output_flow_during_shut_down[smr,2030,1,7:7] -170
     units_on[smr,2030,1,1:6] min_output_flow_with_unit_commitment[smr,2030,1,1:1] -150
     units_on[smr,2030,1,1:6] min_output_flow_with_unit_commitment[smr,2030,1,2:2] -150
     units_on[smr,2030,1,1:6] min_output_flow_with_unit_commitment[smr,2030,1,3:3] -150
@@ -1877,6 +2082,20 @@ COLUMNS
     units_on[smr,2030,1,7:12] max_ramp_up_with_unit_commitment[smr,2030,1,11:11] -20
     units_on[smr,2030,1,7:12] max_ramp_up_with_unit_commitment[smr,2030,1,12:12] -20
     units_on[smr,2030,1,7:12] max_ramp_up_with_unit_commitment[smr,2030,1,13:13] 150
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,7:7] -170
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,8:8] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,9:9] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,10:10] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,11:11] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,12:12] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_start_up[smr,2030,1,13:13] -30
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,7:7] -30
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,8:8] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,9:9] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,10:10] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,11:11] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,12:12] -200
+    units_on[smr,2030,1,7:12] max_output_flow_during_shut_down[smr,2030,1,13:13] -170
     units_on[smr,2030,1,7:12] min_output_flow_with_unit_commitment[smr,2030,1,7:7] -150
     units_on[smr,2030,1,7:12] min_output_flow_with_unit_commitment[smr,2030,1,8:8] -150
     units_on[smr,2030,1,7:12] min_output_flow_with_unit_commitment[smr,2030,1,9:9] -150
@@ -1905,6 +2124,20 @@ COLUMNS
     units_on[smr,2030,1,13:18] max_ramp_up_with_unit_commitment[smr,2030,1,17:17] -20
     units_on[smr,2030,1,13:18] max_ramp_up_with_unit_commitment[smr,2030,1,18:18] -20
     units_on[smr,2030,1,13:18] max_ramp_up_with_unit_commitment[smr,2030,1,19:19] 150
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,13:13] -170
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,14:14] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,15:15] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,16:16] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,17:17] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,18:18] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_start_up[smr,2030,1,19:19] -30
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,13:13] -30
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,14:14] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,15:15] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,16:16] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,17:17] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,18:18] -200
+    units_on[smr,2030,1,13:18] max_output_flow_during_shut_down[smr,2030,1,19:19] -170
     units_on[smr,2030,1,13:18] min_output_flow_with_unit_commitment[smr,2030,1,13:13] -150
     units_on[smr,2030,1,13:18] min_output_flow_with_unit_commitment[smr,2030,1,14:14] -150
     units_on[smr,2030,1,13:18] min_output_flow_with_unit_commitment[smr,2030,1,15:15] -150
@@ -1932,6 +2165,18 @@ COLUMNS
     units_on[smr,2030,1,19:24] max_ramp_up_with_unit_commitment[smr,2030,1,22:22] -20
     units_on[smr,2030,1,19:24] max_ramp_up_with_unit_commitment[smr,2030,1,23:23] -20
     units_on[smr,2030,1,19:24] max_ramp_up_with_unit_commitment[smr,2030,1,24:24] -20
+    units_on[smr,2030,1,19:24] max_output_flow_during_start_up[smr,2030,1,19:19] -170
+    units_on[smr,2030,1,19:24] max_output_flow_during_start_up[smr,2030,1,20:20] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_start_up[smr,2030,1,21:21] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_start_up[smr,2030,1,22:22] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_start_up[smr,2030,1,23:23] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_start_up[smr,2030,1,24:24] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_shut_down[smr,2030,1,19:19] -30
+    units_on[smr,2030,1,19:24] max_output_flow_during_shut_down[smr,2030,1,20:20] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_shut_down[smr,2030,1,21:21] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_shut_down[smr,2030,1,22:22] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_shut_down[smr,2030,1,23:23] -200
+    units_on[smr,2030,1,19:24] max_output_flow_during_shut_down[smr,2030,1,24:24] -200
     units_on[smr,2030,1,19:24] min_output_flow_with_unit_commitment[smr,2030,1,19:19] -150
     units_on[smr,2030,1,19:24] min_output_flow_with_unit_commitment[smr,2030,1,20:20] -150
     units_on[smr,2030,1,19:24] min_output_flow_with_unit_commitment[smr,2030,1,21:21] -150
@@ -2241,6 +2486,82 @@ RHS
     rhs       max_ramp_up_with_unit_commitment[smr,2030,1,22:22] 0
     rhs       max_ramp_up_with_unit_commitment[smr,2030,1,23:23] 0
     rhs       max_ramp_up_with_unit_commitment[smr,2030,1,24:24] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,3:3] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,4:4] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,5:6] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,7:8] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,9:9] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,10:10] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,11:12] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,13:14] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,15:15] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,16:16] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,17:18] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,19:20] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,21:21] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,22:22] 0
+    rhs       max_output_flow_during_start_up[ccgt,2030,1,23:24] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,2:2] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,3:3] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,4:4] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,5:5] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,6:6] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,7:7] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,8:8] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,9:9] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,10:10] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,11:11] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,12:12] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,13:13] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,14:14] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,15:15] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,16:16] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,17:17] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,18:18] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,19:19] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,20:20] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,21:21] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,22:22] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,23:23] 0
+    rhs       max_output_flow_during_start_up[smr,2030,1,24:24] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,3:3] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,4:4] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,5:6] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,7:8] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,9:9] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,10:10] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,11:12] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,13:14] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,15:15] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,16:16] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,17:18] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,19:20] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,21:21] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,22:22] 0
+    rhs       max_output_flow_during_shut_down[ccgt,2030,1,23:24] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,2:2] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,3:3] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,4:4] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,5:5] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,6:6] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,7:7] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,8:8] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,9:9] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,10:10] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,11:11] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,12:12] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,13:13] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,14:14] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,15:15] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,16:16] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,17:17] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,18:18] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,19:19] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,20:20] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,21:21] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,22:22] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,23:23] 0
+    rhs       max_output_flow_during_shut_down[smr,2030,1,24:24] 0
     rhs       max_ramp_up_without_unit_commitment[gas,2030,1,2:2] 1494
     rhs       max_ramp_up_without_unit_commitment[gas,2030,1,3:3] 1494
     rhs       max_ramp_up_without_unit_commitment[gas,2030,1,4:4] 1494
@@ -2455,6 +2776,10 @@ RHS
     rhs       c64       0
     rhs       c65       0
     rhs       c66       0
+    rhs       c67       0
+    rhs       c68       0
+    rhs       c69       0
+    rhs       c70       0
 RANGES
 BOUNDS
  LO bounds    flow[(ccgt,demand),2030,1,1:2] 0

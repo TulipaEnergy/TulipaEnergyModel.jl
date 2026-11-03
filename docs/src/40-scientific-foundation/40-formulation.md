@@ -688,6 +688,39 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
+#### Output Limits During Start-Up and Shut-Down
+
+For clustered unit commitment, the ramp-difference constraints alone do not limit the output of each unit that starts up or shuts down. The following constraints provide that tightening. Define the above-minimum headroom and the effective ramp fractions as
+
+```math
+\begin{aligned}
+h_{a,y} &= 1 - p^{\text{min operating point}}_{a,y}, \\
+r^{\text{up}}_{a,y,b_{k_y}} &= \min\left(p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}}, h_{a,y}\right), \\
+r^{\text{down}}_{a,y,b_{k_y}} &= \min\left(p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}}, h_{a,y}\right).
+\end{aligned}
+```
+
+The minimum prevents the remaining-headroom coefficients from becoming negative when a duration-scaled ramp fraction exceeds the unit's operating range.
+
+```math
+\begin{aligned}
+e^{\text{flow above min}}_{a,k_y,b_{k_y}}
+&\leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot
+\left(
+r^{\text{up}}_{a,y,b_{k_y}} \cdot v^{\text{on}}_{a,k_y,b_{k_y}}
++ \left(h_{a,y} - r^{\text{up}}_{a,y,b_{k_y}}\right) \cdot v^{\text{on}}_{a,k_y,b_{k_y}-1}
+\right), \\
+e^{\text{flow above min}}_{a,k_y,b_{k_y}-1}
+&\leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}-1} \cdot p^{\text{capacity}}_{a} \cdot
+\left(
+r^{\text{down}}_{a,y,b_{k_y}} \cdot v^{\text{on}}_{a,k_y,b_{k_y}-1}
++ \left(h_{a,y} - r^{\text{down}}_{a,y,b_{k_y}}\right) \cdot v^{\text{on}}_{a,k_y,b_{k_y}}
+\right).
+\end{aligned}
+```
+
+These constraints apply to every non-initial block for assets in $\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc}}_y$, for both the `basic` and `3var` methods. Under flexible temporal resolution, $p^{\text{duration}}_{b_{k_y}}$ is the minimum duration of the outgoing flows in the block, as in the ramp-difference constraints above.
+
 #### Maximum Ramp-Up Rate Limit WITHOUT Unit Commitment Method
 
 ```math

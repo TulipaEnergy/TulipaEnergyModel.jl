@@ -6404,6 +6404,386 @@ ROWS
  L  max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,22:22]
  L  max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,23:23]
  L  max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,24:24]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,2:2]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,3:3]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,4:4]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,5:5]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,6:6]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,7:7]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,8:8]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,9:9]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,10:10]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,11:11]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,12:12]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,13:13]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,14:14]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,15:15]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,16:16]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,17:17]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,18:18]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,19:19]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,20:20]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,21:21]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,22:22]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,23:23]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,24:24]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,25:25]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,26:26]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,27:27]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,28:28]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,29:29]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,30:30]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,31:31]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,32:32]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,33:33]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,34:34]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,35:35]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,36:36]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,37:37]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,38:38]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,39:39]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,40:40]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,41:41]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,42:42]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,43:43]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,44:44]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,45:45]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,46:46]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,47:47]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,48:48]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,49:49]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,50:50]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,51:51]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,52:52]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,53:53]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,54:54]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,55:55]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,56:56]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,57:57]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,58:58]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,59:59]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,60:60]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,61:61]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,62:62]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,63:63]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,64:64]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,65:65]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,66:66]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,67:67]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,68:68]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,69:69]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,70:70]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,71:71]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,72:72]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,73:73]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,74:74]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,75:75]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,76:76]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,77:77]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,78:78]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,79:79]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,80:80]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,81:81]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,82:82]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,83:83]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,84:84]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,85:85]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,86:86]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,87:87]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,88:88]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,89:89]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,90:90]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,91:91]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,92:92]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,93:93]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,94:94]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,95:95]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,96:96]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,97:97]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,98:98]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,99:99]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,100:100]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,101:101]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,102:102]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,103:103]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,104:104]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,105:105]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,106:106]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,107:107]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,108:108]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,109:109]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,110:110]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,111:111]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,112:112]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,113:113]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,114:114]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,115:115]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,116:116]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,117:117]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,118:118]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,119:119]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,120:120]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,121:121]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,122:122]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,123:123]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,124:124]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,125:125]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,126:126]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,127:127]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,128:128]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,129:129]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,130:130]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,131:131]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,132:132]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,133:133]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,134:134]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,135:135]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,136:136]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,137:137]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,138:138]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,139:139]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,140:140]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,141:141]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,142:142]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,143:143]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,144:144]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,145:145]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,146:146]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,147:147]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,148:148]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,149:149]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,150:150]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,151:151]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,152:152]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,153:153]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,154:154]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,155:155]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,156:156]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,157:157]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,158:158]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,159:159]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,160:160]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,161:161]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,162:162]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,163:163]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,164:164]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,165:165]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,166:166]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,167:167]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,1,168:168]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,2:2]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,3:3]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,4:4]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,5:5]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,6:6]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,7:7]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,8:8]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,9:9]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,10:10]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,11:11]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,12:12]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,13:13]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,14:14]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,15:15]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,16:16]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,17:17]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,18:18]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,19:19]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,20:20]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,21:21]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,22:22]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,23:23]
+ L  max_output_flow_during_start_up[Asgard_CCGT,2030,2,24:24]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,2:2]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,3:3]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,4:4]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,5:5]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,6:6]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,7:7]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,8:8]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,9:9]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,10:10]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,11:11]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,12:12]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,13:13]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,14:14]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,15:15]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,16:16]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,17:17]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,18:18]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,19:19]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,20:20]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,21:21]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,22:22]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,23:23]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,24:24]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,25:25]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,26:26]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,27:27]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,28:28]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,29:29]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,30:30]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,31:31]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,32:32]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,33:33]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,34:34]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,35:35]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,36:36]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,37:37]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,38:38]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,39:39]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,40:40]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,41:41]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,42:42]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,43:43]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,44:44]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,45:45]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,46:46]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,47:47]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,48:48]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,49:49]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,50:50]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,51:51]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,52:52]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,53:53]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,54:54]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,55:55]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,56:56]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,57:57]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,58:58]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,59:59]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,60:60]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,61:61]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,62:62]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,63:63]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,64:64]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,65:65]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,66:66]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,67:67]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,68:68]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,69:69]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,70:70]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,71:71]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,72:72]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,73:73]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,74:74]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,75:75]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,76:76]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,77:77]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,78:78]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,79:79]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,80:80]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,81:81]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,82:82]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,83:83]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,84:84]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,85:85]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,86:86]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,87:87]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,88:88]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,89:89]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,90:90]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,91:91]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,92:92]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,93:93]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,94:94]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,95:95]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,96:96]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,97:97]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,98:98]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,99:99]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,100:100]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,101:101]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,102:102]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,103:103]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,104:104]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,105:105]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,106:106]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,107:107]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,108:108]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,109:109]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,110:110]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,111:111]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,112:112]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,113:113]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,114:114]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,115:115]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,116:116]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,117:117]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,118:118]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,119:119]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,120:120]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,121:121]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,122:122]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,123:123]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,124:124]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,125:125]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,126:126]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,127:127]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,128:128]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,129:129]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,130:130]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,131:131]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,132:132]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,133:133]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,134:134]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,135:135]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,136:136]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,137:137]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,138:138]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,139:139]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,140:140]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,141:141]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,142:142]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,143:143]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,144:144]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,145:145]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,146:146]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,147:147]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,148:148]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,149:149]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,150:150]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,151:151]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,152:152]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,153:153]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,154:154]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,155:155]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,156:156]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,157:157]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,158:158]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,159:159]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,160:160]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,161:161]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,162:162]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,163:163]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,164:164]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,165:165]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,166:166]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,167:167]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,1,168:168]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,2:2]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,3:3]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,4:4]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,5:5]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,6:6]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,7:7]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,8:8]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,9:9]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,10:10]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,11:11]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,12:12]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,13:13]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,14:14]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,15:15]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,16:16]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,17:17]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,18:18]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,19:19]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,20:20]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,21:21]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,22:22]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,23:23]
+ L  max_output_flow_during_shut_down[Asgard_CCGT,2030,2,24:24]
  L  max_ramp_up_without_unit_commitment[Midgard_Nuclear_SMR,2030,1,2:2]
  L  max_ramp_up_without_unit_commitment[Midgard_Nuclear_SMR,2030,1,3:3]
  L  max_ramp_up_without_unit_commitment[Midgard_Nuclear_SMR,2030,1,4:4]
@@ -11294,6 +11674,10 @@ ROWS
  E  c2919
  E  c2920
  E  c2921
+ E  c2922
+ E  c2923
+ E  c2924
+ E  c2925
 COLUMNS
     flow[(Midgard_Hydro,Midgard_E_demand),2030,1,1:3] max_output_flows_limit_aggregated_vintage_method[Midgard_Hydro,2030,1,1:1] 1
     flow[(Midgard_Hydro,Midgard_E_demand),2030,1,1:3] max_output_flows_limit_aggregated_vintage_method[Midgard_Hydro,2030,1,2:2] 1
@@ -14084,6 +14468,7 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,1,1:1] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,1:1] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,2:2] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,1:1] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,2:2] -1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,1:1] consumer_balance[Asgard_E_demand,2030,1,1:1] 1
@@ -14092,6 +14477,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,3:3] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_output_flow_during_start_up[Asgard_CCGT,2030,1,2:2] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,3:3] -1
@@ -14101,6 +14488,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,4:4] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_output_flow_during_start_up[Asgard_CCGT,2030,1,3:3] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,4:4] -1
@@ -14110,6 +14499,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,5:5] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_output_flow_during_start_up[Asgard_CCGT,2030,1,4:4] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,5:5] -1
@@ -14119,6 +14510,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,6:6] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_output_flow_during_start_up[Asgard_CCGT,2030,1,5:5] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,6:6] -1
@@ -14128,6 +14521,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,7:7] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_output_flow_during_start_up[Asgard_CCGT,2030,1,6:6] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,7:7] -1
@@ -14137,6 +14532,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,8:8] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_output_flow_during_start_up[Asgard_CCGT,2030,1,7:7] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,8:8] -1
@@ -14146,6 +14543,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,9:9] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_output_flow_during_start_up[Asgard_CCGT,2030,1,8:8] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,9:9] -1
@@ -14155,6 +14554,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,10:10] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_output_flow_during_start_up[Asgard_CCGT,2030,1,9:9] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,10:10] -1
@@ -14164,6 +14565,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,11:11] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_output_flow_during_start_up[Asgard_CCGT,2030,1,10:10] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,11:11] -1
@@ -14173,6 +14576,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,12:12] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_output_flow_during_start_up[Asgard_CCGT,2030,1,11:11] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,12:12] -1
@@ -14182,6 +14587,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,13:13] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_output_flow_during_start_up[Asgard_CCGT,2030,1,12:12] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,13:13] -1
@@ -14191,6 +14598,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,14:14] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_output_flow_during_start_up[Asgard_CCGT,2030,1,13:13] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,14:14] -1
@@ -14200,6 +14609,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,15:15] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_output_flow_during_start_up[Asgard_CCGT,2030,1,14:14] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,15:15] -1
@@ -14209,6 +14620,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,16:16] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_output_flow_during_start_up[Asgard_CCGT,2030,1,15:15] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,16:16] -1
@@ -14218,6 +14631,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,17:17] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_output_flow_during_start_up[Asgard_CCGT,2030,1,16:16] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,17:17] -1
@@ -14227,6 +14642,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,18:18] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_output_flow_during_start_up[Asgard_CCGT,2030,1,17:17] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,18:18] -1
@@ -14236,6 +14653,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,19:19] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_output_flow_during_start_up[Asgard_CCGT,2030,1,18:18] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,19:19] -1
@@ -14245,6 +14664,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,20:20] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_output_flow_during_start_up[Asgard_CCGT,2030,1,19:19] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,20:20] -1
@@ -14254,6 +14675,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,21:21] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_output_flow_during_start_up[Asgard_CCGT,2030,1,20:20] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,21:21] -1
@@ -14263,6 +14686,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,22:22] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_output_flow_during_start_up[Asgard_CCGT,2030,1,21:21] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,22:22] -1
@@ -14272,6 +14697,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,23:23] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_output_flow_during_start_up[Asgard_CCGT,2030,1,22:22] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,23:23] -1
@@ -14281,6 +14708,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,24:24] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_output_flow_during_start_up[Asgard_CCGT,2030,1,23:23] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,24:24] -1
@@ -14290,6 +14719,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,25:25] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_output_flow_during_start_up[Asgard_CCGT,2030,1,24:24] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,25:25] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,24:24] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,25:25] -1
@@ -14299,6 +14730,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,25:25] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,25:25] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,26:26] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_output_flow_during_start_up[Asgard_CCGT,2030,1,25:25] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,26:26] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,25:25] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,25:25] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,25:25] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,26:26] -1
@@ -14308,6 +14741,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,26:26] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,26:26] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,27:27] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_output_flow_during_start_up[Asgard_CCGT,2030,1,26:26] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,27:27] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,26:26] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,26:26] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,26:26] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,27:27] -1
@@ -14317,6 +14752,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,27:27] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,27:27] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,28:28] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_output_flow_during_start_up[Asgard_CCGT,2030,1,27:27] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,28:28] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,27:27] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,27:27] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,27:27] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,28:28] -1
@@ -14326,6 +14763,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,28:28] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,28:28] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,29:29] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_output_flow_during_start_up[Asgard_CCGT,2030,1,28:28] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,29:29] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,28:28] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,28:28] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,28:28] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,29:29] -1
@@ -14335,6 +14774,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,29:29] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,29:29] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,30:30] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_output_flow_during_start_up[Asgard_CCGT,2030,1,29:29] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,30:30] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,29:29] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,29:29] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,29:29] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,30:30] -1
@@ -14344,6 +14785,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,30:30] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,30:30] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,31:31] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_output_flow_during_start_up[Asgard_CCGT,2030,1,30:30] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,31:31] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,30:30] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,30:30] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,30:30] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,31:31] -1
@@ -14353,6 +14796,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,31:31] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,31:31] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,32:32] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_output_flow_during_start_up[Asgard_CCGT,2030,1,31:31] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,32:32] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,31:31] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,31:31] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,31:31] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,32:32] -1
@@ -14362,6 +14807,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,32:32] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,32:32] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,33:33] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_output_flow_during_start_up[Asgard_CCGT,2030,1,32:32] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,33:33] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,32:32] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,32:32] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,32:32] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,33:33] -1
@@ -14371,6 +14818,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,33:33] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,33:33] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,34:34] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_output_flow_during_start_up[Asgard_CCGT,2030,1,33:33] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,34:34] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,33:33] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,33:33] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,33:33] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,34:34] -1
@@ -14380,6 +14829,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,34:34] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,34:34] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,35:35] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_output_flow_during_start_up[Asgard_CCGT,2030,1,34:34] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,35:35] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,34:34] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,34:34] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,34:34] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,35:35] -1
@@ -14389,6 +14840,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,35:35] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,35:35] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,36:36] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_output_flow_during_start_up[Asgard_CCGT,2030,1,35:35] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,36:36] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,35:35] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,35:35] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,35:35] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,36:36] -1
@@ -14398,6 +14851,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,36:36] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,36:36] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,37:37] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_output_flow_during_start_up[Asgard_CCGT,2030,1,36:36] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,37:37] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,36:36] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,36:36] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,36:36] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,37:37] -1
@@ -14407,6 +14862,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,37:37] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,37:37] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,38:38] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_output_flow_during_start_up[Asgard_CCGT,2030,1,37:37] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,38:38] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,37:37] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,37:37] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,37:37] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,38:38] -1
@@ -14416,6 +14873,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,38:38] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,38:38] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,39:39] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_output_flow_during_start_up[Asgard_CCGT,2030,1,38:38] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,39:39] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,38:38] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,38:38] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,38:38] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,39:39] -1
@@ -14425,6 +14884,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,39:39] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,39:39] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,40:40] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_output_flow_during_start_up[Asgard_CCGT,2030,1,39:39] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,40:40] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,39:39] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,39:39] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,39:39] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,40:40] -1
@@ -14434,6 +14895,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,40:40] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,40:40] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,41:41] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_output_flow_during_start_up[Asgard_CCGT,2030,1,40:40] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,41:41] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,40:40] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,40:40] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,40:40] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,41:41] -1
@@ -14443,6 +14906,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,41:41] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,41:41] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,42:42] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_output_flow_during_start_up[Asgard_CCGT,2030,1,41:41] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,42:42] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,41:41] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,41:41] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,41:41] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,42:42] -1
@@ -14452,6 +14917,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,42:42] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,42:42] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,43:43] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_output_flow_during_start_up[Asgard_CCGT,2030,1,42:42] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,43:43] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,42:42] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,42:42] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,42:42] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,43:43] -1
@@ -14461,6 +14928,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,43:43] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,43:43] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,44:44] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_output_flow_during_start_up[Asgard_CCGT,2030,1,43:43] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,44:44] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,43:43] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,43:43] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,43:43] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,44:44] -1
@@ -14470,6 +14939,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,44:44] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,44:44] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,45:45] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_output_flow_during_start_up[Asgard_CCGT,2030,1,44:44] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,45:45] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,44:44] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,44:44] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,44:44] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,45:45] -1
@@ -14479,6 +14950,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,45:45] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,45:45] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,46:46] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_output_flow_during_start_up[Asgard_CCGT,2030,1,45:45] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,46:46] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,45:45] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,45:45] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,45:45] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,46:46] -1
@@ -14488,6 +14961,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,46:46] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,46:46] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,47:47] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_output_flow_during_start_up[Asgard_CCGT,2030,1,46:46] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,47:47] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,46:46] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,46:46] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,46:46] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,47:47] -1
@@ -14497,6 +14972,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,47:47] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,47:47] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,48:48] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_output_flow_during_start_up[Asgard_CCGT,2030,1,47:47] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,48:48] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,47:47] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,47:47] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,47:47] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,48:48] -1
@@ -14506,6 +14983,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,48:48] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,48:48] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,49:49] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_output_flow_during_start_up[Asgard_CCGT,2030,1,48:48] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,49:49] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,48:48] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,48:48] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,48:48] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,49:49] -1
@@ -14515,6 +14994,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,49:49] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,49:49] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,50:50] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_output_flow_during_start_up[Asgard_CCGT,2030,1,49:49] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,50:50] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,49:49] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,49:49] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,49:49] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,50:50] -1
@@ -14524,6 +15005,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,50:50] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,50:50] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,51:51] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_output_flow_during_start_up[Asgard_CCGT,2030,1,50:50] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,51:51] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,50:50] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,50:50] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,50:50] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,51:51] -1
@@ -14533,6 +15016,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,51:51] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,51:51] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,52:52] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_output_flow_during_start_up[Asgard_CCGT,2030,1,51:51] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,52:52] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,51:51] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,51:51] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,51:51] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,52:52] -1
@@ -14542,6 +15027,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,52:52] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,52:52] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,53:53] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_output_flow_during_start_up[Asgard_CCGT,2030,1,52:52] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,53:53] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,52:52] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,52:52] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,52:52] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,53:53] -1
@@ -14551,6 +15038,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,53:53] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,53:53] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,54:54] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_output_flow_during_start_up[Asgard_CCGT,2030,1,53:53] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,54:54] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,53:53] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,53:53] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,53:53] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,54:54] -1
@@ -14560,6 +15049,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,54:54] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,54:54] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,55:55] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_output_flow_during_start_up[Asgard_CCGT,2030,1,54:54] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,55:55] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,54:54] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,54:54] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,54:54] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,55:55] -1
@@ -14569,6 +15060,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,55:55] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,55:55] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,56:56] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_output_flow_during_start_up[Asgard_CCGT,2030,1,55:55] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,56:56] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,55:55] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,55:55] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,55:55] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,56:56] -1
@@ -14578,6 +15071,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,56:56] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,56:56] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,57:57] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_output_flow_during_start_up[Asgard_CCGT,2030,1,56:56] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,57:57] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,56:56] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,56:56] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,56:56] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,57:57] -1
@@ -14587,6 +15082,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,57:57] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,57:57] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,58:58] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_output_flow_during_start_up[Asgard_CCGT,2030,1,57:57] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,58:58] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,57:57] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,57:57] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,57:57] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,58:58] -1
@@ -14596,6 +15093,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,58:58] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,58:58] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,59:59] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_output_flow_during_start_up[Asgard_CCGT,2030,1,58:58] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,59:59] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,58:58] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,58:58] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,58:58] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,59:59] -1
@@ -14605,6 +15104,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,59:59] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,59:59] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,60:60] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_output_flow_during_start_up[Asgard_CCGT,2030,1,59:59] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,60:60] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,59:59] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,59:59] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,59:59] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,60:60] -1
@@ -14614,6 +15115,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,60:60] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,60:60] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,61:61] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_output_flow_during_start_up[Asgard_CCGT,2030,1,60:60] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,61:61] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,60:60] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,60:60] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,60:60] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,61:61] -1
@@ -14623,6 +15126,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,61:61] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,61:61] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,62:62] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_output_flow_during_start_up[Asgard_CCGT,2030,1,61:61] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,62:62] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,61:61] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,61:61] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,61:61] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,62:62] -1
@@ -14632,6 +15137,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,62:62] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,62:62] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,63:63] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_output_flow_during_start_up[Asgard_CCGT,2030,1,62:62] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,63:63] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,62:62] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,62:62] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,62:62] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,63:63] -1
@@ -14641,6 +15148,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,63:63] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,63:63] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,64:64] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_output_flow_during_start_up[Asgard_CCGT,2030,1,63:63] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,64:64] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,63:63] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,63:63] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,63:63] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,64:64] -1
@@ -14650,6 +15159,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,64:64] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,64:64] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,65:65] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_output_flow_during_start_up[Asgard_CCGT,2030,1,64:64] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,65:65] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,64:64] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,64:64] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,64:64] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,65:65] -1
@@ -14659,6 +15170,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,65:65] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,65:65] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,66:66] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_output_flow_during_start_up[Asgard_CCGT,2030,1,65:65] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,66:66] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,65:65] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,65:65] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,65:65] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,66:66] -1
@@ -14668,6 +15181,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,66:66] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,66:66] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,67:67] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_output_flow_during_start_up[Asgard_CCGT,2030,1,66:66] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,67:67] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,66:66] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,66:66] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,66:66] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,67:67] -1
@@ -14677,6 +15192,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,67:67] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,67:67] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,68:68] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_output_flow_during_start_up[Asgard_CCGT,2030,1,67:67] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,68:68] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,67:67] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,67:67] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,67:67] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,68:68] -1
@@ -14686,6 +15203,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,68:68] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,68:68] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,69:69] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_output_flow_during_start_up[Asgard_CCGT,2030,1,68:68] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,69:69] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,68:68] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,68:68] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,68:68] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,69:69] -1
@@ -14695,6 +15214,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,69:69] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,69:69] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,70:70] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_output_flow_during_start_up[Asgard_CCGT,2030,1,69:69] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,70:70] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,69:69] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,69:69] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,69:69] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,70:70] -1
@@ -14704,6 +15225,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,70:70] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,70:70] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,71:71] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_output_flow_during_start_up[Asgard_CCGT,2030,1,70:70] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,71:71] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,70:70] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,70:70] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,70:70] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,71:71] -1
@@ -14713,6 +15236,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,71:71] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,71:71] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,72:72] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_output_flow_during_start_up[Asgard_CCGT,2030,1,71:71] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,72:72] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,71:71] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,71:71] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,71:71] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,72:72] -1
@@ -14722,6 +15247,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,72:72] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,72:72] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,73:73] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_output_flow_during_start_up[Asgard_CCGT,2030,1,72:72] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,73:73] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,72:72] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,72:72] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,72:72] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,73:73] -1
@@ -14731,6 +15258,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,73:73] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,73:73] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,74:74] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_output_flow_during_start_up[Asgard_CCGT,2030,1,73:73] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,74:74] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,73:73] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,73:73] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,73:73] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,74:74] -1
@@ -14740,6 +15269,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,74:74] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,74:74] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,75:75] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_output_flow_during_start_up[Asgard_CCGT,2030,1,74:74] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,75:75] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,74:74] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,74:74] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,74:74] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,75:75] -1
@@ -14749,6 +15280,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,75:75] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,75:75] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,76:76] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_output_flow_during_start_up[Asgard_CCGT,2030,1,75:75] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,76:76] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,75:75] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,75:75] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,75:75] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,76:76] -1
@@ -14758,6 +15291,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,76:76] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,76:76] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,77:77] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_output_flow_during_start_up[Asgard_CCGT,2030,1,76:76] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,77:77] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,76:76] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,76:76] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,76:76] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,77:77] -1
@@ -14767,6 +15302,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,77:77] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,77:77] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,78:78] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_output_flow_during_start_up[Asgard_CCGT,2030,1,77:77] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,78:78] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,77:77] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,77:77] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,77:77] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,78:78] -1
@@ -14776,6 +15313,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,78:78] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,78:78] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,79:79] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_output_flow_during_start_up[Asgard_CCGT,2030,1,78:78] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,79:79] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,78:78] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,78:78] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,78:78] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,79:79] -1
@@ -14785,6 +15324,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,79:79] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,79:79] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,80:80] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_output_flow_during_start_up[Asgard_CCGT,2030,1,79:79] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,80:80] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,79:79] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,79:79] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,79:79] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,80:80] -1
@@ -14794,6 +15335,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,80:80] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,80:80] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,81:81] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_output_flow_during_start_up[Asgard_CCGT,2030,1,80:80] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,81:81] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,80:80] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,80:80] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,80:80] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,81:81] -1
@@ -14803,6 +15346,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,81:81] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,81:81] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,82:82] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_output_flow_during_start_up[Asgard_CCGT,2030,1,81:81] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,82:82] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,81:81] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,81:81] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,81:81] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,82:82] -1
@@ -14812,6 +15357,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,82:82] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,82:82] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,83:83] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_output_flow_during_start_up[Asgard_CCGT,2030,1,82:82] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,83:83] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,82:82] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,82:82] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,82:82] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,83:83] -1
@@ -14821,6 +15368,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,83:83] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,83:83] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,84:84] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_output_flow_during_start_up[Asgard_CCGT,2030,1,83:83] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,84:84] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,83:83] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,83:83] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,83:83] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,84:84] -1
@@ -14830,6 +15379,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,84:84] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,84:84] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,85:85] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_output_flow_during_start_up[Asgard_CCGT,2030,1,84:84] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,85:85] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,84:84] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,84:84] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,84:84] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,85:85] -1
@@ -14839,6 +15390,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,85:85] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,85:85] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,86:86] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_output_flow_during_start_up[Asgard_CCGT,2030,1,85:85] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,86:86] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,85:85] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,85:85] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,85:85] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,86:86] -1
@@ -14848,6 +15401,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,86:86] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,86:86] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,87:87] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_output_flow_during_start_up[Asgard_CCGT,2030,1,86:86] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,87:87] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,86:86] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,86:86] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,86:86] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,87:87] -1
@@ -14857,6 +15412,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,87:87] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,87:87] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,88:88] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_output_flow_during_start_up[Asgard_CCGT,2030,1,87:87] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,88:88] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,87:87] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,87:87] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,87:87] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,88:88] -1
@@ -14866,6 +15423,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,88:88] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,88:88] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,89:89] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_output_flow_during_start_up[Asgard_CCGT,2030,1,88:88] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,89:89] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,88:88] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,88:88] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,88:88] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,89:89] -1
@@ -14875,6 +15434,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,89:89] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,89:89] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,90:90] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_output_flow_during_start_up[Asgard_CCGT,2030,1,89:89] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,90:90] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,89:89] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,89:89] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,89:89] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,90:90] -1
@@ -14884,6 +15445,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,90:90] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,90:90] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,91:91] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_output_flow_during_start_up[Asgard_CCGT,2030,1,90:90] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,91:91] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,90:90] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,90:90] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,90:90] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,91:91] -1
@@ -14893,6 +15456,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,91:91] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,91:91] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,92:92] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_output_flow_during_start_up[Asgard_CCGT,2030,1,91:91] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,92:92] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,91:91] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,91:91] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,91:91] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,92:92] -1
@@ -14902,6 +15467,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,92:92] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,92:92] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,93:93] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_output_flow_during_start_up[Asgard_CCGT,2030,1,92:92] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,93:93] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,92:92] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,92:92] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,92:92] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,93:93] -1
@@ -14911,6 +15478,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,93:93] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,93:93] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,94:94] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_output_flow_during_start_up[Asgard_CCGT,2030,1,93:93] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,94:94] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,93:93] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,93:93] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,93:93] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,94:94] -1
@@ -14920,6 +15489,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,94:94] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,94:94] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,95:95] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_output_flow_during_start_up[Asgard_CCGT,2030,1,94:94] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,95:95] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,94:94] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,94:94] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,94:94] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,95:95] -1
@@ -14929,6 +15500,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,95:95] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,95:95] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,96:96] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_output_flow_during_start_up[Asgard_CCGT,2030,1,95:95] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,96:96] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,95:95] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,95:95] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,95:95] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,96:96] -1
@@ -14938,6 +15511,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,96:96] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,96:96] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,97:97] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_output_flow_during_start_up[Asgard_CCGT,2030,1,96:96] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,97:97] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,96:96] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,96:96] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,96:96] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,97:97] -1
@@ -14947,6 +15522,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,97:97] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,97:97] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,98:98] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_output_flow_during_start_up[Asgard_CCGT,2030,1,97:97] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,98:98] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,97:97] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,97:97] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,97:97] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,98:98] -1
@@ -14956,6 +15533,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,98:98] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,98:98] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,99:99] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_output_flow_during_start_up[Asgard_CCGT,2030,1,98:98] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,99:99] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,98:98] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,98:98] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,98:98] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,99:99] -1
@@ -14965,6 +15544,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,99:99] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,99:99] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,100:100] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_output_flow_during_start_up[Asgard_CCGT,2030,1,99:99] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,100:100] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,99:99] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,99:99] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,99:99] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,100:100] -1
@@ -14974,6 +15555,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,100:100] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,100:100] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,101:101] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_output_flow_during_start_up[Asgard_CCGT,2030,1,100:100] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,101:101] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,100:100] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,100:100] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,100:100] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,101:101] -1
@@ -14983,6 +15566,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,101:101] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,101:101] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,102:102] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_output_flow_during_start_up[Asgard_CCGT,2030,1,101:101] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,102:102] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,101:101] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,101:101] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,101:101] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,102:102] -1
@@ -14992,6 +15577,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,102:102] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,102:102] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,103:103] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_output_flow_during_start_up[Asgard_CCGT,2030,1,102:102] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,103:103] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,102:102] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,102:102] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,102:102] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,103:103] -1
@@ -15001,6 +15588,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,103:103] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,103:103] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,104:104] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_output_flow_during_start_up[Asgard_CCGT,2030,1,103:103] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,104:104] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,103:103] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,103:103] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,103:103] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,104:104] -1
@@ -15010,6 +15599,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,104:104] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,104:104] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,105:105] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_output_flow_during_start_up[Asgard_CCGT,2030,1,104:104] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,105:105] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,104:104] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,104:104] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,104:104] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,105:105] -1
@@ -15019,6 +15610,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,105:105] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,105:105] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,106:106] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_output_flow_during_start_up[Asgard_CCGT,2030,1,105:105] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,106:106] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,105:105] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,105:105] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,105:105] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,106:106] -1
@@ -15028,6 +15621,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,106:106] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,106:106] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,107:107] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_output_flow_during_start_up[Asgard_CCGT,2030,1,106:106] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,107:107] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,106:106] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,106:106] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,106:106] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,107:107] -1
@@ -15037,6 +15632,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,107:107] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,107:107] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,108:108] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_output_flow_during_start_up[Asgard_CCGT,2030,1,107:107] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,108:108] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,107:107] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,107:107] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,107:107] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,108:108] -1
@@ -15046,6 +15643,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,108:108] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,108:108] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,109:109] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_output_flow_during_start_up[Asgard_CCGT,2030,1,108:108] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,109:109] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,108:108] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,108:108] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,108:108] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,109:109] -1
@@ -15055,6 +15654,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,109:109] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,109:109] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,110:110] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_output_flow_during_start_up[Asgard_CCGT,2030,1,109:109] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,110:110] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,109:109] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,109:109] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,109:109] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,110:110] -1
@@ -15064,6 +15665,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,110:110] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,110:110] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,111:111] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_output_flow_during_start_up[Asgard_CCGT,2030,1,110:110] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,111:111] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,110:110] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,110:110] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,110:110] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,111:111] -1
@@ -15073,6 +15676,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,111:111] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,111:111] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,112:112] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_output_flow_during_start_up[Asgard_CCGT,2030,1,111:111] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,112:112] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,111:111] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,111:111] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,111:111] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,112:112] -1
@@ -15082,6 +15687,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,112:112] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,112:112] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,113:113] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_output_flow_during_start_up[Asgard_CCGT,2030,1,112:112] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,113:113] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,112:112] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,112:112] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,112:112] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,113:113] -1
@@ -15091,6 +15698,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,113:113] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,113:113] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,114:114] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_output_flow_during_start_up[Asgard_CCGT,2030,1,113:113] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,114:114] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,113:113] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,113:113] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,113:113] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,114:114] -1
@@ -15100,6 +15709,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,114:114] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,114:114] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,115:115] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_output_flow_during_start_up[Asgard_CCGT,2030,1,114:114] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,115:115] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,114:114] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,114:114] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,114:114] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,115:115] -1
@@ -15109,6 +15720,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,115:115] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,115:115] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,116:116] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_output_flow_during_start_up[Asgard_CCGT,2030,1,115:115] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,116:116] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,115:115] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,115:115] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,115:115] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,116:116] -1
@@ -15118,6 +15731,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,116:116] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,116:116] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,117:117] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_output_flow_during_start_up[Asgard_CCGT,2030,1,116:116] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,117:117] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,116:116] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,116:116] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,116:116] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,117:117] -1
@@ -15127,6 +15742,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,117:117] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,117:117] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,118:118] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_output_flow_during_start_up[Asgard_CCGT,2030,1,117:117] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,118:118] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,117:117] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,117:117] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,117:117] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,118:118] -1
@@ -15136,6 +15753,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,118:118] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,118:118] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,119:119] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_output_flow_during_start_up[Asgard_CCGT,2030,1,118:118] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,119:119] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,118:118] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,118:118] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,118:118] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,119:119] -1
@@ -15145,6 +15764,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,119:119] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,119:119] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,120:120] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_output_flow_during_start_up[Asgard_CCGT,2030,1,119:119] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,120:120] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,119:119] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,119:119] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,119:119] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,120:120] -1
@@ -15154,6 +15775,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,120:120] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,120:120] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,121:121] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_output_flow_during_start_up[Asgard_CCGT,2030,1,120:120] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,121:121] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,120:120] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,120:120] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,120:120] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,121:121] -1
@@ -15163,6 +15786,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,121:121] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,121:121] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,122:122] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_output_flow_during_start_up[Asgard_CCGT,2030,1,121:121] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,122:122] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,121:121] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,121:121] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,121:121] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,122:122] -1
@@ -15172,6 +15797,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,122:122] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,122:122] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,123:123] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_output_flow_during_start_up[Asgard_CCGT,2030,1,122:122] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,123:123] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,122:122] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,122:122] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,122:122] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,123:123] -1
@@ -15181,6 +15808,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,123:123] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,123:123] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,124:124] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_output_flow_during_start_up[Asgard_CCGT,2030,1,123:123] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,124:124] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,123:123] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,123:123] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,123:123] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,124:124] -1
@@ -15190,6 +15819,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,124:124] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,124:124] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,125:125] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_output_flow_during_start_up[Asgard_CCGT,2030,1,124:124] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,125:125] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,124:124] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,124:124] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,124:124] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,125:125] -1
@@ -15199,6 +15830,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,125:125] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,125:125] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,126:126] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_output_flow_during_start_up[Asgard_CCGT,2030,1,125:125] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,126:126] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,125:125] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,125:125] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,125:125] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,126:126] -1
@@ -15208,6 +15841,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,126:126] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,126:126] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,127:127] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_output_flow_during_start_up[Asgard_CCGT,2030,1,126:126] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,127:127] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,126:126] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,126:126] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,126:126] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,127:127] -1
@@ -15217,6 +15852,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,127:127] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,127:127] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,128:128] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_output_flow_during_start_up[Asgard_CCGT,2030,1,127:127] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,128:128] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,127:127] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,127:127] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,127:127] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,128:128] -1
@@ -15226,6 +15863,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,128:128] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,128:128] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,129:129] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_output_flow_during_start_up[Asgard_CCGT,2030,1,128:128] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,129:129] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,128:128] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,128:128] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,128:128] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,129:129] -1
@@ -15235,6 +15874,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,129:129] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,129:129] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,130:130] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_output_flow_during_start_up[Asgard_CCGT,2030,1,129:129] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,130:130] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,129:129] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,129:129] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,129:129] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,130:130] -1
@@ -15244,6 +15885,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,130:130] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,130:130] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,131:131] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_output_flow_during_start_up[Asgard_CCGT,2030,1,130:130] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,131:131] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,130:130] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,130:130] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,130:130] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,131:131] -1
@@ -15253,6 +15896,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,131:131] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,131:131] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,132:132] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_output_flow_during_start_up[Asgard_CCGT,2030,1,131:131] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,132:132] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,131:131] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,131:131] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,131:131] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,132:132] -1
@@ -15262,6 +15907,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,132:132] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,132:132] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,133:133] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_output_flow_during_start_up[Asgard_CCGT,2030,1,132:132] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,133:133] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,132:132] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,132:132] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,132:132] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,133:133] -1
@@ -15271,6 +15918,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,133:133] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,133:133] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,134:134] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_output_flow_during_start_up[Asgard_CCGT,2030,1,133:133] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,134:134] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,133:133] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,133:133] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,133:133] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,134:134] -1
@@ -15280,6 +15929,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,134:134] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,134:134] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,135:135] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_output_flow_during_start_up[Asgard_CCGT,2030,1,134:134] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,135:135] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,134:134] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,134:134] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,134:134] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,135:135] -1
@@ -15289,6 +15940,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,135:135] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,135:135] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,136:136] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_output_flow_during_start_up[Asgard_CCGT,2030,1,135:135] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,136:136] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,135:135] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,135:135] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,135:135] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,136:136] -1
@@ -15298,6 +15951,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,136:136] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,136:136] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,137:137] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_output_flow_during_start_up[Asgard_CCGT,2030,1,136:136] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,137:137] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,136:136] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,136:136] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,136:136] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,137:137] -1
@@ -15307,6 +15962,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,137:137] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,137:137] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,138:138] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_output_flow_during_start_up[Asgard_CCGT,2030,1,137:137] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,138:138] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,137:137] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,137:137] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,137:137] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,138:138] -1
@@ -15316,6 +15973,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,138:138] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,138:138] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,139:139] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_output_flow_during_start_up[Asgard_CCGT,2030,1,138:138] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,139:139] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,138:138] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,138:138] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,138:138] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,139:139] -1
@@ -15325,6 +15984,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,139:139] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,139:139] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,140:140] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_output_flow_during_start_up[Asgard_CCGT,2030,1,139:139] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,140:140] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,139:139] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,139:139] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,139:139] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,140:140] -1
@@ -15334,6 +15995,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,140:140] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,140:140] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,141:141] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_output_flow_during_start_up[Asgard_CCGT,2030,1,140:140] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,141:141] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,140:140] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,140:140] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,140:140] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,141:141] -1
@@ -15343,6 +16006,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,141:141] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,141:141] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,142:142] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_output_flow_during_start_up[Asgard_CCGT,2030,1,141:141] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,142:142] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,141:141] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,141:141] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,141:141] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,142:142] -1
@@ -15352,6 +16017,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,142:142] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,142:142] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,143:143] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_output_flow_during_start_up[Asgard_CCGT,2030,1,142:142] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,143:143] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,142:142] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,142:142] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,142:142] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,143:143] -1
@@ -15361,6 +16028,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,143:143] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,143:143] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,144:144] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_output_flow_during_start_up[Asgard_CCGT,2030,1,143:143] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,144:144] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,143:143] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,143:143] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,143:143] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,144:144] -1
@@ -15370,6 +16039,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,144:144] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,144:144] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,145:145] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_output_flow_during_start_up[Asgard_CCGT,2030,1,144:144] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,145:145] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,144:144] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,144:144] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,144:144] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,145:145] -1
@@ -15379,6 +16050,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,145:145] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,145:145] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,146:146] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_output_flow_during_start_up[Asgard_CCGT,2030,1,145:145] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,146:146] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,145:145] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,145:145] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,145:145] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,146:146] -1
@@ -15388,6 +16061,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,146:146] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,146:146] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,147:147] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_output_flow_during_start_up[Asgard_CCGT,2030,1,146:146] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,147:147] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,146:146] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,146:146] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,146:146] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,147:147] -1
@@ -15397,6 +16072,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,147:147] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,147:147] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,148:148] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_output_flow_during_start_up[Asgard_CCGT,2030,1,147:147] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,148:148] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,147:147] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,147:147] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,147:147] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,148:148] -1
@@ -15406,6 +16083,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,148:148] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,148:148] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,149:149] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_output_flow_during_start_up[Asgard_CCGT,2030,1,148:148] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,149:149] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,148:148] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,148:148] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,148:148] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,149:149] -1
@@ -15415,6 +16094,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,149:149] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,149:149] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,150:150] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_output_flow_during_start_up[Asgard_CCGT,2030,1,149:149] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,150:150] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,149:149] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,149:149] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,149:149] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,150:150] -1
@@ -15424,6 +16105,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,150:150] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,150:150] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,151:151] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_output_flow_during_start_up[Asgard_CCGT,2030,1,150:150] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,151:151] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,150:150] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,150:150] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,150:150] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,151:151] -1
@@ -15433,6 +16116,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,151:151] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,151:151] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,152:152] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_output_flow_during_start_up[Asgard_CCGT,2030,1,151:151] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,152:152] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,151:151] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,151:151] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,151:151] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,152:152] -1
@@ -15442,6 +16127,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,152:152] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,152:152] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,153:153] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_output_flow_during_start_up[Asgard_CCGT,2030,1,152:152] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,153:153] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,152:152] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,152:152] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,152:152] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,153:153] -1
@@ -15451,6 +16138,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,153:153] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,153:153] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,154:154] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_output_flow_during_start_up[Asgard_CCGT,2030,1,153:153] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,154:154] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,153:153] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,153:153] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,153:153] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,154:154] -1
@@ -15460,6 +16149,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,154:154] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,154:154] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,155:155] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_output_flow_during_start_up[Asgard_CCGT,2030,1,154:154] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,155:155] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,154:154] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,154:154] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,154:154] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,155:155] -1
@@ -15469,6 +16160,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,155:155] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,155:155] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,156:156] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_output_flow_during_start_up[Asgard_CCGT,2030,1,155:155] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,156:156] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,155:155] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,155:155] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,155:155] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,156:156] -1
@@ -15478,6 +16171,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,156:156] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,156:156] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,157:157] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_output_flow_during_start_up[Asgard_CCGT,2030,1,156:156] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,157:157] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,156:156] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,156:156] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,156:156] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,157:157] -1
@@ -15487,6 +16182,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,157:157] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,157:157] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,158:158] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_output_flow_during_start_up[Asgard_CCGT,2030,1,157:157] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,158:158] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,157:157] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,157:157] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,157:157] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,158:158] -1
@@ -15496,6 +16193,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,158:158] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,158:158] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,159:159] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_output_flow_during_start_up[Asgard_CCGT,2030,1,158:158] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,159:159] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,158:158] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,158:158] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,158:158] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,159:159] -1
@@ -15505,6 +16204,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,159:159] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,159:159] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,160:160] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_output_flow_during_start_up[Asgard_CCGT,2030,1,159:159] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,160:160] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,159:159] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,159:159] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,159:159] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,160:160] -1
@@ -15514,6 +16215,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,160:160] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,160:160] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,161:161] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_output_flow_during_start_up[Asgard_CCGT,2030,1,160:160] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,161:161] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,160:160] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,160:160] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,160:160] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,161:161] -1
@@ -15523,6 +16226,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,161:161] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,161:161] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,162:162] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_output_flow_during_start_up[Asgard_CCGT,2030,1,161:161] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,162:162] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,161:161] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,161:161] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,161:161] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,162:162] -1
@@ -15532,6 +16237,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,162:162] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,162:162] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,163:163] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_output_flow_during_start_up[Asgard_CCGT,2030,1,162:162] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,163:163] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,162:162] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,162:162] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,162:162] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,163:163] -1
@@ -15541,6 +16248,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,163:163] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,163:163] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,164:164] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_output_flow_during_start_up[Asgard_CCGT,2030,1,163:163] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,164:164] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,163:163] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,163:163] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,163:163] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,164:164] -1
@@ -15550,6 +16259,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,164:164] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,164:164] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,165:165] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_output_flow_during_start_up[Asgard_CCGT,2030,1,164:164] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,165:165] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,164:164] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,164:164] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,164:164] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,165:165] -1
@@ -15559,6 +16270,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,165:165] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,165:165] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,166:166] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_output_flow_during_start_up[Asgard_CCGT,2030,1,165:165] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,166:166] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,165:165] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,165:165] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,165:165] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,166:166] -1
@@ -15568,6 +16281,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,166:166] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,166:166] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,167:167] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_output_flow_during_start_up[Asgard_CCGT,2030,1,166:166] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,167:167] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,166:166] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,166:166] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,166:166] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,167:167] -1
@@ -15577,6 +16292,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,167:167] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,167:167] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,168:168] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_output_flow_during_start_up[Asgard_CCGT,2030,1,167:167] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,168:168] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,167:167] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,167:167] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,167:167] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,168:168] -1
@@ -15585,6 +16302,7 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,1,168:168] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,168:168] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,168:168] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] max_output_flow_during_start_up[Asgard_CCGT,2030,1,168:168] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,168:168] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,168:168] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,1,168:168] consumer_balance[Asgard_E_demand,2030,1,168:168] 1
@@ -31551,6 +32269,7 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,2,1:1] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,1:1] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,2:2] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,1:1] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,2:2] -1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,1:1] consumer_balance[Asgard_E_demand,2030,2,1:1] 1
@@ -31559,6 +32278,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,3:3] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_output_flow_during_start_up[Asgard_CCGT,2030,2,2:2] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,2:2] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,3:3] -1
@@ -31568,6 +32289,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,4:4] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_output_flow_during_start_up[Asgard_CCGT,2030,2,3:3] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,3:3] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,4:4] -1
@@ -31577,6 +32300,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,5:5] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_output_flow_during_start_up[Asgard_CCGT,2030,2,4:4] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,4:4] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,5:5] -1
@@ -31586,6 +32311,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,6:6] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_output_flow_during_start_up[Asgard_CCGT,2030,2,5:5] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,5:5] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,6:6] -1
@@ -31595,6 +32322,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,7:7] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_output_flow_during_start_up[Asgard_CCGT,2030,2,6:6] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,6:6] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,7:7] -1
@@ -31604,6 +32333,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,8:8] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_output_flow_during_start_up[Asgard_CCGT,2030,2,7:7] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,7:7] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,8:8] -1
@@ -31613,6 +32344,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,9:9] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_output_flow_during_start_up[Asgard_CCGT,2030,2,8:8] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,8:8] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,9:9] -1
@@ -31622,6 +32355,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,10:10] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_output_flow_during_start_up[Asgard_CCGT,2030,2,9:9] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,9:9] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,10:10] -1
@@ -31631,6 +32366,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,11:11] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_output_flow_during_start_up[Asgard_CCGT,2030,2,10:10] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,10:10] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,11:11] -1
@@ -31640,6 +32377,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,12:12] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_output_flow_during_start_up[Asgard_CCGT,2030,2,11:11] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,11:11] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,12:12] -1
@@ -31649,6 +32388,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,13:13] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_output_flow_during_start_up[Asgard_CCGT,2030,2,12:12] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,12:12] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,13:13] -1
@@ -31658,6 +32399,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,14:14] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_output_flow_during_start_up[Asgard_CCGT,2030,2,13:13] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,13:13] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,14:14] -1
@@ -31667,6 +32410,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,15:15] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_output_flow_during_start_up[Asgard_CCGT,2030,2,14:14] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,14:14] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,15:15] -1
@@ -31676,6 +32421,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,16:16] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_output_flow_during_start_up[Asgard_CCGT,2030,2,15:15] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,15:15] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,16:16] -1
@@ -31685,6 +32432,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,17:17] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_output_flow_during_start_up[Asgard_CCGT,2030,2,16:16] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,16:16] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,17:17] -1
@@ -31694,6 +32443,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,18:18] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_output_flow_during_start_up[Asgard_CCGT,2030,2,17:17] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,17:17] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,18:18] -1
@@ -31703,6 +32454,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,19:19] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_output_flow_during_start_up[Asgard_CCGT,2030,2,18:18] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,18:18] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,19:19] -1
@@ -31712,6 +32465,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,20:20] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_output_flow_during_start_up[Asgard_CCGT,2030,2,19:19] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,19:19] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,20:20] -1
@@ -31721,6 +32476,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,21:21] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_output_flow_during_start_up[Asgard_CCGT,2030,2,20:20] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,20:20] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,21:21] -1
@@ -31730,6 +32487,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,22:22] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_output_flow_during_start_up[Asgard_CCGT,2030,2,21:21] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,21:21] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,22:22] -1
@@ -31739,6 +32498,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,23:23] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_output_flow_during_start_up[Asgard_CCGT,2030,2,22:22] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,23:23] -1
@@ -31748,6 +32509,8 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,24:24] -1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_output_flow_during_start_up[Asgard_CCGT,2030,2,23:23] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,24:24] -1
@@ -31756,6 +32519,7 @@ COLUMNS
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] max_output_flows_limit_aggregated_vintage_method[Asgard_CCGT,2030,2,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 1
+    flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] max_output_flow_during_start_up[Asgard_CCGT,2030,2,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 1
     flow[(Asgard_CCGT,Asgard_E_demand),2030,2,24:24] consumer_balance[Asgard_E_demand,2030,2,24:24] 1
@@ -40790,6 +41554,8 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,1:1] limit_units_on_aggregated_vintage_method[Asgard_CCGT,2030,1,1:1] 1
     units_on[Asgard_CCGT,2030,1,1:1] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,1:1] -500
     units_on[Asgard_CCGT,2030,1,1:1] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,2:2] 125
+    units_on[Asgard_CCGT,2030,1,1:1] max_output_flow_during_start_up[Asgard_CCGT,2030,1,2:2] -125
+    units_on[Asgard_CCGT,2030,1,1:1] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,2:2] -275
     units_on[Asgard_CCGT,2030,1,1:1] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,1:1] -125
     units_on[Asgard_CCGT,2030,1,1:1] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,2:2] 275
     units_on[Asgard_CCGT,2030,1,1:1] OBJ 24.25
@@ -40797,6 +41563,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,2:2] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,2:2] -500
     units_on[Asgard_CCGT,2030,1,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,2:2] -375
     units_on[Asgard_CCGT,2030,1,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,3:3] 125
+    units_on[Asgard_CCGT,2030,1,2:2] max_output_flow_during_start_up[Asgard_CCGT,2030,1,2:2] -375
+    units_on[Asgard_CCGT,2030,1,2:2] max_output_flow_during_start_up[Asgard_CCGT,2030,1,3:3] -125
+    units_on[Asgard_CCGT,2030,1,2:2] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,2:2] -225
+    units_on[Asgard_CCGT,2030,1,2:2] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,3:3] -275
     units_on[Asgard_CCGT,2030,1,2:2] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,2:2] -125
     units_on[Asgard_CCGT,2030,1,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,2:2] -125
     units_on[Asgard_CCGT,2030,1,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,3:3] 275
@@ -40805,6 +41575,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,3:3] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,3:3] -500
     units_on[Asgard_CCGT,2030,1,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,3:3] -375
     units_on[Asgard_CCGT,2030,1,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,4:4] 125
+    units_on[Asgard_CCGT,2030,1,3:3] max_output_flow_during_start_up[Asgard_CCGT,2030,1,3:3] -375
+    units_on[Asgard_CCGT,2030,1,3:3] max_output_flow_during_start_up[Asgard_CCGT,2030,1,4:4] -125
+    units_on[Asgard_CCGT,2030,1,3:3] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,3:3] -225
+    units_on[Asgard_CCGT,2030,1,3:3] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,4:4] -275
     units_on[Asgard_CCGT,2030,1,3:3] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,3:3] -125
     units_on[Asgard_CCGT,2030,1,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,3:3] -125
     units_on[Asgard_CCGT,2030,1,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,4:4] 275
@@ -40813,6 +41587,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,4:4] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,4:4] -500
     units_on[Asgard_CCGT,2030,1,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,4:4] -375
     units_on[Asgard_CCGT,2030,1,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,5:5] 125
+    units_on[Asgard_CCGT,2030,1,4:4] max_output_flow_during_start_up[Asgard_CCGT,2030,1,4:4] -375
+    units_on[Asgard_CCGT,2030,1,4:4] max_output_flow_during_start_up[Asgard_CCGT,2030,1,5:5] -125
+    units_on[Asgard_CCGT,2030,1,4:4] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,4:4] -225
+    units_on[Asgard_CCGT,2030,1,4:4] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,5:5] -275
     units_on[Asgard_CCGT,2030,1,4:4] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,4:4] -125
     units_on[Asgard_CCGT,2030,1,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,4:4] -125
     units_on[Asgard_CCGT,2030,1,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,5:5] 275
@@ -40821,6 +41599,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,5:5] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,5:5] -500
     units_on[Asgard_CCGT,2030,1,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,5:5] -375
     units_on[Asgard_CCGT,2030,1,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,6:6] 125
+    units_on[Asgard_CCGT,2030,1,5:5] max_output_flow_during_start_up[Asgard_CCGT,2030,1,5:5] -375
+    units_on[Asgard_CCGT,2030,1,5:5] max_output_flow_during_start_up[Asgard_CCGT,2030,1,6:6] -125
+    units_on[Asgard_CCGT,2030,1,5:5] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,5:5] -225
+    units_on[Asgard_CCGT,2030,1,5:5] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,6:6] -275
     units_on[Asgard_CCGT,2030,1,5:5] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,5:5] -125
     units_on[Asgard_CCGT,2030,1,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,5:5] -125
     units_on[Asgard_CCGT,2030,1,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,6:6] 275
@@ -40829,6 +41611,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,6:6] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,6:6] -500
     units_on[Asgard_CCGT,2030,1,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,6:6] -375
     units_on[Asgard_CCGT,2030,1,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,7:7] 125
+    units_on[Asgard_CCGT,2030,1,6:6] max_output_flow_during_start_up[Asgard_CCGT,2030,1,6:6] -375
+    units_on[Asgard_CCGT,2030,1,6:6] max_output_flow_during_start_up[Asgard_CCGT,2030,1,7:7] -125
+    units_on[Asgard_CCGT,2030,1,6:6] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,6:6] -225
+    units_on[Asgard_CCGT,2030,1,6:6] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,7:7] -275
     units_on[Asgard_CCGT,2030,1,6:6] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,6:6] -125
     units_on[Asgard_CCGT,2030,1,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,6:6] -125
     units_on[Asgard_CCGT,2030,1,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,7:7] 275
@@ -40837,6 +41623,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,7:7] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,7:7] -500
     units_on[Asgard_CCGT,2030,1,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,7:7] -375
     units_on[Asgard_CCGT,2030,1,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,8:8] 125
+    units_on[Asgard_CCGT,2030,1,7:7] max_output_flow_during_start_up[Asgard_CCGT,2030,1,7:7] -375
+    units_on[Asgard_CCGT,2030,1,7:7] max_output_flow_during_start_up[Asgard_CCGT,2030,1,8:8] -125
+    units_on[Asgard_CCGT,2030,1,7:7] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,7:7] -225
+    units_on[Asgard_CCGT,2030,1,7:7] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,8:8] -275
     units_on[Asgard_CCGT,2030,1,7:7] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,7:7] -125
     units_on[Asgard_CCGT,2030,1,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,7:7] -125
     units_on[Asgard_CCGT,2030,1,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,8:8] 275
@@ -40845,6 +41635,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,8:8] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,8:8] -500
     units_on[Asgard_CCGT,2030,1,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,8:8] -375
     units_on[Asgard_CCGT,2030,1,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,9:9] 125
+    units_on[Asgard_CCGT,2030,1,8:8] max_output_flow_during_start_up[Asgard_CCGT,2030,1,8:8] -375
+    units_on[Asgard_CCGT,2030,1,8:8] max_output_flow_during_start_up[Asgard_CCGT,2030,1,9:9] -125
+    units_on[Asgard_CCGT,2030,1,8:8] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,8:8] -225
+    units_on[Asgard_CCGT,2030,1,8:8] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,9:9] -275
     units_on[Asgard_CCGT,2030,1,8:8] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,8:8] -125
     units_on[Asgard_CCGT,2030,1,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,8:8] -125
     units_on[Asgard_CCGT,2030,1,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,9:9] 275
@@ -40853,6 +41647,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,9:9] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,9:9] -500
     units_on[Asgard_CCGT,2030,1,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,9:9] -375
     units_on[Asgard_CCGT,2030,1,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,10:10] 125
+    units_on[Asgard_CCGT,2030,1,9:9] max_output_flow_during_start_up[Asgard_CCGT,2030,1,9:9] -375
+    units_on[Asgard_CCGT,2030,1,9:9] max_output_flow_during_start_up[Asgard_CCGT,2030,1,10:10] -125
+    units_on[Asgard_CCGT,2030,1,9:9] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,9:9] -225
+    units_on[Asgard_CCGT,2030,1,9:9] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,10:10] -275
     units_on[Asgard_CCGT,2030,1,9:9] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,9:9] -125
     units_on[Asgard_CCGT,2030,1,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,9:9] -125
     units_on[Asgard_CCGT,2030,1,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,10:10] 275
@@ -40861,6 +41659,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,10:10] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,10:10] -500
     units_on[Asgard_CCGT,2030,1,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,10:10] -375
     units_on[Asgard_CCGT,2030,1,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,11:11] 125
+    units_on[Asgard_CCGT,2030,1,10:10] max_output_flow_during_start_up[Asgard_CCGT,2030,1,10:10] -375
+    units_on[Asgard_CCGT,2030,1,10:10] max_output_flow_during_start_up[Asgard_CCGT,2030,1,11:11] -125
+    units_on[Asgard_CCGT,2030,1,10:10] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,10:10] -225
+    units_on[Asgard_CCGT,2030,1,10:10] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,11:11] -275
     units_on[Asgard_CCGT,2030,1,10:10] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,10:10] -125
     units_on[Asgard_CCGT,2030,1,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,10:10] -125
     units_on[Asgard_CCGT,2030,1,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,11:11] 275
@@ -40869,6 +41671,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,11:11] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,11:11] -500
     units_on[Asgard_CCGT,2030,1,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,11:11] -375
     units_on[Asgard_CCGT,2030,1,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,12:12] 125
+    units_on[Asgard_CCGT,2030,1,11:11] max_output_flow_during_start_up[Asgard_CCGT,2030,1,11:11] -375
+    units_on[Asgard_CCGT,2030,1,11:11] max_output_flow_during_start_up[Asgard_CCGT,2030,1,12:12] -125
+    units_on[Asgard_CCGT,2030,1,11:11] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,11:11] -225
+    units_on[Asgard_CCGT,2030,1,11:11] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,12:12] -275
     units_on[Asgard_CCGT,2030,1,11:11] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,11:11] -125
     units_on[Asgard_CCGT,2030,1,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,11:11] -125
     units_on[Asgard_CCGT,2030,1,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,12:12] 275
@@ -40877,6 +41683,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,12:12] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,12:12] -500
     units_on[Asgard_CCGT,2030,1,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,12:12] -375
     units_on[Asgard_CCGT,2030,1,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,13:13] 125
+    units_on[Asgard_CCGT,2030,1,12:12] max_output_flow_during_start_up[Asgard_CCGT,2030,1,12:12] -375
+    units_on[Asgard_CCGT,2030,1,12:12] max_output_flow_during_start_up[Asgard_CCGT,2030,1,13:13] -125
+    units_on[Asgard_CCGT,2030,1,12:12] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,12:12] -225
+    units_on[Asgard_CCGT,2030,1,12:12] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,13:13] -275
     units_on[Asgard_CCGT,2030,1,12:12] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,12:12] -125
     units_on[Asgard_CCGT,2030,1,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,12:12] -125
     units_on[Asgard_CCGT,2030,1,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,13:13] 275
@@ -40885,6 +41695,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,13:13] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,13:13] -500
     units_on[Asgard_CCGT,2030,1,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,13:13] -375
     units_on[Asgard_CCGT,2030,1,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,14:14] 125
+    units_on[Asgard_CCGT,2030,1,13:13] max_output_flow_during_start_up[Asgard_CCGT,2030,1,13:13] -375
+    units_on[Asgard_CCGT,2030,1,13:13] max_output_flow_during_start_up[Asgard_CCGT,2030,1,14:14] -125
+    units_on[Asgard_CCGT,2030,1,13:13] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,13:13] -225
+    units_on[Asgard_CCGT,2030,1,13:13] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,14:14] -275
     units_on[Asgard_CCGT,2030,1,13:13] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,13:13] -125
     units_on[Asgard_CCGT,2030,1,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,13:13] -125
     units_on[Asgard_CCGT,2030,1,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,14:14] 275
@@ -40893,6 +41707,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,14:14] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,14:14] -500
     units_on[Asgard_CCGT,2030,1,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,14:14] -375
     units_on[Asgard_CCGT,2030,1,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,15:15] 125
+    units_on[Asgard_CCGT,2030,1,14:14] max_output_flow_during_start_up[Asgard_CCGT,2030,1,14:14] -375
+    units_on[Asgard_CCGT,2030,1,14:14] max_output_flow_during_start_up[Asgard_CCGT,2030,1,15:15] -125
+    units_on[Asgard_CCGT,2030,1,14:14] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,14:14] -225
+    units_on[Asgard_CCGT,2030,1,14:14] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,15:15] -275
     units_on[Asgard_CCGT,2030,1,14:14] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,14:14] -125
     units_on[Asgard_CCGT,2030,1,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,14:14] -125
     units_on[Asgard_CCGT,2030,1,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,15:15] 275
@@ -40901,6 +41719,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,15:15] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,15:15] -500
     units_on[Asgard_CCGT,2030,1,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,15:15] -375
     units_on[Asgard_CCGT,2030,1,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,16:16] 125
+    units_on[Asgard_CCGT,2030,1,15:15] max_output_flow_during_start_up[Asgard_CCGT,2030,1,15:15] -375
+    units_on[Asgard_CCGT,2030,1,15:15] max_output_flow_during_start_up[Asgard_CCGT,2030,1,16:16] -125
+    units_on[Asgard_CCGT,2030,1,15:15] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,15:15] -225
+    units_on[Asgard_CCGT,2030,1,15:15] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,16:16] -275
     units_on[Asgard_CCGT,2030,1,15:15] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,15:15] -125
     units_on[Asgard_CCGT,2030,1,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,15:15] -125
     units_on[Asgard_CCGT,2030,1,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,16:16] 275
@@ -40909,6 +41731,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,16:16] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,16:16] -500
     units_on[Asgard_CCGT,2030,1,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,16:16] -375
     units_on[Asgard_CCGT,2030,1,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,17:17] 125
+    units_on[Asgard_CCGT,2030,1,16:16] max_output_flow_during_start_up[Asgard_CCGT,2030,1,16:16] -375
+    units_on[Asgard_CCGT,2030,1,16:16] max_output_flow_during_start_up[Asgard_CCGT,2030,1,17:17] -125
+    units_on[Asgard_CCGT,2030,1,16:16] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,16:16] -225
+    units_on[Asgard_CCGT,2030,1,16:16] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,17:17] -275
     units_on[Asgard_CCGT,2030,1,16:16] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,16:16] -125
     units_on[Asgard_CCGT,2030,1,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,16:16] -125
     units_on[Asgard_CCGT,2030,1,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,17:17] 275
@@ -40917,6 +41743,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,17:17] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,17:17] -500
     units_on[Asgard_CCGT,2030,1,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,17:17] -375
     units_on[Asgard_CCGT,2030,1,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,18:18] 125
+    units_on[Asgard_CCGT,2030,1,17:17] max_output_flow_during_start_up[Asgard_CCGT,2030,1,17:17] -375
+    units_on[Asgard_CCGT,2030,1,17:17] max_output_flow_during_start_up[Asgard_CCGT,2030,1,18:18] -125
+    units_on[Asgard_CCGT,2030,1,17:17] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,17:17] -225
+    units_on[Asgard_CCGT,2030,1,17:17] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,18:18] -275
     units_on[Asgard_CCGT,2030,1,17:17] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,17:17] -125
     units_on[Asgard_CCGT,2030,1,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,17:17] -125
     units_on[Asgard_CCGT,2030,1,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,18:18] 275
@@ -40925,6 +41755,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,18:18] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,18:18] -500
     units_on[Asgard_CCGT,2030,1,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,18:18] -375
     units_on[Asgard_CCGT,2030,1,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,19:19] 125
+    units_on[Asgard_CCGT,2030,1,18:18] max_output_flow_during_start_up[Asgard_CCGT,2030,1,18:18] -375
+    units_on[Asgard_CCGT,2030,1,18:18] max_output_flow_during_start_up[Asgard_CCGT,2030,1,19:19] -125
+    units_on[Asgard_CCGT,2030,1,18:18] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,18:18] -225
+    units_on[Asgard_CCGT,2030,1,18:18] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,19:19] -275
     units_on[Asgard_CCGT,2030,1,18:18] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,18:18] -125
     units_on[Asgard_CCGT,2030,1,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,18:18] -125
     units_on[Asgard_CCGT,2030,1,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,19:19] 275
@@ -40933,6 +41767,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,19:19] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,19:19] -500
     units_on[Asgard_CCGT,2030,1,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,19:19] -375
     units_on[Asgard_CCGT,2030,1,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,20:20] 125
+    units_on[Asgard_CCGT,2030,1,19:19] max_output_flow_during_start_up[Asgard_CCGT,2030,1,19:19] -375
+    units_on[Asgard_CCGT,2030,1,19:19] max_output_flow_during_start_up[Asgard_CCGT,2030,1,20:20] -125
+    units_on[Asgard_CCGT,2030,1,19:19] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,19:19] -225
+    units_on[Asgard_CCGT,2030,1,19:19] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,20:20] -275
     units_on[Asgard_CCGT,2030,1,19:19] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,19:19] -125
     units_on[Asgard_CCGT,2030,1,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,19:19] -125
     units_on[Asgard_CCGT,2030,1,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,20:20] 275
@@ -40941,6 +41779,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,20:20] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,20:20] -500
     units_on[Asgard_CCGT,2030,1,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,20:20] -375
     units_on[Asgard_CCGT,2030,1,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,21:21] 125
+    units_on[Asgard_CCGT,2030,1,20:20] max_output_flow_during_start_up[Asgard_CCGT,2030,1,20:20] -375
+    units_on[Asgard_CCGT,2030,1,20:20] max_output_flow_during_start_up[Asgard_CCGT,2030,1,21:21] -125
+    units_on[Asgard_CCGT,2030,1,20:20] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,20:20] -225
+    units_on[Asgard_CCGT,2030,1,20:20] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,21:21] -275
     units_on[Asgard_CCGT,2030,1,20:20] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,20:20] -125
     units_on[Asgard_CCGT,2030,1,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,20:20] -125
     units_on[Asgard_CCGT,2030,1,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,21:21] 275
@@ -40949,6 +41791,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,21:21] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,21:21] -500
     units_on[Asgard_CCGT,2030,1,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,21:21] -375
     units_on[Asgard_CCGT,2030,1,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,22:22] 125
+    units_on[Asgard_CCGT,2030,1,21:21] max_output_flow_during_start_up[Asgard_CCGT,2030,1,21:21] -375
+    units_on[Asgard_CCGT,2030,1,21:21] max_output_flow_during_start_up[Asgard_CCGT,2030,1,22:22] -125
+    units_on[Asgard_CCGT,2030,1,21:21] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,21:21] -225
+    units_on[Asgard_CCGT,2030,1,21:21] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,22:22] -275
     units_on[Asgard_CCGT,2030,1,21:21] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,21:21] -125
     units_on[Asgard_CCGT,2030,1,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,21:21] -125
     units_on[Asgard_CCGT,2030,1,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,22:22] 275
@@ -40957,6 +41803,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,22:22] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,22:22] -500
     units_on[Asgard_CCGT,2030,1,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,22:22] -375
     units_on[Asgard_CCGT,2030,1,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,23:23] 125
+    units_on[Asgard_CCGT,2030,1,22:22] max_output_flow_during_start_up[Asgard_CCGT,2030,1,22:22] -375
+    units_on[Asgard_CCGT,2030,1,22:22] max_output_flow_during_start_up[Asgard_CCGT,2030,1,23:23] -125
+    units_on[Asgard_CCGT,2030,1,22:22] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,22:22] -225
+    units_on[Asgard_CCGT,2030,1,22:22] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,23:23] -275
     units_on[Asgard_CCGT,2030,1,22:22] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,22:22] -125
     units_on[Asgard_CCGT,2030,1,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,22:22] -125
     units_on[Asgard_CCGT,2030,1,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,23:23] 275
@@ -40965,6 +41815,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,23:23] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,23:23] -500
     units_on[Asgard_CCGT,2030,1,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,23:23] -375
     units_on[Asgard_CCGT,2030,1,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,24:24] 125
+    units_on[Asgard_CCGT,2030,1,23:23] max_output_flow_during_start_up[Asgard_CCGT,2030,1,23:23] -375
+    units_on[Asgard_CCGT,2030,1,23:23] max_output_flow_during_start_up[Asgard_CCGT,2030,1,24:24] -125
+    units_on[Asgard_CCGT,2030,1,23:23] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,23:23] -225
+    units_on[Asgard_CCGT,2030,1,23:23] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,24:24] -275
     units_on[Asgard_CCGT,2030,1,23:23] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,23:23] -125
     units_on[Asgard_CCGT,2030,1,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,23:23] -125
     units_on[Asgard_CCGT,2030,1,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,24:24] 275
@@ -40973,6 +41827,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,24:24] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,24:24] -500
     units_on[Asgard_CCGT,2030,1,24:24] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,24:24] -375
     units_on[Asgard_CCGT,2030,1,24:24] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,25:25] 125
+    units_on[Asgard_CCGT,2030,1,24:24] max_output_flow_during_start_up[Asgard_CCGT,2030,1,24:24] -375
+    units_on[Asgard_CCGT,2030,1,24:24] max_output_flow_during_start_up[Asgard_CCGT,2030,1,25:25] -125
+    units_on[Asgard_CCGT,2030,1,24:24] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,24:24] -225
+    units_on[Asgard_CCGT,2030,1,24:24] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,25:25] -275
     units_on[Asgard_CCGT,2030,1,24:24] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,24:24] -125
     units_on[Asgard_CCGT,2030,1,24:24] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,24:24] -125
     units_on[Asgard_CCGT,2030,1,24:24] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,25:25] 275
@@ -40981,6 +41839,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,25:25] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,25:25] -500
     units_on[Asgard_CCGT,2030,1,25:25] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,25:25] -375
     units_on[Asgard_CCGT,2030,1,25:25] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,26:26] 125
+    units_on[Asgard_CCGT,2030,1,25:25] max_output_flow_during_start_up[Asgard_CCGT,2030,1,25:25] -375
+    units_on[Asgard_CCGT,2030,1,25:25] max_output_flow_during_start_up[Asgard_CCGT,2030,1,26:26] -125
+    units_on[Asgard_CCGT,2030,1,25:25] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,25:25] -225
+    units_on[Asgard_CCGT,2030,1,25:25] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,26:26] -275
     units_on[Asgard_CCGT,2030,1,25:25] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,25:25] -125
     units_on[Asgard_CCGT,2030,1,25:25] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,25:25] -125
     units_on[Asgard_CCGT,2030,1,25:25] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,26:26] 275
@@ -40989,6 +41851,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,26:26] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,26:26] -500
     units_on[Asgard_CCGT,2030,1,26:26] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,26:26] -375
     units_on[Asgard_CCGT,2030,1,26:26] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,27:27] 125
+    units_on[Asgard_CCGT,2030,1,26:26] max_output_flow_during_start_up[Asgard_CCGT,2030,1,26:26] -375
+    units_on[Asgard_CCGT,2030,1,26:26] max_output_flow_during_start_up[Asgard_CCGT,2030,1,27:27] -125
+    units_on[Asgard_CCGT,2030,1,26:26] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,26:26] -225
+    units_on[Asgard_CCGT,2030,1,26:26] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,27:27] -275
     units_on[Asgard_CCGT,2030,1,26:26] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,26:26] -125
     units_on[Asgard_CCGT,2030,1,26:26] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,26:26] -125
     units_on[Asgard_CCGT,2030,1,26:26] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,27:27] 275
@@ -40997,6 +41863,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,27:27] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,27:27] -500
     units_on[Asgard_CCGT,2030,1,27:27] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,27:27] -375
     units_on[Asgard_CCGT,2030,1,27:27] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,28:28] 125
+    units_on[Asgard_CCGT,2030,1,27:27] max_output_flow_during_start_up[Asgard_CCGT,2030,1,27:27] -375
+    units_on[Asgard_CCGT,2030,1,27:27] max_output_flow_during_start_up[Asgard_CCGT,2030,1,28:28] -125
+    units_on[Asgard_CCGT,2030,1,27:27] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,27:27] -225
+    units_on[Asgard_CCGT,2030,1,27:27] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,28:28] -275
     units_on[Asgard_CCGT,2030,1,27:27] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,27:27] -125
     units_on[Asgard_CCGT,2030,1,27:27] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,27:27] -125
     units_on[Asgard_CCGT,2030,1,27:27] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,28:28] 275
@@ -41005,6 +41875,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,28:28] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,28:28] -500
     units_on[Asgard_CCGT,2030,1,28:28] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,28:28] -375
     units_on[Asgard_CCGT,2030,1,28:28] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,29:29] 125
+    units_on[Asgard_CCGT,2030,1,28:28] max_output_flow_during_start_up[Asgard_CCGT,2030,1,28:28] -375
+    units_on[Asgard_CCGT,2030,1,28:28] max_output_flow_during_start_up[Asgard_CCGT,2030,1,29:29] -125
+    units_on[Asgard_CCGT,2030,1,28:28] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,28:28] -225
+    units_on[Asgard_CCGT,2030,1,28:28] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,29:29] -275
     units_on[Asgard_CCGT,2030,1,28:28] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,28:28] -125
     units_on[Asgard_CCGT,2030,1,28:28] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,28:28] -125
     units_on[Asgard_CCGT,2030,1,28:28] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,29:29] 275
@@ -41013,6 +41887,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,29:29] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,29:29] -500
     units_on[Asgard_CCGT,2030,1,29:29] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,29:29] -375
     units_on[Asgard_CCGT,2030,1,29:29] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,30:30] 125
+    units_on[Asgard_CCGT,2030,1,29:29] max_output_flow_during_start_up[Asgard_CCGT,2030,1,29:29] -375
+    units_on[Asgard_CCGT,2030,1,29:29] max_output_flow_during_start_up[Asgard_CCGT,2030,1,30:30] -125
+    units_on[Asgard_CCGT,2030,1,29:29] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,29:29] -225
+    units_on[Asgard_CCGT,2030,1,29:29] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,30:30] -275
     units_on[Asgard_CCGT,2030,1,29:29] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,29:29] -125
     units_on[Asgard_CCGT,2030,1,29:29] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,29:29] -125
     units_on[Asgard_CCGT,2030,1,29:29] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,30:30] 275
@@ -41021,6 +41899,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,30:30] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,30:30] -500
     units_on[Asgard_CCGT,2030,1,30:30] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,30:30] -375
     units_on[Asgard_CCGT,2030,1,30:30] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,31:31] 125
+    units_on[Asgard_CCGT,2030,1,30:30] max_output_flow_during_start_up[Asgard_CCGT,2030,1,30:30] -375
+    units_on[Asgard_CCGT,2030,1,30:30] max_output_flow_during_start_up[Asgard_CCGT,2030,1,31:31] -125
+    units_on[Asgard_CCGT,2030,1,30:30] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,30:30] -225
+    units_on[Asgard_CCGT,2030,1,30:30] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,31:31] -275
     units_on[Asgard_CCGT,2030,1,30:30] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,30:30] -125
     units_on[Asgard_CCGT,2030,1,30:30] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,30:30] -125
     units_on[Asgard_CCGT,2030,1,30:30] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,31:31] 275
@@ -41029,6 +41911,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,31:31] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,31:31] -500
     units_on[Asgard_CCGT,2030,1,31:31] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,31:31] -375
     units_on[Asgard_CCGT,2030,1,31:31] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,32:32] 125
+    units_on[Asgard_CCGT,2030,1,31:31] max_output_flow_during_start_up[Asgard_CCGT,2030,1,31:31] -375
+    units_on[Asgard_CCGT,2030,1,31:31] max_output_flow_during_start_up[Asgard_CCGT,2030,1,32:32] -125
+    units_on[Asgard_CCGT,2030,1,31:31] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,31:31] -225
+    units_on[Asgard_CCGT,2030,1,31:31] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,32:32] -275
     units_on[Asgard_CCGT,2030,1,31:31] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,31:31] -125
     units_on[Asgard_CCGT,2030,1,31:31] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,31:31] -125
     units_on[Asgard_CCGT,2030,1,31:31] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,32:32] 275
@@ -41037,6 +41923,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,32:32] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,32:32] -500
     units_on[Asgard_CCGT,2030,1,32:32] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,32:32] -375
     units_on[Asgard_CCGT,2030,1,32:32] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,33:33] 125
+    units_on[Asgard_CCGT,2030,1,32:32] max_output_flow_during_start_up[Asgard_CCGT,2030,1,32:32] -375
+    units_on[Asgard_CCGT,2030,1,32:32] max_output_flow_during_start_up[Asgard_CCGT,2030,1,33:33] -125
+    units_on[Asgard_CCGT,2030,1,32:32] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,32:32] -225
+    units_on[Asgard_CCGT,2030,1,32:32] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,33:33] -275
     units_on[Asgard_CCGT,2030,1,32:32] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,32:32] -125
     units_on[Asgard_CCGT,2030,1,32:32] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,32:32] -125
     units_on[Asgard_CCGT,2030,1,32:32] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,33:33] 275
@@ -41045,6 +41935,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,33:33] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,33:33] -500
     units_on[Asgard_CCGT,2030,1,33:33] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,33:33] -375
     units_on[Asgard_CCGT,2030,1,33:33] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,34:34] 125
+    units_on[Asgard_CCGT,2030,1,33:33] max_output_flow_during_start_up[Asgard_CCGT,2030,1,33:33] -375
+    units_on[Asgard_CCGT,2030,1,33:33] max_output_flow_during_start_up[Asgard_CCGT,2030,1,34:34] -125
+    units_on[Asgard_CCGT,2030,1,33:33] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,33:33] -225
+    units_on[Asgard_CCGT,2030,1,33:33] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,34:34] -275
     units_on[Asgard_CCGT,2030,1,33:33] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,33:33] -125
     units_on[Asgard_CCGT,2030,1,33:33] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,33:33] -125
     units_on[Asgard_CCGT,2030,1,33:33] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,34:34] 275
@@ -41053,6 +41947,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,34:34] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,34:34] -500
     units_on[Asgard_CCGT,2030,1,34:34] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,34:34] -375
     units_on[Asgard_CCGT,2030,1,34:34] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,35:35] 125
+    units_on[Asgard_CCGT,2030,1,34:34] max_output_flow_during_start_up[Asgard_CCGT,2030,1,34:34] -375
+    units_on[Asgard_CCGT,2030,1,34:34] max_output_flow_during_start_up[Asgard_CCGT,2030,1,35:35] -125
+    units_on[Asgard_CCGT,2030,1,34:34] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,34:34] -225
+    units_on[Asgard_CCGT,2030,1,34:34] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,35:35] -275
     units_on[Asgard_CCGT,2030,1,34:34] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,34:34] -125
     units_on[Asgard_CCGT,2030,1,34:34] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,34:34] -125
     units_on[Asgard_CCGT,2030,1,34:34] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,35:35] 275
@@ -41061,6 +41959,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,35:35] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,35:35] -500
     units_on[Asgard_CCGT,2030,1,35:35] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,35:35] -375
     units_on[Asgard_CCGT,2030,1,35:35] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,36:36] 125
+    units_on[Asgard_CCGT,2030,1,35:35] max_output_flow_during_start_up[Asgard_CCGT,2030,1,35:35] -375
+    units_on[Asgard_CCGT,2030,1,35:35] max_output_flow_during_start_up[Asgard_CCGT,2030,1,36:36] -125
+    units_on[Asgard_CCGT,2030,1,35:35] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,35:35] -225
+    units_on[Asgard_CCGT,2030,1,35:35] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,36:36] -275
     units_on[Asgard_CCGT,2030,1,35:35] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,35:35] -125
     units_on[Asgard_CCGT,2030,1,35:35] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,35:35] -125
     units_on[Asgard_CCGT,2030,1,35:35] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,36:36] 275
@@ -41069,6 +41971,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,36:36] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,36:36] -500
     units_on[Asgard_CCGT,2030,1,36:36] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,36:36] -375
     units_on[Asgard_CCGT,2030,1,36:36] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,37:37] 125
+    units_on[Asgard_CCGT,2030,1,36:36] max_output_flow_during_start_up[Asgard_CCGT,2030,1,36:36] -375
+    units_on[Asgard_CCGT,2030,1,36:36] max_output_flow_during_start_up[Asgard_CCGT,2030,1,37:37] -125
+    units_on[Asgard_CCGT,2030,1,36:36] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,36:36] -225
+    units_on[Asgard_CCGT,2030,1,36:36] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,37:37] -275
     units_on[Asgard_CCGT,2030,1,36:36] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,36:36] -125
     units_on[Asgard_CCGT,2030,1,36:36] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,36:36] -125
     units_on[Asgard_CCGT,2030,1,36:36] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,37:37] 275
@@ -41077,6 +41983,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,37:37] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,37:37] -500
     units_on[Asgard_CCGT,2030,1,37:37] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,37:37] -375
     units_on[Asgard_CCGT,2030,1,37:37] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,38:38] 125
+    units_on[Asgard_CCGT,2030,1,37:37] max_output_flow_during_start_up[Asgard_CCGT,2030,1,37:37] -375
+    units_on[Asgard_CCGT,2030,1,37:37] max_output_flow_during_start_up[Asgard_CCGT,2030,1,38:38] -125
+    units_on[Asgard_CCGT,2030,1,37:37] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,37:37] -225
+    units_on[Asgard_CCGT,2030,1,37:37] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,38:38] -275
     units_on[Asgard_CCGT,2030,1,37:37] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,37:37] -125
     units_on[Asgard_CCGT,2030,1,37:37] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,37:37] -125
     units_on[Asgard_CCGT,2030,1,37:37] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,38:38] 275
@@ -41085,6 +41995,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,38:38] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,38:38] -500
     units_on[Asgard_CCGT,2030,1,38:38] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,38:38] -375
     units_on[Asgard_CCGT,2030,1,38:38] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,39:39] 125
+    units_on[Asgard_CCGT,2030,1,38:38] max_output_flow_during_start_up[Asgard_CCGT,2030,1,38:38] -375
+    units_on[Asgard_CCGT,2030,1,38:38] max_output_flow_during_start_up[Asgard_CCGT,2030,1,39:39] -125
+    units_on[Asgard_CCGT,2030,1,38:38] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,38:38] -225
+    units_on[Asgard_CCGT,2030,1,38:38] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,39:39] -275
     units_on[Asgard_CCGT,2030,1,38:38] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,38:38] -125
     units_on[Asgard_CCGT,2030,1,38:38] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,38:38] -125
     units_on[Asgard_CCGT,2030,1,38:38] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,39:39] 275
@@ -41093,6 +42007,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,39:39] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,39:39] -500
     units_on[Asgard_CCGT,2030,1,39:39] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,39:39] -375
     units_on[Asgard_CCGT,2030,1,39:39] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,40:40] 125
+    units_on[Asgard_CCGT,2030,1,39:39] max_output_flow_during_start_up[Asgard_CCGT,2030,1,39:39] -375
+    units_on[Asgard_CCGT,2030,1,39:39] max_output_flow_during_start_up[Asgard_CCGT,2030,1,40:40] -125
+    units_on[Asgard_CCGT,2030,1,39:39] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,39:39] -225
+    units_on[Asgard_CCGT,2030,1,39:39] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,40:40] -275
     units_on[Asgard_CCGT,2030,1,39:39] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,39:39] -125
     units_on[Asgard_CCGT,2030,1,39:39] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,39:39] -125
     units_on[Asgard_CCGT,2030,1,39:39] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,40:40] 275
@@ -41101,6 +42019,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,40:40] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,40:40] -500
     units_on[Asgard_CCGT,2030,1,40:40] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,40:40] -375
     units_on[Asgard_CCGT,2030,1,40:40] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,41:41] 125
+    units_on[Asgard_CCGT,2030,1,40:40] max_output_flow_during_start_up[Asgard_CCGT,2030,1,40:40] -375
+    units_on[Asgard_CCGT,2030,1,40:40] max_output_flow_during_start_up[Asgard_CCGT,2030,1,41:41] -125
+    units_on[Asgard_CCGT,2030,1,40:40] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,40:40] -225
+    units_on[Asgard_CCGT,2030,1,40:40] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,41:41] -275
     units_on[Asgard_CCGT,2030,1,40:40] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,40:40] -125
     units_on[Asgard_CCGT,2030,1,40:40] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,40:40] -125
     units_on[Asgard_CCGT,2030,1,40:40] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,41:41] 275
@@ -41109,6 +42031,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,41:41] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,41:41] -500
     units_on[Asgard_CCGT,2030,1,41:41] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,41:41] -375
     units_on[Asgard_CCGT,2030,1,41:41] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,42:42] 125
+    units_on[Asgard_CCGT,2030,1,41:41] max_output_flow_during_start_up[Asgard_CCGT,2030,1,41:41] -375
+    units_on[Asgard_CCGT,2030,1,41:41] max_output_flow_during_start_up[Asgard_CCGT,2030,1,42:42] -125
+    units_on[Asgard_CCGT,2030,1,41:41] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,41:41] -225
+    units_on[Asgard_CCGT,2030,1,41:41] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,42:42] -275
     units_on[Asgard_CCGT,2030,1,41:41] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,41:41] -125
     units_on[Asgard_CCGT,2030,1,41:41] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,41:41] -125
     units_on[Asgard_CCGT,2030,1,41:41] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,42:42] 275
@@ -41117,6 +42043,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,42:42] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,42:42] -500
     units_on[Asgard_CCGT,2030,1,42:42] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,42:42] -375
     units_on[Asgard_CCGT,2030,1,42:42] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,43:43] 125
+    units_on[Asgard_CCGT,2030,1,42:42] max_output_flow_during_start_up[Asgard_CCGT,2030,1,42:42] -375
+    units_on[Asgard_CCGT,2030,1,42:42] max_output_flow_during_start_up[Asgard_CCGT,2030,1,43:43] -125
+    units_on[Asgard_CCGT,2030,1,42:42] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,42:42] -225
+    units_on[Asgard_CCGT,2030,1,42:42] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,43:43] -275
     units_on[Asgard_CCGT,2030,1,42:42] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,42:42] -125
     units_on[Asgard_CCGT,2030,1,42:42] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,42:42] -125
     units_on[Asgard_CCGT,2030,1,42:42] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,43:43] 275
@@ -41125,6 +42055,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,43:43] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,43:43] -500
     units_on[Asgard_CCGT,2030,1,43:43] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,43:43] -375
     units_on[Asgard_CCGT,2030,1,43:43] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,44:44] 125
+    units_on[Asgard_CCGT,2030,1,43:43] max_output_flow_during_start_up[Asgard_CCGT,2030,1,43:43] -375
+    units_on[Asgard_CCGT,2030,1,43:43] max_output_flow_during_start_up[Asgard_CCGT,2030,1,44:44] -125
+    units_on[Asgard_CCGT,2030,1,43:43] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,43:43] -225
+    units_on[Asgard_CCGT,2030,1,43:43] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,44:44] -275
     units_on[Asgard_CCGT,2030,1,43:43] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,43:43] -125
     units_on[Asgard_CCGT,2030,1,43:43] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,43:43] -125
     units_on[Asgard_CCGT,2030,1,43:43] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,44:44] 275
@@ -41133,6 +42067,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,44:44] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,44:44] -500
     units_on[Asgard_CCGT,2030,1,44:44] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,44:44] -375
     units_on[Asgard_CCGT,2030,1,44:44] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,45:45] 125
+    units_on[Asgard_CCGT,2030,1,44:44] max_output_flow_during_start_up[Asgard_CCGT,2030,1,44:44] -375
+    units_on[Asgard_CCGT,2030,1,44:44] max_output_flow_during_start_up[Asgard_CCGT,2030,1,45:45] -125
+    units_on[Asgard_CCGT,2030,1,44:44] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,44:44] -225
+    units_on[Asgard_CCGT,2030,1,44:44] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,45:45] -275
     units_on[Asgard_CCGT,2030,1,44:44] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,44:44] -125
     units_on[Asgard_CCGT,2030,1,44:44] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,44:44] -125
     units_on[Asgard_CCGT,2030,1,44:44] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,45:45] 275
@@ -41141,6 +42079,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,45:45] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,45:45] -500
     units_on[Asgard_CCGT,2030,1,45:45] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,45:45] -375
     units_on[Asgard_CCGT,2030,1,45:45] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,46:46] 125
+    units_on[Asgard_CCGT,2030,1,45:45] max_output_flow_during_start_up[Asgard_CCGT,2030,1,45:45] -375
+    units_on[Asgard_CCGT,2030,1,45:45] max_output_flow_during_start_up[Asgard_CCGT,2030,1,46:46] -125
+    units_on[Asgard_CCGT,2030,1,45:45] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,45:45] -225
+    units_on[Asgard_CCGT,2030,1,45:45] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,46:46] -275
     units_on[Asgard_CCGT,2030,1,45:45] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,45:45] -125
     units_on[Asgard_CCGT,2030,1,45:45] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,45:45] -125
     units_on[Asgard_CCGT,2030,1,45:45] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,46:46] 275
@@ -41149,6 +42091,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,46:46] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,46:46] -500
     units_on[Asgard_CCGT,2030,1,46:46] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,46:46] -375
     units_on[Asgard_CCGT,2030,1,46:46] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,47:47] 125
+    units_on[Asgard_CCGT,2030,1,46:46] max_output_flow_during_start_up[Asgard_CCGT,2030,1,46:46] -375
+    units_on[Asgard_CCGT,2030,1,46:46] max_output_flow_during_start_up[Asgard_CCGT,2030,1,47:47] -125
+    units_on[Asgard_CCGT,2030,1,46:46] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,46:46] -225
+    units_on[Asgard_CCGT,2030,1,46:46] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,47:47] -275
     units_on[Asgard_CCGT,2030,1,46:46] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,46:46] -125
     units_on[Asgard_CCGT,2030,1,46:46] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,46:46] -125
     units_on[Asgard_CCGT,2030,1,46:46] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,47:47] 275
@@ -41157,6 +42103,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,47:47] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,47:47] -500
     units_on[Asgard_CCGT,2030,1,47:47] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,47:47] -375
     units_on[Asgard_CCGT,2030,1,47:47] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,48:48] 125
+    units_on[Asgard_CCGT,2030,1,47:47] max_output_flow_during_start_up[Asgard_CCGT,2030,1,47:47] -375
+    units_on[Asgard_CCGT,2030,1,47:47] max_output_flow_during_start_up[Asgard_CCGT,2030,1,48:48] -125
+    units_on[Asgard_CCGT,2030,1,47:47] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,47:47] -225
+    units_on[Asgard_CCGT,2030,1,47:47] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,48:48] -275
     units_on[Asgard_CCGT,2030,1,47:47] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,47:47] -125
     units_on[Asgard_CCGT,2030,1,47:47] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,47:47] -125
     units_on[Asgard_CCGT,2030,1,47:47] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,48:48] 275
@@ -41165,6 +42115,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,48:48] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,48:48] -500
     units_on[Asgard_CCGT,2030,1,48:48] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,48:48] -375
     units_on[Asgard_CCGT,2030,1,48:48] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,49:49] 125
+    units_on[Asgard_CCGT,2030,1,48:48] max_output_flow_during_start_up[Asgard_CCGT,2030,1,48:48] -375
+    units_on[Asgard_CCGT,2030,1,48:48] max_output_flow_during_start_up[Asgard_CCGT,2030,1,49:49] -125
+    units_on[Asgard_CCGT,2030,1,48:48] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,48:48] -225
+    units_on[Asgard_CCGT,2030,1,48:48] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,49:49] -275
     units_on[Asgard_CCGT,2030,1,48:48] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,48:48] -125
     units_on[Asgard_CCGT,2030,1,48:48] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,48:48] -125
     units_on[Asgard_CCGT,2030,1,48:48] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,49:49] 275
@@ -41173,6 +42127,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,49:49] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,49:49] -500
     units_on[Asgard_CCGT,2030,1,49:49] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,49:49] -375
     units_on[Asgard_CCGT,2030,1,49:49] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,50:50] 125
+    units_on[Asgard_CCGT,2030,1,49:49] max_output_flow_during_start_up[Asgard_CCGT,2030,1,49:49] -375
+    units_on[Asgard_CCGT,2030,1,49:49] max_output_flow_during_start_up[Asgard_CCGT,2030,1,50:50] -125
+    units_on[Asgard_CCGT,2030,1,49:49] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,49:49] -225
+    units_on[Asgard_CCGT,2030,1,49:49] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,50:50] -275
     units_on[Asgard_CCGT,2030,1,49:49] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,49:49] -125
     units_on[Asgard_CCGT,2030,1,49:49] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,49:49] -125
     units_on[Asgard_CCGT,2030,1,49:49] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,50:50] 275
@@ -41181,6 +42139,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,50:50] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,50:50] -500
     units_on[Asgard_CCGT,2030,1,50:50] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,50:50] -375
     units_on[Asgard_CCGT,2030,1,50:50] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,51:51] 125
+    units_on[Asgard_CCGT,2030,1,50:50] max_output_flow_during_start_up[Asgard_CCGT,2030,1,50:50] -375
+    units_on[Asgard_CCGT,2030,1,50:50] max_output_flow_during_start_up[Asgard_CCGT,2030,1,51:51] -125
+    units_on[Asgard_CCGT,2030,1,50:50] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,50:50] -225
+    units_on[Asgard_CCGT,2030,1,50:50] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,51:51] -275
     units_on[Asgard_CCGT,2030,1,50:50] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,50:50] -125
     units_on[Asgard_CCGT,2030,1,50:50] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,50:50] -125
     units_on[Asgard_CCGT,2030,1,50:50] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,51:51] 275
@@ -41189,6 +42151,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,51:51] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,51:51] -500
     units_on[Asgard_CCGT,2030,1,51:51] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,51:51] -375
     units_on[Asgard_CCGT,2030,1,51:51] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,52:52] 125
+    units_on[Asgard_CCGT,2030,1,51:51] max_output_flow_during_start_up[Asgard_CCGT,2030,1,51:51] -375
+    units_on[Asgard_CCGT,2030,1,51:51] max_output_flow_during_start_up[Asgard_CCGT,2030,1,52:52] -125
+    units_on[Asgard_CCGT,2030,1,51:51] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,51:51] -225
+    units_on[Asgard_CCGT,2030,1,51:51] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,52:52] -275
     units_on[Asgard_CCGT,2030,1,51:51] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,51:51] -125
     units_on[Asgard_CCGT,2030,1,51:51] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,51:51] -125
     units_on[Asgard_CCGT,2030,1,51:51] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,52:52] 275
@@ -41197,6 +42163,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,52:52] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,52:52] -500
     units_on[Asgard_CCGT,2030,1,52:52] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,52:52] -375
     units_on[Asgard_CCGT,2030,1,52:52] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,53:53] 125
+    units_on[Asgard_CCGT,2030,1,52:52] max_output_flow_during_start_up[Asgard_CCGT,2030,1,52:52] -375
+    units_on[Asgard_CCGT,2030,1,52:52] max_output_flow_during_start_up[Asgard_CCGT,2030,1,53:53] -125
+    units_on[Asgard_CCGT,2030,1,52:52] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,52:52] -225
+    units_on[Asgard_CCGT,2030,1,52:52] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,53:53] -275
     units_on[Asgard_CCGT,2030,1,52:52] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,52:52] -125
     units_on[Asgard_CCGT,2030,1,52:52] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,52:52] -125
     units_on[Asgard_CCGT,2030,1,52:52] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,53:53] 275
@@ -41205,6 +42175,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,53:53] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,53:53] -500
     units_on[Asgard_CCGT,2030,1,53:53] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,53:53] -375
     units_on[Asgard_CCGT,2030,1,53:53] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,54:54] 125
+    units_on[Asgard_CCGT,2030,1,53:53] max_output_flow_during_start_up[Asgard_CCGT,2030,1,53:53] -375
+    units_on[Asgard_CCGT,2030,1,53:53] max_output_flow_during_start_up[Asgard_CCGT,2030,1,54:54] -125
+    units_on[Asgard_CCGT,2030,1,53:53] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,53:53] -225
+    units_on[Asgard_CCGT,2030,1,53:53] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,54:54] -275
     units_on[Asgard_CCGT,2030,1,53:53] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,53:53] -125
     units_on[Asgard_CCGT,2030,1,53:53] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,53:53] -125
     units_on[Asgard_CCGT,2030,1,53:53] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,54:54] 275
@@ -41213,6 +42187,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,54:54] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,54:54] -500
     units_on[Asgard_CCGT,2030,1,54:54] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,54:54] -375
     units_on[Asgard_CCGT,2030,1,54:54] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,55:55] 125
+    units_on[Asgard_CCGT,2030,1,54:54] max_output_flow_during_start_up[Asgard_CCGT,2030,1,54:54] -375
+    units_on[Asgard_CCGT,2030,1,54:54] max_output_flow_during_start_up[Asgard_CCGT,2030,1,55:55] -125
+    units_on[Asgard_CCGT,2030,1,54:54] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,54:54] -225
+    units_on[Asgard_CCGT,2030,1,54:54] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,55:55] -275
     units_on[Asgard_CCGT,2030,1,54:54] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,54:54] -125
     units_on[Asgard_CCGT,2030,1,54:54] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,54:54] -125
     units_on[Asgard_CCGT,2030,1,54:54] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,55:55] 275
@@ -41221,6 +42199,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,55:55] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,55:55] -500
     units_on[Asgard_CCGT,2030,1,55:55] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,55:55] -375
     units_on[Asgard_CCGT,2030,1,55:55] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,56:56] 125
+    units_on[Asgard_CCGT,2030,1,55:55] max_output_flow_during_start_up[Asgard_CCGT,2030,1,55:55] -375
+    units_on[Asgard_CCGT,2030,1,55:55] max_output_flow_during_start_up[Asgard_CCGT,2030,1,56:56] -125
+    units_on[Asgard_CCGT,2030,1,55:55] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,55:55] -225
+    units_on[Asgard_CCGT,2030,1,55:55] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,56:56] -275
     units_on[Asgard_CCGT,2030,1,55:55] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,55:55] -125
     units_on[Asgard_CCGT,2030,1,55:55] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,55:55] -125
     units_on[Asgard_CCGT,2030,1,55:55] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,56:56] 275
@@ -41229,6 +42211,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,56:56] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,56:56] -500
     units_on[Asgard_CCGT,2030,1,56:56] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,56:56] -375
     units_on[Asgard_CCGT,2030,1,56:56] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,57:57] 125
+    units_on[Asgard_CCGT,2030,1,56:56] max_output_flow_during_start_up[Asgard_CCGT,2030,1,56:56] -375
+    units_on[Asgard_CCGT,2030,1,56:56] max_output_flow_during_start_up[Asgard_CCGT,2030,1,57:57] -125
+    units_on[Asgard_CCGT,2030,1,56:56] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,56:56] -225
+    units_on[Asgard_CCGT,2030,1,56:56] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,57:57] -275
     units_on[Asgard_CCGT,2030,1,56:56] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,56:56] -125
     units_on[Asgard_CCGT,2030,1,56:56] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,56:56] -125
     units_on[Asgard_CCGT,2030,1,56:56] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,57:57] 275
@@ -41237,6 +42223,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,57:57] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,57:57] -500
     units_on[Asgard_CCGT,2030,1,57:57] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,57:57] -375
     units_on[Asgard_CCGT,2030,1,57:57] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,58:58] 125
+    units_on[Asgard_CCGT,2030,1,57:57] max_output_flow_during_start_up[Asgard_CCGT,2030,1,57:57] -375
+    units_on[Asgard_CCGT,2030,1,57:57] max_output_flow_during_start_up[Asgard_CCGT,2030,1,58:58] -125
+    units_on[Asgard_CCGT,2030,1,57:57] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,57:57] -225
+    units_on[Asgard_CCGT,2030,1,57:57] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,58:58] -275
     units_on[Asgard_CCGT,2030,1,57:57] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,57:57] -125
     units_on[Asgard_CCGT,2030,1,57:57] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,57:57] -125
     units_on[Asgard_CCGT,2030,1,57:57] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,58:58] 275
@@ -41245,6 +42235,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,58:58] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,58:58] -500
     units_on[Asgard_CCGT,2030,1,58:58] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,58:58] -375
     units_on[Asgard_CCGT,2030,1,58:58] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,59:59] 125
+    units_on[Asgard_CCGT,2030,1,58:58] max_output_flow_during_start_up[Asgard_CCGT,2030,1,58:58] -375
+    units_on[Asgard_CCGT,2030,1,58:58] max_output_flow_during_start_up[Asgard_CCGT,2030,1,59:59] -125
+    units_on[Asgard_CCGT,2030,1,58:58] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,58:58] -225
+    units_on[Asgard_CCGT,2030,1,58:58] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,59:59] -275
     units_on[Asgard_CCGT,2030,1,58:58] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,58:58] -125
     units_on[Asgard_CCGT,2030,1,58:58] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,58:58] -125
     units_on[Asgard_CCGT,2030,1,58:58] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,59:59] 275
@@ -41253,6 +42247,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,59:59] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,59:59] -500
     units_on[Asgard_CCGT,2030,1,59:59] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,59:59] -375
     units_on[Asgard_CCGT,2030,1,59:59] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,60:60] 125
+    units_on[Asgard_CCGT,2030,1,59:59] max_output_flow_during_start_up[Asgard_CCGT,2030,1,59:59] -375
+    units_on[Asgard_CCGT,2030,1,59:59] max_output_flow_during_start_up[Asgard_CCGT,2030,1,60:60] -125
+    units_on[Asgard_CCGT,2030,1,59:59] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,59:59] -225
+    units_on[Asgard_CCGT,2030,1,59:59] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,60:60] -275
     units_on[Asgard_CCGT,2030,1,59:59] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,59:59] -125
     units_on[Asgard_CCGT,2030,1,59:59] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,59:59] -125
     units_on[Asgard_CCGT,2030,1,59:59] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,60:60] 275
@@ -41261,6 +42259,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,60:60] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,60:60] -500
     units_on[Asgard_CCGT,2030,1,60:60] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,60:60] -375
     units_on[Asgard_CCGT,2030,1,60:60] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,61:61] 125
+    units_on[Asgard_CCGT,2030,1,60:60] max_output_flow_during_start_up[Asgard_CCGT,2030,1,60:60] -375
+    units_on[Asgard_CCGT,2030,1,60:60] max_output_flow_during_start_up[Asgard_CCGT,2030,1,61:61] -125
+    units_on[Asgard_CCGT,2030,1,60:60] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,60:60] -225
+    units_on[Asgard_CCGT,2030,1,60:60] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,61:61] -275
     units_on[Asgard_CCGT,2030,1,60:60] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,60:60] -125
     units_on[Asgard_CCGT,2030,1,60:60] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,60:60] -125
     units_on[Asgard_CCGT,2030,1,60:60] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,61:61] 275
@@ -41269,6 +42271,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,61:61] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,61:61] -500
     units_on[Asgard_CCGT,2030,1,61:61] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,61:61] -375
     units_on[Asgard_CCGT,2030,1,61:61] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,62:62] 125
+    units_on[Asgard_CCGT,2030,1,61:61] max_output_flow_during_start_up[Asgard_CCGT,2030,1,61:61] -375
+    units_on[Asgard_CCGT,2030,1,61:61] max_output_flow_during_start_up[Asgard_CCGT,2030,1,62:62] -125
+    units_on[Asgard_CCGT,2030,1,61:61] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,61:61] -225
+    units_on[Asgard_CCGT,2030,1,61:61] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,62:62] -275
     units_on[Asgard_CCGT,2030,1,61:61] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,61:61] -125
     units_on[Asgard_CCGT,2030,1,61:61] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,61:61] -125
     units_on[Asgard_CCGT,2030,1,61:61] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,62:62] 275
@@ -41277,6 +42283,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,62:62] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,62:62] -500
     units_on[Asgard_CCGT,2030,1,62:62] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,62:62] -375
     units_on[Asgard_CCGT,2030,1,62:62] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,63:63] 125
+    units_on[Asgard_CCGT,2030,1,62:62] max_output_flow_during_start_up[Asgard_CCGT,2030,1,62:62] -375
+    units_on[Asgard_CCGT,2030,1,62:62] max_output_flow_during_start_up[Asgard_CCGT,2030,1,63:63] -125
+    units_on[Asgard_CCGT,2030,1,62:62] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,62:62] -225
+    units_on[Asgard_CCGT,2030,1,62:62] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,63:63] -275
     units_on[Asgard_CCGT,2030,1,62:62] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,62:62] -125
     units_on[Asgard_CCGT,2030,1,62:62] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,62:62] -125
     units_on[Asgard_CCGT,2030,1,62:62] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,63:63] 275
@@ -41285,6 +42295,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,63:63] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,63:63] -500
     units_on[Asgard_CCGT,2030,1,63:63] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,63:63] -375
     units_on[Asgard_CCGT,2030,1,63:63] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,64:64] 125
+    units_on[Asgard_CCGT,2030,1,63:63] max_output_flow_during_start_up[Asgard_CCGT,2030,1,63:63] -375
+    units_on[Asgard_CCGT,2030,1,63:63] max_output_flow_during_start_up[Asgard_CCGT,2030,1,64:64] -125
+    units_on[Asgard_CCGT,2030,1,63:63] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,63:63] -225
+    units_on[Asgard_CCGT,2030,1,63:63] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,64:64] -275
     units_on[Asgard_CCGT,2030,1,63:63] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,63:63] -125
     units_on[Asgard_CCGT,2030,1,63:63] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,63:63] -125
     units_on[Asgard_CCGT,2030,1,63:63] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,64:64] 275
@@ -41293,6 +42307,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,64:64] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,64:64] -500
     units_on[Asgard_CCGT,2030,1,64:64] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,64:64] -375
     units_on[Asgard_CCGT,2030,1,64:64] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,65:65] 125
+    units_on[Asgard_CCGT,2030,1,64:64] max_output_flow_during_start_up[Asgard_CCGT,2030,1,64:64] -375
+    units_on[Asgard_CCGT,2030,1,64:64] max_output_flow_during_start_up[Asgard_CCGT,2030,1,65:65] -125
+    units_on[Asgard_CCGT,2030,1,64:64] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,64:64] -225
+    units_on[Asgard_CCGT,2030,1,64:64] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,65:65] -275
     units_on[Asgard_CCGT,2030,1,64:64] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,64:64] -125
     units_on[Asgard_CCGT,2030,1,64:64] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,64:64] -125
     units_on[Asgard_CCGT,2030,1,64:64] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,65:65] 275
@@ -41301,6 +42319,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,65:65] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,65:65] -500
     units_on[Asgard_CCGT,2030,1,65:65] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,65:65] -375
     units_on[Asgard_CCGT,2030,1,65:65] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,66:66] 125
+    units_on[Asgard_CCGT,2030,1,65:65] max_output_flow_during_start_up[Asgard_CCGT,2030,1,65:65] -375
+    units_on[Asgard_CCGT,2030,1,65:65] max_output_flow_during_start_up[Asgard_CCGT,2030,1,66:66] -125
+    units_on[Asgard_CCGT,2030,1,65:65] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,65:65] -225
+    units_on[Asgard_CCGT,2030,1,65:65] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,66:66] -275
     units_on[Asgard_CCGT,2030,1,65:65] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,65:65] -125
     units_on[Asgard_CCGT,2030,1,65:65] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,65:65] -125
     units_on[Asgard_CCGT,2030,1,65:65] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,66:66] 275
@@ -41309,6 +42331,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,66:66] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,66:66] -500
     units_on[Asgard_CCGT,2030,1,66:66] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,66:66] -375
     units_on[Asgard_CCGT,2030,1,66:66] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,67:67] 125
+    units_on[Asgard_CCGT,2030,1,66:66] max_output_flow_during_start_up[Asgard_CCGT,2030,1,66:66] -375
+    units_on[Asgard_CCGT,2030,1,66:66] max_output_flow_during_start_up[Asgard_CCGT,2030,1,67:67] -125
+    units_on[Asgard_CCGT,2030,1,66:66] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,66:66] -225
+    units_on[Asgard_CCGT,2030,1,66:66] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,67:67] -275
     units_on[Asgard_CCGT,2030,1,66:66] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,66:66] -125
     units_on[Asgard_CCGT,2030,1,66:66] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,66:66] -125
     units_on[Asgard_CCGT,2030,1,66:66] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,67:67] 275
@@ -41317,6 +42343,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,67:67] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,67:67] -500
     units_on[Asgard_CCGT,2030,1,67:67] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,67:67] -375
     units_on[Asgard_CCGT,2030,1,67:67] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,68:68] 125
+    units_on[Asgard_CCGT,2030,1,67:67] max_output_flow_during_start_up[Asgard_CCGT,2030,1,67:67] -375
+    units_on[Asgard_CCGT,2030,1,67:67] max_output_flow_during_start_up[Asgard_CCGT,2030,1,68:68] -125
+    units_on[Asgard_CCGT,2030,1,67:67] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,67:67] -225
+    units_on[Asgard_CCGT,2030,1,67:67] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,68:68] -275
     units_on[Asgard_CCGT,2030,1,67:67] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,67:67] -125
     units_on[Asgard_CCGT,2030,1,67:67] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,67:67] -125
     units_on[Asgard_CCGT,2030,1,67:67] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,68:68] 275
@@ -41325,6 +42355,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,68:68] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,68:68] -500
     units_on[Asgard_CCGT,2030,1,68:68] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,68:68] -375
     units_on[Asgard_CCGT,2030,1,68:68] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,69:69] 125
+    units_on[Asgard_CCGT,2030,1,68:68] max_output_flow_during_start_up[Asgard_CCGT,2030,1,68:68] -375
+    units_on[Asgard_CCGT,2030,1,68:68] max_output_flow_during_start_up[Asgard_CCGT,2030,1,69:69] -125
+    units_on[Asgard_CCGT,2030,1,68:68] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,68:68] -225
+    units_on[Asgard_CCGT,2030,1,68:68] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,69:69] -275
     units_on[Asgard_CCGT,2030,1,68:68] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,68:68] -125
     units_on[Asgard_CCGT,2030,1,68:68] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,68:68] -125
     units_on[Asgard_CCGT,2030,1,68:68] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,69:69] 275
@@ -41333,6 +42367,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,69:69] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,69:69] -500
     units_on[Asgard_CCGT,2030,1,69:69] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,69:69] -375
     units_on[Asgard_CCGT,2030,1,69:69] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,70:70] 125
+    units_on[Asgard_CCGT,2030,1,69:69] max_output_flow_during_start_up[Asgard_CCGT,2030,1,69:69] -375
+    units_on[Asgard_CCGT,2030,1,69:69] max_output_flow_during_start_up[Asgard_CCGT,2030,1,70:70] -125
+    units_on[Asgard_CCGT,2030,1,69:69] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,69:69] -225
+    units_on[Asgard_CCGT,2030,1,69:69] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,70:70] -275
     units_on[Asgard_CCGT,2030,1,69:69] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,69:69] -125
     units_on[Asgard_CCGT,2030,1,69:69] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,69:69] -125
     units_on[Asgard_CCGT,2030,1,69:69] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,70:70] 275
@@ -41341,6 +42379,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,70:70] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,70:70] -500
     units_on[Asgard_CCGT,2030,1,70:70] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,70:70] -375
     units_on[Asgard_CCGT,2030,1,70:70] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,71:71] 125
+    units_on[Asgard_CCGT,2030,1,70:70] max_output_flow_during_start_up[Asgard_CCGT,2030,1,70:70] -375
+    units_on[Asgard_CCGT,2030,1,70:70] max_output_flow_during_start_up[Asgard_CCGT,2030,1,71:71] -125
+    units_on[Asgard_CCGT,2030,1,70:70] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,70:70] -225
+    units_on[Asgard_CCGT,2030,1,70:70] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,71:71] -275
     units_on[Asgard_CCGT,2030,1,70:70] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,70:70] -125
     units_on[Asgard_CCGT,2030,1,70:70] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,70:70] -125
     units_on[Asgard_CCGT,2030,1,70:70] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,71:71] 275
@@ -41349,6 +42391,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,71:71] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,71:71] -500
     units_on[Asgard_CCGT,2030,1,71:71] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,71:71] -375
     units_on[Asgard_CCGT,2030,1,71:71] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,72:72] 125
+    units_on[Asgard_CCGT,2030,1,71:71] max_output_flow_during_start_up[Asgard_CCGT,2030,1,71:71] -375
+    units_on[Asgard_CCGT,2030,1,71:71] max_output_flow_during_start_up[Asgard_CCGT,2030,1,72:72] -125
+    units_on[Asgard_CCGT,2030,1,71:71] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,71:71] -225
+    units_on[Asgard_CCGT,2030,1,71:71] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,72:72] -275
     units_on[Asgard_CCGT,2030,1,71:71] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,71:71] -125
     units_on[Asgard_CCGT,2030,1,71:71] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,71:71] -125
     units_on[Asgard_CCGT,2030,1,71:71] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,72:72] 275
@@ -41357,6 +42403,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,72:72] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,72:72] -500
     units_on[Asgard_CCGT,2030,1,72:72] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,72:72] -375
     units_on[Asgard_CCGT,2030,1,72:72] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,73:73] 125
+    units_on[Asgard_CCGT,2030,1,72:72] max_output_flow_during_start_up[Asgard_CCGT,2030,1,72:72] -375
+    units_on[Asgard_CCGT,2030,1,72:72] max_output_flow_during_start_up[Asgard_CCGT,2030,1,73:73] -125
+    units_on[Asgard_CCGT,2030,1,72:72] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,72:72] -225
+    units_on[Asgard_CCGT,2030,1,72:72] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,73:73] -275
     units_on[Asgard_CCGT,2030,1,72:72] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,72:72] -125
     units_on[Asgard_CCGT,2030,1,72:72] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,72:72] -125
     units_on[Asgard_CCGT,2030,1,72:72] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,73:73] 275
@@ -41365,6 +42415,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,73:73] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,73:73] -500
     units_on[Asgard_CCGT,2030,1,73:73] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,73:73] -375
     units_on[Asgard_CCGT,2030,1,73:73] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,74:74] 125
+    units_on[Asgard_CCGT,2030,1,73:73] max_output_flow_during_start_up[Asgard_CCGT,2030,1,73:73] -375
+    units_on[Asgard_CCGT,2030,1,73:73] max_output_flow_during_start_up[Asgard_CCGT,2030,1,74:74] -125
+    units_on[Asgard_CCGT,2030,1,73:73] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,73:73] -225
+    units_on[Asgard_CCGT,2030,1,73:73] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,74:74] -275
     units_on[Asgard_CCGT,2030,1,73:73] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,73:73] -125
     units_on[Asgard_CCGT,2030,1,73:73] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,73:73] -125
     units_on[Asgard_CCGT,2030,1,73:73] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,74:74] 275
@@ -41373,6 +42427,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,74:74] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,74:74] -500
     units_on[Asgard_CCGT,2030,1,74:74] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,74:74] -375
     units_on[Asgard_CCGT,2030,1,74:74] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,75:75] 125
+    units_on[Asgard_CCGT,2030,1,74:74] max_output_flow_during_start_up[Asgard_CCGT,2030,1,74:74] -375
+    units_on[Asgard_CCGT,2030,1,74:74] max_output_flow_during_start_up[Asgard_CCGT,2030,1,75:75] -125
+    units_on[Asgard_CCGT,2030,1,74:74] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,74:74] -225
+    units_on[Asgard_CCGT,2030,1,74:74] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,75:75] -275
     units_on[Asgard_CCGT,2030,1,74:74] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,74:74] -125
     units_on[Asgard_CCGT,2030,1,74:74] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,74:74] -125
     units_on[Asgard_CCGT,2030,1,74:74] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,75:75] 275
@@ -41381,6 +42439,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,75:75] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,75:75] -500
     units_on[Asgard_CCGT,2030,1,75:75] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,75:75] -375
     units_on[Asgard_CCGT,2030,1,75:75] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,76:76] 125
+    units_on[Asgard_CCGT,2030,1,75:75] max_output_flow_during_start_up[Asgard_CCGT,2030,1,75:75] -375
+    units_on[Asgard_CCGT,2030,1,75:75] max_output_flow_during_start_up[Asgard_CCGT,2030,1,76:76] -125
+    units_on[Asgard_CCGT,2030,1,75:75] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,75:75] -225
+    units_on[Asgard_CCGT,2030,1,75:75] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,76:76] -275
     units_on[Asgard_CCGT,2030,1,75:75] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,75:75] -125
     units_on[Asgard_CCGT,2030,1,75:75] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,75:75] -125
     units_on[Asgard_CCGT,2030,1,75:75] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,76:76] 275
@@ -41389,6 +42451,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,76:76] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,76:76] -500
     units_on[Asgard_CCGT,2030,1,76:76] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,76:76] -375
     units_on[Asgard_CCGT,2030,1,76:76] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,77:77] 125
+    units_on[Asgard_CCGT,2030,1,76:76] max_output_flow_during_start_up[Asgard_CCGT,2030,1,76:76] -375
+    units_on[Asgard_CCGT,2030,1,76:76] max_output_flow_during_start_up[Asgard_CCGT,2030,1,77:77] -125
+    units_on[Asgard_CCGT,2030,1,76:76] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,76:76] -225
+    units_on[Asgard_CCGT,2030,1,76:76] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,77:77] -275
     units_on[Asgard_CCGT,2030,1,76:76] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,76:76] -125
     units_on[Asgard_CCGT,2030,1,76:76] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,76:76] -125
     units_on[Asgard_CCGT,2030,1,76:76] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,77:77] 275
@@ -41397,6 +42463,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,77:77] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,77:77] -500
     units_on[Asgard_CCGT,2030,1,77:77] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,77:77] -375
     units_on[Asgard_CCGT,2030,1,77:77] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,78:78] 125
+    units_on[Asgard_CCGT,2030,1,77:77] max_output_flow_during_start_up[Asgard_CCGT,2030,1,77:77] -375
+    units_on[Asgard_CCGT,2030,1,77:77] max_output_flow_during_start_up[Asgard_CCGT,2030,1,78:78] -125
+    units_on[Asgard_CCGT,2030,1,77:77] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,77:77] -225
+    units_on[Asgard_CCGT,2030,1,77:77] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,78:78] -275
     units_on[Asgard_CCGT,2030,1,77:77] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,77:77] -125
     units_on[Asgard_CCGT,2030,1,77:77] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,77:77] -125
     units_on[Asgard_CCGT,2030,1,77:77] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,78:78] 275
@@ -41405,6 +42475,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,78:78] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,78:78] -500
     units_on[Asgard_CCGT,2030,1,78:78] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,78:78] -375
     units_on[Asgard_CCGT,2030,1,78:78] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,79:79] 125
+    units_on[Asgard_CCGT,2030,1,78:78] max_output_flow_during_start_up[Asgard_CCGT,2030,1,78:78] -375
+    units_on[Asgard_CCGT,2030,1,78:78] max_output_flow_during_start_up[Asgard_CCGT,2030,1,79:79] -125
+    units_on[Asgard_CCGT,2030,1,78:78] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,78:78] -225
+    units_on[Asgard_CCGT,2030,1,78:78] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,79:79] -275
     units_on[Asgard_CCGT,2030,1,78:78] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,78:78] -125
     units_on[Asgard_CCGT,2030,1,78:78] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,78:78] -125
     units_on[Asgard_CCGT,2030,1,78:78] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,79:79] 275
@@ -41413,6 +42487,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,79:79] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,79:79] -500
     units_on[Asgard_CCGT,2030,1,79:79] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,79:79] -375
     units_on[Asgard_CCGT,2030,1,79:79] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,80:80] 125
+    units_on[Asgard_CCGT,2030,1,79:79] max_output_flow_during_start_up[Asgard_CCGT,2030,1,79:79] -375
+    units_on[Asgard_CCGT,2030,1,79:79] max_output_flow_during_start_up[Asgard_CCGT,2030,1,80:80] -125
+    units_on[Asgard_CCGT,2030,1,79:79] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,79:79] -225
+    units_on[Asgard_CCGT,2030,1,79:79] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,80:80] -275
     units_on[Asgard_CCGT,2030,1,79:79] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,79:79] -125
     units_on[Asgard_CCGT,2030,1,79:79] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,79:79] -125
     units_on[Asgard_CCGT,2030,1,79:79] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,80:80] 275
@@ -41421,6 +42499,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,80:80] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,80:80] -500
     units_on[Asgard_CCGT,2030,1,80:80] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,80:80] -375
     units_on[Asgard_CCGT,2030,1,80:80] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,81:81] 125
+    units_on[Asgard_CCGT,2030,1,80:80] max_output_flow_during_start_up[Asgard_CCGT,2030,1,80:80] -375
+    units_on[Asgard_CCGT,2030,1,80:80] max_output_flow_during_start_up[Asgard_CCGT,2030,1,81:81] -125
+    units_on[Asgard_CCGT,2030,1,80:80] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,80:80] -225
+    units_on[Asgard_CCGT,2030,1,80:80] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,81:81] -275
     units_on[Asgard_CCGT,2030,1,80:80] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,80:80] -125
     units_on[Asgard_CCGT,2030,1,80:80] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,80:80] -125
     units_on[Asgard_CCGT,2030,1,80:80] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,81:81] 275
@@ -41429,6 +42511,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,81:81] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,81:81] -500
     units_on[Asgard_CCGT,2030,1,81:81] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,81:81] -375
     units_on[Asgard_CCGT,2030,1,81:81] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,82:82] 125
+    units_on[Asgard_CCGT,2030,1,81:81] max_output_flow_during_start_up[Asgard_CCGT,2030,1,81:81] -375
+    units_on[Asgard_CCGT,2030,1,81:81] max_output_flow_during_start_up[Asgard_CCGT,2030,1,82:82] -125
+    units_on[Asgard_CCGT,2030,1,81:81] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,81:81] -225
+    units_on[Asgard_CCGT,2030,1,81:81] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,82:82] -275
     units_on[Asgard_CCGT,2030,1,81:81] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,81:81] -125
     units_on[Asgard_CCGT,2030,1,81:81] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,81:81] -125
     units_on[Asgard_CCGT,2030,1,81:81] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,82:82] 275
@@ -41437,6 +42523,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,82:82] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,82:82] -500
     units_on[Asgard_CCGT,2030,1,82:82] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,82:82] -375
     units_on[Asgard_CCGT,2030,1,82:82] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,83:83] 125
+    units_on[Asgard_CCGT,2030,1,82:82] max_output_flow_during_start_up[Asgard_CCGT,2030,1,82:82] -375
+    units_on[Asgard_CCGT,2030,1,82:82] max_output_flow_during_start_up[Asgard_CCGT,2030,1,83:83] -125
+    units_on[Asgard_CCGT,2030,1,82:82] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,82:82] -225
+    units_on[Asgard_CCGT,2030,1,82:82] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,83:83] -275
     units_on[Asgard_CCGT,2030,1,82:82] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,82:82] -125
     units_on[Asgard_CCGT,2030,1,82:82] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,82:82] -125
     units_on[Asgard_CCGT,2030,1,82:82] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,83:83] 275
@@ -41445,6 +42535,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,83:83] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,83:83] -500
     units_on[Asgard_CCGT,2030,1,83:83] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,83:83] -375
     units_on[Asgard_CCGT,2030,1,83:83] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,84:84] 125
+    units_on[Asgard_CCGT,2030,1,83:83] max_output_flow_during_start_up[Asgard_CCGT,2030,1,83:83] -375
+    units_on[Asgard_CCGT,2030,1,83:83] max_output_flow_during_start_up[Asgard_CCGT,2030,1,84:84] -125
+    units_on[Asgard_CCGT,2030,1,83:83] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,83:83] -225
+    units_on[Asgard_CCGT,2030,1,83:83] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,84:84] -275
     units_on[Asgard_CCGT,2030,1,83:83] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,83:83] -125
     units_on[Asgard_CCGT,2030,1,83:83] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,83:83] -125
     units_on[Asgard_CCGT,2030,1,83:83] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,84:84] 275
@@ -41453,6 +42547,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,84:84] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,84:84] -500
     units_on[Asgard_CCGT,2030,1,84:84] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,84:84] -375
     units_on[Asgard_CCGT,2030,1,84:84] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,85:85] 125
+    units_on[Asgard_CCGT,2030,1,84:84] max_output_flow_during_start_up[Asgard_CCGT,2030,1,84:84] -375
+    units_on[Asgard_CCGT,2030,1,84:84] max_output_flow_during_start_up[Asgard_CCGT,2030,1,85:85] -125
+    units_on[Asgard_CCGT,2030,1,84:84] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,84:84] -225
+    units_on[Asgard_CCGT,2030,1,84:84] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,85:85] -275
     units_on[Asgard_CCGT,2030,1,84:84] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,84:84] -125
     units_on[Asgard_CCGT,2030,1,84:84] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,84:84] -125
     units_on[Asgard_CCGT,2030,1,84:84] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,85:85] 275
@@ -41461,6 +42559,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,85:85] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,85:85] -500
     units_on[Asgard_CCGT,2030,1,85:85] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,85:85] -375
     units_on[Asgard_CCGT,2030,1,85:85] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,86:86] 125
+    units_on[Asgard_CCGT,2030,1,85:85] max_output_flow_during_start_up[Asgard_CCGT,2030,1,85:85] -375
+    units_on[Asgard_CCGT,2030,1,85:85] max_output_flow_during_start_up[Asgard_CCGT,2030,1,86:86] -125
+    units_on[Asgard_CCGT,2030,1,85:85] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,85:85] -225
+    units_on[Asgard_CCGT,2030,1,85:85] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,86:86] -275
     units_on[Asgard_CCGT,2030,1,85:85] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,85:85] -125
     units_on[Asgard_CCGT,2030,1,85:85] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,85:85] -125
     units_on[Asgard_CCGT,2030,1,85:85] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,86:86] 275
@@ -41469,6 +42571,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,86:86] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,86:86] -500
     units_on[Asgard_CCGT,2030,1,86:86] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,86:86] -375
     units_on[Asgard_CCGT,2030,1,86:86] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,87:87] 125
+    units_on[Asgard_CCGT,2030,1,86:86] max_output_flow_during_start_up[Asgard_CCGT,2030,1,86:86] -375
+    units_on[Asgard_CCGT,2030,1,86:86] max_output_flow_during_start_up[Asgard_CCGT,2030,1,87:87] -125
+    units_on[Asgard_CCGT,2030,1,86:86] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,86:86] -225
+    units_on[Asgard_CCGT,2030,1,86:86] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,87:87] -275
     units_on[Asgard_CCGT,2030,1,86:86] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,86:86] -125
     units_on[Asgard_CCGT,2030,1,86:86] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,86:86] -125
     units_on[Asgard_CCGT,2030,1,86:86] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,87:87] 275
@@ -41477,6 +42583,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,87:87] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,87:87] -500
     units_on[Asgard_CCGT,2030,1,87:87] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,87:87] -375
     units_on[Asgard_CCGT,2030,1,87:87] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,88:88] 125
+    units_on[Asgard_CCGT,2030,1,87:87] max_output_flow_during_start_up[Asgard_CCGT,2030,1,87:87] -375
+    units_on[Asgard_CCGT,2030,1,87:87] max_output_flow_during_start_up[Asgard_CCGT,2030,1,88:88] -125
+    units_on[Asgard_CCGT,2030,1,87:87] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,87:87] -225
+    units_on[Asgard_CCGT,2030,1,87:87] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,88:88] -275
     units_on[Asgard_CCGT,2030,1,87:87] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,87:87] -125
     units_on[Asgard_CCGT,2030,1,87:87] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,87:87] -125
     units_on[Asgard_CCGT,2030,1,87:87] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,88:88] 275
@@ -41485,6 +42595,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,88:88] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,88:88] -500
     units_on[Asgard_CCGT,2030,1,88:88] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,88:88] -375
     units_on[Asgard_CCGT,2030,1,88:88] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,89:89] 125
+    units_on[Asgard_CCGT,2030,1,88:88] max_output_flow_during_start_up[Asgard_CCGT,2030,1,88:88] -375
+    units_on[Asgard_CCGT,2030,1,88:88] max_output_flow_during_start_up[Asgard_CCGT,2030,1,89:89] -125
+    units_on[Asgard_CCGT,2030,1,88:88] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,88:88] -225
+    units_on[Asgard_CCGT,2030,1,88:88] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,89:89] -275
     units_on[Asgard_CCGT,2030,1,88:88] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,88:88] -125
     units_on[Asgard_CCGT,2030,1,88:88] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,88:88] -125
     units_on[Asgard_CCGT,2030,1,88:88] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,89:89] 275
@@ -41493,6 +42607,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,89:89] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,89:89] -500
     units_on[Asgard_CCGT,2030,1,89:89] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,89:89] -375
     units_on[Asgard_CCGT,2030,1,89:89] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,90:90] 125
+    units_on[Asgard_CCGT,2030,1,89:89] max_output_flow_during_start_up[Asgard_CCGT,2030,1,89:89] -375
+    units_on[Asgard_CCGT,2030,1,89:89] max_output_flow_during_start_up[Asgard_CCGT,2030,1,90:90] -125
+    units_on[Asgard_CCGT,2030,1,89:89] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,89:89] -225
+    units_on[Asgard_CCGT,2030,1,89:89] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,90:90] -275
     units_on[Asgard_CCGT,2030,1,89:89] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,89:89] -125
     units_on[Asgard_CCGT,2030,1,89:89] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,89:89] -125
     units_on[Asgard_CCGT,2030,1,89:89] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,90:90] 275
@@ -41501,6 +42619,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,90:90] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,90:90] -500
     units_on[Asgard_CCGT,2030,1,90:90] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,90:90] -375
     units_on[Asgard_CCGT,2030,1,90:90] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,91:91] 125
+    units_on[Asgard_CCGT,2030,1,90:90] max_output_flow_during_start_up[Asgard_CCGT,2030,1,90:90] -375
+    units_on[Asgard_CCGT,2030,1,90:90] max_output_flow_during_start_up[Asgard_CCGT,2030,1,91:91] -125
+    units_on[Asgard_CCGT,2030,1,90:90] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,90:90] -225
+    units_on[Asgard_CCGT,2030,1,90:90] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,91:91] -275
     units_on[Asgard_CCGT,2030,1,90:90] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,90:90] -125
     units_on[Asgard_CCGT,2030,1,90:90] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,90:90] -125
     units_on[Asgard_CCGT,2030,1,90:90] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,91:91] 275
@@ -41509,6 +42631,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,91:91] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,91:91] -500
     units_on[Asgard_CCGT,2030,1,91:91] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,91:91] -375
     units_on[Asgard_CCGT,2030,1,91:91] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,92:92] 125
+    units_on[Asgard_CCGT,2030,1,91:91] max_output_flow_during_start_up[Asgard_CCGT,2030,1,91:91] -375
+    units_on[Asgard_CCGT,2030,1,91:91] max_output_flow_during_start_up[Asgard_CCGT,2030,1,92:92] -125
+    units_on[Asgard_CCGT,2030,1,91:91] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,91:91] -225
+    units_on[Asgard_CCGT,2030,1,91:91] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,92:92] -275
     units_on[Asgard_CCGT,2030,1,91:91] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,91:91] -125
     units_on[Asgard_CCGT,2030,1,91:91] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,91:91] -125
     units_on[Asgard_CCGT,2030,1,91:91] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,92:92] 275
@@ -41517,6 +42643,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,92:92] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,92:92] -500
     units_on[Asgard_CCGT,2030,1,92:92] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,92:92] -375
     units_on[Asgard_CCGT,2030,1,92:92] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,93:93] 125
+    units_on[Asgard_CCGT,2030,1,92:92] max_output_flow_during_start_up[Asgard_CCGT,2030,1,92:92] -375
+    units_on[Asgard_CCGT,2030,1,92:92] max_output_flow_during_start_up[Asgard_CCGT,2030,1,93:93] -125
+    units_on[Asgard_CCGT,2030,1,92:92] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,92:92] -225
+    units_on[Asgard_CCGT,2030,1,92:92] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,93:93] -275
     units_on[Asgard_CCGT,2030,1,92:92] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,92:92] -125
     units_on[Asgard_CCGT,2030,1,92:92] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,92:92] -125
     units_on[Asgard_CCGT,2030,1,92:92] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,93:93] 275
@@ -41525,6 +42655,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,93:93] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,93:93] -500
     units_on[Asgard_CCGT,2030,1,93:93] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,93:93] -375
     units_on[Asgard_CCGT,2030,1,93:93] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,94:94] 125
+    units_on[Asgard_CCGT,2030,1,93:93] max_output_flow_during_start_up[Asgard_CCGT,2030,1,93:93] -375
+    units_on[Asgard_CCGT,2030,1,93:93] max_output_flow_during_start_up[Asgard_CCGT,2030,1,94:94] -125
+    units_on[Asgard_CCGT,2030,1,93:93] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,93:93] -225
+    units_on[Asgard_CCGT,2030,1,93:93] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,94:94] -275
     units_on[Asgard_CCGT,2030,1,93:93] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,93:93] -125
     units_on[Asgard_CCGT,2030,1,93:93] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,93:93] -125
     units_on[Asgard_CCGT,2030,1,93:93] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,94:94] 275
@@ -41533,6 +42667,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,94:94] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,94:94] -500
     units_on[Asgard_CCGT,2030,1,94:94] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,94:94] -375
     units_on[Asgard_CCGT,2030,1,94:94] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,95:95] 125
+    units_on[Asgard_CCGT,2030,1,94:94] max_output_flow_during_start_up[Asgard_CCGT,2030,1,94:94] -375
+    units_on[Asgard_CCGT,2030,1,94:94] max_output_flow_during_start_up[Asgard_CCGT,2030,1,95:95] -125
+    units_on[Asgard_CCGT,2030,1,94:94] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,94:94] -225
+    units_on[Asgard_CCGT,2030,1,94:94] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,95:95] -275
     units_on[Asgard_CCGT,2030,1,94:94] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,94:94] -125
     units_on[Asgard_CCGT,2030,1,94:94] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,94:94] -125
     units_on[Asgard_CCGT,2030,1,94:94] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,95:95] 275
@@ -41541,6 +42679,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,95:95] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,95:95] -500
     units_on[Asgard_CCGT,2030,1,95:95] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,95:95] -375
     units_on[Asgard_CCGT,2030,1,95:95] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,96:96] 125
+    units_on[Asgard_CCGT,2030,1,95:95] max_output_flow_during_start_up[Asgard_CCGT,2030,1,95:95] -375
+    units_on[Asgard_CCGT,2030,1,95:95] max_output_flow_during_start_up[Asgard_CCGT,2030,1,96:96] -125
+    units_on[Asgard_CCGT,2030,1,95:95] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,95:95] -225
+    units_on[Asgard_CCGT,2030,1,95:95] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,96:96] -275
     units_on[Asgard_CCGT,2030,1,95:95] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,95:95] -125
     units_on[Asgard_CCGT,2030,1,95:95] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,95:95] -125
     units_on[Asgard_CCGT,2030,1,95:95] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,96:96] 275
@@ -41549,6 +42691,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,96:96] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,96:96] -500
     units_on[Asgard_CCGT,2030,1,96:96] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,96:96] -375
     units_on[Asgard_CCGT,2030,1,96:96] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,97:97] 125
+    units_on[Asgard_CCGT,2030,1,96:96] max_output_flow_during_start_up[Asgard_CCGT,2030,1,96:96] -375
+    units_on[Asgard_CCGT,2030,1,96:96] max_output_flow_during_start_up[Asgard_CCGT,2030,1,97:97] -125
+    units_on[Asgard_CCGT,2030,1,96:96] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,96:96] -225
+    units_on[Asgard_CCGT,2030,1,96:96] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,97:97] -275
     units_on[Asgard_CCGT,2030,1,96:96] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,96:96] -125
     units_on[Asgard_CCGT,2030,1,96:96] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,96:96] -125
     units_on[Asgard_CCGT,2030,1,96:96] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,97:97] 275
@@ -41557,6 +42703,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,97:97] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,97:97] -500
     units_on[Asgard_CCGT,2030,1,97:97] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,97:97] -375
     units_on[Asgard_CCGT,2030,1,97:97] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,98:98] 125
+    units_on[Asgard_CCGT,2030,1,97:97] max_output_flow_during_start_up[Asgard_CCGT,2030,1,97:97] -375
+    units_on[Asgard_CCGT,2030,1,97:97] max_output_flow_during_start_up[Asgard_CCGT,2030,1,98:98] -125
+    units_on[Asgard_CCGT,2030,1,97:97] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,97:97] -225
+    units_on[Asgard_CCGT,2030,1,97:97] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,98:98] -275
     units_on[Asgard_CCGT,2030,1,97:97] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,97:97] -125
     units_on[Asgard_CCGT,2030,1,97:97] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,97:97] -125
     units_on[Asgard_CCGT,2030,1,97:97] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,98:98] 275
@@ -41565,6 +42715,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,98:98] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,98:98] -500
     units_on[Asgard_CCGT,2030,1,98:98] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,98:98] -375
     units_on[Asgard_CCGT,2030,1,98:98] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,99:99] 125
+    units_on[Asgard_CCGT,2030,1,98:98] max_output_flow_during_start_up[Asgard_CCGT,2030,1,98:98] -375
+    units_on[Asgard_CCGT,2030,1,98:98] max_output_flow_during_start_up[Asgard_CCGT,2030,1,99:99] -125
+    units_on[Asgard_CCGT,2030,1,98:98] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,98:98] -225
+    units_on[Asgard_CCGT,2030,1,98:98] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,99:99] -275
     units_on[Asgard_CCGT,2030,1,98:98] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,98:98] -125
     units_on[Asgard_CCGT,2030,1,98:98] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,98:98] -125
     units_on[Asgard_CCGT,2030,1,98:98] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,99:99] 275
@@ -41573,6 +42727,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,99:99] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,99:99] -500
     units_on[Asgard_CCGT,2030,1,99:99] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,99:99] -375
     units_on[Asgard_CCGT,2030,1,99:99] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,100:100] 125
+    units_on[Asgard_CCGT,2030,1,99:99] max_output_flow_during_start_up[Asgard_CCGT,2030,1,99:99] -375
+    units_on[Asgard_CCGT,2030,1,99:99] max_output_flow_during_start_up[Asgard_CCGT,2030,1,100:100] -125
+    units_on[Asgard_CCGT,2030,1,99:99] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,99:99] -225
+    units_on[Asgard_CCGT,2030,1,99:99] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,100:100] -275
     units_on[Asgard_CCGT,2030,1,99:99] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,99:99] -125
     units_on[Asgard_CCGT,2030,1,99:99] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,99:99] -125
     units_on[Asgard_CCGT,2030,1,99:99] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,100:100] 275
@@ -41581,6 +42739,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,100:100] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,100:100] -500
     units_on[Asgard_CCGT,2030,1,100:100] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,100:100] -375
     units_on[Asgard_CCGT,2030,1,100:100] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,101:101] 125
+    units_on[Asgard_CCGT,2030,1,100:100] max_output_flow_during_start_up[Asgard_CCGT,2030,1,100:100] -375
+    units_on[Asgard_CCGT,2030,1,100:100] max_output_flow_during_start_up[Asgard_CCGT,2030,1,101:101] -125
+    units_on[Asgard_CCGT,2030,1,100:100] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,100:100] -225
+    units_on[Asgard_CCGT,2030,1,100:100] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,101:101] -275
     units_on[Asgard_CCGT,2030,1,100:100] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,100:100] -125
     units_on[Asgard_CCGT,2030,1,100:100] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,100:100] -125
     units_on[Asgard_CCGT,2030,1,100:100] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,101:101] 275
@@ -41589,6 +42751,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,101:101] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,101:101] -500
     units_on[Asgard_CCGT,2030,1,101:101] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,101:101] -375
     units_on[Asgard_CCGT,2030,1,101:101] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,102:102] 125
+    units_on[Asgard_CCGT,2030,1,101:101] max_output_flow_during_start_up[Asgard_CCGT,2030,1,101:101] -375
+    units_on[Asgard_CCGT,2030,1,101:101] max_output_flow_during_start_up[Asgard_CCGT,2030,1,102:102] -125
+    units_on[Asgard_CCGT,2030,1,101:101] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,101:101] -225
+    units_on[Asgard_CCGT,2030,1,101:101] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,102:102] -275
     units_on[Asgard_CCGT,2030,1,101:101] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,101:101] -125
     units_on[Asgard_CCGT,2030,1,101:101] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,101:101] -125
     units_on[Asgard_CCGT,2030,1,101:101] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,102:102] 275
@@ -41597,6 +42763,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,102:102] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,102:102] -500
     units_on[Asgard_CCGT,2030,1,102:102] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,102:102] -375
     units_on[Asgard_CCGT,2030,1,102:102] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,103:103] 125
+    units_on[Asgard_CCGT,2030,1,102:102] max_output_flow_during_start_up[Asgard_CCGT,2030,1,102:102] -375
+    units_on[Asgard_CCGT,2030,1,102:102] max_output_flow_during_start_up[Asgard_CCGT,2030,1,103:103] -125
+    units_on[Asgard_CCGT,2030,1,102:102] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,102:102] -225
+    units_on[Asgard_CCGT,2030,1,102:102] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,103:103] -275
     units_on[Asgard_CCGT,2030,1,102:102] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,102:102] -125
     units_on[Asgard_CCGT,2030,1,102:102] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,102:102] -125
     units_on[Asgard_CCGT,2030,1,102:102] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,103:103] 275
@@ -41605,6 +42775,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,103:103] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,103:103] -500
     units_on[Asgard_CCGT,2030,1,103:103] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,103:103] -375
     units_on[Asgard_CCGT,2030,1,103:103] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,104:104] 125
+    units_on[Asgard_CCGT,2030,1,103:103] max_output_flow_during_start_up[Asgard_CCGT,2030,1,103:103] -375
+    units_on[Asgard_CCGT,2030,1,103:103] max_output_flow_during_start_up[Asgard_CCGT,2030,1,104:104] -125
+    units_on[Asgard_CCGT,2030,1,103:103] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,103:103] -225
+    units_on[Asgard_CCGT,2030,1,103:103] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,104:104] -275
     units_on[Asgard_CCGT,2030,1,103:103] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,103:103] -125
     units_on[Asgard_CCGT,2030,1,103:103] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,103:103] -125
     units_on[Asgard_CCGT,2030,1,103:103] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,104:104] 275
@@ -41613,6 +42787,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,104:104] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,104:104] -500
     units_on[Asgard_CCGT,2030,1,104:104] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,104:104] -375
     units_on[Asgard_CCGT,2030,1,104:104] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,105:105] 125
+    units_on[Asgard_CCGT,2030,1,104:104] max_output_flow_during_start_up[Asgard_CCGT,2030,1,104:104] -375
+    units_on[Asgard_CCGT,2030,1,104:104] max_output_flow_during_start_up[Asgard_CCGT,2030,1,105:105] -125
+    units_on[Asgard_CCGT,2030,1,104:104] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,104:104] -225
+    units_on[Asgard_CCGT,2030,1,104:104] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,105:105] -275
     units_on[Asgard_CCGT,2030,1,104:104] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,104:104] -125
     units_on[Asgard_CCGT,2030,1,104:104] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,104:104] -125
     units_on[Asgard_CCGT,2030,1,104:104] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,105:105] 275
@@ -41621,6 +42799,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,105:105] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,105:105] -500
     units_on[Asgard_CCGT,2030,1,105:105] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,105:105] -375
     units_on[Asgard_CCGT,2030,1,105:105] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,106:106] 125
+    units_on[Asgard_CCGT,2030,1,105:105] max_output_flow_during_start_up[Asgard_CCGT,2030,1,105:105] -375
+    units_on[Asgard_CCGT,2030,1,105:105] max_output_flow_during_start_up[Asgard_CCGT,2030,1,106:106] -125
+    units_on[Asgard_CCGT,2030,1,105:105] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,105:105] -225
+    units_on[Asgard_CCGT,2030,1,105:105] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,106:106] -275
     units_on[Asgard_CCGT,2030,1,105:105] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,105:105] -125
     units_on[Asgard_CCGT,2030,1,105:105] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,105:105] -125
     units_on[Asgard_CCGT,2030,1,105:105] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,106:106] 275
@@ -41629,6 +42811,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,106:106] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,106:106] -500
     units_on[Asgard_CCGT,2030,1,106:106] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,106:106] -375
     units_on[Asgard_CCGT,2030,1,106:106] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,107:107] 125
+    units_on[Asgard_CCGT,2030,1,106:106] max_output_flow_during_start_up[Asgard_CCGT,2030,1,106:106] -375
+    units_on[Asgard_CCGT,2030,1,106:106] max_output_flow_during_start_up[Asgard_CCGT,2030,1,107:107] -125
+    units_on[Asgard_CCGT,2030,1,106:106] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,106:106] -225
+    units_on[Asgard_CCGT,2030,1,106:106] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,107:107] -275
     units_on[Asgard_CCGT,2030,1,106:106] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,106:106] -125
     units_on[Asgard_CCGT,2030,1,106:106] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,106:106] -125
     units_on[Asgard_CCGT,2030,1,106:106] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,107:107] 275
@@ -41637,6 +42823,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,107:107] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,107:107] -500
     units_on[Asgard_CCGT,2030,1,107:107] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,107:107] -375
     units_on[Asgard_CCGT,2030,1,107:107] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,108:108] 125
+    units_on[Asgard_CCGT,2030,1,107:107] max_output_flow_during_start_up[Asgard_CCGT,2030,1,107:107] -375
+    units_on[Asgard_CCGT,2030,1,107:107] max_output_flow_during_start_up[Asgard_CCGT,2030,1,108:108] -125
+    units_on[Asgard_CCGT,2030,1,107:107] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,107:107] -225
+    units_on[Asgard_CCGT,2030,1,107:107] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,108:108] -275
     units_on[Asgard_CCGT,2030,1,107:107] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,107:107] -125
     units_on[Asgard_CCGT,2030,1,107:107] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,107:107] -125
     units_on[Asgard_CCGT,2030,1,107:107] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,108:108] 275
@@ -41645,6 +42835,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,108:108] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,108:108] -500
     units_on[Asgard_CCGT,2030,1,108:108] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,108:108] -375
     units_on[Asgard_CCGT,2030,1,108:108] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,109:109] 125
+    units_on[Asgard_CCGT,2030,1,108:108] max_output_flow_during_start_up[Asgard_CCGT,2030,1,108:108] -375
+    units_on[Asgard_CCGT,2030,1,108:108] max_output_flow_during_start_up[Asgard_CCGT,2030,1,109:109] -125
+    units_on[Asgard_CCGT,2030,1,108:108] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,108:108] -225
+    units_on[Asgard_CCGT,2030,1,108:108] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,109:109] -275
     units_on[Asgard_CCGT,2030,1,108:108] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,108:108] -125
     units_on[Asgard_CCGT,2030,1,108:108] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,108:108] -125
     units_on[Asgard_CCGT,2030,1,108:108] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,109:109] 275
@@ -41653,6 +42847,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,109:109] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,109:109] -500
     units_on[Asgard_CCGT,2030,1,109:109] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,109:109] -375
     units_on[Asgard_CCGT,2030,1,109:109] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,110:110] 125
+    units_on[Asgard_CCGT,2030,1,109:109] max_output_flow_during_start_up[Asgard_CCGT,2030,1,109:109] -375
+    units_on[Asgard_CCGT,2030,1,109:109] max_output_flow_during_start_up[Asgard_CCGT,2030,1,110:110] -125
+    units_on[Asgard_CCGT,2030,1,109:109] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,109:109] -225
+    units_on[Asgard_CCGT,2030,1,109:109] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,110:110] -275
     units_on[Asgard_CCGT,2030,1,109:109] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,109:109] -125
     units_on[Asgard_CCGT,2030,1,109:109] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,109:109] -125
     units_on[Asgard_CCGT,2030,1,109:109] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,110:110] 275
@@ -41661,6 +42859,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,110:110] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,110:110] -500
     units_on[Asgard_CCGT,2030,1,110:110] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,110:110] -375
     units_on[Asgard_CCGT,2030,1,110:110] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,111:111] 125
+    units_on[Asgard_CCGT,2030,1,110:110] max_output_flow_during_start_up[Asgard_CCGT,2030,1,110:110] -375
+    units_on[Asgard_CCGT,2030,1,110:110] max_output_flow_during_start_up[Asgard_CCGT,2030,1,111:111] -125
+    units_on[Asgard_CCGT,2030,1,110:110] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,110:110] -225
+    units_on[Asgard_CCGT,2030,1,110:110] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,111:111] -275
     units_on[Asgard_CCGT,2030,1,110:110] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,110:110] -125
     units_on[Asgard_CCGT,2030,1,110:110] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,110:110] -125
     units_on[Asgard_CCGT,2030,1,110:110] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,111:111] 275
@@ -41669,6 +42871,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,111:111] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,111:111] -500
     units_on[Asgard_CCGT,2030,1,111:111] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,111:111] -375
     units_on[Asgard_CCGT,2030,1,111:111] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,112:112] 125
+    units_on[Asgard_CCGT,2030,1,111:111] max_output_flow_during_start_up[Asgard_CCGT,2030,1,111:111] -375
+    units_on[Asgard_CCGT,2030,1,111:111] max_output_flow_during_start_up[Asgard_CCGT,2030,1,112:112] -125
+    units_on[Asgard_CCGT,2030,1,111:111] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,111:111] -225
+    units_on[Asgard_CCGT,2030,1,111:111] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,112:112] -275
     units_on[Asgard_CCGT,2030,1,111:111] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,111:111] -125
     units_on[Asgard_CCGT,2030,1,111:111] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,111:111] -125
     units_on[Asgard_CCGT,2030,1,111:111] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,112:112] 275
@@ -41677,6 +42883,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,112:112] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,112:112] -500
     units_on[Asgard_CCGT,2030,1,112:112] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,112:112] -375
     units_on[Asgard_CCGT,2030,1,112:112] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,113:113] 125
+    units_on[Asgard_CCGT,2030,1,112:112] max_output_flow_during_start_up[Asgard_CCGT,2030,1,112:112] -375
+    units_on[Asgard_CCGT,2030,1,112:112] max_output_flow_during_start_up[Asgard_CCGT,2030,1,113:113] -125
+    units_on[Asgard_CCGT,2030,1,112:112] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,112:112] -225
+    units_on[Asgard_CCGT,2030,1,112:112] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,113:113] -275
     units_on[Asgard_CCGT,2030,1,112:112] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,112:112] -125
     units_on[Asgard_CCGT,2030,1,112:112] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,112:112] -125
     units_on[Asgard_CCGT,2030,1,112:112] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,113:113] 275
@@ -41685,6 +42895,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,113:113] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,113:113] -500
     units_on[Asgard_CCGT,2030,1,113:113] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,113:113] -375
     units_on[Asgard_CCGT,2030,1,113:113] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,114:114] 125
+    units_on[Asgard_CCGT,2030,1,113:113] max_output_flow_during_start_up[Asgard_CCGT,2030,1,113:113] -375
+    units_on[Asgard_CCGT,2030,1,113:113] max_output_flow_during_start_up[Asgard_CCGT,2030,1,114:114] -125
+    units_on[Asgard_CCGT,2030,1,113:113] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,113:113] -225
+    units_on[Asgard_CCGT,2030,1,113:113] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,114:114] -275
     units_on[Asgard_CCGT,2030,1,113:113] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,113:113] -125
     units_on[Asgard_CCGT,2030,1,113:113] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,113:113] -125
     units_on[Asgard_CCGT,2030,1,113:113] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,114:114] 275
@@ -41693,6 +42907,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,114:114] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,114:114] -500
     units_on[Asgard_CCGT,2030,1,114:114] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,114:114] -375
     units_on[Asgard_CCGT,2030,1,114:114] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,115:115] 125
+    units_on[Asgard_CCGT,2030,1,114:114] max_output_flow_during_start_up[Asgard_CCGT,2030,1,114:114] -375
+    units_on[Asgard_CCGT,2030,1,114:114] max_output_flow_during_start_up[Asgard_CCGT,2030,1,115:115] -125
+    units_on[Asgard_CCGT,2030,1,114:114] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,114:114] -225
+    units_on[Asgard_CCGT,2030,1,114:114] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,115:115] -275
     units_on[Asgard_CCGT,2030,1,114:114] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,114:114] -125
     units_on[Asgard_CCGT,2030,1,114:114] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,114:114] -125
     units_on[Asgard_CCGT,2030,1,114:114] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,115:115] 275
@@ -41701,6 +42919,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,115:115] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,115:115] -500
     units_on[Asgard_CCGT,2030,1,115:115] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,115:115] -375
     units_on[Asgard_CCGT,2030,1,115:115] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,116:116] 125
+    units_on[Asgard_CCGT,2030,1,115:115] max_output_flow_during_start_up[Asgard_CCGT,2030,1,115:115] -375
+    units_on[Asgard_CCGT,2030,1,115:115] max_output_flow_during_start_up[Asgard_CCGT,2030,1,116:116] -125
+    units_on[Asgard_CCGT,2030,1,115:115] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,115:115] -225
+    units_on[Asgard_CCGT,2030,1,115:115] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,116:116] -275
     units_on[Asgard_CCGT,2030,1,115:115] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,115:115] -125
     units_on[Asgard_CCGT,2030,1,115:115] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,115:115] -125
     units_on[Asgard_CCGT,2030,1,115:115] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,116:116] 275
@@ -41709,6 +42931,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,116:116] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,116:116] -500
     units_on[Asgard_CCGT,2030,1,116:116] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,116:116] -375
     units_on[Asgard_CCGT,2030,1,116:116] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,117:117] 125
+    units_on[Asgard_CCGT,2030,1,116:116] max_output_flow_during_start_up[Asgard_CCGT,2030,1,116:116] -375
+    units_on[Asgard_CCGT,2030,1,116:116] max_output_flow_during_start_up[Asgard_CCGT,2030,1,117:117] -125
+    units_on[Asgard_CCGT,2030,1,116:116] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,116:116] -225
+    units_on[Asgard_CCGT,2030,1,116:116] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,117:117] -275
     units_on[Asgard_CCGT,2030,1,116:116] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,116:116] -125
     units_on[Asgard_CCGT,2030,1,116:116] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,116:116] -125
     units_on[Asgard_CCGT,2030,1,116:116] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,117:117] 275
@@ -41717,6 +42943,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,117:117] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,117:117] -500
     units_on[Asgard_CCGT,2030,1,117:117] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,117:117] -375
     units_on[Asgard_CCGT,2030,1,117:117] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,118:118] 125
+    units_on[Asgard_CCGT,2030,1,117:117] max_output_flow_during_start_up[Asgard_CCGT,2030,1,117:117] -375
+    units_on[Asgard_CCGT,2030,1,117:117] max_output_flow_during_start_up[Asgard_CCGT,2030,1,118:118] -125
+    units_on[Asgard_CCGT,2030,1,117:117] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,117:117] -225
+    units_on[Asgard_CCGT,2030,1,117:117] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,118:118] -275
     units_on[Asgard_CCGT,2030,1,117:117] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,117:117] -125
     units_on[Asgard_CCGT,2030,1,117:117] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,117:117] -125
     units_on[Asgard_CCGT,2030,1,117:117] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,118:118] 275
@@ -41725,6 +42955,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,118:118] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,118:118] -500
     units_on[Asgard_CCGT,2030,1,118:118] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,118:118] -375
     units_on[Asgard_CCGT,2030,1,118:118] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,119:119] 125
+    units_on[Asgard_CCGT,2030,1,118:118] max_output_flow_during_start_up[Asgard_CCGT,2030,1,118:118] -375
+    units_on[Asgard_CCGT,2030,1,118:118] max_output_flow_during_start_up[Asgard_CCGT,2030,1,119:119] -125
+    units_on[Asgard_CCGT,2030,1,118:118] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,118:118] -225
+    units_on[Asgard_CCGT,2030,1,118:118] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,119:119] -275
     units_on[Asgard_CCGT,2030,1,118:118] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,118:118] -125
     units_on[Asgard_CCGT,2030,1,118:118] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,118:118] -125
     units_on[Asgard_CCGT,2030,1,118:118] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,119:119] 275
@@ -41733,6 +42967,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,119:119] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,119:119] -500
     units_on[Asgard_CCGT,2030,1,119:119] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,119:119] -375
     units_on[Asgard_CCGT,2030,1,119:119] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,120:120] 125
+    units_on[Asgard_CCGT,2030,1,119:119] max_output_flow_during_start_up[Asgard_CCGT,2030,1,119:119] -375
+    units_on[Asgard_CCGT,2030,1,119:119] max_output_flow_during_start_up[Asgard_CCGT,2030,1,120:120] -125
+    units_on[Asgard_CCGT,2030,1,119:119] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,119:119] -225
+    units_on[Asgard_CCGT,2030,1,119:119] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,120:120] -275
     units_on[Asgard_CCGT,2030,1,119:119] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,119:119] -125
     units_on[Asgard_CCGT,2030,1,119:119] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,119:119] -125
     units_on[Asgard_CCGT,2030,1,119:119] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,120:120] 275
@@ -41741,6 +42979,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,120:120] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,120:120] -500
     units_on[Asgard_CCGT,2030,1,120:120] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,120:120] -375
     units_on[Asgard_CCGT,2030,1,120:120] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,121:121] 125
+    units_on[Asgard_CCGT,2030,1,120:120] max_output_flow_during_start_up[Asgard_CCGT,2030,1,120:120] -375
+    units_on[Asgard_CCGT,2030,1,120:120] max_output_flow_during_start_up[Asgard_CCGT,2030,1,121:121] -125
+    units_on[Asgard_CCGT,2030,1,120:120] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,120:120] -225
+    units_on[Asgard_CCGT,2030,1,120:120] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,121:121] -275
     units_on[Asgard_CCGT,2030,1,120:120] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,120:120] -125
     units_on[Asgard_CCGT,2030,1,120:120] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,120:120] -125
     units_on[Asgard_CCGT,2030,1,120:120] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,121:121] 275
@@ -41749,6 +42991,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,121:121] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,121:121] -500
     units_on[Asgard_CCGT,2030,1,121:121] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,121:121] -375
     units_on[Asgard_CCGT,2030,1,121:121] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,122:122] 125
+    units_on[Asgard_CCGT,2030,1,121:121] max_output_flow_during_start_up[Asgard_CCGT,2030,1,121:121] -375
+    units_on[Asgard_CCGT,2030,1,121:121] max_output_flow_during_start_up[Asgard_CCGT,2030,1,122:122] -125
+    units_on[Asgard_CCGT,2030,1,121:121] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,121:121] -225
+    units_on[Asgard_CCGT,2030,1,121:121] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,122:122] -275
     units_on[Asgard_CCGT,2030,1,121:121] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,121:121] -125
     units_on[Asgard_CCGT,2030,1,121:121] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,121:121] -125
     units_on[Asgard_CCGT,2030,1,121:121] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,122:122] 275
@@ -41757,6 +43003,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,122:122] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,122:122] -500
     units_on[Asgard_CCGT,2030,1,122:122] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,122:122] -375
     units_on[Asgard_CCGT,2030,1,122:122] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,123:123] 125
+    units_on[Asgard_CCGT,2030,1,122:122] max_output_flow_during_start_up[Asgard_CCGT,2030,1,122:122] -375
+    units_on[Asgard_CCGT,2030,1,122:122] max_output_flow_during_start_up[Asgard_CCGT,2030,1,123:123] -125
+    units_on[Asgard_CCGT,2030,1,122:122] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,122:122] -225
+    units_on[Asgard_CCGT,2030,1,122:122] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,123:123] -275
     units_on[Asgard_CCGT,2030,1,122:122] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,122:122] -125
     units_on[Asgard_CCGT,2030,1,122:122] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,122:122] -125
     units_on[Asgard_CCGT,2030,1,122:122] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,123:123] 275
@@ -41765,6 +43015,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,123:123] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,123:123] -500
     units_on[Asgard_CCGT,2030,1,123:123] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,123:123] -375
     units_on[Asgard_CCGT,2030,1,123:123] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,124:124] 125
+    units_on[Asgard_CCGT,2030,1,123:123] max_output_flow_during_start_up[Asgard_CCGT,2030,1,123:123] -375
+    units_on[Asgard_CCGT,2030,1,123:123] max_output_flow_during_start_up[Asgard_CCGT,2030,1,124:124] -125
+    units_on[Asgard_CCGT,2030,1,123:123] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,123:123] -225
+    units_on[Asgard_CCGT,2030,1,123:123] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,124:124] -275
     units_on[Asgard_CCGT,2030,1,123:123] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,123:123] -125
     units_on[Asgard_CCGT,2030,1,123:123] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,123:123] -125
     units_on[Asgard_CCGT,2030,1,123:123] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,124:124] 275
@@ -41773,6 +43027,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,124:124] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,124:124] -500
     units_on[Asgard_CCGT,2030,1,124:124] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,124:124] -375
     units_on[Asgard_CCGT,2030,1,124:124] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,125:125] 125
+    units_on[Asgard_CCGT,2030,1,124:124] max_output_flow_during_start_up[Asgard_CCGT,2030,1,124:124] -375
+    units_on[Asgard_CCGT,2030,1,124:124] max_output_flow_during_start_up[Asgard_CCGT,2030,1,125:125] -125
+    units_on[Asgard_CCGT,2030,1,124:124] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,124:124] -225
+    units_on[Asgard_CCGT,2030,1,124:124] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,125:125] -275
     units_on[Asgard_CCGT,2030,1,124:124] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,124:124] -125
     units_on[Asgard_CCGT,2030,1,124:124] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,124:124] -125
     units_on[Asgard_CCGT,2030,1,124:124] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,125:125] 275
@@ -41781,6 +43039,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,125:125] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,125:125] -500
     units_on[Asgard_CCGT,2030,1,125:125] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,125:125] -375
     units_on[Asgard_CCGT,2030,1,125:125] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,126:126] 125
+    units_on[Asgard_CCGT,2030,1,125:125] max_output_flow_during_start_up[Asgard_CCGT,2030,1,125:125] -375
+    units_on[Asgard_CCGT,2030,1,125:125] max_output_flow_during_start_up[Asgard_CCGT,2030,1,126:126] -125
+    units_on[Asgard_CCGT,2030,1,125:125] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,125:125] -225
+    units_on[Asgard_CCGT,2030,1,125:125] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,126:126] -275
     units_on[Asgard_CCGT,2030,1,125:125] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,125:125] -125
     units_on[Asgard_CCGT,2030,1,125:125] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,125:125] -125
     units_on[Asgard_CCGT,2030,1,125:125] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,126:126] 275
@@ -41789,6 +43051,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,126:126] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,126:126] -500
     units_on[Asgard_CCGT,2030,1,126:126] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,126:126] -375
     units_on[Asgard_CCGT,2030,1,126:126] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,127:127] 125
+    units_on[Asgard_CCGT,2030,1,126:126] max_output_flow_during_start_up[Asgard_CCGT,2030,1,126:126] -375
+    units_on[Asgard_CCGT,2030,1,126:126] max_output_flow_during_start_up[Asgard_CCGT,2030,1,127:127] -125
+    units_on[Asgard_CCGT,2030,1,126:126] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,126:126] -225
+    units_on[Asgard_CCGT,2030,1,126:126] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,127:127] -275
     units_on[Asgard_CCGT,2030,1,126:126] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,126:126] -125
     units_on[Asgard_CCGT,2030,1,126:126] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,126:126] -125
     units_on[Asgard_CCGT,2030,1,126:126] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,127:127] 275
@@ -41797,6 +43063,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,127:127] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,127:127] -500
     units_on[Asgard_CCGT,2030,1,127:127] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,127:127] -375
     units_on[Asgard_CCGT,2030,1,127:127] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,128:128] 125
+    units_on[Asgard_CCGT,2030,1,127:127] max_output_flow_during_start_up[Asgard_CCGT,2030,1,127:127] -375
+    units_on[Asgard_CCGT,2030,1,127:127] max_output_flow_during_start_up[Asgard_CCGT,2030,1,128:128] -125
+    units_on[Asgard_CCGT,2030,1,127:127] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,127:127] -225
+    units_on[Asgard_CCGT,2030,1,127:127] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,128:128] -275
     units_on[Asgard_CCGT,2030,1,127:127] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,127:127] -125
     units_on[Asgard_CCGT,2030,1,127:127] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,127:127] -125
     units_on[Asgard_CCGT,2030,1,127:127] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,128:128] 275
@@ -41805,6 +43075,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,128:128] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,128:128] -500
     units_on[Asgard_CCGT,2030,1,128:128] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,128:128] -375
     units_on[Asgard_CCGT,2030,1,128:128] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,129:129] 125
+    units_on[Asgard_CCGT,2030,1,128:128] max_output_flow_during_start_up[Asgard_CCGT,2030,1,128:128] -375
+    units_on[Asgard_CCGT,2030,1,128:128] max_output_flow_during_start_up[Asgard_CCGT,2030,1,129:129] -125
+    units_on[Asgard_CCGT,2030,1,128:128] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,128:128] -225
+    units_on[Asgard_CCGT,2030,1,128:128] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,129:129] -275
     units_on[Asgard_CCGT,2030,1,128:128] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,128:128] -125
     units_on[Asgard_CCGT,2030,1,128:128] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,128:128] -125
     units_on[Asgard_CCGT,2030,1,128:128] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,129:129] 275
@@ -41813,6 +43087,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,129:129] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,129:129] -500
     units_on[Asgard_CCGT,2030,1,129:129] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,129:129] -375
     units_on[Asgard_CCGT,2030,1,129:129] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,130:130] 125
+    units_on[Asgard_CCGT,2030,1,129:129] max_output_flow_during_start_up[Asgard_CCGT,2030,1,129:129] -375
+    units_on[Asgard_CCGT,2030,1,129:129] max_output_flow_during_start_up[Asgard_CCGT,2030,1,130:130] -125
+    units_on[Asgard_CCGT,2030,1,129:129] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,129:129] -225
+    units_on[Asgard_CCGT,2030,1,129:129] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,130:130] -275
     units_on[Asgard_CCGT,2030,1,129:129] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,129:129] -125
     units_on[Asgard_CCGT,2030,1,129:129] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,129:129] -125
     units_on[Asgard_CCGT,2030,1,129:129] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,130:130] 275
@@ -41821,6 +43099,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,130:130] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,130:130] -500
     units_on[Asgard_CCGT,2030,1,130:130] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,130:130] -375
     units_on[Asgard_CCGT,2030,1,130:130] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,131:131] 125
+    units_on[Asgard_CCGT,2030,1,130:130] max_output_flow_during_start_up[Asgard_CCGT,2030,1,130:130] -375
+    units_on[Asgard_CCGT,2030,1,130:130] max_output_flow_during_start_up[Asgard_CCGT,2030,1,131:131] -125
+    units_on[Asgard_CCGT,2030,1,130:130] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,130:130] -225
+    units_on[Asgard_CCGT,2030,1,130:130] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,131:131] -275
     units_on[Asgard_CCGT,2030,1,130:130] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,130:130] -125
     units_on[Asgard_CCGT,2030,1,130:130] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,130:130] -125
     units_on[Asgard_CCGT,2030,1,130:130] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,131:131] 275
@@ -41829,6 +43111,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,131:131] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,131:131] -500
     units_on[Asgard_CCGT,2030,1,131:131] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,131:131] -375
     units_on[Asgard_CCGT,2030,1,131:131] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,132:132] 125
+    units_on[Asgard_CCGT,2030,1,131:131] max_output_flow_during_start_up[Asgard_CCGT,2030,1,131:131] -375
+    units_on[Asgard_CCGT,2030,1,131:131] max_output_flow_during_start_up[Asgard_CCGT,2030,1,132:132] -125
+    units_on[Asgard_CCGT,2030,1,131:131] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,131:131] -225
+    units_on[Asgard_CCGT,2030,1,131:131] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,132:132] -275
     units_on[Asgard_CCGT,2030,1,131:131] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,131:131] -125
     units_on[Asgard_CCGT,2030,1,131:131] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,131:131] -125
     units_on[Asgard_CCGT,2030,1,131:131] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,132:132] 275
@@ -41837,6 +43123,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,132:132] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,132:132] -500
     units_on[Asgard_CCGT,2030,1,132:132] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,132:132] -375
     units_on[Asgard_CCGT,2030,1,132:132] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,133:133] 125
+    units_on[Asgard_CCGT,2030,1,132:132] max_output_flow_during_start_up[Asgard_CCGT,2030,1,132:132] -375
+    units_on[Asgard_CCGT,2030,1,132:132] max_output_flow_during_start_up[Asgard_CCGT,2030,1,133:133] -125
+    units_on[Asgard_CCGT,2030,1,132:132] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,132:132] -225
+    units_on[Asgard_CCGT,2030,1,132:132] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,133:133] -275
     units_on[Asgard_CCGT,2030,1,132:132] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,132:132] -125
     units_on[Asgard_CCGT,2030,1,132:132] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,132:132] -125
     units_on[Asgard_CCGT,2030,1,132:132] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,133:133] 275
@@ -41845,6 +43135,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,133:133] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,133:133] -500
     units_on[Asgard_CCGT,2030,1,133:133] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,133:133] -375
     units_on[Asgard_CCGT,2030,1,133:133] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,134:134] 125
+    units_on[Asgard_CCGT,2030,1,133:133] max_output_flow_during_start_up[Asgard_CCGT,2030,1,133:133] -375
+    units_on[Asgard_CCGT,2030,1,133:133] max_output_flow_during_start_up[Asgard_CCGT,2030,1,134:134] -125
+    units_on[Asgard_CCGT,2030,1,133:133] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,133:133] -225
+    units_on[Asgard_CCGT,2030,1,133:133] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,134:134] -275
     units_on[Asgard_CCGT,2030,1,133:133] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,133:133] -125
     units_on[Asgard_CCGT,2030,1,133:133] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,133:133] -125
     units_on[Asgard_CCGT,2030,1,133:133] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,134:134] 275
@@ -41853,6 +43147,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,134:134] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,134:134] -500
     units_on[Asgard_CCGT,2030,1,134:134] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,134:134] -375
     units_on[Asgard_CCGT,2030,1,134:134] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,135:135] 125
+    units_on[Asgard_CCGT,2030,1,134:134] max_output_flow_during_start_up[Asgard_CCGT,2030,1,134:134] -375
+    units_on[Asgard_CCGT,2030,1,134:134] max_output_flow_during_start_up[Asgard_CCGT,2030,1,135:135] -125
+    units_on[Asgard_CCGT,2030,1,134:134] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,134:134] -225
+    units_on[Asgard_CCGT,2030,1,134:134] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,135:135] -275
     units_on[Asgard_CCGT,2030,1,134:134] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,134:134] -125
     units_on[Asgard_CCGT,2030,1,134:134] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,134:134] -125
     units_on[Asgard_CCGT,2030,1,134:134] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,135:135] 275
@@ -41861,6 +43159,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,135:135] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,135:135] -500
     units_on[Asgard_CCGT,2030,1,135:135] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,135:135] -375
     units_on[Asgard_CCGT,2030,1,135:135] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,136:136] 125
+    units_on[Asgard_CCGT,2030,1,135:135] max_output_flow_during_start_up[Asgard_CCGT,2030,1,135:135] -375
+    units_on[Asgard_CCGT,2030,1,135:135] max_output_flow_during_start_up[Asgard_CCGT,2030,1,136:136] -125
+    units_on[Asgard_CCGT,2030,1,135:135] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,135:135] -225
+    units_on[Asgard_CCGT,2030,1,135:135] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,136:136] -275
     units_on[Asgard_CCGT,2030,1,135:135] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,135:135] -125
     units_on[Asgard_CCGT,2030,1,135:135] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,135:135] -125
     units_on[Asgard_CCGT,2030,1,135:135] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,136:136] 275
@@ -41869,6 +43171,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,136:136] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,136:136] -500
     units_on[Asgard_CCGT,2030,1,136:136] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,136:136] -375
     units_on[Asgard_CCGT,2030,1,136:136] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,137:137] 125
+    units_on[Asgard_CCGT,2030,1,136:136] max_output_flow_during_start_up[Asgard_CCGT,2030,1,136:136] -375
+    units_on[Asgard_CCGT,2030,1,136:136] max_output_flow_during_start_up[Asgard_CCGT,2030,1,137:137] -125
+    units_on[Asgard_CCGT,2030,1,136:136] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,136:136] -225
+    units_on[Asgard_CCGT,2030,1,136:136] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,137:137] -275
     units_on[Asgard_CCGT,2030,1,136:136] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,136:136] -125
     units_on[Asgard_CCGT,2030,1,136:136] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,136:136] -125
     units_on[Asgard_CCGT,2030,1,136:136] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,137:137] 275
@@ -41877,6 +43183,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,137:137] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,137:137] -500
     units_on[Asgard_CCGT,2030,1,137:137] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,137:137] -375
     units_on[Asgard_CCGT,2030,1,137:137] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,138:138] 125
+    units_on[Asgard_CCGT,2030,1,137:137] max_output_flow_during_start_up[Asgard_CCGT,2030,1,137:137] -375
+    units_on[Asgard_CCGT,2030,1,137:137] max_output_flow_during_start_up[Asgard_CCGT,2030,1,138:138] -125
+    units_on[Asgard_CCGT,2030,1,137:137] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,137:137] -225
+    units_on[Asgard_CCGT,2030,1,137:137] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,138:138] -275
     units_on[Asgard_CCGT,2030,1,137:137] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,137:137] -125
     units_on[Asgard_CCGT,2030,1,137:137] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,137:137] -125
     units_on[Asgard_CCGT,2030,1,137:137] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,138:138] 275
@@ -41885,6 +43195,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,138:138] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,138:138] -500
     units_on[Asgard_CCGT,2030,1,138:138] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,138:138] -375
     units_on[Asgard_CCGT,2030,1,138:138] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,139:139] 125
+    units_on[Asgard_CCGT,2030,1,138:138] max_output_flow_during_start_up[Asgard_CCGT,2030,1,138:138] -375
+    units_on[Asgard_CCGT,2030,1,138:138] max_output_flow_during_start_up[Asgard_CCGT,2030,1,139:139] -125
+    units_on[Asgard_CCGT,2030,1,138:138] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,138:138] -225
+    units_on[Asgard_CCGT,2030,1,138:138] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,139:139] -275
     units_on[Asgard_CCGT,2030,1,138:138] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,138:138] -125
     units_on[Asgard_CCGT,2030,1,138:138] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,138:138] -125
     units_on[Asgard_CCGT,2030,1,138:138] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,139:139] 275
@@ -41893,6 +43207,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,139:139] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,139:139] -500
     units_on[Asgard_CCGT,2030,1,139:139] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,139:139] -375
     units_on[Asgard_CCGT,2030,1,139:139] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,140:140] 125
+    units_on[Asgard_CCGT,2030,1,139:139] max_output_flow_during_start_up[Asgard_CCGT,2030,1,139:139] -375
+    units_on[Asgard_CCGT,2030,1,139:139] max_output_flow_during_start_up[Asgard_CCGT,2030,1,140:140] -125
+    units_on[Asgard_CCGT,2030,1,139:139] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,139:139] -225
+    units_on[Asgard_CCGT,2030,1,139:139] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,140:140] -275
     units_on[Asgard_CCGT,2030,1,139:139] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,139:139] -125
     units_on[Asgard_CCGT,2030,1,139:139] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,139:139] -125
     units_on[Asgard_CCGT,2030,1,139:139] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,140:140] 275
@@ -41901,6 +43219,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,140:140] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,140:140] -500
     units_on[Asgard_CCGT,2030,1,140:140] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,140:140] -375
     units_on[Asgard_CCGT,2030,1,140:140] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,141:141] 125
+    units_on[Asgard_CCGT,2030,1,140:140] max_output_flow_during_start_up[Asgard_CCGT,2030,1,140:140] -375
+    units_on[Asgard_CCGT,2030,1,140:140] max_output_flow_during_start_up[Asgard_CCGT,2030,1,141:141] -125
+    units_on[Asgard_CCGT,2030,1,140:140] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,140:140] -225
+    units_on[Asgard_CCGT,2030,1,140:140] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,141:141] -275
     units_on[Asgard_CCGT,2030,1,140:140] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,140:140] -125
     units_on[Asgard_CCGT,2030,1,140:140] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,140:140] -125
     units_on[Asgard_CCGT,2030,1,140:140] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,141:141] 275
@@ -41909,6 +43231,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,141:141] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,141:141] -500
     units_on[Asgard_CCGT,2030,1,141:141] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,141:141] -375
     units_on[Asgard_CCGT,2030,1,141:141] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,142:142] 125
+    units_on[Asgard_CCGT,2030,1,141:141] max_output_flow_during_start_up[Asgard_CCGT,2030,1,141:141] -375
+    units_on[Asgard_CCGT,2030,1,141:141] max_output_flow_during_start_up[Asgard_CCGT,2030,1,142:142] -125
+    units_on[Asgard_CCGT,2030,1,141:141] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,141:141] -225
+    units_on[Asgard_CCGT,2030,1,141:141] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,142:142] -275
     units_on[Asgard_CCGT,2030,1,141:141] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,141:141] -125
     units_on[Asgard_CCGT,2030,1,141:141] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,141:141] -125
     units_on[Asgard_CCGT,2030,1,141:141] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,142:142] 275
@@ -41917,6 +43243,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,142:142] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,142:142] -500
     units_on[Asgard_CCGT,2030,1,142:142] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,142:142] -375
     units_on[Asgard_CCGT,2030,1,142:142] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,143:143] 125
+    units_on[Asgard_CCGT,2030,1,142:142] max_output_flow_during_start_up[Asgard_CCGT,2030,1,142:142] -375
+    units_on[Asgard_CCGT,2030,1,142:142] max_output_flow_during_start_up[Asgard_CCGT,2030,1,143:143] -125
+    units_on[Asgard_CCGT,2030,1,142:142] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,142:142] -225
+    units_on[Asgard_CCGT,2030,1,142:142] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,143:143] -275
     units_on[Asgard_CCGT,2030,1,142:142] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,142:142] -125
     units_on[Asgard_CCGT,2030,1,142:142] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,142:142] -125
     units_on[Asgard_CCGT,2030,1,142:142] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,143:143] 275
@@ -41925,6 +43255,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,143:143] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,143:143] -500
     units_on[Asgard_CCGT,2030,1,143:143] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,143:143] -375
     units_on[Asgard_CCGT,2030,1,143:143] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,144:144] 125
+    units_on[Asgard_CCGT,2030,1,143:143] max_output_flow_during_start_up[Asgard_CCGT,2030,1,143:143] -375
+    units_on[Asgard_CCGT,2030,1,143:143] max_output_flow_during_start_up[Asgard_CCGT,2030,1,144:144] -125
+    units_on[Asgard_CCGT,2030,1,143:143] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,143:143] -225
+    units_on[Asgard_CCGT,2030,1,143:143] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,144:144] -275
     units_on[Asgard_CCGT,2030,1,143:143] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,143:143] -125
     units_on[Asgard_CCGT,2030,1,143:143] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,143:143] -125
     units_on[Asgard_CCGT,2030,1,143:143] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,144:144] 275
@@ -41933,6 +43267,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,144:144] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,144:144] -500
     units_on[Asgard_CCGT,2030,1,144:144] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,144:144] -375
     units_on[Asgard_CCGT,2030,1,144:144] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,145:145] 125
+    units_on[Asgard_CCGT,2030,1,144:144] max_output_flow_during_start_up[Asgard_CCGT,2030,1,144:144] -375
+    units_on[Asgard_CCGT,2030,1,144:144] max_output_flow_during_start_up[Asgard_CCGT,2030,1,145:145] -125
+    units_on[Asgard_CCGT,2030,1,144:144] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,144:144] -225
+    units_on[Asgard_CCGT,2030,1,144:144] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,145:145] -275
     units_on[Asgard_CCGT,2030,1,144:144] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,144:144] -125
     units_on[Asgard_CCGT,2030,1,144:144] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,144:144] -125
     units_on[Asgard_CCGT,2030,1,144:144] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,145:145] 275
@@ -41941,6 +43279,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,145:145] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,145:145] -500
     units_on[Asgard_CCGT,2030,1,145:145] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,145:145] -375
     units_on[Asgard_CCGT,2030,1,145:145] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,146:146] 125
+    units_on[Asgard_CCGT,2030,1,145:145] max_output_flow_during_start_up[Asgard_CCGT,2030,1,145:145] -375
+    units_on[Asgard_CCGT,2030,1,145:145] max_output_flow_during_start_up[Asgard_CCGT,2030,1,146:146] -125
+    units_on[Asgard_CCGT,2030,1,145:145] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,145:145] -225
+    units_on[Asgard_CCGT,2030,1,145:145] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,146:146] -275
     units_on[Asgard_CCGT,2030,1,145:145] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,145:145] -125
     units_on[Asgard_CCGT,2030,1,145:145] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,145:145] -125
     units_on[Asgard_CCGT,2030,1,145:145] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,146:146] 275
@@ -41949,6 +43291,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,146:146] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,146:146] -500
     units_on[Asgard_CCGT,2030,1,146:146] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,146:146] -375
     units_on[Asgard_CCGT,2030,1,146:146] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,147:147] 125
+    units_on[Asgard_CCGT,2030,1,146:146] max_output_flow_during_start_up[Asgard_CCGT,2030,1,146:146] -375
+    units_on[Asgard_CCGT,2030,1,146:146] max_output_flow_during_start_up[Asgard_CCGT,2030,1,147:147] -125
+    units_on[Asgard_CCGT,2030,1,146:146] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,146:146] -225
+    units_on[Asgard_CCGT,2030,1,146:146] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,147:147] -275
     units_on[Asgard_CCGT,2030,1,146:146] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,146:146] -125
     units_on[Asgard_CCGT,2030,1,146:146] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,146:146] -125
     units_on[Asgard_CCGT,2030,1,146:146] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,147:147] 275
@@ -41957,6 +43303,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,147:147] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,147:147] -500
     units_on[Asgard_CCGT,2030,1,147:147] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,147:147] -375
     units_on[Asgard_CCGT,2030,1,147:147] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,148:148] 125
+    units_on[Asgard_CCGT,2030,1,147:147] max_output_flow_during_start_up[Asgard_CCGT,2030,1,147:147] -375
+    units_on[Asgard_CCGT,2030,1,147:147] max_output_flow_during_start_up[Asgard_CCGT,2030,1,148:148] -125
+    units_on[Asgard_CCGT,2030,1,147:147] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,147:147] -225
+    units_on[Asgard_CCGT,2030,1,147:147] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,148:148] -275
     units_on[Asgard_CCGT,2030,1,147:147] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,147:147] -125
     units_on[Asgard_CCGT,2030,1,147:147] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,147:147] -125
     units_on[Asgard_CCGT,2030,1,147:147] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,148:148] 275
@@ -41965,6 +43315,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,148:148] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,148:148] -500
     units_on[Asgard_CCGT,2030,1,148:148] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,148:148] -375
     units_on[Asgard_CCGT,2030,1,148:148] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,149:149] 125
+    units_on[Asgard_CCGT,2030,1,148:148] max_output_flow_during_start_up[Asgard_CCGT,2030,1,148:148] -375
+    units_on[Asgard_CCGT,2030,1,148:148] max_output_flow_during_start_up[Asgard_CCGT,2030,1,149:149] -125
+    units_on[Asgard_CCGT,2030,1,148:148] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,148:148] -225
+    units_on[Asgard_CCGT,2030,1,148:148] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,149:149] -275
     units_on[Asgard_CCGT,2030,1,148:148] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,148:148] -125
     units_on[Asgard_CCGT,2030,1,148:148] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,148:148] -125
     units_on[Asgard_CCGT,2030,1,148:148] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,149:149] 275
@@ -41973,6 +43327,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,149:149] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,149:149] -500
     units_on[Asgard_CCGT,2030,1,149:149] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,149:149] -375
     units_on[Asgard_CCGT,2030,1,149:149] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,150:150] 125
+    units_on[Asgard_CCGT,2030,1,149:149] max_output_flow_during_start_up[Asgard_CCGT,2030,1,149:149] -375
+    units_on[Asgard_CCGT,2030,1,149:149] max_output_flow_during_start_up[Asgard_CCGT,2030,1,150:150] -125
+    units_on[Asgard_CCGT,2030,1,149:149] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,149:149] -225
+    units_on[Asgard_CCGT,2030,1,149:149] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,150:150] -275
     units_on[Asgard_CCGT,2030,1,149:149] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,149:149] -125
     units_on[Asgard_CCGT,2030,1,149:149] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,149:149] -125
     units_on[Asgard_CCGT,2030,1,149:149] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,150:150] 275
@@ -41981,6 +43339,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,150:150] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,150:150] -500
     units_on[Asgard_CCGT,2030,1,150:150] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,150:150] -375
     units_on[Asgard_CCGT,2030,1,150:150] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,151:151] 125
+    units_on[Asgard_CCGT,2030,1,150:150] max_output_flow_during_start_up[Asgard_CCGT,2030,1,150:150] -375
+    units_on[Asgard_CCGT,2030,1,150:150] max_output_flow_during_start_up[Asgard_CCGT,2030,1,151:151] -125
+    units_on[Asgard_CCGT,2030,1,150:150] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,150:150] -225
+    units_on[Asgard_CCGT,2030,1,150:150] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,151:151] -275
     units_on[Asgard_CCGT,2030,1,150:150] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,150:150] -125
     units_on[Asgard_CCGT,2030,1,150:150] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,150:150] -125
     units_on[Asgard_CCGT,2030,1,150:150] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,151:151] 275
@@ -41989,6 +43351,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,151:151] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,151:151] -500
     units_on[Asgard_CCGT,2030,1,151:151] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,151:151] -375
     units_on[Asgard_CCGT,2030,1,151:151] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,152:152] 125
+    units_on[Asgard_CCGT,2030,1,151:151] max_output_flow_during_start_up[Asgard_CCGT,2030,1,151:151] -375
+    units_on[Asgard_CCGT,2030,1,151:151] max_output_flow_during_start_up[Asgard_CCGT,2030,1,152:152] -125
+    units_on[Asgard_CCGT,2030,1,151:151] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,151:151] -225
+    units_on[Asgard_CCGT,2030,1,151:151] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,152:152] -275
     units_on[Asgard_CCGT,2030,1,151:151] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,151:151] -125
     units_on[Asgard_CCGT,2030,1,151:151] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,151:151] -125
     units_on[Asgard_CCGT,2030,1,151:151] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,152:152] 275
@@ -41997,6 +43363,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,152:152] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,152:152] -500
     units_on[Asgard_CCGT,2030,1,152:152] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,152:152] -375
     units_on[Asgard_CCGT,2030,1,152:152] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,153:153] 125
+    units_on[Asgard_CCGT,2030,1,152:152] max_output_flow_during_start_up[Asgard_CCGT,2030,1,152:152] -375
+    units_on[Asgard_CCGT,2030,1,152:152] max_output_flow_during_start_up[Asgard_CCGT,2030,1,153:153] -125
+    units_on[Asgard_CCGT,2030,1,152:152] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,152:152] -225
+    units_on[Asgard_CCGT,2030,1,152:152] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,153:153] -275
     units_on[Asgard_CCGT,2030,1,152:152] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,152:152] -125
     units_on[Asgard_CCGT,2030,1,152:152] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,152:152] -125
     units_on[Asgard_CCGT,2030,1,152:152] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,153:153] 275
@@ -42005,6 +43375,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,153:153] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,153:153] -500
     units_on[Asgard_CCGT,2030,1,153:153] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,153:153] -375
     units_on[Asgard_CCGT,2030,1,153:153] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,154:154] 125
+    units_on[Asgard_CCGT,2030,1,153:153] max_output_flow_during_start_up[Asgard_CCGT,2030,1,153:153] -375
+    units_on[Asgard_CCGT,2030,1,153:153] max_output_flow_during_start_up[Asgard_CCGT,2030,1,154:154] -125
+    units_on[Asgard_CCGT,2030,1,153:153] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,153:153] -225
+    units_on[Asgard_CCGT,2030,1,153:153] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,154:154] -275
     units_on[Asgard_CCGT,2030,1,153:153] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,153:153] -125
     units_on[Asgard_CCGT,2030,1,153:153] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,153:153] -125
     units_on[Asgard_CCGT,2030,1,153:153] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,154:154] 275
@@ -42013,6 +43387,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,154:154] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,154:154] -500
     units_on[Asgard_CCGT,2030,1,154:154] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,154:154] -375
     units_on[Asgard_CCGT,2030,1,154:154] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,155:155] 125
+    units_on[Asgard_CCGT,2030,1,154:154] max_output_flow_during_start_up[Asgard_CCGT,2030,1,154:154] -375
+    units_on[Asgard_CCGT,2030,1,154:154] max_output_flow_during_start_up[Asgard_CCGT,2030,1,155:155] -125
+    units_on[Asgard_CCGT,2030,1,154:154] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,154:154] -225
+    units_on[Asgard_CCGT,2030,1,154:154] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,155:155] -275
     units_on[Asgard_CCGT,2030,1,154:154] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,154:154] -125
     units_on[Asgard_CCGT,2030,1,154:154] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,154:154] -125
     units_on[Asgard_CCGT,2030,1,154:154] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,155:155] 275
@@ -42021,6 +43399,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,155:155] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,155:155] -500
     units_on[Asgard_CCGT,2030,1,155:155] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,155:155] -375
     units_on[Asgard_CCGT,2030,1,155:155] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,156:156] 125
+    units_on[Asgard_CCGT,2030,1,155:155] max_output_flow_during_start_up[Asgard_CCGT,2030,1,155:155] -375
+    units_on[Asgard_CCGT,2030,1,155:155] max_output_flow_during_start_up[Asgard_CCGT,2030,1,156:156] -125
+    units_on[Asgard_CCGT,2030,1,155:155] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,155:155] -225
+    units_on[Asgard_CCGT,2030,1,155:155] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,156:156] -275
     units_on[Asgard_CCGT,2030,1,155:155] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,155:155] -125
     units_on[Asgard_CCGT,2030,1,155:155] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,155:155] -125
     units_on[Asgard_CCGT,2030,1,155:155] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,156:156] 275
@@ -42029,6 +43411,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,156:156] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,156:156] -500
     units_on[Asgard_CCGT,2030,1,156:156] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,156:156] -375
     units_on[Asgard_CCGT,2030,1,156:156] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,157:157] 125
+    units_on[Asgard_CCGT,2030,1,156:156] max_output_flow_during_start_up[Asgard_CCGT,2030,1,156:156] -375
+    units_on[Asgard_CCGT,2030,1,156:156] max_output_flow_during_start_up[Asgard_CCGT,2030,1,157:157] -125
+    units_on[Asgard_CCGT,2030,1,156:156] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,156:156] -225
+    units_on[Asgard_CCGT,2030,1,156:156] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,157:157] -275
     units_on[Asgard_CCGT,2030,1,156:156] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,156:156] -125
     units_on[Asgard_CCGT,2030,1,156:156] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,156:156] -125
     units_on[Asgard_CCGT,2030,1,156:156] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,157:157] 275
@@ -42037,6 +43423,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,157:157] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,157:157] -500
     units_on[Asgard_CCGT,2030,1,157:157] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,157:157] -375
     units_on[Asgard_CCGT,2030,1,157:157] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,158:158] 125
+    units_on[Asgard_CCGT,2030,1,157:157] max_output_flow_during_start_up[Asgard_CCGT,2030,1,157:157] -375
+    units_on[Asgard_CCGT,2030,1,157:157] max_output_flow_during_start_up[Asgard_CCGT,2030,1,158:158] -125
+    units_on[Asgard_CCGT,2030,1,157:157] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,157:157] -225
+    units_on[Asgard_CCGT,2030,1,157:157] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,158:158] -275
     units_on[Asgard_CCGT,2030,1,157:157] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,157:157] -125
     units_on[Asgard_CCGT,2030,1,157:157] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,157:157] -125
     units_on[Asgard_CCGT,2030,1,157:157] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,158:158] 275
@@ -42045,6 +43435,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,158:158] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,158:158] -500
     units_on[Asgard_CCGT,2030,1,158:158] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,158:158] -375
     units_on[Asgard_CCGT,2030,1,158:158] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,159:159] 125
+    units_on[Asgard_CCGT,2030,1,158:158] max_output_flow_during_start_up[Asgard_CCGT,2030,1,158:158] -375
+    units_on[Asgard_CCGT,2030,1,158:158] max_output_flow_during_start_up[Asgard_CCGT,2030,1,159:159] -125
+    units_on[Asgard_CCGT,2030,1,158:158] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,158:158] -225
+    units_on[Asgard_CCGT,2030,1,158:158] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,159:159] -275
     units_on[Asgard_CCGT,2030,1,158:158] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,158:158] -125
     units_on[Asgard_CCGT,2030,1,158:158] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,158:158] -125
     units_on[Asgard_CCGT,2030,1,158:158] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,159:159] 275
@@ -42053,6 +43447,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,159:159] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,159:159] -500
     units_on[Asgard_CCGT,2030,1,159:159] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,159:159] -375
     units_on[Asgard_CCGT,2030,1,159:159] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,160:160] 125
+    units_on[Asgard_CCGT,2030,1,159:159] max_output_flow_during_start_up[Asgard_CCGT,2030,1,159:159] -375
+    units_on[Asgard_CCGT,2030,1,159:159] max_output_flow_during_start_up[Asgard_CCGT,2030,1,160:160] -125
+    units_on[Asgard_CCGT,2030,1,159:159] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,159:159] -225
+    units_on[Asgard_CCGT,2030,1,159:159] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,160:160] -275
     units_on[Asgard_CCGT,2030,1,159:159] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,159:159] -125
     units_on[Asgard_CCGT,2030,1,159:159] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,159:159] -125
     units_on[Asgard_CCGT,2030,1,159:159] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,160:160] 275
@@ -42061,6 +43459,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,160:160] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,160:160] -500
     units_on[Asgard_CCGT,2030,1,160:160] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,160:160] -375
     units_on[Asgard_CCGT,2030,1,160:160] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,161:161] 125
+    units_on[Asgard_CCGT,2030,1,160:160] max_output_flow_during_start_up[Asgard_CCGT,2030,1,160:160] -375
+    units_on[Asgard_CCGT,2030,1,160:160] max_output_flow_during_start_up[Asgard_CCGT,2030,1,161:161] -125
+    units_on[Asgard_CCGT,2030,1,160:160] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,160:160] -225
+    units_on[Asgard_CCGT,2030,1,160:160] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,161:161] -275
     units_on[Asgard_CCGT,2030,1,160:160] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,160:160] -125
     units_on[Asgard_CCGT,2030,1,160:160] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,160:160] -125
     units_on[Asgard_CCGT,2030,1,160:160] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,161:161] 275
@@ -42069,6 +43471,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,161:161] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,161:161] -500
     units_on[Asgard_CCGT,2030,1,161:161] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,161:161] -375
     units_on[Asgard_CCGT,2030,1,161:161] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,162:162] 125
+    units_on[Asgard_CCGT,2030,1,161:161] max_output_flow_during_start_up[Asgard_CCGT,2030,1,161:161] -375
+    units_on[Asgard_CCGT,2030,1,161:161] max_output_flow_during_start_up[Asgard_CCGT,2030,1,162:162] -125
+    units_on[Asgard_CCGT,2030,1,161:161] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,161:161] -225
+    units_on[Asgard_CCGT,2030,1,161:161] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,162:162] -275
     units_on[Asgard_CCGT,2030,1,161:161] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,161:161] -125
     units_on[Asgard_CCGT,2030,1,161:161] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,161:161] -125
     units_on[Asgard_CCGT,2030,1,161:161] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,162:162] 275
@@ -42077,6 +43483,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,162:162] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,162:162] -500
     units_on[Asgard_CCGT,2030,1,162:162] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,162:162] -375
     units_on[Asgard_CCGT,2030,1,162:162] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,163:163] 125
+    units_on[Asgard_CCGT,2030,1,162:162] max_output_flow_during_start_up[Asgard_CCGT,2030,1,162:162] -375
+    units_on[Asgard_CCGT,2030,1,162:162] max_output_flow_during_start_up[Asgard_CCGT,2030,1,163:163] -125
+    units_on[Asgard_CCGT,2030,1,162:162] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,162:162] -225
+    units_on[Asgard_CCGT,2030,1,162:162] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,163:163] -275
     units_on[Asgard_CCGT,2030,1,162:162] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,162:162] -125
     units_on[Asgard_CCGT,2030,1,162:162] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,162:162] -125
     units_on[Asgard_CCGT,2030,1,162:162] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,163:163] 275
@@ -42085,6 +43495,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,163:163] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,163:163] -500
     units_on[Asgard_CCGT,2030,1,163:163] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,163:163] -375
     units_on[Asgard_CCGT,2030,1,163:163] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,164:164] 125
+    units_on[Asgard_CCGT,2030,1,163:163] max_output_flow_during_start_up[Asgard_CCGT,2030,1,163:163] -375
+    units_on[Asgard_CCGT,2030,1,163:163] max_output_flow_during_start_up[Asgard_CCGT,2030,1,164:164] -125
+    units_on[Asgard_CCGT,2030,1,163:163] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,163:163] -225
+    units_on[Asgard_CCGT,2030,1,163:163] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,164:164] -275
     units_on[Asgard_CCGT,2030,1,163:163] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,163:163] -125
     units_on[Asgard_CCGT,2030,1,163:163] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,163:163] -125
     units_on[Asgard_CCGT,2030,1,163:163] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,164:164] 275
@@ -42093,6 +43507,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,164:164] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,164:164] -500
     units_on[Asgard_CCGT,2030,1,164:164] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,164:164] -375
     units_on[Asgard_CCGT,2030,1,164:164] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,165:165] 125
+    units_on[Asgard_CCGT,2030,1,164:164] max_output_flow_during_start_up[Asgard_CCGT,2030,1,164:164] -375
+    units_on[Asgard_CCGT,2030,1,164:164] max_output_flow_during_start_up[Asgard_CCGT,2030,1,165:165] -125
+    units_on[Asgard_CCGT,2030,1,164:164] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,164:164] -225
+    units_on[Asgard_CCGT,2030,1,164:164] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,165:165] -275
     units_on[Asgard_CCGT,2030,1,164:164] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,164:164] -125
     units_on[Asgard_CCGT,2030,1,164:164] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,164:164] -125
     units_on[Asgard_CCGT,2030,1,164:164] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,165:165] 275
@@ -42101,6 +43519,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,165:165] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,165:165] -500
     units_on[Asgard_CCGT,2030,1,165:165] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,165:165] -375
     units_on[Asgard_CCGT,2030,1,165:165] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,166:166] 125
+    units_on[Asgard_CCGT,2030,1,165:165] max_output_flow_during_start_up[Asgard_CCGT,2030,1,165:165] -375
+    units_on[Asgard_CCGT,2030,1,165:165] max_output_flow_during_start_up[Asgard_CCGT,2030,1,166:166] -125
+    units_on[Asgard_CCGT,2030,1,165:165] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,165:165] -225
+    units_on[Asgard_CCGT,2030,1,165:165] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,166:166] -275
     units_on[Asgard_CCGT,2030,1,165:165] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,165:165] -125
     units_on[Asgard_CCGT,2030,1,165:165] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,165:165] -125
     units_on[Asgard_CCGT,2030,1,165:165] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,166:166] 275
@@ -42109,6 +43531,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,166:166] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,166:166] -500
     units_on[Asgard_CCGT,2030,1,166:166] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,166:166] -375
     units_on[Asgard_CCGT,2030,1,166:166] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,167:167] 125
+    units_on[Asgard_CCGT,2030,1,166:166] max_output_flow_during_start_up[Asgard_CCGT,2030,1,166:166] -375
+    units_on[Asgard_CCGT,2030,1,166:166] max_output_flow_during_start_up[Asgard_CCGT,2030,1,167:167] -125
+    units_on[Asgard_CCGT,2030,1,166:166] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,166:166] -225
+    units_on[Asgard_CCGT,2030,1,166:166] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,167:167] -275
     units_on[Asgard_CCGT,2030,1,166:166] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,166:166] -125
     units_on[Asgard_CCGT,2030,1,166:166] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,166:166] -125
     units_on[Asgard_CCGT,2030,1,166:166] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,167:167] 275
@@ -42117,6 +43543,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,167:167] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,167:167] -500
     units_on[Asgard_CCGT,2030,1,167:167] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,167:167] -375
     units_on[Asgard_CCGT,2030,1,167:167] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,168:168] 125
+    units_on[Asgard_CCGT,2030,1,167:167] max_output_flow_during_start_up[Asgard_CCGT,2030,1,167:167] -375
+    units_on[Asgard_CCGT,2030,1,167:167] max_output_flow_during_start_up[Asgard_CCGT,2030,1,168:168] -125
+    units_on[Asgard_CCGT,2030,1,167:167] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,167:167] -225
+    units_on[Asgard_CCGT,2030,1,167:167] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,168:168] -275
     units_on[Asgard_CCGT,2030,1,167:167] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,167:167] -125
     units_on[Asgard_CCGT,2030,1,167:167] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,167:167] -125
     units_on[Asgard_CCGT,2030,1,167:167] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,168:168] 275
@@ -42124,12 +43554,16 @@ COLUMNS
     units_on[Asgard_CCGT,2030,1,168:168] limit_units_on_aggregated_vintage_method[Asgard_CCGT,2030,1,168:168] 1
     units_on[Asgard_CCGT,2030,1,168:168] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,168:168] -500
     units_on[Asgard_CCGT,2030,1,168:168] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,1,168:168] -375
+    units_on[Asgard_CCGT,2030,1,168:168] max_output_flow_during_start_up[Asgard_CCGT,2030,1,168:168] -375
+    units_on[Asgard_CCGT,2030,1,168:168] max_output_flow_during_shut_down[Asgard_CCGT,2030,1,168:168] -225
     units_on[Asgard_CCGT,2030,1,168:168] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,1,168:168] -125
     units_on[Asgard_CCGT,2030,1,168:168] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,1,168:168] -125
     units_on[Asgard_CCGT,2030,1,168:168] OBJ 24.25
     units_on[Asgard_CCGT,2030,2,1:1] limit_units_on_aggregated_vintage_method[Asgard_CCGT,2030,2,1:1] 1
     units_on[Asgard_CCGT,2030,2,1:1] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,1:1] -500
     units_on[Asgard_CCGT,2030,2,1:1] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,2:2] 125
+    units_on[Asgard_CCGT,2030,2,1:1] max_output_flow_during_start_up[Asgard_CCGT,2030,2,2:2] -125
+    units_on[Asgard_CCGT,2030,2,1:1] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,2:2] -275
     units_on[Asgard_CCGT,2030,2,1:1] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,1:1] -125
     units_on[Asgard_CCGT,2030,2,1:1] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,2:2] 275
     units_on[Asgard_CCGT,2030,2,1:1] OBJ 184.29999999999998
@@ -42137,6 +43571,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,2:2] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,2:2] -500
     units_on[Asgard_CCGT,2030,2,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,2:2] -375
     units_on[Asgard_CCGT,2030,2,2:2] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,3:3] 125
+    units_on[Asgard_CCGT,2030,2,2:2] max_output_flow_during_start_up[Asgard_CCGT,2030,2,2:2] -375
+    units_on[Asgard_CCGT,2030,2,2:2] max_output_flow_during_start_up[Asgard_CCGT,2030,2,3:3] -125
+    units_on[Asgard_CCGT,2030,2,2:2] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,2:2] -225
+    units_on[Asgard_CCGT,2030,2,2:2] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,3:3] -275
     units_on[Asgard_CCGT,2030,2,2:2] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,2:2] -125
     units_on[Asgard_CCGT,2030,2,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,2:2] -125
     units_on[Asgard_CCGT,2030,2,2:2] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,3:3] 275
@@ -42145,6 +43583,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,3:3] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,3:3] -500
     units_on[Asgard_CCGT,2030,2,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,3:3] -375
     units_on[Asgard_CCGT,2030,2,3:3] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,4:4] 125
+    units_on[Asgard_CCGT,2030,2,3:3] max_output_flow_during_start_up[Asgard_CCGT,2030,2,3:3] -375
+    units_on[Asgard_CCGT,2030,2,3:3] max_output_flow_during_start_up[Asgard_CCGT,2030,2,4:4] -125
+    units_on[Asgard_CCGT,2030,2,3:3] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,3:3] -225
+    units_on[Asgard_CCGT,2030,2,3:3] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,4:4] -275
     units_on[Asgard_CCGT,2030,2,3:3] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,3:3] -125
     units_on[Asgard_CCGT,2030,2,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,3:3] -125
     units_on[Asgard_CCGT,2030,2,3:3] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,4:4] 275
@@ -42153,6 +43595,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,4:4] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,4:4] -500
     units_on[Asgard_CCGT,2030,2,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,4:4] -375
     units_on[Asgard_CCGT,2030,2,4:4] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,5:5] 125
+    units_on[Asgard_CCGT,2030,2,4:4] max_output_flow_during_start_up[Asgard_CCGT,2030,2,4:4] -375
+    units_on[Asgard_CCGT,2030,2,4:4] max_output_flow_during_start_up[Asgard_CCGT,2030,2,5:5] -125
+    units_on[Asgard_CCGT,2030,2,4:4] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,4:4] -225
+    units_on[Asgard_CCGT,2030,2,4:4] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,5:5] -275
     units_on[Asgard_CCGT,2030,2,4:4] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,4:4] -125
     units_on[Asgard_CCGT,2030,2,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,4:4] -125
     units_on[Asgard_CCGT,2030,2,4:4] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,5:5] 275
@@ -42161,6 +43607,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,5:5] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,5:5] -500
     units_on[Asgard_CCGT,2030,2,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,5:5] -375
     units_on[Asgard_CCGT,2030,2,5:5] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,6:6] 125
+    units_on[Asgard_CCGT,2030,2,5:5] max_output_flow_during_start_up[Asgard_CCGT,2030,2,5:5] -375
+    units_on[Asgard_CCGT,2030,2,5:5] max_output_flow_during_start_up[Asgard_CCGT,2030,2,6:6] -125
+    units_on[Asgard_CCGT,2030,2,5:5] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,5:5] -225
+    units_on[Asgard_CCGT,2030,2,5:5] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,6:6] -275
     units_on[Asgard_CCGT,2030,2,5:5] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,5:5] -125
     units_on[Asgard_CCGT,2030,2,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,5:5] -125
     units_on[Asgard_CCGT,2030,2,5:5] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,6:6] 275
@@ -42169,6 +43619,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,6:6] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,6:6] -500
     units_on[Asgard_CCGT,2030,2,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,6:6] -375
     units_on[Asgard_CCGT,2030,2,6:6] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,7:7] 125
+    units_on[Asgard_CCGT,2030,2,6:6] max_output_flow_during_start_up[Asgard_CCGT,2030,2,6:6] -375
+    units_on[Asgard_CCGT,2030,2,6:6] max_output_flow_during_start_up[Asgard_CCGT,2030,2,7:7] -125
+    units_on[Asgard_CCGT,2030,2,6:6] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,6:6] -225
+    units_on[Asgard_CCGT,2030,2,6:6] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,7:7] -275
     units_on[Asgard_CCGT,2030,2,6:6] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,6:6] -125
     units_on[Asgard_CCGT,2030,2,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,6:6] -125
     units_on[Asgard_CCGT,2030,2,6:6] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,7:7] 275
@@ -42177,6 +43631,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,7:7] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,7:7] -500
     units_on[Asgard_CCGT,2030,2,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,7:7] -375
     units_on[Asgard_CCGT,2030,2,7:7] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,8:8] 125
+    units_on[Asgard_CCGT,2030,2,7:7] max_output_flow_during_start_up[Asgard_CCGT,2030,2,7:7] -375
+    units_on[Asgard_CCGT,2030,2,7:7] max_output_flow_during_start_up[Asgard_CCGT,2030,2,8:8] -125
+    units_on[Asgard_CCGT,2030,2,7:7] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,7:7] -225
+    units_on[Asgard_CCGT,2030,2,7:7] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,8:8] -275
     units_on[Asgard_CCGT,2030,2,7:7] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,7:7] -125
     units_on[Asgard_CCGT,2030,2,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,7:7] -125
     units_on[Asgard_CCGT,2030,2,7:7] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,8:8] 275
@@ -42185,6 +43643,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,8:8] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,8:8] -500
     units_on[Asgard_CCGT,2030,2,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,8:8] -375
     units_on[Asgard_CCGT,2030,2,8:8] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,9:9] 125
+    units_on[Asgard_CCGT,2030,2,8:8] max_output_flow_during_start_up[Asgard_CCGT,2030,2,8:8] -375
+    units_on[Asgard_CCGT,2030,2,8:8] max_output_flow_during_start_up[Asgard_CCGT,2030,2,9:9] -125
+    units_on[Asgard_CCGT,2030,2,8:8] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,8:8] -225
+    units_on[Asgard_CCGT,2030,2,8:8] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,9:9] -275
     units_on[Asgard_CCGT,2030,2,8:8] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,8:8] -125
     units_on[Asgard_CCGT,2030,2,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,8:8] -125
     units_on[Asgard_CCGT,2030,2,8:8] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,9:9] 275
@@ -42193,6 +43655,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,9:9] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,9:9] -500
     units_on[Asgard_CCGT,2030,2,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,9:9] -375
     units_on[Asgard_CCGT,2030,2,9:9] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,10:10] 125
+    units_on[Asgard_CCGT,2030,2,9:9] max_output_flow_during_start_up[Asgard_CCGT,2030,2,9:9] -375
+    units_on[Asgard_CCGT,2030,2,9:9] max_output_flow_during_start_up[Asgard_CCGT,2030,2,10:10] -125
+    units_on[Asgard_CCGT,2030,2,9:9] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,9:9] -225
+    units_on[Asgard_CCGT,2030,2,9:9] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,10:10] -275
     units_on[Asgard_CCGT,2030,2,9:9] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,9:9] -125
     units_on[Asgard_CCGT,2030,2,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,9:9] -125
     units_on[Asgard_CCGT,2030,2,9:9] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,10:10] 275
@@ -42201,6 +43667,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,10:10] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,10:10] -500
     units_on[Asgard_CCGT,2030,2,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,10:10] -375
     units_on[Asgard_CCGT,2030,2,10:10] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,11:11] 125
+    units_on[Asgard_CCGT,2030,2,10:10] max_output_flow_during_start_up[Asgard_CCGT,2030,2,10:10] -375
+    units_on[Asgard_CCGT,2030,2,10:10] max_output_flow_during_start_up[Asgard_CCGT,2030,2,11:11] -125
+    units_on[Asgard_CCGT,2030,2,10:10] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,10:10] -225
+    units_on[Asgard_CCGT,2030,2,10:10] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,11:11] -275
     units_on[Asgard_CCGT,2030,2,10:10] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,10:10] -125
     units_on[Asgard_CCGT,2030,2,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,10:10] -125
     units_on[Asgard_CCGT,2030,2,10:10] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,11:11] 275
@@ -42209,6 +43679,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,11:11] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,11:11] -500
     units_on[Asgard_CCGT,2030,2,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,11:11] -375
     units_on[Asgard_CCGT,2030,2,11:11] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,12:12] 125
+    units_on[Asgard_CCGT,2030,2,11:11] max_output_flow_during_start_up[Asgard_CCGT,2030,2,11:11] -375
+    units_on[Asgard_CCGT,2030,2,11:11] max_output_flow_during_start_up[Asgard_CCGT,2030,2,12:12] -125
+    units_on[Asgard_CCGT,2030,2,11:11] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,11:11] -225
+    units_on[Asgard_CCGT,2030,2,11:11] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,12:12] -275
     units_on[Asgard_CCGT,2030,2,11:11] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,11:11] -125
     units_on[Asgard_CCGT,2030,2,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,11:11] -125
     units_on[Asgard_CCGT,2030,2,11:11] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,12:12] 275
@@ -42217,6 +43691,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,12:12] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,12:12] -500
     units_on[Asgard_CCGT,2030,2,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,12:12] -375
     units_on[Asgard_CCGT,2030,2,12:12] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,13:13] 125
+    units_on[Asgard_CCGT,2030,2,12:12] max_output_flow_during_start_up[Asgard_CCGT,2030,2,12:12] -375
+    units_on[Asgard_CCGT,2030,2,12:12] max_output_flow_during_start_up[Asgard_CCGT,2030,2,13:13] -125
+    units_on[Asgard_CCGT,2030,2,12:12] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,12:12] -225
+    units_on[Asgard_CCGT,2030,2,12:12] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,13:13] -275
     units_on[Asgard_CCGT,2030,2,12:12] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,12:12] -125
     units_on[Asgard_CCGT,2030,2,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,12:12] -125
     units_on[Asgard_CCGT,2030,2,12:12] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,13:13] 275
@@ -42225,6 +43703,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,13:13] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,13:13] -500
     units_on[Asgard_CCGT,2030,2,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,13:13] -375
     units_on[Asgard_CCGT,2030,2,13:13] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,14:14] 125
+    units_on[Asgard_CCGT,2030,2,13:13] max_output_flow_during_start_up[Asgard_CCGT,2030,2,13:13] -375
+    units_on[Asgard_CCGT,2030,2,13:13] max_output_flow_during_start_up[Asgard_CCGT,2030,2,14:14] -125
+    units_on[Asgard_CCGT,2030,2,13:13] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,13:13] -225
+    units_on[Asgard_CCGT,2030,2,13:13] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,14:14] -275
     units_on[Asgard_CCGT,2030,2,13:13] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,13:13] -125
     units_on[Asgard_CCGT,2030,2,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,13:13] -125
     units_on[Asgard_CCGT,2030,2,13:13] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,14:14] 275
@@ -42233,6 +43715,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,14:14] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,14:14] -500
     units_on[Asgard_CCGT,2030,2,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,14:14] -375
     units_on[Asgard_CCGT,2030,2,14:14] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,15:15] 125
+    units_on[Asgard_CCGT,2030,2,14:14] max_output_flow_during_start_up[Asgard_CCGT,2030,2,14:14] -375
+    units_on[Asgard_CCGT,2030,2,14:14] max_output_flow_during_start_up[Asgard_CCGT,2030,2,15:15] -125
+    units_on[Asgard_CCGT,2030,2,14:14] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,14:14] -225
+    units_on[Asgard_CCGT,2030,2,14:14] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,15:15] -275
     units_on[Asgard_CCGT,2030,2,14:14] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,14:14] -125
     units_on[Asgard_CCGT,2030,2,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,14:14] -125
     units_on[Asgard_CCGT,2030,2,14:14] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,15:15] 275
@@ -42241,6 +43727,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,15:15] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,15:15] -500
     units_on[Asgard_CCGT,2030,2,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,15:15] -375
     units_on[Asgard_CCGT,2030,2,15:15] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,16:16] 125
+    units_on[Asgard_CCGT,2030,2,15:15] max_output_flow_during_start_up[Asgard_CCGT,2030,2,15:15] -375
+    units_on[Asgard_CCGT,2030,2,15:15] max_output_flow_during_start_up[Asgard_CCGT,2030,2,16:16] -125
+    units_on[Asgard_CCGT,2030,2,15:15] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,15:15] -225
+    units_on[Asgard_CCGT,2030,2,15:15] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,16:16] -275
     units_on[Asgard_CCGT,2030,2,15:15] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,15:15] -125
     units_on[Asgard_CCGT,2030,2,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,15:15] -125
     units_on[Asgard_CCGT,2030,2,15:15] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,16:16] 275
@@ -42249,6 +43739,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,16:16] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,16:16] -500
     units_on[Asgard_CCGT,2030,2,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,16:16] -375
     units_on[Asgard_CCGT,2030,2,16:16] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,17:17] 125
+    units_on[Asgard_CCGT,2030,2,16:16] max_output_flow_during_start_up[Asgard_CCGT,2030,2,16:16] -375
+    units_on[Asgard_CCGT,2030,2,16:16] max_output_flow_during_start_up[Asgard_CCGT,2030,2,17:17] -125
+    units_on[Asgard_CCGT,2030,2,16:16] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,16:16] -225
+    units_on[Asgard_CCGT,2030,2,16:16] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,17:17] -275
     units_on[Asgard_CCGT,2030,2,16:16] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,16:16] -125
     units_on[Asgard_CCGT,2030,2,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,16:16] -125
     units_on[Asgard_CCGT,2030,2,16:16] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,17:17] 275
@@ -42257,6 +43751,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,17:17] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,17:17] -500
     units_on[Asgard_CCGT,2030,2,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,17:17] -375
     units_on[Asgard_CCGT,2030,2,17:17] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,18:18] 125
+    units_on[Asgard_CCGT,2030,2,17:17] max_output_flow_during_start_up[Asgard_CCGT,2030,2,17:17] -375
+    units_on[Asgard_CCGT,2030,2,17:17] max_output_flow_during_start_up[Asgard_CCGT,2030,2,18:18] -125
+    units_on[Asgard_CCGT,2030,2,17:17] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,17:17] -225
+    units_on[Asgard_CCGT,2030,2,17:17] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,18:18] -275
     units_on[Asgard_CCGT,2030,2,17:17] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,17:17] -125
     units_on[Asgard_CCGT,2030,2,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,17:17] -125
     units_on[Asgard_CCGT,2030,2,17:17] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,18:18] 275
@@ -42265,6 +43763,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,18:18] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,18:18] -500
     units_on[Asgard_CCGT,2030,2,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,18:18] -375
     units_on[Asgard_CCGT,2030,2,18:18] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,19:19] 125
+    units_on[Asgard_CCGT,2030,2,18:18] max_output_flow_during_start_up[Asgard_CCGT,2030,2,18:18] -375
+    units_on[Asgard_CCGT,2030,2,18:18] max_output_flow_during_start_up[Asgard_CCGT,2030,2,19:19] -125
+    units_on[Asgard_CCGT,2030,2,18:18] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,18:18] -225
+    units_on[Asgard_CCGT,2030,2,18:18] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,19:19] -275
     units_on[Asgard_CCGT,2030,2,18:18] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,18:18] -125
     units_on[Asgard_CCGT,2030,2,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,18:18] -125
     units_on[Asgard_CCGT,2030,2,18:18] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,19:19] 275
@@ -42273,6 +43775,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,19:19] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,19:19] -500
     units_on[Asgard_CCGT,2030,2,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,19:19] -375
     units_on[Asgard_CCGT,2030,2,19:19] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,20:20] 125
+    units_on[Asgard_CCGT,2030,2,19:19] max_output_flow_during_start_up[Asgard_CCGT,2030,2,19:19] -375
+    units_on[Asgard_CCGT,2030,2,19:19] max_output_flow_during_start_up[Asgard_CCGT,2030,2,20:20] -125
+    units_on[Asgard_CCGT,2030,2,19:19] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,19:19] -225
+    units_on[Asgard_CCGT,2030,2,19:19] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,20:20] -275
     units_on[Asgard_CCGT,2030,2,19:19] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,19:19] -125
     units_on[Asgard_CCGT,2030,2,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,19:19] -125
     units_on[Asgard_CCGT,2030,2,19:19] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,20:20] 275
@@ -42281,6 +43787,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,20:20] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,20:20] -500
     units_on[Asgard_CCGT,2030,2,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,20:20] -375
     units_on[Asgard_CCGT,2030,2,20:20] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,21:21] 125
+    units_on[Asgard_CCGT,2030,2,20:20] max_output_flow_during_start_up[Asgard_CCGT,2030,2,20:20] -375
+    units_on[Asgard_CCGT,2030,2,20:20] max_output_flow_during_start_up[Asgard_CCGT,2030,2,21:21] -125
+    units_on[Asgard_CCGT,2030,2,20:20] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,20:20] -225
+    units_on[Asgard_CCGT,2030,2,20:20] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,21:21] -275
     units_on[Asgard_CCGT,2030,2,20:20] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,20:20] -125
     units_on[Asgard_CCGT,2030,2,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,20:20] -125
     units_on[Asgard_CCGT,2030,2,20:20] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,21:21] 275
@@ -42289,6 +43799,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,21:21] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,21:21] -500
     units_on[Asgard_CCGT,2030,2,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,21:21] -375
     units_on[Asgard_CCGT,2030,2,21:21] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 125
+    units_on[Asgard_CCGT,2030,2,21:21] max_output_flow_during_start_up[Asgard_CCGT,2030,2,21:21] -375
+    units_on[Asgard_CCGT,2030,2,21:21] max_output_flow_during_start_up[Asgard_CCGT,2030,2,22:22] -125
+    units_on[Asgard_CCGT,2030,2,21:21] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,21:21] -225
+    units_on[Asgard_CCGT,2030,2,21:21] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,22:22] -275
     units_on[Asgard_CCGT,2030,2,21:21] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,21:21] -125
     units_on[Asgard_CCGT,2030,2,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,21:21] -125
     units_on[Asgard_CCGT,2030,2,21:21] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 275
@@ -42297,6 +43811,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,22:22] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,22:22] -500
     units_on[Asgard_CCGT,2030,2,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,22:22] -375
     units_on[Asgard_CCGT,2030,2,22:22] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 125
+    units_on[Asgard_CCGT,2030,2,22:22] max_output_flow_during_start_up[Asgard_CCGT,2030,2,22:22] -375
+    units_on[Asgard_CCGT,2030,2,22:22] max_output_flow_during_start_up[Asgard_CCGT,2030,2,23:23] -125
+    units_on[Asgard_CCGT,2030,2,22:22] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,22:22] -225
+    units_on[Asgard_CCGT,2030,2,22:22] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,23:23] -275
     units_on[Asgard_CCGT,2030,2,22:22] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,22:22] -125
     units_on[Asgard_CCGT,2030,2,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,22:22] -125
     units_on[Asgard_CCGT,2030,2,22:22] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 275
@@ -42305,6 +43823,10 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,23:23] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,23:23] -500
     units_on[Asgard_CCGT,2030,2,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,23:23] -375
     units_on[Asgard_CCGT,2030,2,23:23] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 125
+    units_on[Asgard_CCGT,2030,2,23:23] max_output_flow_during_start_up[Asgard_CCGT,2030,2,23:23] -375
+    units_on[Asgard_CCGT,2030,2,23:23] max_output_flow_during_start_up[Asgard_CCGT,2030,2,24:24] -125
+    units_on[Asgard_CCGT,2030,2,23:23] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,23:23] -225
+    units_on[Asgard_CCGT,2030,2,23:23] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,24:24] -275
     units_on[Asgard_CCGT,2030,2,23:23] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,23:23] -125
     units_on[Asgard_CCGT,2030,2,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,23:23] -125
     units_on[Asgard_CCGT,2030,2,23:23] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 275
@@ -42312,6 +43834,8 @@ COLUMNS
     units_on[Asgard_CCGT,2030,2,24:24] limit_units_on_aggregated_vintage_method[Asgard_CCGT,2030,2,24:24] 1
     units_on[Asgard_CCGT,2030,2,24:24] max_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,24:24] -500
     units_on[Asgard_CCGT,2030,2,24:24] max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,24:24] -375
+    units_on[Asgard_CCGT,2030,2,24:24] max_output_flow_during_start_up[Asgard_CCGT,2030,2,24:24] -375
+    units_on[Asgard_CCGT,2030,2,24:24] max_output_flow_during_shut_down[Asgard_CCGT,2030,2,24:24] -225
     units_on[Asgard_CCGT,2030,2,24:24] min_output_flow_with_unit_commitment[Asgard_CCGT,2030,2,24:24] -125
     units_on[Asgard_CCGT,2030,2,24:24] max_ramp_down_with_unit_commitment[Asgard_CCGT,2030,2,24:24] -125
     units_on[Asgard_CCGT,2030,2,24:24] OBJ 184.29999999999998
@@ -51739,6 +53263,386 @@ RHS
     rhs       max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,22:22] 0
     rhs       max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,23:23] 0
     rhs       max_ramp_up_with_unit_commitment[Asgard_CCGT,2030,2,24:24] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,2:2] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,3:3] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,4:4] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,5:5] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,6:6] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,7:7] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,8:8] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,9:9] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,10:10] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,11:11] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,12:12] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,13:13] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,14:14] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,15:15] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,16:16] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,17:17] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,18:18] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,19:19] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,20:20] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,21:21] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,22:22] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,23:23] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,24:24] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,25:25] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,26:26] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,27:27] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,28:28] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,29:29] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,30:30] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,31:31] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,32:32] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,33:33] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,34:34] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,35:35] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,36:36] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,37:37] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,38:38] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,39:39] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,40:40] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,41:41] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,42:42] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,43:43] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,44:44] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,45:45] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,46:46] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,47:47] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,48:48] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,49:49] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,50:50] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,51:51] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,52:52] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,53:53] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,54:54] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,55:55] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,56:56] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,57:57] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,58:58] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,59:59] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,60:60] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,61:61] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,62:62] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,63:63] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,64:64] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,65:65] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,66:66] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,67:67] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,68:68] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,69:69] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,70:70] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,71:71] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,72:72] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,73:73] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,74:74] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,75:75] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,76:76] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,77:77] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,78:78] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,79:79] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,80:80] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,81:81] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,82:82] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,83:83] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,84:84] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,85:85] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,86:86] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,87:87] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,88:88] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,89:89] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,90:90] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,91:91] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,92:92] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,93:93] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,94:94] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,95:95] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,96:96] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,97:97] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,98:98] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,99:99] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,100:100] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,101:101] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,102:102] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,103:103] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,104:104] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,105:105] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,106:106] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,107:107] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,108:108] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,109:109] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,110:110] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,111:111] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,112:112] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,113:113] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,114:114] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,115:115] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,116:116] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,117:117] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,118:118] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,119:119] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,120:120] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,121:121] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,122:122] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,123:123] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,124:124] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,125:125] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,126:126] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,127:127] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,128:128] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,129:129] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,130:130] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,131:131] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,132:132] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,133:133] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,134:134] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,135:135] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,136:136] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,137:137] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,138:138] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,139:139] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,140:140] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,141:141] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,142:142] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,143:143] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,144:144] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,145:145] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,146:146] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,147:147] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,148:148] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,149:149] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,150:150] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,151:151] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,152:152] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,153:153] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,154:154] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,155:155] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,156:156] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,157:157] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,158:158] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,159:159] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,160:160] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,161:161] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,162:162] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,163:163] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,164:164] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,165:165] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,166:166] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,167:167] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,1,168:168] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,2:2] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,3:3] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,4:4] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,5:5] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,6:6] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,7:7] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,8:8] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,9:9] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,10:10] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,11:11] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,12:12] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,13:13] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,14:14] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,15:15] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,16:16] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,17:17] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,18:18] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,19:19] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,20:20] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,21:21] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,22:22] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,23:23] 0
+    rhs       max_output_flow_during_start_up[Asgard_CCGT,2030,2,24:24] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,2:2] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,3:3] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,4:4] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,5:5] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,6:6] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,7:7] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,8:8] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,9:9] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,10:10] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,11:11] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,12:12] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,13:13] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,14:14] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,15:15] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,16:16] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,17:17] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,18:18] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,19:19] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,20:20] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,21:21] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,22:22] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,23:23] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,24:24] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,25:25] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,26:26] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,27:27] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,28:28] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,29:29] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,30:30] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,31:31] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,32:32] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,33:33] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,34:34] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,35:35] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,36:36] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,37:37] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,38:38] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,39:39] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,40:40] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,41:41] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,42:42] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,43:43] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,44:44] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,45:45] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,46:46] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,47:47] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,48:48] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,49:49] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,50:50] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,51:51] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,52:52] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,53:53] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,54:54] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,55:55] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,56:56] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,57:57] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,58:58] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,59:59] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,60:60] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,61:61] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,62:62] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,63:63] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,64:64] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,65:65] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,66:66] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,67:67] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,68:68] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,69:69] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,70:70] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,71:71] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,72:72] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,73:73] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,74:74] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,75:75] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,76:76] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,77:77] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,78:78] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,79:79] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,80:80] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,81:81] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,82:82] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,83:83] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,84:84] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,85:85] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,86:86] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,87:87] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,88:88] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,89:89] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,90:90] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,91:91] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,92:92] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,93:93] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,94:94] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,95:95] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,96:96] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,97:97] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,98:98] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,99:99] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,100:100] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,101:101] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,102:102] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,103:103] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,104:104] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,105:105] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,106:106] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,107:107] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,108:108] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,109:109] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,110:110] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,111:111] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,112:112] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,113:113] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,114:114] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,115:115] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,116:116] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,117:117] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,118:118] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,119:119] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,120:120] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,121:121] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,122:122] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,123:123] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,124:124] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,125:125] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,126:126] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,127:127] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,128:128] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,129:129] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,130:130] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,131:131] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,132:132] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,133:133] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,134:134] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,135:135] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,136:136] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,137:137] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,138:138] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,139:139] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,140:140] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,141:141] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,142:142] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,143:143] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,144:144] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,145:145] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,146:146] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,147:147] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,148:148] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,149:149] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,150:150] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,151:151] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,152:152] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,153:153] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,154:154] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,155:155] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,156:156] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,157:157] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,158:158] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,159:159] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,160:160] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,161:161] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,162:162] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,163:163] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,164:164] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,165:165] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,166:166] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,167:167] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,1,168:168] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,2:2] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,3:3] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,4:4] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,5:5] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,6:6] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,7:7] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,8:8] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,9:9] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,10:10] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,11:11] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,12:12] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,13:13] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,14:14] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,15:15] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,16:16] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,17:17] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,18:18] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,19:19] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,20:20] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,21:21] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,22:22] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,23:23] 0
+    rhs       max_output_flow_during_shut_down[Asgard_CCGT,2030,2,24:24] 0
     rhs       max_ramp_up_without_unit_commitment[Midgard_Nuclear_SMR,2030,1,2:2] 750.0000037500001
     rhs       max_ramp_up_without_unit_commitment[Midgard_Nuclear_SMR,2030,1,3:3] 750.0000037500001
     rhs       max_ramp_up_without_unit_commitment[Midgard_Nuclear_SMR,2030,1,4:4] 750.0000037500001
@@ -56629,6 +58533,10 @@ RHS
     rhs       c2919     0
     rhs       c2920     0
     rhs       c2921     0
+    rhs       c2922     0
+    rhs       c2923     0
+    rhs       c2924     0
+    rhs       c2925     0
     rhs       OBJ       -250000
 RANGES
 BOUNDS

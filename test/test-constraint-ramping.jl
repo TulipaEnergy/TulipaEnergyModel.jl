@@ -2,27 +2,53 @@
     using TulipaBuilder: TulipaBuilder as TB
     using TulipaClustering: TulipaClustering as TC
 
-    function create_ramping_problem(; unit_commitment = "none", initial_units = 10.0)
+    function create_ramping_problem(;
+        unit_commitment = "none",
+        initial_units = 10.0,
+        capacity = 100.0,
+        min_operating_point = 0.0,
+        max_ramp_up = 0.5,
+        max_ramp_down = 0.5,
+        num_timesteps = 3,
+        partition = 1,
+    )
         tulipa = TB.TulipaData()
         TB.add_asset!(tulipa, "demand", :consumer; peak_demand = 1000.0)
         TB.add_asset!(
             tulipa,
             "plant",
             :producer;
-            capacity = 100.0,
+            capacity,
             initial_units,
+            min_operating_point,
             ramping = true,
-            max_ramp_up = 0.5,
-            max_ramp_down = 0.5,
+            max_ramp_up,
+            max_ramp_down,
             unit_commitment,
             unit_commitment_integer = true,
         )
         TB.add_flow!(tulipa, "plant", "demand")
-        TB.attach_profile!(tulipa, "plant", :availability, 2030, ones(3); scenario = 1)
+        TB.attach_profile!(tulipa, "plant", :availability, 2030, ones(num_timesteps); scenario = 1)
 
         connection = TB.create_connection(tulipa, TEM.schema)
         layout = TC.ProfilesTableLayout(; year = :milestone_year, cols_to_crossby = [:scenario])
-        TC.cluster!(connection, 3, 1; layout)
+        TC.cluster!(connection, num_timesteps, 1; layout)
+        if partition > 1
+            DuckDB.query(
+                connection,
+                """CREATE OR REPLACE TABLE assets_rep_periods_partitions AS
+                   SELECT * FROM (VALUES
+                       ('plant', 2030, 1, '$partition', 'uniform')
+                   ) AS partitions(asset, milestone_year, rep_period, partition, specification)""",
+            )
+            DuckDB.query(
+                connection,
+                """CREATE OR REPLACE TABLE flows_rep_periods_partitions AS
+                   SELECT * FROM (VALUES
+                       ('plant', 'demand', 2030, 1, '$partition', 'uniform')
+                   ) AS partitions(from_asset, to_asset, milestone_year, rep_period, partition, specification)""",
+            )
+        end
         TEM.populate_with_defaults!(connection)
         energy_problem = TEM.EnergyProblem(connection)
         TEM.create_model!(energy_problem)
@@ -66,6 +92,68 @@ end
         ),
     )
     @test length(collect(energy_problem.constraints[:max_ramp_with_unit_commitment].indices)) == 3
+end
+
+@testitem "Clustered UC ramping limits start-up and shut-down output" setup =
+    [CommonSetup, ConsRampingSetup] tags = [:unit, :constraint, :fast] begin
+    _, energy_problem = create_ramping_problem(;
+        unit_commitment = "basic",
+        initial_units = 2.0,
+        capacity = 200.0,
+        min_operating_point = 0.75,
+        max_ramp_up = 0.1,
+        max_ramp_down = 0.1,
+    )
+    model = energy_problem.model
+    cons = energy_problem.constraints[:max_ramp_with_unit_commitment]
+    units_on = cons.expressions[:units_on]
+    flow_above_min = cons.expressions[:flow_above_min_operating_point]
+
+    expected_start_up = JuMP.@build_constraint(
+        flow_above_min[2] <= 200.0 * (0.1 * units_on[2] + 0.15 * units_on[1])
+    )
+    @test _verify_constraint_using_id(model, :max_output_flow_during_start_up, 2, expected_start_up)
+
+    expected_shut_down = JuMP.@build_constraint(
+        flow_above_min[1] <= 200.0 * (0.1 * units_on[1] + 0.15 * units_on[2])
+    )
+    @test _verify_constraint_using_id(
+        model,
+        :max_output_flow_during_shut_down,
+        2,
+        expected_shut_down,
+    )
+end
+
+@testitem "Clustered UC ramping scales and clamps flexible blocks" setup =
+    [CommonSetup, ConsRampingSetup] tags = [:unit, :constraint, :fast] begin
+    _, energy_problem = create_ramping_problem(;
+        unit_commitment = "3var",
+        initial_units = 2.0,
+        capacity = 200.0,
+        min_operating_point = 0.75,
+        max_ramp_up = 0.1,
+        max_ramp_down = 0.2,
+        num_timesteps = 4,
+        partition = 2,
+    )
+    model = energy_problem.model
+    cons = energy_problem.constraints[:max_ramp_with_unit_commitment]
+    units_on = cons.expressions[:units_on]
+    flow_above_min = cons.expressions[:flow_above_min_operating_point]
+
+    expected_start_up = JuMP.@build_constraint(
+        flow_above_min[2] <= 200.0 * (0.2 * units_on[2] + 0.05 * units_on[1])
+    )
+    @test _verify_constraint_using_id(model, :max_output_flow_during_start_up, 2, expected_start_up)
+
+    expected_shut_down = JuMP.@build_constraint(flow_above_min[1] <= 200.0 * 0.25 * units_on[1])
+    @test _verify_constraint_using_id(
+        model,
+        :max_output_flow_during_shut_down,
+        2,
+        expected_shut_down,
+    )
 end
 
 @testitem "Compact-vintage ramping uses available vintages" setup = [CommonSetup] tags =

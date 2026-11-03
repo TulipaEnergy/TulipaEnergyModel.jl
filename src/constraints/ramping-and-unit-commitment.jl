@@ -250,6 +250,58 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
             ],
         )
+
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            :max_output_flow_during_start_up,
+            [
+                if row.time_block_start == 1
+                    @constraint(model, 0 == 0)
+                else
+                    ramp_up = min(
+                        row.max_ramp_up * min_outgoing_flow_duration,
+                        1 - row.min_operating_point,
+                    )
+                    @constraint(
+                        model,
+                        cons.expressions[:flow_above_min_operating_point][row.id] ≤
+                        profile_times_capacity[table_name][row.id] * (
+                            ramp_up * units_on[row.id] +
+                            (1 - row.min_operating_point - ramp_up) * units_on[row.id-1]
+                        ),
+                        base_name = "max_output_flow_during_start_up[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
+                end for (row, min_outgoing_flow_duration) in
+                zip(indices, cons.coefficients[:min_outgoing_flow_duration])
+            ],
+        )
+
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            :max_output_flow_during_shut_down,
+            [
+                if row.time_block_start == 1
+                    @constraint(model, 0 == 0)
+                else
+                    ramp_down = min(
+                        row.max_ramp_down * min_outgoing_flow_duration,
+                        1 - row.min_operating_point,
+                    )
+                    @constraint(
+                        model,
+                        cons.expressions[:flow_above_min_operating_point][row.id-1] ≤
+                        profile_times_capacity[table_name][row.id-1] * (
+                            ramp_down * units_on[row.id-1] +
+                            (1 - row.min_operating_point - ramp_down) * units_on[row.id]
+                        ),
+                        base_name = "max_output_flow_during_shut_down[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
+                end for (row, min_outgoing_flow_duration) in
+                zip(indices, cons.coefficients[:min_outgoing_flow_duration])
+            ],
+        )
     end
 
     for table_name in (
