@@ -125,7 +125,7 @@ function _get_indices_for_minimum_down_time_constraints_compact_vintage_method(
         "WITH cons_with_lower_bound AS (
             SELECT
                 cons.*,
-                cons.time_block_start - CAST(CEIL(asset.minimum_up_time::DOUBLE / rep_periods_data.resolution::DOUBLE) AS INTEGER) + 1 AS lower_bound
+                cons.time_block_start - CAST(CEIL(asset.minimum_down_time::DOUBLE / rep_periods_data.resolution::DOUBLE) AS INTEGER) + 1 AS lower_bound
             FROM cons_$table_name as cons
             LEFT JOIN asset ON
                 asset.asset = cons.asset

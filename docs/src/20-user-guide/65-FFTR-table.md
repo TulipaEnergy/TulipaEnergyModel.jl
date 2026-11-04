@@ -42,4 +42,6 @@ Below is the table outlining the details for each type of constraint.
 | DC-OPF Constraint                              | flow, electricity_angle        | -                | power           | min(neighboring assets, flow)                                                            | -                   |
 | Flows relationships                            | flow 1, flow 2                 | -                | energy          | max(flow1, flow2)                                                                        | -                   |
 
+For `3var` unit commitment, the `unit_commitment_logic`, `minimum_up_time`, and `minimum_down_time` constraints use the asset resolution of `units_on`. The minimum-time windows are rounded up to whole `units_on` blocks; start-up and shut-down variables are indexed by those same commitment blocks.
+
 [^1]: Only inputs or outputs with [`conversion coefficient`](@ref coefficient-for-conversion-constraints) ``\geq 0`` are considered to determine the resolution of the conversion balance constraint.

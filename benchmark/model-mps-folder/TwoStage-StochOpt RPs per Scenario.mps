@@ -52874,7 +52874,7 @@ COLUMNS
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,24,22:22] -100
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,24,23:23] -100
     assets_investment_energy[2050,battery] max_storage_level_intra_rep_period_limit[battery,2050,24,24:24] -100
-    assets_investment_energy[2050,battery] OBJ 248752.02029114208
+    assets_investment_energy[2050,battery] OBJ 248752.02029114275
     storage_level_intra_rep_period[battery,2030,1,1:1] max_storage_level_intra_rep_period_limit[battery,2030,1,1:1] 1
     storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,1:1] 1
     storage_level_intra_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,2:2] -1
