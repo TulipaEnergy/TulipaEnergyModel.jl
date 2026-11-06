@@ -94,6 +94,11 @@ function validate_data!(connection)
             false,
         ),
         (
+            "start-up and shut-down costs require 3var unit commitment",
+            _validate_start_up_shut_down_cost_requires_3var!,
+            false,
+        ),
+        (
             "commodity_price profiles require commodity_price > 0",
             _validate_commodity_price_consistency!,
             false,
@@ -1211,6 +1216,38 @@ function _validate_bid_related_data!(error_messages, connection)
                 )
             end
         end
+    end
+
+    return error_messages
+end
+
+function _validate_start_up_shut_down_cost_requires_3var!(error_messages, connection)
+    for row in DuckDB.query(
+        connection,
+        """
+        SELECT
+            asset_milestone.asset,
+            asset_milestone.milestone_year,
+            costs.cost_name
+        FROM asset_milestone
+        INNER JOIN asset USING (asset)
+        CROSS JOIN LATERAL (
+            SELECT 'start_up_cost' AS cost_name, asset_milestone.start_up_cost AS cost
+            UNION ALL
+            SELECT 'shut_down_cost', asset_milestone.shut_down_cost
+        ) AS costs
+        WHERE costs.cost IS NOT NULL
+            AND (
+                asset.type NOT IN ('producer', 'conversion')
+                OR asset.unit_commitment NOT LIKE '3var%'
+            )
+        ORDER BY asset_milestone.asset, asset_milestone.milestone_year, costs.cost_name
+        """,
+    )
+        push!(
+            error_messages,
+            "Asset $(row.asset) in milestone year $(row.milestone_year) has $(row.cost_name), which requires asset.type = 'producer' or 'conversion' and asset.unit_commitment = '3var'",
+        )
     end
 
     return error_messages
