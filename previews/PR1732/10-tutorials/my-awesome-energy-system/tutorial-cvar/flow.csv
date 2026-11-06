@@ -1,0 +1,4 @@
+from_asset,to_asset,technical_lifetime,discount_rate
+wind,demand,20,0.0
+ocgt,demand,20,0.0
+ens,demand,20,0.0
