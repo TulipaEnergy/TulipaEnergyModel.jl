@@ -188,12 +188,12 @@ end
         optimizer_parameters = Dict("output_flag" => false, "mip_rel_gap" => 0.0),
         show_log = false,
     )
-    @test energy_problem.objective_value ≈ 4.052096980606e6 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4074890.963479 atol = 1e-5
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(
         connection;
         optimizer_parameters = Dict("output_flag" => false, "mip_rel_gap" => 0.0),
         show_log = false,
     )
-    @test energy_problem.objective_value ≈ 4.052096980606e6 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4074890.963479 atol = 1e-5
 end

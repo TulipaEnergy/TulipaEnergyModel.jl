@@ -73,6 +73,22 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_vintage_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_uc_transition_operational_cost!(
+        connection,
+        model,
+        expressions,
+        objective_expr,
+        lambda,
+        :start_up,
+    )
+    _add_uc_transition_operational_cost!(
+        connection,
+        model,
+        expressions,
+        objective_expr,
+        lambda,
+        :shut_down,
+    )
     _add_conditional_value_at_risk_term!(
         connection,
         model,
@@ -224,6 +240,8 @@ function prepare_objective_tables!(connection, model_parameters)
             asset_commission.investment_cost_storage_energy,
             asset.capacity_storage_energy,
             asset_milestone.units_on_cost,
+            asset_milestone.start_up_cost,
+            asset_milestone.shut_down_cost,
             -- computed
             1 / (1 + $(model_parameters.social_rate))^(asset_milestone.milestone_year - $(model_parameters.discount_year)) AS investment_year_discount,
             $(_investment_discount_sql(

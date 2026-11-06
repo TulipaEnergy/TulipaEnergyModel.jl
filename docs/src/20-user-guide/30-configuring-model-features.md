@@ -229,10 +229,14 @@ For economic representation, the following parameters need to be set up. For con
 The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter selects `basic` (units-on variable and output limits) or `3var` (units-on, start-up, shut-down, and minimum up/down time constraints). Additionally, the following parameters should be set in that same file:
 
 - `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
+- `start_up_cost`: Cost per unit started up; applies to `3var` and is charged once per represented start-up.
+- `shut_down_cost`: Cost per unit shut down; applies to `3var` and is charged once per represented shut-down.
 - `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
 - `minimum_up_time`: Minimum time a unit must remain on after start-up; applies to `3var`.
 - `minimum_down_time`: Minimum time a unit must remain off after shut-down; applies to `3var`.
+
+Setting either transition cost on an asset without `unit_commitment = '3var'` is an input error. Costs are applied to commitment-block transitions, so a coarser asset partition cannot represent or charge for additional starts or stops inside a block. The first block of each representative period has no previous commitment state and is not charged.
 
 !!! info "Minimum operating point constraints without unit commitment"
     Even when `unit_commitment = 'none'`, producer and conversion assets with `min_operating_point > 0` still receive a minimum output-flow constraint (for aggregated and compact profiles vintage methods). This is useful to represent must-run conditions without the full unit commitment formulation.

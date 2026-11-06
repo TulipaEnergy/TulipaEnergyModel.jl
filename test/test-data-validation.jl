@@ -5,6 +5,26 @@
     @test_throws error_msg throw(TEM.DataValidationException(["example"]))
 end
 
+@testitem "Start-up and shut-down costs require 3var unit commitment" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    TEM.populate_with_defaults!(connection)
+    DuckDB.query(connection, "UPDATE asset_milestone SET start_up_cost = 1 WHERE asset = 'ccgt'")
+    DuckDB.query(connection, "UPDATE asset_milestone SET shut_down_cost = 2 WHERE asset = 'demand'")
+
+    errors = TEM._validate_start_up_shut_down_cost_requires_3var!(String[], connection)
+    @test length(errors) == 2
+    @test any(occursin("start_up_cost", error) for error in errors)
+    @test any(occursin("shut_down_cost", error) for error in errors)
+
+    DuckDB.query(connection, "UPDATE asset SET unit_commitment = '3var' WHERE asset = 'ccgt'")
+    DuckDB.query(
+        connection,
+        "UPDATE asset_milestone SET shut_down_cost = NULL WHERE asset = 'demand'",
+    )
+    @test TEM._validate_start_up_shut_down_cost_requires_3var!(String[], connection) == []
+end
+
 @testitem "Test having all tables and columns - missing table" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
