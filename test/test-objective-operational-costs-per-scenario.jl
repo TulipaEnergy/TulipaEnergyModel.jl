@@ -23,6 +23,8 @@
         (:flows_operational_cost_per_scenario, :flows_operational_cost),
         (:vintage_flows_operational_cost_per_scenario, :vintage_flows_operational_cost),
         (:units_on_operational_cost_per_scenario, :units_on_operational_cost),
+        (:start_up_operational_cost_per_scenario, :start_up_operational_cost),
+        (:shut_down_operational_cost_per_scenario, :shut_down_operational_cost),
     )
         @test haskey(energy_problem.expressions, expr_name)
         @test haskey(energy_problem.model, model_name)
