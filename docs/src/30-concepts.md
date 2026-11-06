@@ -602,6 +602,8 @@ In this example, we demonstrated the use of unit commitment and ramping constrai
 
 The previous examples use the `units_on` variable to show how basic unit commitment follows the asset resolution. The `3var` method adds `start_up` and `shut_down` variables and uses them to enforce minimum up and down times. We keep the `test/inputs/UC-ramping` files unchanged and change only the relevant asset parameters in this example, so the effect of the temporal resolution is easy to isolate.
 
+Optional `start_up_cost` and `shut_down_cost` values in `asset_milestone` add per-unit event costs for `3var` assets. Each represented transition is weighted by its representative-period scenario weight and operating-cost discount factor, but not by block duration. Because transition variables follow the asset commitment partition, a coarse partition cannot charge for starts or stops hidden inside a block. As with the transition logic, the first block of each representative period has no previous state and incurs no transition cost.
+
 ```@example unit-commitment-3var
 using DuckDB
 using DataFrames
