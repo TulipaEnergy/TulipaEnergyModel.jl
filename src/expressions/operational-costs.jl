@@ -2,7 +2,7 @@
     add_operational_cost_expressions!(connection, model, variables, expressions, profiles)
 
 Create and attach per-scenario operational cost expressions for flows,
-vintage flows, and units-on variables.
+vintage flows, units-on, start-up, and shut-down variables.
 
 These expressions are later reused by the objective builder and by the CVaR
 tail-excess expression/constraint path, so scenario-indexed costs are computed
@@ -28,6 +28,15 @@ function add_operational_cost_expressions!(connection, model, variables, express
         variables,
         expressions,
     )
+    for uc_transition in (:start_up, :shut_down)
+        _add_uc_transition_operational_cost_per_scenario_expressions!(
+            connection,
+            model,
+            variables,
+            expressions,
+            uc_transition,
+        )
+    end
 
     return nothing
 end
@@ -208,6 +217,43 @@ function _add_units_on_operational_cost_per_scenario_expressions!(
                     sum(
                         cost * units_on[var_id::Int64] for
                         (cost, var_id) in zip(row.arr_cost, row.var_units_on_ids)
+                    ),
+                )
+            else
+                @expression(model, 0.0)
+            end for row in indices
+        ],
+    )
+
+    return nothing
+end
+
+function _add_uc_transition_operational_cost_per_scenario_expressions!(
+    connection,
+    model,
+    variables,
+    expressions,
+    uc_transition,
+)
+    expr_name = Symbol("$(uc_transition)_operational_cost_per_scenario")
+    expr = _create_scenario_cost_expression!(connection, expressions, expr_name)
+    uc_transition_variables = variables[uc_transition].container
+    indices = _query_uc_transition_operational_cost_per_scenario_indices(
+        connection,
+        expr_name,
+        uc_transition,
+    )
+
+    attach_expression!(
+        expr,
+        :cost,
+        JuMP.AffExpr[
+            if !isempty(row.var_ids)
+                @expression(
+                    model,
+                    sum(
+                        cost * uc_transition_variables[var_id::Int64] for
+                        (cost, var_id) in zip(row.arr_cost, row.var_ids)
                     ),
                 )
             else
@@ -524,6 +570,57 @@ function _query_units_on_operational_cost_per_scenario_indices(connection, expr_
             COALESCE(uops.arr_cost, []) AS arr_cost
         FROM expr_$expr_name AS expr
         LEFT JOIN units_on_per_scenario AS uops ON expr.scenario = uops.scenario
+        ORDER BY expr.id
+        """,
+    )
+end
+
+function _query_uc_transition_operational_cost_per_scenario_indices(
+    connection,
+    expr_name,
+    uc_transition,
+)
+    return DuckDB.query(
+        connection,
+        """
+        WITH rp_weight AS (
+            SELECT
+                milestone_year,
+                rep_period,
+                scenario,
+                SUM(weight) AS total_weight_per_scenario
+            FROM rep_periods_mapping
+            GROUP BY milestone_year, rep_period, scenario
+        ),
+        uc_transition_costs_per_scenario AS (
+            SELECT
+                rp_weight.scenario,
+                ARRAY_AGG(var.id ORDER BY var.id) AS var_ids,
+                ARRAY_AGG(
+                    obj.$(uc_transition)_cost
+                    * obj.weight_for_operation_discounts
+                    * rp_weight.total_weight_per_scenario
+                    ORDER BY var.id
+                ) AS arr_cost
+            FROM var_$(uc_transition) AS var
+            INNER JOIN t_objective_assets AS obj
+                ON var.asset = obj.asset
+                AND var.milestone_year = obj.milestone_year
+            INNER JOIN rp_weight
+                ON var.milestone_year = rp_weight.milestone_year
+                AND var.rep_period = rp_weight.rep_period
+            WHERE obj.$(uc_transition)_cost IS NOT NULL
+                AND var.time_block_start > 1
+            GROUP BY rp_weight.scenario
+        )
+        SELECT
+            expr.id,
+            expr.scenario,
+            expr.probability,
+            COALESCE(tcp.var_ids, []) AS var_ids,
+            COALESCE(tcp.arr_cost, []) AS arr_cost
+        FROM expr_$expr_name AS expr
+        LEFT JOIN uc_transition_costs_per_scenario AS tcp ON expr.scenario = tcp.scenario
         ORDER BY expr.id
         """,
     )
