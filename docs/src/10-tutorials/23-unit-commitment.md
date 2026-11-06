@@ -39,20 +39,36 @@ function load_uc_connection()
 end
 
 connection = load_uc_connection()
-TIO.get_table(connection, "asset")
+asset_data = TIO.get_table(connection, "asset")
+select(
+    asset_data,
+    :asset,
+    :type,
+    :capacity,
+    :unit_commitment,
+    :min_operating_point,
+    :minimum_down_time,
+    :minimum_up_time,
+)
 ```
 
-The default data contains the 3-variable formulation. The two thermal assets are the only assets with unit commitment:
+The default data contains the 3-variable formulation for the 'ccgt', 'ocgt'. These two thermal assets are the only assets with unit commitment.
+
+For the unit commitment modelling it is also important to consider different cost components, such as the `units_on_cost`, `shut_down_cost`, and `start_up_cost`, which influence the optimal commitment schedule of the thermal units. Let's have a look at these cost parameters in the asset milestone file.
 
 ```@example unit-commitment
-DataFrame(DuckDB.query(connection, """
-    SELECT
-        asset, capacity, min_operating_point, unit_commitment,
-        unit_commitment_integer, minimum_up_time, minimum_down_time
-    FROM asset
-    WHERE asset IN ('ccgt', 'ocgt')
-    ORDER BY asset
-"""))
+asset_milestone = filter(
+    row -> row.asset in ("ccgt", "ocgt"),
+    TIO.get_table(connection, "asset_milestone"),
+)
+select(
+    asset_milestone,
+    :asset,
+    :milestone_year,
+    :units_on_cost,
+    :shut_down_cost,
+    :start_up_cost
+)
 ```
 
 ## Part 1: hourly unit commitment
@@ -76,8 +92,15 @@ function run_uc_case(
     if !isnothing(minimum_up_time)
         DuckDB.query(connection, """
             UPDATE asset
-            SET minimum_up_time = $minimum_up_time,
-                minimum_down_time = $minimum_down_time
+            SET minimum_up_time = $minimum_up_time
+            WHERE asset IN ('ccgt', 'ocgt')
+        """)
+    end
+
+    if !isnothing(minimum_down_time)
+        DuckDB.query(connection, """
+            UPDATE asset
+            SET minimum_down_time = $minimum_down_time
             WHERE asset IN ('ccgt', 'ocgt')
         """)
     end
@@ -85,7 +108,16 @@ function run_uc_case(
     if unit_commitment == "none"
         DuckDB.query(connection, """
             UPDATE asset
-            SET min_operating_point = 0.0
+            SET min_operating_point = 0.0,
+            WHERE asset IN ('ccgt', 'ocgt')
+        """)
+    end
+
+    if unit_commitment in ("none", "basic")
+        DuckDB.query(connection, """
+            UPDATE asset_milestone
+            SET shut_down_cost = NULL,
+                start_up_cost = NULL
             WHERE asset IN ('ccgt', 'ocgt')
         """)
     end
@@ -122,6 +154,39 @@ function run_uc_case(
     timings = (; model_build_time, solver_time)
     return connection, energy_problem, timings
 end
+
+function plot_ccgt_dispatch_and_commitment(connection; show_commitment = true)
+    ccgt_flow = filter(
+        row -> row.from_asset == "ccgt" && row.to_asset == "e_demand",
+        TIO.get_table(connection, "var_flow"),
+    )
+    p = plot(
+        ccgt_flow.time_block_start,
+        ccgt_flow.solution;
+        label = "ccgt output",
+        xlabel = "Hour",
+        ylabel = "MW",
+        xlims = (1, 72),
+        legend = :topright,
+    )
+
+    if show_commitment
+        ccgt_units_on = filter(
+            row -> row.asset == "ccgt",
+            TIO.get_table(connection, "var_units_on"),
+        )
+        plot!(
+            p,
+            ccgt_units_on.time_block_start,
+            200 .* ccgt_units_on.solution;
+            fillrange = 0.4 .* 200 .* ccgt_units_on.solution,
+            fillalpha = 0.2,
+            label = "ccgt capacity band",
+        )
+    end
+
+    return p
+end
 ```
 
 ### No unit commitment
@@ -135,7 +200,16 @@ none_connection, none_problem, _ = run_uc_case("none")
  constraints = JuMP.num_constraints(none_problem.model; count_variable_in_set_constraints = false))
 ```
 
-`none` can still be combined with a positive `min_operating_point` to represent a must-run asset. That creates a minimum-output constraint, but it does not create commitment variables.
+Let's have a look at the dispatch and commitment of the `ccgt` units without unit commitment variables and constraints.
+
+```@example unit-commitment
+plot_ccgt_dispatch_and_commitment(none_connection; show_commitment = false)
+```
+
+There is no unit-commitment, so there is no `units_on`, `start_up`, or `shut_down` variables, just the output flow of the `ccgt` units.
+
+!!! info "Must-run assets"
+    `none` can still be combined with a positive `min_operating_point` to represent a must-run asset. That creates a minimum-output constraint, but it does not create commitment variables.
 
 ### Basic unit commitment
 
@@ -143,41 +217,24 @@ The `basic` formulation adds `units_on`. Output is bounded below by the minimum 
 
 ```@example unit-commitment
 basic_connection, basic_problem, _ = run_uc_case("basic")
-units_on_basic = TIO.get_table(basic_connection, "var_units_on")
-first(units_on_basic, 8)
+(basic_objective = basic_problem.objective_value,
+ variables = JuMP.num_variables(basic_problem.model),
+ constraints = JuMP.num_constraints(basic_problem.model; count_variable_in_set_constraints = false))
 ```
+
+By adding the `units_on` variables, the model can now represent the commitment state of each unit explicitly and the cost of being online through the parameter `units_on_cost`. Therefore the cost and number of variables and constraints increase compared to the `none` formulation.
 
 The `ccgt` output and its commitment state can be plotted together. The shaded interval is the feasible output band for the committed units.
 
 ```@example unit-commitment
-basic_flow = TIO.get_table(basic_connection, "var_flow")
-basic_ccgt_flow = filter(row ->
-    row.from_asset == "ccgt" && row.to_asset == "e_demand", basic_flow)
-basic_units_on = filter(row -> row.asset == "ccgt", units_on_basic)
-
-plot(
-    basic_ccgt_flow.time_block_start,
-    basic_ccgt_flow.solution;
-    label = "ccgt output",
-    xlabel = "Hour",
-    ylabel = "MW",
-    xlims = (1, 72),
-    legend = :topright,
-)
-plot!(
-    basic_units_on.time_block_start,
-    200 .* basic_units_on.solution;
-    fillrange = 0.4 .* 200 .* basic_units_on.solution,
-    fillalpha = 0.2,
-    label = "ccgt capacity band",
-)
+plot_ccgt_dispatch_and_commitment(basic_connection)
 ```
 
 ### Three-variable unit commitment
 
 The `3var` formulation adds `start_up` and `shut_down` and links them to changes in `units_on`. It also enforces minimum up and down times.
 
-First use one-hour minimum times. This isolates the difference between the variable sets: the objective should match `basic` for this case.
+First use one-hour minimum times. This isolates the difference between the variable sets: the objective is higher since the model now accounts for start-up and shut-down costs.
 
 ```@example unit-commitment
 threevar_hourly_connection, threevar_hourly_problem, _ = run_uc_case(
@@ -185,9 +242,21 @@ threevar_hourly_connection, threevar_hourly_problem, _ = run_uc_case(
     minimum_up_time = 1,
     minimum_down_time = 1,
 )
-
-threevar_hourly_problem.objective_value
+(threevar_hourly_objective = threevar_hourly_problem.objective_value,
+ variables = JuMP.num_variables(threevar_hourly_problem.model),
+ constraints = JuMP.num_constraints(threevar_hourly_problem.model; count_variable_in_set_constraints = false)
+)
 ```
+
+The cost increases when accounting for start-up and shut-down costs, as reflected in the higher objective value for the `3var` formulation compared to the `basic` formulation. The number of variables and constraints also increases due to the additional transition variables and minimum up/down-time constraints.
+
+Let's have a look at the dispatch and commitment of the `ccgt` units again in this case:
+
+```@example unit-commitment
+plot_ccgt_dispatch_and_commitment(threevar_hourly_connection)
+```
+
+Since there is a cost on start-up and shut-down, the model will try to minimize the number of transitions, leading to fewer on/off cycles for the `ccgt` units.
 
 Now use the tutorial defaults: `ccgt` has a 6-hour minimum up time and 4-hour minimum down time, while `ocgt` keeps 1-hour limits:
 
@@ -195,15 +264,25 @@ Now use the tutorial defaults: `ccgt` has a 6-hour minimum up time and 4-hour mi
 threevar_connection, threevar_problem, _ = run_uc_case(
     "3var";
 )
+(threevar_objective = threevar_problem.objective_value,
+ variables = JuMP.num_variables(threevar_problem.model),
+ constraints = JuMP.num_constraints(threevar_problem.model; count_variable_in_set_constraints = false)
+)
+```
 
-start_up = TIO.get_table(threevar_connection, "var_start_up")
-shut_down = TIO.get_table(threevar_connection, "var_shut_down")
-first(start_up[start_up.asset .== "ccgt", :], 10)
+Once again, the model tries to minimize the number of transitions while respecting the minimum up and down times. but, due to the minimum-time restrictions, it may not always be able to switch units exactly when it would be optimal if the units were allowed to switch freely.
+
+Let's check again the dispatch and commitment of the `ccgt` units under the new minimum up and down time constraints.
+
+```@example unit-commitment
+plot_ccgt_dispatch_and_commitment(threevar_connection)
 ```
 
 The minimum-time restrictions reduce the number of switching opportunities. Compare the commitment and transition variables:
 
 ```@example unit-commitment
+start_up = TIO.get_table(threevar_connection, "var_start_up")
+shut_down = TIO.get_table(threevar_connection, "var_shut_down")
 ccgt_units_on = filter(row -> row.asset == "ccgt", TIO.get_table(threevar_connection, "var_units_on"))
 ccgt_start_up = filter(row -> row.asset == "ccgt", start_up)
 ccgt_shut_down = filter(row -> row.asset == "ccgt", shut_down)
