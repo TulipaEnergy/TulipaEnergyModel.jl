@@ -417,6 +417,24 @@
       "type": "DOUBLE",
       "unit_of_measure": "MW"
     },
+    "shut_down_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": null,
+      "description": "Cost per unit shut down. Applies to 3var unit commitment.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/unit"
+    },
+    "start_up_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": null,
+      "description": "Cost per unit started up. Applies to 3var unit commitment.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/unit"
+    },
     "storage_inflows": {
       "constraints": {
         "minimum": 0
