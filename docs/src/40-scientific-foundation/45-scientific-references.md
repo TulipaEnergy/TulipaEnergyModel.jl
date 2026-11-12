@@ -35,6 +35,8 @@ Morales-España, G., Ramos, A., & García-González, J. (2014). An MIP formulati
 
 Morales-España, G., Latorre, J. M., & Ramos, A. (2013). Tight and compact MILP formulation for the thermal unit commitment problem. IEEE Transactions on Power Systems, 28(4), 4897–4908. <https://doi.org/10.1109/TPWRS.2013.2251373>
 
+Queyranne, M., & Wolsey, L. A. (2017). Tight MIP formulations for bounded up/down times and interval-dependent start-ups. Mathematical Programming, 164(1–2), 129–155. <https://doi.org/10.1007/s10107-016-1079-2>
+
 ## Multi-year Investments
 
 Wang, N., & Tejada-Arango, D. A. (2025). Discounting approaches in multi-year investment modelling for energy systems. ArXiv. <https://arxiv.org/abs/2504.21709>
