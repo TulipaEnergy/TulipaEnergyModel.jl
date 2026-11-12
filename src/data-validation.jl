@@ -74,6 +74,11 @@ function validate_data!(connection)
             false,
         ),
         (
+            "maximum up time is greater than or equal to minimum up time",
+            _validate_maximum_up_time_not_less_than_minimum_up_time!,
+            false,
+        ),
+        (
             "consistency between asset_commission and asset_both",
             _validate_asset_commission_and_asset_both_consistency!,
             false,
@@ -882,6 +887,25 @@ function _validate_consumer_uses_aggregated_vintage_method!(error_messages, conn
         push!(
             error_messages,
             "Incorrect use of vintage method '$(row.vintage_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'aggregated' vintage method.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_maximum_up_time_not_less_than_minimum_up_time!(error_messages, connection)
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset, asset.maximum_up_time, asset.minimum_up_time
+        FROM asset
+        WHERE asset.maximum_up_time IS NOT NULL
+            AND asset.maximum_up_time < asset.minimum_up_time
+        ORDER BY asset.asset
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect maximum_up_time = $(row.maximum_up_time) for asset '$(row.asset)' in 'asset'. The maximum_up_time should be greater than or equal to minimum_up_time = $(row.minimum_up_time).",
         )
     end
 

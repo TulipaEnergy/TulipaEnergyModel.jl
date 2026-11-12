@@ -47,6 +47,7 @@ function compute_constraints_indices(connection)
             :unit_commitment_logic,
             :scenario_tail_excess,
             :minimum_up_time,
+            :maximum_up_time,
             :minimum_down_time_aggregated_vintage_method,
             :minimum_down_time_compact_vintage_method,
         )
