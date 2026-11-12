@@ -132,7 +132,7 @@ using JuMP
         JuMP.@build_constraint(0 * dummy == 0),
         JuMP.@build_constraint(
             var_units_on[6] - var_units_on[5] == var_start_up[6] - var_shut_down[6]
-        )
+        ),
     ]
 
     observed_cons = _get_cons_object(model, :unit_commitment_logic)

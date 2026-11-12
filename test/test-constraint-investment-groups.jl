@@ -192,7 +192,7 @@ end
         ("group3", 2050) => JuMP.@build_constraint(
             sum(2.0 * expr_available_asset_units_aggregated[id] for id in aggregated_ids) +
             sum(4.2 * expr_available_asset_units_compact[id] for id in compact_ids) <= 987
-        )
+        ),
         # No group4, because invest_method is none
     )
     observed_cons = _get_cons_object(ep.model, :investment_group)
