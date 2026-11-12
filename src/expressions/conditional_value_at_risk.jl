@@ -38,6 +38,10 @@ function add_scenario_tail_excess_expressions!(connection, model, variables, exp
             expressions[:vintage_flows_operational_cost_per_scenario].expressions[:cost]
         units_on_operational_cost_per_scenario =
             expressions[:units_on_operational_cost_per_scenario].expressions[:cost]
+        start_up_operational_cost_per_scenario =
+            expressions[:start_up_operational_cost_per_scenario].expressions[:cost]
+        shut_down_operational_cost_per_scenario =
+            expressions[:shut_down_operational_cost_per_scenario].expressions[:cost]
 
         # Construct the total cost per scenario expression for each scenario
         total_operational_cost_per_scenario = Vector{JuMP.AffExpr}(undef, n)
@@ -46,6 +50,8 @@ function add_scenario_tail_excess_expressions!(connection, model, variables, exp
             JuMP.add_to_expression!(scenario_cost, flows_operational_cost_per_scenario[i])
             JuMP.add_to_expression!(scenario_cost, vintage_flows_operational_cost_per_scenario[i])
             JuMP.add_to_expression!(scenario_cost, units_on_operational_cost_per_scenario[i])
+            JuMP.add_to_expression!(scenario_cost, start_up_operational_cost_per_scenario[i])
+            JuMP.add_to_expression!(scenario_cost, shut_down_operational_cost_per_scenario[i])
             total_operational_cost_per_scenario[i] = scenario_cost
         end
 

@@ -234,7 +234,7 @@ end
         JuMP.@build_constraint(var_start_up[3] <= var_units_on[3]),
         JuMP.@build_constraint(var_start_up[3] + var_start_up[4] <= var_units_on[4]),
         JuMP.@build_constraint(var_start_up[5] <= var_units_on[5]),
-        JuMP.@build_constraint(var_start_up[5] + var_start_up[6] <= var_units_on[6])
+        JuMP.@build_constraint(var_start_up[5] + var_start_up[6] <= var_units_on[6]),
     ]
     observed_cons = _get_cons_object(model, :minimum_up_time)
 
@@ -244,14 +244,14 @@ end
         JuMP.@build_constraint(var_shut_down[1] <= 1 - var_units_on[1]),
         JuMP.@build_constraint(var_shut_down[1] + var_shut_down[2] <= 1 - var_units_on[2]),
         JuMP.@build_constraint(var_shut_down[5] <= 1 - var_units_on[5]),
-        JuMP.@build_constraint(var_shut_down[5] + var_shut_down[6] <= 1 - var_units_on[6])
+        JuMP.@build_constraint(var_shut_down[5] + var_shut_down[6] <= 1 - var_units_on[6]),
     ]
     observed_cons = _get_cons_object(model, :minimum_down_time_aggregated_vintage_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
 
     expected_cons = [
         JuMP.@build_constraint(var_shut_down[3] <= 1 - var_units_on[3]),
-        JuMP.@build_constraint(var_shut_down[3] + var_shut_down[4] <= 1 - var_units_on[4])
+        JuMP.@build_constraint(var_shut_down[3] + var_shut_down[4] <= 1 - var_units_on[4]),
     ]
     observed_cons = _get_cons_object(model, :minimum_down_time_compact_vintage_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
@@ -294,7 +294,7 @@ end
         JuMP.@build_constraint(var_start_up[23] + var_start_up[24] <= var_units_on[24]),
         JuMP.@build_constraint(var_start_up[24] + var_start_up[25] <= var_units_on[25]),
         JuMP.@build_constraint(var_start_up[25] + var_start_up[26] <= var_units_on[26]),
-        JuMP.@build_constraint(var_start_up[26] + var_start_up[27] <= var_units_on[27])
+        JuMP.@build_constraint(var_start_up[26] + var_start_up[27] <= var_units_on[27]),
     ]
     observed_cons = _get_cons_object(model, :minimum_up_time)
 
@@ -318,7 +318,7 @@ end
         JuMP.@build_constraint(var_shut_down[23] + var_shut_down[24] <= 1 - var_units_on[24]),
         JuMP.@build_constraint(var_shut_down[24] + var_shut_down[25] <= 1 - var_units_on[25]),
         JuMP.@build_constraint(var_shut_down[25] + var_shut_down[26] <= 1 - var_units_on[26]),
-        JuMP.@build_constraint(var_shut_down[26] + var_shut_down[27] <= 1 - var_units_on[27])
+        JuMP.@build_constraint(var_shut_down[26] + var_shut_down[27] <= 1 - var_units_on[27]),
     ]
     observed_cons = _get_cons_object(model, :minimum_down_time_aggregated_vintage_method)
 
@@ -333,7 +333,7 @@ end
         JuMP.@build_constraint(var_shut_down[14] + var_shut_down[15] <= 1 - var_units_on[15]),
         JuMP.@build_constraint(var_shut_down[15] + var_shut_down[16] <= 1 - var_units_on[16]),
         JuMP.@build_constraint(var_shut_down[16] + var_shut_down[17] <= 1 - var_units_on[17]),
-        JuMP.@build_constraint(var_shut_down[17] + var_shut_down[18] <= 1 - var_units_on[18])
+        JuMP.@build_constraint(var_shut_down[17] + var_shut_down[18] <= 1 - var_units_on[18]),
     ]
     observed_cons = _get_cons_object(model, :minimum_down_time_compact_vintage_method)
 
@@ -509,7 +509,7 @@ end
             var_start_up[25] +
             var_start_up[26] +
             var_start_up[27] <= var_units_on[27]
-        )
+        ),
     ]
     observed_cons = _get_cons_object(model, :minimum_up_time)
 
@@ -621,7 +621,7 @@ end
             var_shut_down[25] +
             var_shut_down[26] +
             var_shut_down[27] <= 1 - var_units_on[27]
-        )
+        ),
     ]
     observed_cons = _get_cons_object(model, :minimum_down_time_aggregated_vintage_method)
 
@@ -680,7 +680,7 @@ end
             var_shut_down[16] +
             var_shut_down[17] +
             var_shut_down[18] <= 1 - var_units_on[18]
-        )
+        ),
     ]
     observed_cons = _get_cons_object(model, :minimum_down_time_compact_vintage_method)
 

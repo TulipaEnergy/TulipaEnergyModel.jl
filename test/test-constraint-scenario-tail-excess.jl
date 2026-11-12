@@ -20,6 +20,10 @@
         num_rps::Int = 2
         lambda::Float64 = 0.1
         alpha::Float64 = 0.98
+        unit_commitment::String = "3var"
+        units_on_cost::Float64 = 0.1
+        start_up_cost::Float64 = 0.3
+        shut_down_cost::Float64 = 0.5
     end
 
     """
@@ -46,6 +50,10 @@
             vintage_method = config.vintage_method,
             fixed_cost = config.fixed_cost,
             investment_cost = config.investment_cost,
+            unit_commitment = config.unit_commitment,
+            units_on_cost = config.units_on_cost,
+            start_up_cost = config.start_up_cost,
+            shut_down_cost = config.shut_down_cost,
         )
         TB.add_flow!(
             tulipa,
@@ -143,6 +151,22 @@ end
                 operational_cost_per_scenario[scenario],
                 asset.operational_cost * weight,
                 flow[rp],
+            )
+        end
+    end
+    expression = expressions[:units_on_operational_cost_per_scenario]
+    for row in expression.indices
+        JuMP.add_to_expression!(
+            operational_cost_per_scenario[row.scenario],
+            expression.expressions[:cost][row.id],
+        )
+    end
+    for uc_transition in (:start_up, :shut_down)
+        expression = expressions[Symbol("$(uc_transition)_operational_cost_per_scenario")]
+        for row in expression.indices
+            JuMP.add_to_expression!(
+                operational_cost_per_scenario[row.scenario],
+                expression.expressions[:cost][row.id],
             )
         end
     end

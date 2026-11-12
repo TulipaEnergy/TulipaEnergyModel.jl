@@ -177,6 +177,8 @@ The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer a
 | $p^{\text{max ramp down}}_{a,y}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}_y$      | Maximum ramping down rate as a portion of the capacity of asset $a$ at year $y$                                          | [p.u./h]       |
 | $p^{\text{minimum up time}}_{a,y}$     | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously operate once it has been turned on, at year $y$             | [h]            |
 | $p^{\text{minimum down time}}_{a,y}$   | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously remain off once it has been shut down, at year $y$          | [h]            |
+| $p^{\text{start up cost}}_{a,y}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Cost per unit started up for asset $a$ at year $y$                                                                       | [kEUR/unit]    |
+| $p^{\text{shut down cost}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Cost per unit shut down for asset $a$ at year $y$                                                                        | [kEUR/unit]    |
 
 ### Parameters for Flows
 
@@ -444,7 +446,7 @@ The objective function is formulated as a two-stage stochastic optimization prob
 \begin{aligned}
 \text{{minimize}} & \quad assets\_investment\_cost +assets\_fixed\_cost \\
                   & + flows\_investment\_cost + flows\_fixed\_cost \\
-                  & + (1 - p^{\lambda}) \cdot \bigg[\sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s}) \bigg] \\
+                  & + (1 - p^{\lambda}) \cdot \bigg[\sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s} + start\_up\_cost_{s} + shut\_down\_cost_{s}) \bigg] \\
                         & + p^{\lambda} \cdot \text{CVaR}_{p^{\alpha}}
 \end{aligned}
 ```
@@ -471,7 +473,9 @@ flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{
 flows\_operational\_cost_{s} &=
 \sum_{y \in \mathcal{Y}} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot \bigg( \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{compact profiles}} \cup \mathcal{A}^{\text{aggregated}} \cup \mathcal{A}^{\text{operation}} } (p^{\text{commodity price}}_{f, y} / p^{\text{producer efficiency}}_{f, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & + \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{compact efficiencies}}}  \sum_{v \in \mathcal{V}} (p^{\text{commodity price}}_{f, y} / p^{\text{producer efficiency}}_{f, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \bigg) \\
-unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
+unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}} \\
+start\_up\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc 3var}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{\substack{b_{k_y} \in \mathcal{B}^{\text{uc}}_{a,y,k_y} \\ \text{start}(b_{k_y}) > 1}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{start up cost}}_{a,y} \cdot v^{\text{start up}}_{a,k_y,b_{k_y}} \\
+shut\_down\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc 3var}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{\substack{b_{k_y} \in \mathcal{B}^{\text{uc}}_{a,y,k_y} \\ \text{start}(b_{k_y}) > 1}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{shut down cost}}_{a,y} \cdot v^{\text{shut down}}_{a,k_y,b_{k_y}}
 \end{aligned}
 ```
 
@@ -1149,7 +1153,7 @@ where the total operational cost per scenario $s$ is:
 
 ```math
 \begin{aligned}
-total\_operational\_cost_{s} = & \; flows\_operational\_cost_{s} + unit\_on\_cost_{s}
+total\_operational\_cost_{s} = & \; flows\_operational\_cost_{s} + unit\_on\_cost_{s} + start\_up\_cost_{s} + shut\_down\_cost_{s}
 \end{aligned}
 ```
 
