@@ -1,0 +1,15 @@
+asset,milestone_year,commission_year,initial_units,initial_storage_units,decommissionable
+ocgt,2030,2030,0.0,0.0,false
+ccgt,2030,2030,0.0,0.0,false
+wind,2030,2030,0.0,0.0,false
+solar,2030,2030,0.0,0.0,false
+ens,2030,2030,1.0,0.0,false
+e_demand,2030,2030,1.0,0.0,false
+electrolizer,2030,2030,0.0,0.0,false
+h2_demand,2030,2030,1.0,0.0,false
+smr_ccs,2030,2030,1.0,0.0,false
+wind_offshore,2030,2030,0.0,0.0,false
+battery,2030,2030,0.0,0.0,false
+h2_storage,2030,2030,1.0,1.0,false
+hydro_reservoir,2030,2030,1.0,1.0,false
+spillage,2030,2030,1.0,0.0,false
