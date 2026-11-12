@@ -1,5 +1,5 @@
 asset,type,capacity,vintage_method,investment_integer,technical_lifetime,discount_rate,minimum_down_time,minimum_up_time,inter_period_storage_level_bounds,min_operating_point,unit_commitment,unit_commitment_integer
-ccgt,producer,200.0,aggregated,true,15,0.05,4,6,inter_period_only,0.4,3var,true
+ccgt,producer,200.0,aggregated,true,15,0.05,8,12,inter_period_only,0.4,3var,true
 e_demand,consumer,0.0,aggregated,false,15,0.05,1,1,inter_period_only,0.0,none,false
 ens,producer,1000.0,aggregated,false,15,0.05,1,1,inter_period_only,0.0,none,false
 ocgt,producer,50.0,aggregated,true,15,0.05,1,1,inter_period_only,0.2,3var,true
