@@ -94,7 +94,7 @@ function validate_data!(connection)
             false,
         ),
         (
-            "start-up and shut-down costs require 3var unit commitment",
+            "start-up and shut-down costs are only used with 3var unit commitment",
             _validate_start_up_shut_down_cost_requires_3var!,
             false,
         ),
@@ -1244,10 +1244,7 @@ function _validate_start_up_shut_down_cost_requires_3var!(error_messages, connec
         ORDER BY asset_milestone.asset, asset_milestone.milestone_year, costs.cost_name
         """,
     )
-        push!(
-            error_messages,
-            "Asset $(row.asset) in milestone year $(row.milestone_year) has $(row.cost_name), which requires asset.type = 'producer' or 'conversion' and asset.unit_commitment = '3var'",
-        )
+        @warn "Asset $(row.asset) in milestone year $(row.milestone_year) has $(row.cost_name), but start-up and shut-down costs are only used for producer and conversion assets with asset.unit_commitment = '3var'. This cost is ignored."
     end
 
     return error_messages

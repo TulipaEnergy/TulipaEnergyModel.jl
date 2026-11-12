@@ -166,7 +166,7 @@ function plot_ccgt_dispatch_and_commitment(connection; show_commitment = true)
         label = "ccgt output",
         xlabel = "Hour",
         ylabel = "MW",
-        xlims = (1, 72),
+        xlims = (1, 168),
         legend = :topright,
     )
 
@@ -381,11 +381,11 @@ flow_partition_results = partition_sweep(; coarsen_flows = true)
 The first sweep changes only the commitment resolution. The second also coarsens the two thermal output flows. Compare the results:
 
 ```@example unit-commitment
-asset_partition_results
+rename(copy(asset_partition_results), :objective_gap => Symbol("objective gap (%)"))
 ```
 
 ```@example unit-commitment
-flow_partition_results
+rename(copy(flow_partition_results), :objective_gap => Symbol("objective gap (%)"))
 ```
 
 Select the largest partition whose objective gap remains below 1%:

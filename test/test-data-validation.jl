@@ -5,24 +5,45 @@
     @test_throws error_msg throw(TEM.DataValidationException(["example"]))
 end
 
-@testitem "Start-up and shut-down costs require 3var unit commitment" setup = [CommonSetup] tags =
+@testitem "Start-up and shut-down costs warn outside 3var unit commitment" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
     TEM.populate_with_defaults!(connection)
+    TEM.create_internal_tables!(connection)
     DuckDB.query(connection, "UPDATE asset_milestone SET start_up_cost = 1 WHERE asset = 'ccgt'")
     DuckDB.query(connection, "UPDATE asset_milestone SET shut_down_cost = 2 WHERE asset = 'demand'")
 
-    errors = TEM._validate_start_up_shut_down_cost_requires_3var!(String[], connection)
-    @test length(errors) == 2
-    @test any(occursin("start_up_cost", error) for error in errors)
-    @test any(occursin("shut_down_cost", error) for error in errors)
+    for method in ("none", "basic")
+        DuckDB.query(
+            connection,
+            "UPDATE asset SET unit_commitment = '$method' WHERE asset = 'ccgt'",
+        )
+        @test_logs(
+            (
+                :warn,
+                r"Asset ccgt in milestone year 2030 has start_up_cost.*only used.*3var.*ignored",
+            ),
+            (
+                :warn,
+                r"Asset demand in milestone year 2030 has shut_down_cost.*only used.*3var.*ignored",
+            ),
+            TEM.validate_data!(connection),
+        )
+    end
 
     DuckDB.query(connection, "UPDATE asset SET unit_commitment = '3var' WHERE asset = 'ccgt'")
     DuckDB.query(
         connection,
         "UPDATE asset_milestone SET shut_down_cost = NULL WHERE asset = 'demand'",
     )
-    @test TEM._validate_start_up_shut_down_cost_requires_3var!(String[], connection) == []
+    DuckDB.query(connection, "UPDATE asset_milestone SET shut_down_cost = 2 WHERE asset = 'ccgt'")
+    for type in ("producer", "conversion")
+        DuckDB.query(connection, "UPDATE asset SET type = '$type' WHERE asset = 'ccgt'")
+        @test_logs @test TEM._validate_start_up_shut_down_cost_requires_3var!(
+            String[],
+            connection,
+        ) == []
+    end
 end
 
 @testitem "Test having all tables and columns - missing table" setup = [CommonSetup] tags =
