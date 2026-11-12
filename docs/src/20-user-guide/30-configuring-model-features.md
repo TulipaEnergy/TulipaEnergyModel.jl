@@ -236,7 +236,7 @@ The unit commitment constraints are only applied to producer and conversion asse
 - `minimum_up_time`: Minimum time a unit must remain on after start-up; applies to `3var`.
 - `minimum_down_time`: Minimum time a unit must remain off after shut-down; applies to `3var`.
 
-Setting either transition cost on an asset without `unit_commitment = '3var'` is an input error. Costs are applied to commitment-block transitions, so a coarser asset partition cannot represent or charge for additional starts or stops inside a block. The first block of each representative period has no previous commitment state and is not charged.
+Setting either transition cost on an asset without `unit_commitment = '3var'` is an input error. Start-up and shut-down costs apply to changes in commitment between consecutive asset time blocks. Commitment is constant within each block, so shorter blocks are needed to represent more frequent starts and stops. The first block of each representative period has no previous commitment state and is not charged.
 
 !!! info "Minimum operating point constraints without unit commitment"
     Even when `unit_commitment = 'none'`, producer and conversion assets with `min_operating_point > 0` still receive a minimum output-flow constraint (for aggregated and compact profiles vintage methods). This is useful to represent must-run conditions without the full unit commitment formulation.
