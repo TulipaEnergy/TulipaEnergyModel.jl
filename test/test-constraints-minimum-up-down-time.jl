@@ -8,7 +8,10 @@
         partitioned = false,
         minimum_up_time = 4,
         minimum_down_time = 4,
+        maximum_up_time = nothing,
     )
+        # The maximum up time is optional, so it is only added when it is given.
+        optional_asset_data = isnothing(maximum_up_time) ? (;) : (; maximum_up_time)
         tulipa = TB.TulipaData()
         if partitioned
             TB.add_asset!(tulipa, "sink", :consumer)
@@ -26,6 +29,7 @@
                 minimum_up_time,
                 minimum_down_time,
                 initial_units = 1.0,
+                optional_asset_data...,
             )
             TB.attach_profile!(tulipa, name, :availability, 2050, ones(partitioned ? 7 : 9))
 
@@ -69,6 +73,11 @@ end
                 WHEN 'smr' THEN 6
                 WHEN 'ocgt' THEN 2
                 ELSE minimum_down_time
+            END,
+            maximum_up_time = CASE asset
+                WHEN 'ccgt' THEN 6
+                WHEN 'smr' THEN 12
+                ELSE maximum_up_time
             END
         WHERE asset IN ('ccgt', 'smr', 'ocgt')
         """,
@@ -141,6 +150,30 @@ end
             variable("var_units_on", "ccgt", 7)
         ),
         JuMP.constraint_object(energy_problem.model[:minimum_up_time][ccgt_up_id]),
+    )
+
+    # Only the assets with a maximum up time get the constraint.
+    @test isempty(ids("cons_maximum_up_time", "ocgt"))
+    @test ids("cons_maximum_up_time", "smr") == [1, 7, 13, 19]
+    @test ids("cons_maximum_up_time", "ccgt") == [1, 4, 7, 10, 13, 16, 19, 22]
+
+    # The 6 h window of the ccgt block 7:9 starts at time step 2, so it covers the blocks 4:6 and 7:9.
+    ccgt_max_up_id = constraint_id("cons_maximum_up_time", "ccgt", 7)
+    @test _is_constraint_equal(
+        JuMP.@build_constraint(
+            variable("var_units_on", "ccgt", 7) <=
+            variable("var_start_up", "ccgt", 4) + variable("var_start_up", "ccgt", 7)
+        ),
+        JuMP.constraint_object(energy_problem.model[:maximum_up_time][ccgt_max_up_id]),
+    )
+
+    smr_max_up_id = constraint_id("cons_maximum_up_time", "smr", 13)
+    @test _is_constraint_equal(
+        JuMP.@build_constraint(
+            variable("var_units_on", "smr", 13) <=
+            variable("var_start_up", "smr", 7) + variable("var_start_up", "smr", 13)
+        ),
+        JuMP.constraint_object(energy_problem.model[:maximum_up_time][smr_max_up_id]),
     )
 
     ocgt_down_id = constraint_id("cons_minimum_down_time_aggregated_vintage_method", "ocgt", 5)
@@ -685,4 +718,169 @@ end
     observed_cons = _get_cons_object(model, :minimum_down_time_compact_vintage_method)
 
     @test _is_constraint_equal(expected_cons, observed_cons)
+end
+
+@testitem "Test maximum up time constraints are not created without maximum_up_time" setup =
+    [CommonSetup, ConsMinUpDownTimeSetup] tags = [:unit, :validation, :fast] begin
+    energy_problem = create_minimum_up_down_time_problem(1.0)
+
+    @test energy_problem.constraints[:maximum_up_time].num_rows == 0
+    @test isempty(energy_problem.model[:maximum_up_time])
+
+    num_constraints =
+        JuMP.num_constraints(energy_problem.model; count_variable_in_set_constraints = false)
+    connection = energy_problem.db_connection
+    DuckDB.query(connection, "ALTER TABLE asset DROP COLUMN maximum_up_time")
+    TEM.populate_with_defaults!(connection)
+    energy_problem = TEM.EnergyProblem(connection)
+    TEM.create_model!(energy_problem)
+
+    @test energy_problem.constraints[:maximum_up_time].num_rows == 0
+    @test isempty(energy_problem.model[:maximum_up_time])
+    @test JuMP.num_constraints(energy_problem.model; count_variable_in_set_constraints = false) ==
+          num_constraints
+end
+
+@testitem "Test maximum up time is ignored without 3var unit commitment" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "UC-ramping"))
+    DuckDB.query(connection, "UPDATE asset SET maximum_up_time = 4")
+    TEM.populate_with_defaults!(connection)
+    energy_problem = TEM.EnergyProblem(connection)
+    TEM.create_model!(energy_problem)
+
+    @test energy_problem.constraints[:maximum_up_time].num_rows == 0
+    @test isempty(energy_problem.model[:maximum_up_time])
+end
+
+@testitem "Test maximum up time constraints with different resolutions" setup =
+    [CommonSetup, ConsMinUpDownTimeSetup] tags = [:unit, :validation, :fast] begin
+    maximum_up_time = 3
+    # The window is rounded up to whole blocks: ceil(3 / resolution).
+    for (resolution, window_blocks) in ((1.0, 3), (2.0, 2), (0.5, 6))
+        energy_problem =
+            create_minimum_up_down_time_problem(resolution; minimum_up_time = 2, maximum_up_time)
+        var_units_on = energy_problem.variables[:units_on].container
+        var_start_up = energy_problem.variables[:start_up].container
+
+        expected_cons = [
+            JuMP.@build_constraint(
+                var_units_on[i] <=
+                sum(var_start_up[j] for j in max(first(block), i-window_blocks+1):i)
+            ) for block in (1:9, 10:18, 19:27) for i in block
+        ]
+        @test _is_constraint_equal(
+            expected_cons,
+            _get_cons_object(energy_problem.model, :maximum_up_time),
+        )
+    end
+end
+
+@testitem "Test maximum up time constraints with partitioned blocks" setup =
+    [CommonSetup, ConsMinUpDownTimeSetup] tags = [:unit, :validation, :fast] begin
+    # Each asset has the blocks 1:3 and 4:7, so the window of the second block
+    # only reaches the first block when the maximum up time is at least 4.
+    energy_problem = create_minimum_up_down_time_problem(
+        1.0;
+        partitioned = true,
+        minimum_up_time = 2,
+        maximum_up_time = 3,
+    )
+    var_units_on = energy_problem.variables[:units_on].container
+    var_start_up = energy_problem.variables[:start_up].container
+
+    expected_cons = [JuMP.@build_constraint(var_units_on[i] <= var_start_up[i]) for i in 1:6]
+    @test _is_constraint_equal(
+        expected_cons,
+        _get_cons_object(energy_problem.model, :maximum_up_time),
+    )
+
+    energy_problem = create_minimum_up_down_time_problem(
+        1.0;
+        partitioned = true,
+        minimum_up_time = 2,
+        maximum_up_time = 4,
+    )
+    var_units_on = energy_problem.variables[:units_on].container
+    var_start_up = energy_problem.variables[:start_up].container
+
+    expected_cons = [
+        JuMP.@build_constraint(var_units_on[1] <= var_start_up[1]),
+        JuMP.@build_constraint(var_units_on[2] <= var_start_up[1] + var_start_up[2]),
+        JuMP.@build_constraint(var_units_on[3] <= var_start_up[3]),
+        JuMP.@build_constraint(var_units_on[4] <= var_start_up[3] + var_start_up[4]),
+        JuMP.@build_constraint(var_units_on[5] <= var_start_up[5]),
+        JuMP.@build_constraint(var_units_on[6] <= var_start_up[5] + var_start_up[6]),
+    ]
+    @test _is_constraint_equal(
+        expected_cons,
+        _get_cons_object(energy_problem.model, :maximum_up_time),
+    )
+end
+
+@testitem "Test maximum up time limits the consecutive on time" setup = [CommonSetup] tags =
+    [:integration, :validation, :slow] begin
+    function solve_uc_ramping(ocgt_maximum_up_time)
+        connection = DBInterface.connect(DuckDB.DB)
+        _read_csv_folder(connection, joinpath(INPUT_FOLDER, "UC-ramping"))
+        DuckDB.query(
+            connection,
+            "UPDATE asset SET unit_commitment = '3var' WHERE asset IN ('ccgt', 'smr', 'ocgt')",
+        )
+        if !isnothing(ocgt_maximum_up_time)
+            DBInterface.execute(
+                connection,
+                "UPDATE asset SET maximum_up_time = ? WHERE asset = 'ocgt'",
+                [ocgt_maximum_up_time],
+            )
+        end
+        energy_problem = TEM.run_scenario(
+            connection;
+            optimizer = HiGHS.Optimizer,
+            optimizer_parameters = Dict(
+                "output_flag" => false,
+                "mip_rel_gap" => 0.0,
+                "mip_feasibility_tolerance" => 1e-5,
+            ),
+            show_log = false,
+        )
+        JuMP.assert_is_solved_and_feasible(energy_problem.model)
+        ocgt_units_on = [
+            row.solution for row in DuckDB.query(
+                connection,
+                "SELECT solution FROM var_units_on WHERE asset = 'ocgt' ORDER BY time_block_start",
+            )
+        ]
+        return energy_problem, ocgt_units_on
+    end
+
+    # The ocgt has hourly blocks and at most one unit on, so the longest run of
+    # consecutive hours on is bounded by the maximum up time.
+    function longest_on_run(units_on)
+        longest = 0
+        current = 0
+        for value in units_on
+            current = value > 0.5 ? current + 1 : 0
+            longest = max(longest, current)
+        end
+        return longest
+    end
+
+    baseline_objective = 302419.52581
+
+    energy_problem, ocgt_units_on = solve_uc_ramping(nothing)
+    @test energy_problem.termination_status == JuMP.OPTIMAL
+    @test energy_problem.objective_value ≈ baseline_objective atol = 1e-5
+    @test longest_on_run(ocgt_units_on) == 3
+
+    energy_problem, ocgt_units_on = solve_uc_ramping(2)
+    @test energy_problem.termination_status == JuMP.OPTIMAL
+    @test energy_problem.objective_value ≈ 302847.52306 atol = 1e-5
+    @test longest_on_run(ocgt_units_on) == 2
+
+    # A maximum up time longer than the horizon does not change the optimal cost.
+    energy_problem, _ = solve_uc_ramping(1000)
+    @test energy_problem.termination_status == JuMP.OPTIMAL
+    @test energy_problem.objective_value ≈ baseline_objective atol = 1e-5
 end
