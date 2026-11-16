@@ -17,7 +17,9 @@ The `optimizer` and `optimizer_parameters` keyword arguments can be used to chan
 Set `model_file_name = "some-name.lp"` to export the problem that is sent to the solver to a file for viewing (.lp or .mps).
 Set `enable_names = false` to turn off variable and constraint names (faster model creation).
 Set `direct_model = true` to create a JuMP direct model (faster & less memory).
-Set `show_log = false` to silence printing the log while running.
+Set `show_log = false` to silence progress logging while running. Use
+[`set_log_level!`](@ref) to choose between minimal lifecycle logging and
+detailed model-construction logging.
 
 Specify a `output_folder` name to export the solution to CSV files.
 Specify a `log_file` name to export the log to a file.
@@ -69,7 +71,7 @@ function run_scenario(
         end
     end
 
-    if show_log
+    if show_log && _is_detailed_logging()
         show(to)
         println()
     end

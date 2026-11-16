@@ -62,7 +62,7 @@ function run_rolling_horizon(
     reset_timer!(to)
 
     # Validation that the input data must satisfy to run rolling horizon
-    show_log && @info "[$(timestamp())] Validating rolling horizon input"
+    show_log && _log_detailed("[$(timestamp())] Validating rolling horizon input")
     @timeit to "Validate rolling horizon input" validate_rolling_horizon_input(
         connection,
         move_forward,
@@ -88,7 +88,7 @@ function run_rolling_horizon(
     )
 
     # Create no-rolling problem
-    show_log && @info "[$(timestamp())] Creating full EnergyProblem"
+    show_log && _log_detailed("[$(timestamp())] Creating full EnergyProblem")
     full_energy_problem =
         @timeit to "Create Rolling Horizon EnergyProblem" EnergyProblem(connection; show_log)
 
@@ -107,7 +107,7 @@ function run_rolling_horizon(
         )
     ]
 
-    show_log && @info "[$(timestamp())] Preparing rolling horizon tables"
+    show_log && _log_detailed("[$(timestamp())] Preparing rolling horizon tables")
     @timeit to "Prepare table for rolling horizon" prepare_rolling_horizon_tables!(
         connection,
         variable_tables,
@@ -116,7 +116,7 @@ function run_rolling_horizon(
         opt_window_length,
     )
 
-    show_log && @info "[$(timestamp())] Creating rolling horizon EnergyProblem"
+    show_log && _log_detailed("[$(timestamp())] Creating rolling horizon EnergyProblem")
     energy_problem = @timeit to "Create internal EnergyProblem for rolling horizon" EnergyProblem(
         connection;
         show_log,
@@ -124,7 +124,7 @@ function run_rolling_horizon(
 
     # The rolling horizon Parameters are created here. The model has the size of
     # the `opt_window_length`.
-    show_log && @info "[$(timestamp())] Creating rolling horizon model"
+    show_log && _log_detailed("[$(timestamp())] Creating rolling horizon model")
     @timeit to "Create internal rolling horizon model" create_model!(
         energy_problem;
         optimizer,
@@ -141,14 +141,17 @@ function run_rolling_horizon(
     solved = true
     for (window_id, window_start) in enumerate(1:move_forward:horizon_length)
         # Update Parameters in the model (even for the first time)
-        show_log && @info "[$(timestamp())] Updating rolling horizon profiles for window $window_id"
+        show_log && _log_detailed(
+            "[$(timestamp())] Updating rolling horizon profiles for window $window_id",
+        )
         @timeit to "update rolling horizon profiles" update_rolling_horizon_profiles!(
             energy_problem.profiles,
             window_start,
             window_start + opt_window_length - 1,
         )
         if window_id > 1 # Don't try to update the first initial values
-            show_log && @info "[$(timestamp())] Updating scalar parameters for window $window_id"
+            show_log &&
+                _log_detailed("[$(timestamp())] Updating scalar parameters for window $window_id")
             @timeit to "update scalar parameters" update_scalar_parameters!(
                 energy_problem.variables,
                 energy_problem.expressions,
@@ -179,7 +182,7 @@ function run_rolling_horizon(
             break
         end
 
-        show_log && @info "[$(timestamp())] Saving rolling horizon window $window_id"
+        show_log && _log_detailed("[$(timestamp())] Saving rolling horizon window $window_id")
         @timeit to "Save window solution" save_solution_into_tables!(
             energy_problem,
             variable_tables,
@@ -203,7 +206,7 @@ function run_rolling_horizon(
     full_energy_problem.rolling_horizon_energy_problem = energy_problem
 
     # Undo the changes to rep_periods_data
-    show_log && @info "[$(timestamp())] Restoring rolling horizon tables"
+    show_log && _log_detailed("[$(timestamp())] Restoring rolling horizon tables")
     @timeit to "undo changes to rolling horizon tables" prepare_tables_to_leave_rolling_horizon!(
         connection,
         variable_tables,
@@ -225,7 +228,7 @@ function run_rolling_horizon(
         end
     end
 
-    if show_log
+    if show_log && _is_detailed_logging()
         show(to)
         println()
     end

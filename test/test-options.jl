@@ -38,6 +38,24 @@ end
     @test JuMP.mode(ep.model) == JuMP.ModelMode(2)
 end
 
+@testitem "Test logging levels" setup = [CommonSetup] tags = [:unit, :fast] begin
+    previous_log_level = TulipaEnergyModel.LOG_LEVEL[]
+
+    try
+        TulipaEnergyModel.set_log_level!(:minimal)
+        @test !TulipaEnergyModel._is_detailed_logging()
+        @test_logs TulipaEnergyModel._log_detailed("Detailed logging")
+
+        TulipaEnergyModel.set_log_level!(:detailed)
+        @test TulipaEnergyModel._is_detailed_logging()
+        @test_logs (:info, "Detailed logging") TulipaEnergyModel._log_detailed("Detailed logging")
+
+        @test_throws ArgumentError TulipaEnergyModel.set_log_level!(:quiet)
+    finally
+        TulipaEnergyModel.set_log_level!(previous_log_level)
+    end
+end
+
 @testitem "Test create_model! arguments" setup = [CommonSetup] tags = [:unit, :fast] begin
     connection = _tiny_fixture()
 

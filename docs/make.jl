@@ -1,6 +1,8 @@
 using TulipaEnergyModel
 using Documenter
 
+TulipaEnergyModel.set_log_level!(:minimal)
+
 DocMeta.setdocmeta!(TulipaEnergyModel, :DocTestSetup, :(using TulipaEnergyModel); recursive = true)
 
 const tutorials = [
