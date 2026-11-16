@@ -46,6 +46,9 @@ end
         @test !TulipaEnergyModel._is_detailed_logging()
         @test_logs TulipaEnergyModel._log_detailed("Detailed logging")
 
+        connection = _tiny_fixture()
+        @test_logs TulipaEnergyModel.EnergyProblem(connection)
+
         TulipaEnergyModel.set_log_level!(:detailed)
         @test TulipaEnergyModel._is_detailed_logging()
         @test_logs (:info, "Detailed logging") TulipaEnergyModel._log_detailed("Detailed logging")
