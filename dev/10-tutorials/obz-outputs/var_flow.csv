@@ -237,7 +237,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 236,BG_Hydro_Reservoir,BG_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.0
 237,BG_Hydro_Reservoir,BG_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 238,BG_Hydro_Reservoir,BG_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
-239,BG_Hydro_Reservoir,BG_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.1799995423927242
+239,BG_Hydro_Reservoir,BG_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.17999954239272442
 240,BG_Hydro_Reservoir,BG_E_Demand,2050,1,1.0,1.0,1.0,21,24,1.0517301885832064
 241,BG_Nuclear,BG_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.0
 242,BG_Nuclear,BG_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.0
@@ -252,13 +252,13 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 251,BG_OCGT,BG_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 252,BG_OCGT,BG_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.0
 253,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.0
-254,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.1322582608052958
+254,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.132258260805296
 255,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 256,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
-257,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.7952952851681155
+257,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.7952952851681153
 258,BG_Pump_Hydro_Closed,BG_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.864
 259,BG_Pump_Hydro_Open,BG_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.535
-260,BG_Pump_Hydro_Open,BG_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.2835684170546834
+260,BG_Pump_Hydro_Open,BG_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.28356841705468333
 261,BG_Pump_Hydro_Open,BG_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 262,BG_Pump_Hydro_Open,BG_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 263,BG_Pump_Hydro_Open,BG_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.535
@@ -288,7 +288,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 287,CH_Battery,CH_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 288,CH_Battery,CH_E_Demand,2050,1,1.0,1.0,1.0,21,24,2.6230951330010948
 289,CH_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,1,4,-1.0305910640811882
-290,CH_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,5,8,-3.070451260589275
+290,CH_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,5,8,-3.0704512605892713
 291,CH_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,9,12,-6.5
 292,CH_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,13,16,-6.5
 293,CH_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,17,20,-6.5
@@ -318,7 +318,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 317,CH_Pump_Hydro_Closed,CH_E_Demand,2050,1,1.0,1.0,1.0,17,20,2.17
 318,CH_Pump_Hydro_Closed,CH_E_Demand,2050,1,1.0,1.0,1.0,21,24,2.17
 319,CH_Pump_Hydro_Open,CH_E_Demand,2050,1,1.0,1.0,1.0,1,4,8.083597306354612
-320,CH_Pump_Hydro_Open,CH_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.683154213740318
+320,CH_Pump_Hydro_Open,CH_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.6831542137403215
 321,CH_Pump_Hydro_Open,CH_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 322,CH_Pump_Hydro_Open,CH_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 323,CH_Pump_Hydro_Open,CH_E_Demand,2050,1,1.0,1.0,1.0,17,20,9.330522546733606
@@ -677,7 +677,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 676,DE_Pump_Hydro_Closed,DE_E_Demand,2050,1,1.0,1.0,1.0,22,22,7.382
 677,DE_Pump_Hydro_Closed,DE_E_Demand,2050,1,1.0,1.0,1.0,23,23,7.382
 678,DE_Pump_Hydro_Closed,DE_E_Demand,2050,1,1.0,1.0,1.0,24,24,7.382
-679,DE_Pump_Hydro_Open,DE_E_Demand,2050,1,1.0,1.0,1.0,1,1,0.6242569241071045
+679,DE_Pump_Hydro_Open,DE_E_Demand,2050,1,1.0,1.0,1.0,1,1,0.6242569241071048
 680,DE_Pump_Hydro_Open,DE_E_Demand,2050,1,1.0,1.0,1.0,2,2,1.644
 681,DE_Pump_Hydro_Open,DE_E_Demand,2050,1,1.0,1.0,1.0,3,3,1.644
 682,DE_Pump_Hydro_Open,DE_E_Demand,2050,1,1.0,1.0,1.0,4,4,1.644
@@ -1090,7 +1090,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 1089,ES_Hydro,ES_E_Demand,2050,1,1.0,1.0,1.0,19,21,0.0
 1090,ES_Hydro,ES_E_Demand,2050,1,1.0,1.0,1.0,22,24,3.8010207146678296
 1091,ES_Hydro_Reservoir,ES_E_Demand,2050,1,1.0,1.0,1.0,1,3,0.0
-1092,ES_Hydro_Reservoir,ES_E_Demand,2050,1,1.0,1.0,1.0,4,6,3.5614060947205908
+1092,ES_Hydro_Reservoir,ES_E_Demand,2050,1,1.0,1.0,1.0,4,6,3.5614060947205837
 1093,ES_Hydro_Reservoir,ES_E_Demand,2050,1,1.0,1.0,1.0,7,9,0.0
 1094,ES_Hydro_Reservoir,ES_E_Demand,2050,1,1.0,1.0,1.0,10,12,0.0
 1095,ES_Hydro_Reservoir,ES_E_Demand,2050,1,1.0,1.0,1.0,13,15,0.0
@@ -1105,7 +1105,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 1104,ES_Nuclear,ES_E_Demand,2050,1,1.0,1.0,1.0,16,18,0.0
 1105,ES_Nuclear,ES_E_Demand,2050,1,1.0,1.0,1.0,19,21,0.0
 1106,ES_Nuclear,ES_E_Demand,2050,1,1.0,1.0,1.0,22,24,0.0
-1107,ES_Pump_Hydro_Closed,ES_E_Demand,2050,1,1.0,1.0,1.0,1,3,0.9991585292409095
+1107,ES_Pump_Hydro_Closed,ES_E_Demand,2050,1,1.0,1.0,1.0,1,3,0.999158529240906
 1108,ES_Pump_Hydro_Closed,ES_E_Demand,2050,1,1.0,1.0,1.0,4,6,0.0
 1109,ES_Pump_Hydro_Closed,ES_E_Demand,2050,1,1.0,1.0,1.0,7,9,6.866
 1110,ES_Pump_Hydro_Closed,ES_E_Demand,2050,1,1.0,1.0,1.0,10,12,0.0
@@ -1123,7 +1123,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 1122,ES_Pump_Hydro_Open,ES_E_Demand,2050,1,1.0,1.0,1.0,22,24,2.683
 1123,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,1,3,0.0
 1124,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,4,6,0.0
-1125,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,7,9,6.1287101336027625
+1125,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,7,9,6.128710133602759
 1126,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,10,12,44.164821674781976
 1127,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,13,15,77.15238199081409
 1128,ES_Solar,ES_E_Demand,2050,1,1.0,1.0,1.0,16,18,0.0
@@ -1202,7 +1202,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 1201,FI_Gas,FI_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 1202,FI_Gas,FI_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.0
 1203,FI_Hydro_Reservoir,FI_E_Demand,2050,1,1.0,1.0,1.0,1,4,3.237
-1204,FI_Hydro_Reservoir,FI_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.8511256584407803
+1204,FI_Hydro_Reservoir,FI_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.8511256584407807
 1205,FI_Hydro_Reservoir,FI_E_Demand,2050,1,1.0,1.0,1.0,9,12,3.237
 1206,FI_Hydro_Reservoir,FI_E_Demand,2050,1,1.0,1.0,1.0,13,16,3.237
 1207,FI_Hydro_Reservoir,FI_E_Demand,2050,1,1.0,1.0,1.0,17,20,3.237
@@ -1220,7 +1220,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 1219,FI_OCGT,FI_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 1220,FI_OCGT,FI_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.0
 1221,FI_Solar,FI_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.04694499324380659
-1222,FI_Solar,FI_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.9518566934020205
+1222,FI_Solar,FI_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.95185669340202
 1223,FI_Solar,FI_E_Demand,2050,1,1.0,1.0,1.0,9,12,3.175961502695142
 1224,FI_Solar,FI_E_Demand,2050,1,1.0,1.0,1.0,13,16,3.316889136904799
 1225,FI_Solar,FI_E_Demand,2050,1,1.0,1.0,1.0,17,20,3.069187592952702
@@ -1519,13 +1519,13 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 1518,HR_Gas,HR_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 1519,HR_Gas,HR_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 1520,HR_Gas,HR_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.0
-1521,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.16078314609351707
+1521,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.1607831460935366
 1522,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.0
 1523,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 1524,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 1525,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 1526,HR_Hydro,HR_E_Demand,2050,1,1.0,1.0,1.0,21,24,1.0161245687381326
-1527,HR_Hydro_Reservoir,HR_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.640455460572791
+1527,HR_Hydro_Reservoir,HR_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.6404554605727715
 1528,HR_Hydro_Reservoir,HR_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.8672060343028625
 1529,HR_Hydro_Reservoir,HR_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 1530,HR_Hydro_Reservoir,HR_E_Demand,2050,1,1.0,1.0,1.0,13,16,1.2980473088743776
@@ -2253,7 +2253,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2252,PT_Hydro_Reservoir,PT_E_Demand,2050,1,1.0,1.0,1.0,21,24,3.2734012349384147
 2253,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.0
 2254,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,5,8,3.832
-2255,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,9,12,2.301958183082279
+2255,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,9,12,2.3019581830822826
 2256,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 2257,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,17,20,3.832
 2258,PT_Pump_Hydro_Open,PT_E_Demand,2050,1,1.0,1.0,1.0,21,24,3.832
@@ -2264,7 +2264,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2263,PT_Solar,PT_E_Demand,2050,1,1.0,1.0,1.0,17,20,6.219769356565461
 2264,PT_Solar,PT_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.04501680792924529
 2265,PT_Wind_Offshore,PT_E_Demand,2050,1,1.0,1.0,1.0,1,4,3.5544914605127547
-2266,PT_Wind_Offshore,PT_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.388145817379749
+2266,PT_Wind_Offshore,PT_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.3881458173797525
 2267,PT_Wind_Offshore,PT_E_Demand,2050,1,1.0,1.0,1.0,9,12,3.099260414749117
 2268,PT_Wind_Offshore,PT_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 2269,PT_Wind_Offshore,PT_E_Demand,2050,1,1.0,1.0,1.0,17,20,3.7448463057496983
@@ -2390,7 +2390,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2389,SE_Gas,SE_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 2390,SE_Gas,SE_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.0
 2391,SE_Hydro_Reservoir,SE_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.0
-2392,SE_Hydro_Reservoir,SE_E_Demand,2050,1,1.0,1.0,1.0,5,8,8.039525284093049
+2392,SE_Hydro_Reservoir,SE_E_Demand,2050,1,1.0,1.0,1.0,5,8,8.039525284093038
 2393,SE_Hydro_Reservoir,SE_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 2394,SE_Hydro_Reservoir,SE_E_Demand,2050,1,1.0,1.0,1.0,13,16,16.447
 2395,SE_Hydro_Reservoir,SE_E_Demand,2050,1,1.0,1.0,1.0,17,20,16.447
@@ -2414,7 +2414,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2413,SE_Solar,SE_E_Demand,2050,1,1.0,1.0,1.0,17,20,4.971740425429245
 2414,SE_Solar,SE_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.04457665691037737
 2415,SE_Wind_Offshore,SE_E_Demand,2050,1,1.0,1.0,1.0,1,4,5.955631528066704
-2416,SE_Wind_Offshore,SE_E_Demand,2050,1,1.0,1.0,1.0,5,8,4.468053632567575
+2416,SE_Wind_Offshore,SE_E_Demand,2050,1,1.0,1.0,1.0,5,8,4.468053632567589
 2417,SE_Wind_Offshore,SE_E_Demand,2050,1,1.0,1.0,1.0,9,12,8.722711146814623
 2418,SE_Wind_Offshore,SE_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
 2419,SE_Wind_Offshore,SE_E_Demand,2050,1,1.0,1.0,1.0,17,20,9.447444602343399
@@ -2590,8 +2590,8 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2589,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,1,4,0.0
 2590,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,5,8,0.0
 2591,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,9,12,0.0
-2592,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,13,16,3.551092286653569
-2593,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,17,20,9.069373465002693
+2592,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,13,16,3.5510922866535655
+2593,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,17,20,9.069373465002696
 2594,IT_E_Demand,IT_Battery,2050,1,1.0,1.0,1.0,21,24,0.0
 2595,LT_E_Demand,LT_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,1,4,0.93
 2596,LT_E_Demand,LT_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,5,8,0.0
@@ -2796,7 +2796,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2795,IE_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,21,22,2.1
 2796,IE_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,23,24,2.1
 2797,IT_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,1,4,-6.485
-2798,IT_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.3191144318417463
+2798,IT_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,5,8,2.3191144318417427
 2799,IT_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,9,12,-6.485
 2800,IT_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,13,16,-6.485
 2801,IT_E_Demand,FR_E_Demand,2050,1,1.0,1.0,1.0,17,20,-6.485
@@ -2864,7 +2864,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 2863,SI_E_Demand,AT_E_Demand,2050,1,1.0,1.0,1.0,17,20,-0.15978252833951145
 2864,SI_E_Demand,AT_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.6788073399229143
 2865,SK_E_Demand,HU_E_Demand,2050,1,1.0,1.0,1.0,1,4,2.384980389110921
-2866,SK_E_Demand,HU_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.49441430480138493
+2866,SK_E_Demand,HU_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.4944143048013849
 2867,SK_E_Demand,HU_E_Demand,2050,1,1.0,1.0,1.0,9,12,-1.6071644708421715
 2868,SK_E_Demand,HU_E_Demand,2050,1,1.0,1.0,1.0,13,16,-3.79090517871133
 2869,SK_E_Demand,HU_E_Demand,2050,1,1.0,1.0,1.0,17,20,2.055731379694815
@@ -3787,7 +3787,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 3786,LT_Pump_Hydro_Closed,LT_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.93
 3787,LT_Pump_Hydro_Closed,LT_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 3788,LT_Pump_Hydro_Closed,LT_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.93
-3789,PL_E_Demand,PL_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,1,3,0.0017081633767350671
+3789,PL_E_Demand,PL_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,1,3,0.0017081633767350613
 3790,PL_E_Demand,PL_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,4,6,0.216
 3791,PL_E_Demand,PL_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,7,9,0.0
 3792,PL_E_Demand,PL_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,10,12,0.216
@@ -3825,7 +3825,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 3824,UK_Wind_Onshore,UK_E_Demand,2050,1,1.0,1.0,1.0,22,22,26.893998685606466
 3825,UK_Wind_Onshore,UK_E_Demand,2050,1,1.0,1.0,1.0,23,23,27.16258319680079
 3826,UK_Wind_Onshore,UK_E_Demand,2050,1,1.0,1.0,1.0,24,24,27.072841847177628
-3827,PT_E_Demand,PT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,1,4,2.465715760593495
+3827,PT_E_Demand,PT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,1,4,2.4657157605934916
 3828,PT_E_Demand,PT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,5,8,0.0
 3829,PT_E_Demand,PT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,9,12,0.0
 3830,PT_E_Demand,PT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,13,16,3.832
@@ -4266,7 +4266,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 4265,FI_E_Demand,FI_electrolyzer,2050,1,1.0,1.0,1.0,17,20,5.410958904
 4266,FI_E_Demand,FI_electrolyzer,2050,1,1.0,1.0,1.0,21,24,5.410958904
 4267,ES_E_Demand,ES_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,1,3,0.0
-4268,ES_E_Demand,ES_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,4,6,0.9554053579789311
+4268,ES_E_Demand,ES_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,4,6,0.9554053579789276
 4269,ES_E_Demand,ES_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,7,9,0.0
 4270,ES_E_Demand,ES_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,10,12,6.866
 4271,ES_E_Demand,ES_Pump_Hydro_Closed,2050,1,1.0,1.0,1.0,13,15,6.866
@@ -4351,7 +4351,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 4350,CZ_E_Demand,CZ_electrolyzer,2050,1,1.0,1.0,1.0,13,16,4.703196347
 4351,CZ_E_Demand,CZ_electrolyzer,2050,1,1.0,1.0,1.0,17,20,4.703196347
 4352,CZ_E_Demand,CZ_electrolyzer,2050,1,1.0,1.0,1.0,21,24,4.703196347
-4353,FR_E_Demand,FR_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,1,2,0.48017541253083373
+4353,FR_E_Demand,FR_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,1,2,0.4801754125308337
 4354,FR_E_Demand,FR_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,3,4,0.0
 4355,FR_E_Demand,FR_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,5,6,0.0
 4356,FR_E_Demand,FR_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,7,8,0.0
@@ -4531,9 +4531,9 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 4530,LT_Battery,LT_E_Demand,2050,1,1.0,1.0,1.0,13,16,-0.0
 4531,LT_Battery,LT_E_Demand,2050,1,1.0,1.0,1.0,17,20,-0.0
 4532,LT_Battery,LT_E_Demand,2050,1,1.0,1.0,1.0,21,24,-0.0
-4533,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,1,4,-0.8390499516680496
-4534,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,5,8,-0.17096118816611405
-4535,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,9,12,2.3070098591859853
+4533,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,1,4,-0.8390499516680461
+4534,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,5,8,-0.1709611881661105
+4535,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,9,12,2.307009859185989
 4536,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,13,16,3.7779588137820497
 4537,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,17,20,3.5895337989650216
 4538,PT_E_Demand,ES_E_Demand,2050,1,1.0,1.0,1.0,21,24,5.5
@@ -4606,7 +4606,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 4605,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.0
 4606,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,5,8,10.21140745756673
 4607,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,9,12,65.8640026380306
-4608,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,13,16,60.90173359733601
+4608,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,13,16,60.901733597336005
 4609,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,17,20,34.29624073557205
 4610,IT_Solar,IT_E_Demand,2050,1,1.0,1.0,1.0,21,24,0.0
 4611,UK_Hydro,UK_E_Demand,2050,1,1.0,1.0,1.0,1,1,0.46928708388687695
@@ -4870,10 +4870,10 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 4869,IT_Battery,IT_E_Demand,2050,1,1.0,1.0,1.0,17,20,0.0
 4870,IT_Battery,IT_E_Demand,2050,1,1.0,1.0,1.0,21,24,12.620465751656262
 4871,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,1,4,0.0
-4872,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,5,8,5.176238413380779
+4872,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,5,8,5.1762384133807755
 4873,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,9,12,0.0
 4874,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,13,16,0.0
-4875,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,17,20,5.281018311734928
+4875,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,17,20,5.281018311734932
 4876,IT_Pump_Hydro_Closed,IT_E_Demand,2050,1,1.0,1.0,1.0,21,24,6.2
 4877,SK_Solar,SK_E_Demand,2050,1,1.0,1.0,1.0,1,4,-0.0
 4878,SK_Solar,SK_E_Demand,2050,1,1.0,1.0,1.0,5,8,0.3557391147405662
@@ -5025,7 +5025,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 5024,IT_E_Demand,IT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,5,8,0.0
 5025,IT_E_Demand,IT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,9,12,3.254
 5026,IT_E_Demand,IT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,13,16,3.254
-5027,IT_E_Demand,IT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,17,20,0.028283681683942574
+5027,IT_E_Demand,IT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,17,20,0.028283681683942685
 5028,IT_E_Demand,IT_Pump_Hydro_Open,2050,1,1.0,1.0,1.0,21,24,0.0
 5029,CH_E_Demand,DE_E_Demand,2050,1,1.0,1.0,1.0,1,4,-5.0
 5030,CH_E_Demand,DE_E_Demand,2050,1,1.0,1.0,1.0,5,8,-5.0
@@ -5075,12 +5075,12 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 5074,AT_Battery,AT_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
 5075,AT_Battery,AT_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.0
 5076,AT_Battery,AT_E_Demand,2050,2,1.0,1.0,1.0,21,24,0.0
-5077,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,1,4,9.592662782439811
+5077,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,1,4,9.59266278243981
 5078,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,5,8,10.98677612437681
 5079,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,9,12,7.641070686769651
 5080,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,13,16,9.838336666829417
 5081,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,17,20,-9.459900542014838
-5082,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,21,24,7.1647954076205025
+5082,AT_E_Demand,DE_E_Demand,2050,2,1.0,1.0,1.0,21,24,7.164795407620517
 5083,AT_E_ENS,AT_E_Demand,2050,2,1.0,1.0,1.0,1,4,0.0
 5084,AT_E_ENS,AT_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.0
 5085,AT_E_ENS,AT_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
@@ -5099,7 +5099,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 5098,AT_Hydro,AT_E_Demand,2050,2,1.0,1.0,1.0,13,16,4.575169630010659
 5099,AT_Hydro,AT_E_Demand,2050,2,1.0,1.0,1.0,17,20,4.575169630010659
 5100,AT_Hydro,AT_E_Demand,2050,2,1.0,1.0,1.0,21,24,4.575169630010659
-5101,AT_Hydro_Reservoir,AT_E_Demand,2050,2,1.0,1.0,1.0,1,4,1.8605842707423266
+5101,AT_Hydro_Reservoir,AT_E_Demand,2050,2,1.0,1.0,1.0,1,4,1.8605842707423261
 5102,AT_Hydro_Reservoir,AT_E_Demand,2050,2,1.0,1.0,1.0,5,8,2.489
 5103,AT_Hydro_Reservoir,AT_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
 5104,AT_Hydro_Reservoir,AT_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
@@ -5531,10 +5531,10 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 5530,CZ_electrolyzer,CZ_H_Demand,2050,2,1.0,1.0,1.0,13,16,4.703196347
 5531,CZ_electrolyzer,CZ_H_Demand,2050,2,1.0,1.0,1.0,17,20,4.703196347
 5532,CZ_electrolyzer,CZ_H_Demand,2050,2,1.0,1.0,1.0,21,24,4.703196347
-5533,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,1,1,3.4885142819441626
-5534,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,2,2,5.48644424480919
-5535,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,3,3,8.327785909227673
-5536,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,4,4,11.646927433613925
+5533,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,1,1,3.4885142819441644
+5534,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,2,2,5.486444244809192
+5535,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,3,3,8.327785909227675
+5536,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,4,4,11.646927433613929
 5537,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,5,5,22.37166872897053
 5538,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,6,6,23.818043132749725
 5539,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,7,7,19.85509541442327
@@ -5551,10 +5551,10 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 5550,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,18,18,29.528855850312368
 5551,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,19,19,82.25287505622155
 5552,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,20,20,84.16539167959253
-5553,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,21,21,15.555333423451064
-5554,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,22,22,23.865315826931162
-5555,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,23,23,2.0048444516793857
-5556,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,24,24,0.9239045660735279
+5553,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,21,21,15.55533342345105
+5554,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,22,22,23.86531582693115
+5555,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,23,23,2.0048444516793715
+5556,DE_Battery,DE_E_Demand,2050,2,1.0,1.0,1.0,24,24,0.9239045660735137
 5557,DE_Coal,DE_E_Demand,2050,2,1.0,1.0,1.0,1,1,0.0
 5558,DE_Coal,DE_E_Demand,2050,2,1.0,1.0,1.0,2,2,0.0
 5559,DE_Coal,DE_E_Demand,2050,2,1.0,1.0,1.0,3,3,0.0
@@ -6119,9 +6119,9 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 6118,EE_electrolyzer,EE_H_Demand,2050,2,1.0,1.0,1.0,13,16,0.194063927
 6119,EE_electrolyzer,EE_H_Demand,2050,2,1.0,1.0,1.0,17,20,0.194063927
 6120,EE_electrolyzer,EE_H_Demand,2050,2,1.0,1.0,1.0,21,24,0.194063927
-6121,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,1,3,5.430060396703011
+6121,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,1,3,5.430060396703012
 6122,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,4,6,0.0
-6123,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,7,9,4.118582889810218
+6123,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,7,9,4.11858288981022
 6124,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,10,12,0.0
 6125,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,13,15,0.0
 6126,ES_Battery,ES_E_Demand,2050,2,1.0,1.0,1.0,16,18,0.0
@@ -6160,7 +6160,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 6159,ES_Hydro,ES_E_Demand,2050,2,1.0,1.0,1.0,19,21,3.3059376377013208
 6160,ES_Hydro,ES_E_Demand,2050,2,1.0,1.0,1.0,22,24,3.3059376377013208
 6161,ES_Hydro_Reservoir,ES_E_Demand,2050,2,1.0,1.0,1.0,1,3,0.0
-6162,ES_Hydro_Reservoir,ES_E_Demand,2050,2,1.0,1.0,1.0,4,6,7.026968434722584
+6162,ES_Hydro_Reservoir,ES_E_Demand,2050,2,1.0,1.0,1.0,4,6,7.026968434722588
 6163,ES_Hydro_Reservoir,ES_E_Demand,2050,2,1.0,1.0,1.0,7,9,10.972
 6164,ES_Hydro_Reservoir,ES_E_Demand,2050,2,1.0,1.0,1.0,10,12,0.0
 6165,ES_Hydro_Reservoir,ES_E_Demand,2050,2,1.0,1.0,1.0,13,15,0.0
@@ -6194,7 +6194,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 6193,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,1,3,0.0
 6194,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,4,6,0.0
 6195,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,7,9,5.137652727059
-6196,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,10,12,45.75464342322492
+6196,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,10,12,45.754643423224934
 6197,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,13,15,52.933257028388624
 6198,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,16,18,50.307238916740005
 6199,ES_Solar,ES_E_Demand,2050,2,1.0,1.0,1.0,19,21,9.564455861232156
@@ -6576,7 +6576,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 6575,HR_E_Demand,SI_E_Demand,2050,2,1.0,1.0,1.0,9,12,-3.5
 6576,HR_E_Demand,SI_E_Demand,2050,2,1.0,1.0,1.0,13,16,-3.5
 6577,HR_E_Demand,SI_E_Demand,2050,2,1.0,1.0,1.0,17,20,-2.2180263213938414
-6578,HR_E_Demand,SI_E_Demand,2050,2,1.0,1.0,1.0,21,24,-0.6183903826822971
+6578,HR_E_Demand,SI_E_Demand,2050,2,1.0,1.0,1.0,21,24,-0.6183903826822829
 6579,HR_E_ENS,HR_E_Demand,2050,2,1.0,1.0,1.0,1,4,0.0
 6580,HR_E_ENS,HR_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.0
 6581,HR_E_ENS,HR_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
@@ -6600,7 +6600,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 6599,HR_Hydro_Reservoir,HR_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
 6600,HR_Hydro_Reservoir,HR_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
 6601,HR_Hydro_Reservoir,HR_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.0
-6602,HR_Hydro_Reservoir,HR_E_Demand,2050,2,1.0,1.0,1.0,21,24,1.1225866703874794
+6602,HR_Hydro_Reservoir,HR_E_Demand,2050,2,1.0,1.0,1.0,21,24,1.1225866703874936
 6603,HR_Pump_Hydro_Open,HR_E_Demand,2050,2,1.0,1.0,1.0,1,4,0.281
 6604,HR_Pump_Hydro_Open,HR_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.281
 6605,HR_Pump_Hydro_Open,HR_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
@@ -7322,7 +7322,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 7321,PT_Hydro_Reservoir,PT_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.0
 7322,PT_Hydro_Reservoir,PT_E_Demand,2050,2,1.0,1.0,1.0,21,24,0.9398894077475739
 7323,PT_Pump_Hydro_Open,PT_E_Demand,2050,2,1.0,1.0,1.0,1,4,0.0
-7324,PT_Pump_Hydro_Open,PT_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.6093767425828802
+7324,PT_Pump_Hydro_Open,PT_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.6093767425828788
 7325,PT_Pump_Hydro_Open,PT_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
 7326,PT_Pump_Hydro_Open,PT_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
 7327,PT_Pump_Hydro_Open,PT_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.0
@@ -7409,7 +7409,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 7408,RO_Pump_Hydro_Open,RO_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.4130155929491237
 7409,RO_Pump_Hydro_Open,RO_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
 7410,RO_Pump_Hydro_Open,RO_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
-7411,RO_Pump_Hydro_Open,RO_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.3905291296107811
+7411,RO_Pump_Hydro_Open,RO_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.39052912961078123
 7412,RO_Pump_Hydro_Open,RO_E_Demand,2050,2,1.0,1.0,1.0,21,24,0.839
 7413,RO_Solar,RO_E_Demand,2050,2,1.0,1.0,1.0,1,4,-0.0
 7414,RO_Solar,RO_E_Demand,2050,2,1.0,1.0,1.0,5,8,2.3001470730812468
@@ -7792,7 +7792,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 7791,DE_E_Demand,DE_Battery,2050,2,1.0,1.0,1.0,23,23,0.0
 7792,DE_E_Demand,DE_Battery,2050,2,1.0,1.0,1.0,24,24,0.0
 7793,ES_E_Demand,ES_Battery,2050,2,1.0,1.0,1.0,1,3,0.0
-7794,ES_E_Demand,ES_Battery,2050,2,1.0,1.0,1.0,4,6,0.15622121650483578
+7794,ES_E_Demand,ES_Battery,2050,2,1.0,1.0,1.0,4,6,0.15622121650483875
 7795,ES_E_Demand,ES_Battery,2050,2,1.0,1.0,1.0,7,9,0.0
 7796,ES_E_Demand,ES_Battery,2050,2,1.0,1.0,1.0,10,12,-0.0
 7797,ES_E_Demand,ES_Battery,2050,2,1.0,1.0,1.0,13,15,-0.0
@@ -7926,7 +7926,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 7925,SI_E_Demand,AT_E_Demand,2050,2,1.0,1.0,1.0,9,12,2.95
 7926,SI_E_Demand,AT_E_Demand,2050,2,1.0,1.0,1.0,13,16,2.95
 7927,SI_E_Demand,AT_E_Demand,2050,2,1.0,1.0,1.0,17,20,-0.6664287868859649
-7928,SI_E_Demand,AT_E_Demand,2050,2,1.0,1.0,1.0,21,24,-0.45659359278978684
+7928,SI_E_Demand,AT_E_Demand,2050,2,1.0,1.0,1.0,21,24,-0.45659359278977263
 7929,SK_E_Demand,HU_E_Demand,2050,2,1.0,1.0,1.0,1,4,-0.532739884945018
 7930,SK_E_Demand,HU_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.22283883462537046
 7931,SK_E_Demand,HU_E_Demand,2050,2,1.0,1.0,1.0,9,12,-3.8
@@ -8003,7 +8003,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 8002,IT_E_Demand,CH_E_Demand,2050,2,1.0,1.0,1.0,5,8,-1.796703850391523
 8003,IT_E_Demand,CH_E_Demand,2050,2,1.0,1.0,1.0,9,12,3.4209805031379052
 8004,IT_E_Demand,CH_E_Demand,2050,2,1.0,1.0,1.0,13,16,-5.372780010315424
-8005,IT_E_Demand,CH_E_Demand,2050,2,1.0,1.0,1.0,17,20,-1.3652837019119737
+8005,IT_E_Demand,CH_E_Demand,2050,2,1.0,1.0,1.0,17,20,-1.3652837019119701
 8006,IT_E_Demand,CH_E_Demand,2050,2,1.0,1.0,1.0,21,24,1.470455738853281
 8007,NO_E_Demand,DK_E_Demand,2050,2,1.0,1.0,1.0,1,1,-3.362
 8008,NO_E_Demand,DK_E_Demand,2050,2,1.0,1.0,1.0,2,2,-3.362
@@ -8853,7 +8853,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 8852,LT_Pump_Hydro_Closed,LT_E_Demand,2050,2,1.0,1.0,1.0,21,24,0.3481979374450803
 8853,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,1,3,0.0
 8854,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,4,6,0.0
-8855,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,7,9,0.025824219999182135
+8855,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,7,9,0.02582421999918214
 8856,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,10,12,0.216
 8857,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,13,15,0.216
 8858,PL_E_Demand,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,16,18,0.216
@@ -8877,9 +8877,9 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 8876,LT_Solar,LT_E_Demand,2050,2,1.0,1.0,1.0,13,16,2.646922487479522
 8877,LT_Solar,LT_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.4182072473241046
 8878,LT_Solar,LT_E_Demand,2050,2,1.0,1.0,1.0,21,24,0.0
-8879,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,1,4,0.7542535496332214
+8879,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,1,4,0.7542535496332229
 8880,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,5,8,0.0
-8881,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,9,12,3.179652392221085
+8881,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,9,12,3.1796523922210866
 8882,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,13,16,3.832
 8883,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,17,20,3.832
 8884,PT_E_Demand,PT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,21,24,0.0
@@ -9205,7 +9205,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 9204,CH_E_Demand,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,5,8,0.0
 9205,CH_E_Demand,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,9,12,10.732
 9206,CH_E_Demand,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,13,16,10.732
-9207,CH_E_Demand,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,17,20,4.52630522571806
+9207,CH_E_Demand,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,17,20,4.526305225718064
 9208,CH_E_Demand,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,21,24,0.0
 9209,EU_SMR_CCS,SK_H_Demand,2050,2,1.0,1.0,1.0,1,1,-0.0
 9210,EU_SMR_CCS,SK_H_Demand,2050,2,1.0,1.0,1.0,2,2,-0.0
@@ -9609,9 +9609,9 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 9608,LT_Battery,LT_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
 9609,LT_Battery,LT_E_Demand,2050,2,1.0,1.0,1.0,17,20,1.1611761792892625
 9610,LT_Battery,LT_E_Demand,2050,2,1.0,1.0,1.0,21,24,-0.0
-9611,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,1,4,-0.717407409623231
-9612,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.20313153203439605
-9613,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,9,12,2.4181556600997123
+9611,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,1,4,-0.7174074096232325
+9612,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.2031315320343946
+9613,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,9,12,2.4181556600997105
 9614,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,13,16,3.0914611873905713
 9615,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,17,20,2.925840852465592
 9616,PT_E_Demand,ES_E_Demand,2050,2,1.0,1.0,1.0,21,24,4.693010431682781
@@ -9715,7 +9715,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 9714,SK_Pump_Hydro_Open,SK_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.0
 9715,SK_Pump_Hydro_Open,SK_E_Demand,2050,2,1.0,1.0,1.0,9,12,0.0
 9716,SK_Pump_Hydro_Open,SK_E_Demand,2050,2,1.0,1.0,1.0,13,16,0.0
-9717,SK_Pump_Hydro_Open,SK_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.19387923140519187
+9717,SK_Pump_Hydro_Open,SK_E_Demand,2050,2,1.0,1.0,1.0,17,20,0.1938792314051918
 9718,SK_Pump_Hydro_Open,SK_E_Demand,2050,2,1.0,1.0,1.0,21,24,0.276
 9719,SK_Wind_Onshore,SK_E_Demand,2050,2,1.0,1.0,1.0,1,4,0.628910801772388
 9720,SK_Wind_Onshore,SK_E_Demand,2050,2,1.0,1.0,1.0,5,8,0.605302258164179
@@ -9789,7 +9789,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 9788,IT_E_Demand,IT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,5,8,0.0
 9789,IT_E_Demand,IT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,9,12,3.254
 9790,IT_E_Demand,IT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,13,16,3.254
-9791,IT_E_Demand,IT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,17,20,1.164846437136094
+9791,IT_E_Demand,IT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,17,20,1.1648464371360938
 9792,IT_E_Demand,IT_Pump_Hydro_Open,2050,2,1.0,1.0,1.0,21,24,0.0
 9793,IE_E_Demand,IE_electrolyzer,2050,2,1.0,1.0,1.0,1,2,2.705479452
 9794,IE_E_Demand,IE_electrolyzer,2050,2,1.0,1.0,1.0,3,4,2.705479452
@@ -10145,7 +10145,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 10144,AT_Battery,AT_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
 10145,AT_Battery,AT_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
 10146,AT_Battery,AT_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
-10147,AT_E_Demand,DE_E_Demand,2050,3,1.0,1.0,1.0,1,4,-0.35231300941427435
+10147,AT_E_Demand,DE_E_Demand,2050,3,1.0,1.0,1.0,1,4,-0.3523130094142748
 10148,AT_E_Demand,DE_E_Demand,2050,3,1.0,1.0,1.0,5,8,-9.166061637008843
 10149,AT_E_Demand,DE_E_Demand,2050,3,1.0,1.0,1.0,9,12,-11.5
 10150,AT_E_Demand,DE_E_Demand,2050,3,1.0,1.0,1.0,13,16,-11.5
@@ -10181,7 +10181,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 10180,AT_Pump_Hydro_Closed,AT_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
 10181,AT_Pump_Hydro_Closed,AT_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.3
 10182,AT_Pump_Hydro_Closed,AT_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
-10183,AT_Pump_Hydro_Open,AT_E_Demand,2050,3,1.0,1.0,1.0,1,4,1.8830906792838533
+10183,AT_Pump_Hydro_Open,AT_E_Demand,2050,3,1.0,1.0,1.0,1,4,1.8830906792838529
 10184,AT_Pump_Hydro_Open,AT_E_Demand,2050,3,1.0,1.0,1.0,5,8,0.0
 10185,AT_Pump_Hydro_Open,AT_E_Demand,2050,3,1.0,1.0,1.0,9,12,0.0
 10186,AT_Pump_Hydro_Open,AT_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
@@ -10432,7 +10432,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 10431,CH_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,9,12,-6.5
 10432,CH_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,13,16,-6.5
 10433,CH_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,17,20,-6.5
-10434,CH_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,21,24,-5.462987777132459
+10434,CH_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,21,24,-5.462987777132458
 10435,CH_E_ENS,CH_E_Demand,2050,3,1.0,1.0,1.0,1,4,0.0
 10436,CH_E_ENS,CH_E_Demand,2050,3,1.0,1.0,1.0,5,8,0.0
 10437,CH_E_ENS,CH_E_Demand,2050,3,1.0,1.0,1.0,9,12,0.0
@@ -10460,9 +10460,9 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 10459,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,1,4,4.482188692995113
 10460,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,5,8,9.88776679656152
 10461,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,9,12,0.0
-10462,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,13,16,2.5217270783114776
+10462,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,13,16,2.5217270783114785
 10463,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,17,20,9.673044111906767
-10464,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,21,24,1.8579497554042286
+10464,CH_Pump_Hydro_Open,CH_E_Demand,2050,3,1.0,1.0,1.0,21,24,1.8579497554042295
 10465,CH_Solar,CH_E_Demand,2050,3,1.0,1.0,1.0,1,4,0.0
 10466,CH_Solar,CH_E_Demand,2050,3,1.0,1.0,1.0,5,8,0.011691976484864
 10467,CH_Solar,CH_E_Demand,2050,3,1.0,1.0,1.0,9,12,2.5649083485143027
@@ -10560,7 +10560,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 10559,CZ_Hydro,CZ_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.2803365717130162
 10560,CZ_Hydro,CZ_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.2803365717130162
 10561,CZ_Hydro_Reservoir,CZ_E_Demand,2050,3,1.0,1.0,1.0,1,4,0.698
-10562,CZ_Hydro_Reservoir,CZ_E_Demand,2050,3,1.0,1.0,1.0,5,8,0.010466742321065066
+10562,CZ_Hydro_Reservoir,CZ_E_Demand,2050,3,1.0,1.0,1.0,5,8,0.010466742321065065
 10563,CZ_Hydro_Reservoir,CZ_E_Demand,2050,3,1.0,1.0,1.0,9,12,0.0
 10564,CZ_Hydro_Reservoir,CZ_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
 10565,CZ_Hydro_Reservoir,CZ_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
@@ -10795,7 +10795,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 10794,DE_OCGT,DE_E_Demand,2050,3,1.0,1.0,1.0,24,24,0.0
 10795,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,1,1,0.0
 10796,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,2,2,0.0
-10797,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,3,3,4.098313355212491
+10797,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,3,3,4.0983133552124915
 10798,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,4,4,0.0
 10799,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,5,5,7.382
 10800,DE_Pump_Hydro_Closed,DE_E_Demand,2050,3,1.0,1.0,1.0,6,6,5.184758570959781
@@ -11342,7 +11342,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 11341,FI_Gas,FI_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
 11342,FI_Gas,FI_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
 11343,FI_Hydro_Reservoir,FI_E_Demand,2050,3,1.0,1.0,1.0,1,4,3.237
-11344,FI_Hydro_Reservoir,FI_E_Demand,2050,3,1.0,1.0,1.0,5,8,2.2255055661355176
+11344,FI_Hydro_Reservoir,FI_E_Demand,2050,3,1.0,1.0,1.0,5,8,2.225505566135517
 11345,FI_Hydro_Reservoir,FI_E_Demand,2050,3,1.0,1.0,1.0,9,12,0.0
 11346,FI_Hydro_Reservoir,FI_E_Demand,2050,3,1.0,1.0,1.0,13,16,3.237
 11347,FI_Hydro_Reservoir,FI_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
@@ -11366,7 +11366,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 11365,FI_Solar,FI_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.2474903370275641
 11366,FI_Solar,FI_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
 11367,FI_Wind_Offshore,FI_E_Demand,2050,3,1.0,1.0,1.0,1,4,0.9217872002623855
-11368,FI_Wind_Offshore,FI_E_Demand,2050,3,1.0,1.0,1.0,5,8,3.2838877538158537
+11368,FI_Wind_Offshore,FI_E_Demand,2050,3,1.0,1.0,1.0,5,8,3.283887753815854
 11369,FI_Wind_Offshore,FI_E_Demand,2050,3,1.0,1.0,1.0,9,12,1.5731869948939985
 11370,FI_Wind_Offshore,FI_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
 11371,FI_Wind_Offshore,FI_E_Demand,2050,3,1.0,1.0,1.0,17,20,6.835278250467175
@@ -11441,9 +11441,9 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 11440,FR_Hydro,FR_E_Demand,2050,3,1.0,1.0,1.0,15,16,0.0
 11441,FR_Hydro,FR_E_Demand,2050,3,1.0,1.0,1.0,17,18,9.013889396747546
 11442,FR_Hydro,FR_E_Demand,2050,3,1.0,1.0,1.0,19,20,9.013889396747546
-11443,FR_Hydro,FR_E_Demand,2050,3,1.0,1.0,1.0,21,22,8.878512760491356
+11443,FR_Hydro,FR_E_Demand,2050,3,1.0,1.0,1.0,21,22,8.878512760491354
 11444,FR_Hydro,FR_E_Demand,2050,3,1.0,1.0,1.0,23,24,9.013889396747546
-11445,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,1,2,2.210806440566039
+11445,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,1,2,2.21080644056604
 11446,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,3,4,0.0
 11447,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,5,6,2.593777147313695
 11448,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,7,8,4.090949945812371
@@ -11454,7 +11454,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 11453,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,17,18,0.0
 11454,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,19,20,8.785
 11455,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,21,22,8.785
-11456,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,23,24,0.24105063693459972
+11456,FR_Hydro_Reservoir,FR_E_Demand,2050,3,1.0,1.0,1.0,23,24,0.24105063693459883
 11457,FR_Nuclear,FR_E_Demand,2050,3,1.0,1.0,1.0,1,2,0.0
 11458,FR_Nuclear,FR_E_Demand,2050,3,1.0,1.0,1.0,3,4,0.0
 11459,FR_Nuclear,FR_E_Demand,2050,3,1.0,1.0,1.0,5,6,0.0
@@ -12381,7 +12381,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 12380,PT_Hydro,PT_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.5776296887867519
 12381,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,1,4,0.0
 12382,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,5,8,0.0
-12383,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,9,12,1.0627182853810304
+12383,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,9,12,1.0627182853810306
 12384,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
 12385,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
 12386,PT_Hydro_Reservoir,PT_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
@@ -12524,7 +12524,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 12523,SE_Gas,SE_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
 12524,SE_Gas,SE_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
 12525,SE_Hydro_Reservoir,SE_E_Demand,2050,3,1.0,1.0,1.0,1,4,0.0
-12526,SE_Hydro_Reservoir,SE_E_Demand,2050,3,1.0,1.0,1.0,5,8,5.144624184644329
+12526,SE_Hydro_Reservoir,SE_E_Demand,2050,3,1.0,1.0,1.0,5,8,5.144624184644336
 12527,SE_Hydro_Reservoir,SE_E_Demand,2050,3,1.0,1.0,1.0,9,12,16.447
 12528,SE_Hydro_Reservoir,SE_E_Demand,2050,3,1.0,1.0,1.0,13,16,0.0
 12529,SE_Hydro_Reservoir,SE_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.0
@@ -12548,7 +12548,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 12547,SE_Solar,SE_E_Demand,2050,3,1.0,1.0,1.0,17,20,0.6736846888050001
 12548,SE_Solar,SE_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.0
 12549,SE_Wind_Offshore,SE_E_Demand,2050,3,1.0,1.0,1.0,1,4,7.305984824146979
-12550,SE_Wind_Offshore,SE_E_Demand,2050,3,1.0,1.0,1.0,5,8,2.4690969988764593
+12550,SE_Wind_Offshore,SE_E_Demand,2050,3,1.0,1.0,1.0,5,8,2.469096998876452
 12551,SE_Wind_Offshore,SE_E_Demand,2050,3,1.0,1.0,1.0,9,12,10.409334566366399
 12552,SE_Wind_Offshore,SE_E_Demand,2050,3,1.0,1.0,1.0,13,16,10.534042368162401
 12553,SE_Wind_Offshore,SE_E_Demand,2050,3,1.0,1.0,1.0,17,20,10.659301586904801
@@ -12887,7 +12887,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 12886,EU_SMR_CCS,RO_H_Demand,2050,3,1.0,1.0,1.0,22,22,-0.0
 12887,EU_SMR_CCS,RO_H_Demand,2050,3,1.0,1.0,1.0,23,23,-0.0
 12888,EU_SMR_CCS,RO_H_Demand,2050,3,1.0,1.0,1.0,24,24,-0.0
-12889,FR_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,1,2,7.137738268380569
+12889,FR_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,1,2,7.13773826838057
 12890,FR_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,3,4,1.0858771153773983
 12891,FR_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,5,6,4.234655081189665
 12892,FR_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,7,8,7.3
@@ -12996,7 +12996,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 12995,SK_E_Demand,HU_E_Demand,2050,3,1.0,1.0,1.0,9,12,-2.6589678699376216
 12996,SK_E_Demand,HU_E_Demand,2050,3,1.0,1.0,1.0,13,16,-2.2776675274592204
 12997,SK_E_Demand,HU_E_Demand,2050,3,1.0,1.0,1.0,17,20,3.8593499506335025
-12998,SK_E_Demand,HU_E_Demand,2050,3,1.0,1.0,1.0,21,24,-0.2650361592211674
+12998,SK_E_Demand,HU_E_Demand,2050,3,1.0,1.0,1.0,21,24,-0.26503615922116736
 12999,UK_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,1,2,8.15
 13000,UK_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,3,4,8.15
 13001,UK_E_Demand,FR_E_Demand,2050,3,1.0,1.0,1.0,5,6,8.15
@@ -13027,7 +13027,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 13026,CZ_E_Demand,AT_E_Demand,2050,3,1.0,1.0,1.0,13,16,-2.4
 13027,CZ_E_Demand,AT_E_Demand,2050,3,1.0,1.0,1.0,17,20,-2.4
 13028,CZ_E_Demand,AT_E_Demand,2050,3,1.0,1.0,1.0,21,24,-2.4
-13029,DE_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,1,2,-1.827286122906114
+13029,DE_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,1,2,-1.8272861229061148
 13030,DE_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,3,4,4.0
 13031,DE_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,5,6,4.0
 13032,DE_E_Demand,BE_E_Demand,2050,3,1.0,1.0,1.0,7,8,4.0
@@ -13066,7 +13066,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 13065,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,1,4,-8.772
 13066,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,5,8,-8.772
 13067,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,9,12,1.5354926264971436
-13068,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,13,16,-5.60243996841473
+13068,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,13,16,-5.602439968414731
 13069,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,17,20,-8.772
 13070,IT_E_Demand,CH_E_Demand,2050,3,1.0,1.0,1.0,21,24,-8.772
 13071,NO_E_Demand,DK_E_Demand,2050,3,1.0,1.0,1.0,1,1,-3.362
@@ -14084,7 +14084,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 14083,SK_E_Demand,SK_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,9,12,0.276
 14084,SK_E_Demand,SK_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,13,16,0.276
 14085,SK_E_Demand,SK_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,17,20,0.0
-14086,SK_E_Demand,SK_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,21,24,0.05918995296164406
+14086,SK_E_Demand,SK_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,21,24,0.05918995296164403
 14087,UK_electrolyzer,UK_H_Demand,2050,3,1.0,1.0,1.0,1,1,35.58907422
 14088,UK_electrolyzer,UK_H_Demand,2050,3,1.0,1.0,1.0,2,2,35.58907422
 14089,UK_electrolyzer,UK_H_Demand,2050,3,1.0,1.0,1.0,3,3,35.58907422
@@ -14263,7 +14263,7 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 14262,HU_Hydro,HU_E_Demand,2050,3,1.0,1.0,1.0,21,24,0.028034871794687985
 14263,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,1,4,0.0
 14264,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,5,8,5.793
-14265,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,9,12,2.026037783119822
+14265,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,9,12,2.026037783119821
 14266,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,13,16,5.793
 14267,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,17,20,0.0
 14268,AT_E_Demand,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1.0,21,24,0.0
@@ -14351,10 +14351,10 @@ id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion
 14350,CY_E_Demand,CY_electrolyzer,2050,3,1.0,1.0,1.0,13,16,0.285388128
 14351,CY_E_Demand,CY_electrolyzer,2050,3,1.0,1.0,1.0,17,20,0.285388128
 14352,CY_E_Demand,CY_electrolyzer,2050,3,1.0,1.0,1.0,21,24,0.285388128
-14353,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,1,1,3.011029181268496
+14353,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,1,1,3.0110291812684964
 14354,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,2,2,4.671059864170884
 14355,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,3,3,0.0
-14356,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,4,4,1.3314683934701947
+14356,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,4,4,1.3314683934701943
 14357,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,5,5,0.0
 14358,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,6,6,0.0
 14359,DE_E_Demand,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,1.0,7,7,0.0

@@ -428,7 +428,7 @@ id,storage_level_id,asset,milestone_year,rep_period,time_block_start,time_block_
 427,427,HU_Battery,2050,2,1,4,0.0
 428,428,HU_Battery,2050,2,5,8,0.0
 429,429,HU_Battery,2050,2,9,12,-0.0
-430,430,HU_Battery,2050,2,13,16,-1518.3751354701299
+430,430,HU_Battery,2050,2,13,16,-1518.37513547013
 431,431,HU_Battery,2050,2,17,20,-0.0
 432,432,HU_Battery,2050,2,21,24,0.0
 433,433,HU_Battery,2050,3,1,4,0.0
@@ -626,7 +626,7 @@ id,storage_level_id,asset,milestone_year,rep_period,time_block_start,time_block_
 625,625,RO_Battery,2050,2,1,4,0.0
 626,626,RO_Battery,2050,2,5,8,0.0
 627,627,RO_Battery,2050,2,9,12,-0.0
-628,628,RO_Battery,2050,2,13,16,-1518.3751354701299
+628,628,RO_Battery,2050,2,13,16,-1518.37513547013
 629,629,RO_Battery,2050,2,17,20,-0.0
 630,630,RO_Battery,2050,2,21,24,-0.0
 631,631,RO_Battery,2050,3,1,4,-0.0
