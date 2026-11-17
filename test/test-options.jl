@@ -47,11 +47,21 @@ end
         @test_logs TulipaEnergyModel._log_detailed("Detailed logging")
 
         connection = _tiny_fixture()
-        @test_logs TulipaEnergyModel.EnergyProblem(connection)
+        logger = Test.TestLogger()
+        Base.CoreLogging.with_logger(logger) do
+            TulipaEnergyModel.EnergyProblem(connection)
+        end
+        @test all(record -> record._module !== TulipaEnergyModel, logger.logs)
 
         TulipaEnergyModel.set_log_level!(:detailed)
         @test TulipaEnergyModel._is_detailed_logging()
         @test_logs (:info, "Detailed logging") TulipaEnergyModel._log_detailed("Detailed logging")
+
+        empty!(logger.logs)
+        Base.CoreLogging.with_logger(logger) do
+            TulipaEnergyModel.EnergyProblem(connection)
+        end
+        @test any(record -> record._module === TulipaEnergyModel, logger.logs)
 
         @test_throws ArgumentError TulipaEnergyModel.set_log_level!(:quiet)
     finally
