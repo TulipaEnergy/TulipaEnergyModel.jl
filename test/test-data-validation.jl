@@ -818,6 +818,22 @@ end
     ]
 end
 
+@testitem "Test maximum up time is not less than minimum up time - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    asset = DataFrame(
+        :asset => ["A1", "A2", "A3", "A4"],
+        :minimum_up_time => [4, 4, 4, 4],
+        :maximum_up_time => [missing, 4, 6, 3],
+    )
+    DuckDB.register_data_frame(connection, asset, "asset")
+    error_messages =
+        TEM._validate_maximum_up_time_not_less_than_minimum_up_time!(String[], connection)
+    @test error_messages == [
+        "Incorrect maximum_up_time = 3 for asset 'A4' in 'asset'. The maximum_up_time should be greater than or equal to minimum_up_time = 4.",
+    ]
+end
+
 @testitem "Check consistency between asset_commission and asset_both - using fake data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)

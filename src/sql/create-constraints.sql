@@ -1106,6 +1106,39 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_maximum_up_time
+;
+
+create table cons_maximum_up_time as
+select
+    nextval('id') as id,
+    sub.*
+from (
+    select
+        uc.asset,
+        uc.milestone_year,
+        uc.rep_period,
+        uc.time_block_start,
+        uc.time_block_end
+    from
+        cons_unit_commitment_logic as uc
+        left join asset on asset.asset = uc.asset
+    where
+        asset.maximum_up_time is not null
+    order by
+        uc.asset,
+        uc.milestone_year,
+        uc.rep_period,
+        uc.time_block_start
+) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists cons_minimum_down_time_aggregated_vintage_method
 ;
 
