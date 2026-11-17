@@ -17,6 +17,7 @@ function _print_help()
         julia --project=test test/runtests.jl --help                        # Show help
         julia --project=test test/runtests.jl --verbose                     # Run with verbose output
         julia --project=test test/runtests.jl --list-tags                   # List existing tags
+        julia --project=test test/runtests.jl --use-local-env               # Use the active environment without resolving fresh dependencies
 
     Filters (multiple can be passed, all must be satisfied):
         julia --project=test test/runtests.jl --file test-some-file.jl      # Run specific file
@@ -84,6 +85,11 @@ function main()
     println("="^30)
 
     filter_func = _create_filter(args)
+    if args.use_local_env
+        _run_tests(args, filter_func)
+        return
+    end
+
     test_project_toml_path = joinpath(@__DIR__, "Project.toml")
 
     mktempdir() do envdir
@@ -94,14 +100,19 @@ function main()
             Pkg.activate(envdir)
             Pkg.develop(; path = joinpath(@__DIR__, ".."))
             # Run the tests
-            if isnothing(filter_func)
-                @run_package_tests verbose = args.verbose
-            else
-                @run_package_tests verbose = args.verbose filter = filter_func
-            end
+            return _run_tests(args, filter_func)
         end
     end
 
+    return
+end
+
+function _run_tests(args, filter_func)
+    if isnothing(filter_func)
+        @run_package_tests verbose = args.verbose
+    else
+        @run_package_tests verbose = args.verbose filter = filter_func
+    end
     return
 end
 
@@ -165,6 +176,7 @@ function _validate_arguments()
         "--exclude",
         "--name",
         "--pattern",
+        "--use-local-env",
     ])
 
     i = 1
@@ -193,6 +205,7 @@ A named tuple containing parsed arguments:
 - `verbose`: Enable verbose test output (Bool)
 - `help`: Show help message and exit (Bool)
 - `list`: List available tags and exit (Bool)
+- `use_local_env`: Use the active environment without resolving fresh dependencies (Bool)
 - `file`: Run tests from files containing this substring (String or nothing)
 - `tags`: Run tests that have ALL of these tags - AND logic (Vector{Symbol} or nothing)
 - `exclude`: Skip tests that have ANY of these tags - OR logic (Vector{Symbol} or nothing)
@@ -239,6 +252,7 @@ function parse_arguments()
         verbose = verbose,
         help = help,
         list = list,
+        use_local_env = "--use-local-env" in ARGS,
         file = file_filter,
         tags = tags_filter,
         exclude = exclude_filter,
