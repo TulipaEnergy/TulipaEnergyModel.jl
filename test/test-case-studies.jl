@@ -141,11 +141,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 10_488_052_379.10485 atol = 1e-5
+    @test energy_problem.objective_value ≈ 10_488_052_379.10485 rtol = 1e-12
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 10_488_052_379.10485 atol = 1e-5
+    @test energy_problem.objective_value ≈ 10_488_052_379.10485 rtol = 1e-12
 end
 
 @testitem "Two-stage Stochastic Optimization Per Scenario Case Study" setup = [CommonSetup] tags =
@@ -154,11 +154,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 11_904_858_425.81369 atol = 1e-5
+    @test energy_problem.objective_value ≈ 11_904_858_425.81369 rtol = 1e-12
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 11_904_858_425.81369 atol = 1e-5
+    @test energy_problem.objective_value ≈ 11_904_858_425.81369 rtol = 1e-12
 end
 
 @testitem "CVaR Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow, :cvar] begin
