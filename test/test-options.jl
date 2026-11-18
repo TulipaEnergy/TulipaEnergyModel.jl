@@ -13,7 +13,7 @@
             "mip_max_leaves" => 64,
         ),
         model_file_name = "model.lp",
-        show_log = false,
+        show_log = :none,
     )
 end
 
@@ -29,7 +29,7 @@ end
         enable_names = false,
         direct_model = true,
         log_file = "model.log",
-        show_log = false,
+        show_log = :none,
     )
 
     @test JuMP.get_attribute(ep.model, "msg_lev") == GLPK.GLP_MSG_OFF
@@ -39,34 +39,54 @@ end
 end
 
 @testitem "Test logging levels" setup = [CommonSetup] tags = [:unit, :fast] begin
-    previous_log_level = TulipaEnergyModel.LOG_LEVEL[]
-
-    try
-        TulipaEnergyModel.set_log_level!(:minimal)
-        @test !TulipaEnergyModel._is_detailed_logging()
-        @test_logs TulipaEnergyModel._log_detailed("Detailed logging")
-
-        connection = _tiny_fixture()
+    function run_with_logger(show_log)
         logger = Test.TestLogger()
         Base.CoreLogging.with_logger(logger) do
-            TulipaEnergyModel.EnergyProblem(connection)
+            TulipaEnergyModel.run_scenario(
+                _tiny_fixture();
+                optimizer = GLPK.Optimizer,
+                optimizer_parameters = Dict("msg_lev" => GLPK.GLP_MSG_OFF),
+                output_folder = mktempdir(),
+                show_log,
+            )
         end
-        @test all(record -> record._module !== TulipaEnergyModel, logger.logs)
-
-        TulipaEnergyModel.set_log_level!(:detailed)
-        @test TulipaEnergyModel._is_detailed_logging()
-        @test_logs (:info, "Detailed logging") TulipaEnergyModel._log_detailed("Detailed logging")
-
-        empty!(logger.logs)
-        Base.CoreLogging.with_logger(logger) do
-            TulipaEnergyModel.EnergyProblem(connection)
-        end
-        @test any(record -> record._module === TulipaEnergyModel, logger.logs)
-
-        @test_throws ArgumentError TulipaEnergyModel.set_log_level!(:quiet)
-    finally
-        TulipaEnergyModel.set_log_level!(previous_log_level)
+        return [record.message for record in logger.logs if record._module === TulipaEnergyModel]
     end
+
+    @test isempty(run_with_logger(:none))
+
+    minimal_messages = run_with_logger(:minimal)
+    @test any(message -> occursin("Starting TulipaEnergyModel", string(message)), minimal_messages)
+    @test !any(
+        message -> occursin("Creating EnergyProblem internal tables", string(message)),
+        minimal_messages,
+    )
+
+    detailed_messages = run_with_logger(:detailed)
+    @test any(message -> occursin("Starting TulipaEnergyModel", string(message)), detailed_messages)
+    @test any(
+        message -> occursin("Creating EnergyProblem internal tables", string(message)),
+        detailed_messages,
+    )
+
+    default_logger = Test.TestLogger()
+    Base.CoreLogging.with_logger(default_logger) do
+        TulipaEnergyModel.run_scenario(
+            _tiny_fixture();
+            optimizer = GLPK.Optimizer,
+            optimizer_parameters = Dict("msg_lev" => GLPK.GLP_MSG_OFF),
+            output_folder = mktempdir(),
+        )
+    end
+    default_messages =
+        [record.message for record in default_logger.logs if record._module === TulipaEnergyModel]
+    @test any(message -> occursin("Starting TulipaEnergyModel", string(message)), default_messages)
+    @test !any(
+        message -> occursin("Creating EnergyProblem internal tables", string(message)),
+        default_messages,
+    )
+
+    @test_throws ArgumentError TulipaEnergyModel.run_scenario(_tiny_fixture(); show_log = :quiet)
 end
 
 @testitem "Test create_model! arguments" setup = [CommonSetup] tags = [:unit, :fast] begin
@@ -161,6 +181,6 @@ end
             output_folder = mktempdir(),
             optimizer = HiGHS.Optimizer,
             optimizer_parameters = Dict("bad_param" => 1.0),
-            show_log = false,
+            show_log = :none,
         )
 end

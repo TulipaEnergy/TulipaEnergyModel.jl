@@ -141,7 +141,7 @@ Finally, the problem can be solved:
 energy_problem = TulipaEnergyModel.run_scenario(
     connection;
     output_folder = mktempdir(),
-    show_log = false,
+    show_log = :none,
 )
 
 DuckDB.query(connection, "FROM var_flow LIMIT 5") |> DataFrame

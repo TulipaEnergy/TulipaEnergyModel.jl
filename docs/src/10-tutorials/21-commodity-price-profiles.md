@@ -75,7 +75,7 @@ function solve_problem(; use_commodity_price_profile)
     connection = TB.create_connection(tulipa, TEM.schema)
     TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
     TEM.populate_with_defaults!(connection)
-    energy_problem = TEM.run_scenario(connection; show_log = false)
+    energy_problem = TEM.run_scenario(connection; show_log = :none)
     return connection, energy_problem
 end
 

@@ -1,30 +1,35 @@
-const LOG_LEVELS = (:minimal, :detailed)
-const LOG_LEVEL = Ref{Symbol}(:detailed)
+const SHOW_LOG_LEVELS = (:none, :minimal, :detailed)
 
 """
-    set_log_level!(log_level)
+    _validate_show_log(show_log)
 
-Set the package logging level to `:minimal` or `:detailed`.
+Validate a `show_log` value.
 
-The minimal level reports high-level scenario progress. The detailed level also
-reports internal model construction steps. Use `show_log = false` in individual
-functions to silence their progress logging entirely.
+Use `:none` to silence progress logging, `:minimal` for high-level scenario
+progress, or `:detailed` to include internal model construction steps.
 """
-function set_log_level!(log_level::Symbol)
-    if log_level ∉ LOG_LEVELS
-        throw(ArgumentError("Unsupported log level `$log_level`. Use one of $(LOG_LEVELS)."))
+function _validate_show_log(show_log::Symbol)
+    if show_log ∉ SHOW_LOG_LEVELS
+        throw(
+            ArgumentError("Unsupported show_log value `$show_log`. Use one of $(SHOW_LOG_LEVELS)."),
+        )
     end
+    return show_log
+end
 
-    LOG_LEVEL[] = log_level
+function _is_detailed_logging(show_log::Symbol)
+    return show_log === :detailed
+end
+
+function _log_minimal(show_log::Symbol, message)
+    if show_log !== :none
+        @info message
+    end
     return
 end
 
-function _is_detailed_logging()
-    return LOG_LEVEL[] === :detailed
-end
-
-function _log_detailed(message)
-    if _is_detailed_logging()
+function _log_detailed(show_log::Symbol, message)
+    if _is_detailed_logging(show_log)
         @info message
     end
     return

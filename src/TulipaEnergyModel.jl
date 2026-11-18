@@ -31,7 +31,6 @@ export
 
     # Run
     run_scenario,
-    set_log_level!,
 
     # Structures
     EnergyProblem,

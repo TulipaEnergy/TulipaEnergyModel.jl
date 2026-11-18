@@ -13,7 +13,7 @@
             connection;
             optimizer,
             optimizer_parameters,
-            show_log = false,
+            show_log = :none,
         )
         @test JuMP.is_solved_and_feasible(energy_problem.model)
     end
@@ -25,11 +25,11 @@ end
     for optimizer in optimizer_list
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
-        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = :none)
         @test energy_problem.objective_value ≈ 278067.19298 rtol = 1e-8
         # populate_with_defaults shouldn't change the solution
         TulipaEnergyModel.populate_with_defaults!(connection)
-        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = :none)
         @test energy_problem.objective_value ≈ 278067.19298 rtol = 1e-8
     end
 end
@@ -39,11 +39,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 278067.19298 rtol = 1e-8
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 278067.19298 rtol = 1e-8
 end
 
@@ -52,11 +52,11 @@ end
     dir = joinpath(INPUT_FOLDER, "Storage")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 4498.400658 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 4498.400658 atol = 1e-5
 end
 
@@ -71,7 +71,7 @@ end
         connection;
         optimizer,
         optimizer_parameters,
-        show_log = false,
+        show_log = :none,
     )
     @test energy_problem.objective_value ≈ 302419.52581 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
@@ -80,7 +80,7 @@ end
         connection;
         optimizer,
         optimizer_parameters,
-        show_log = false,
+        show_log = :none,
     )
     @test energy_problem.objective_value ≈ 302419.52581 atol = 1e-5
 end
@@ -90,11 +90,11 @@ end
     dir = joinpath(INPUT_FOLDER, "Variable Resolution")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
 end
 
@@ -102,11 +102,11 @@ end
     dir = joinpath(INPUT_FOLDER, "Multi-year Investments")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 4633702.87318 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 4633702.87318 atol = 1e-5
 end
 
@@ -114,11 +114,11 @@ end
     dir = joinpath(INPUT_FOLDER, "Power-flow")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 417486.99986 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 417486.99986 atol = 1e-5
 end
 
@@ -127,11 +127,11 @@ end
     dir = joinpath(INPUT_FOLDER, "MIMO")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 89360.63814 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 89360.63814 atol = 1e-5
 end
 
@@ -140,11 +140,11 @@ end
     dir = joinpath(INPUT_FOLDER, "TwoStage-StochOpt RPs cross Scenario")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 10_488_052_379.10485 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 10_488_052_379.10485 atol = 1e-5
 end
 
@@ -153,11 +153,11 @@ end
     dir = joinpath(INPUT_FOLDER, "TwoStage-StochOpt RPs per Scenario")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 11_904_858_425.81369 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 11_904_858_425.81369 atol = 1e-5
 end
 
@@ -166,7 +166,7 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 31050.0 atol = 1e-5
     # CVaR variables and constraints should be created (lambda > 0, n_scenarios > 1)
     @test haskey(energy_problem.model, :conditional_value_at_risk_term)
@@ -174,7 +174,7 @@ end
     @test !isempty(energy_problem.variables[:tail_excess_slack_xi].container)
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 31050.0 atol = 1e-5
 end
 
@@ -183,11 +183,11 @@ end
     dir = joinpath(INPUT_FOLDER, "Rolling Horizon")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 410873.9 rtol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 410873.9 rtol = 1e-5
 
     # We only check the rolling horizon objectives since we cannot easily obtain
@@ -195,7 +195,7 @@ end
     expected_objective_values =
         [103424.0, 120393.6, 109303.0, 108443.0, 123410.4, 137768.2, 118506.6]
 
-    energy_problem = TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; show_log = false)
+    energy_problem = TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; show_log = :none)
     for row in DuckDB.query(connection, "FROM rolling_horizon_window")
         @test row.objective_value ≈ expected_objective_values[row.id] rtol = 1e-5
     end
@@ -252,6 +252,6 @@ end
 
     # Populating with defaults is expected, as these
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ -404.0 rtol = 1e-8
 end

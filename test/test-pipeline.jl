@@ -72,5 +72,5 @@ end
 
     # Test that it doesn't fail
     energy_problem =
-        TulipaEnergyModel.run_scenario(connection; show_log = false, output_folder = mktempdir())
+        TulipaEnergyModel.run_scenario(connection; show_log = :none, output_folder = mktempdir())
 end

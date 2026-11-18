@@ -17,9 +17,8 @@ The `optimizer` and `optimizer_parameters` keyword arguments can be used to chan
 Set `model_file_name = "some-name.lp"` to export the problem that is sent to the solver to a file for viewing (.lp or .mps).
 Set `enable_names = false` to turn off variable and constraint names (faster model creation).
 Set `direct_model = true` to create a JuMP direct model (faster & less memory).
-Set `show_log = false` to silence progress logging while running. Use
-[`set_log_level!`](@ref) to choose between minimal lifecycle logging and
-detailed model-construction logging.
+Set `show_log = :none` to silence progress logging, `:minimal` for lifecycle
+logging, or `:detailed` for lifecycle and model-construction logging.
 
 Specify a `output_folder` name to export the solution to CSV files.
 Specify a `log_file` name to export the log to a file.
@@ -33,15 +32,16 @@ function run_scenario(
     enable_names = true,
     direct_model = false,
     log_file = "",
-    show_log = true,
+    show_log = :minimal,
 )
+    _validate_show_log(show_log)
     reset_timer!(to)
 
-    show_log && @info "[$(timestamp())] Starting TulipaEnergyModel"
+    _log_minimal(show_log, "[$(timestamp())] Starting TulipaEnergyModel")
     energy_problem =
         @timeit to "create EnergyProblem from connection" EnergyProblem(connection; show_log)
 
-    show_log && @info "[$(timestamp())] Creating model"
+    _log_minimal(show_log, "[$(timestamp())] Creating model")
     @timeit to "create_model!" create_model!(
         energy_problem;
         optimizer,
@@ -52,15 +52,15 @@ function run_scenario(
         show_log,
     )
 
-    show_log && @info "[$(timestamp())] Solving model"
+    _log_minimal(show_log, "[$(timestamp())] Solving model")
     @timeit to "solve_model!" solve_model!(energy_problem)
 
-    show_log && @info "[$(timestamp())] Saving solution"
+    _log_minimal(show_log, "[$(timestamp())] Saving solution")
     @timeit to "save_solution!" save_solution!(energy_problem)
 
     if output_folder != ""
         if energy_problem.solved
-            show_log && @info "[$(timestamp())] Exporting solution tables to $output_folder"
+            _log_minimal(show_log, "[$(timestamp())] Exporting solution tables to $output_folder")
             @timeit to "export_solution_to_csv_files" export_solution_to_csv_files(
                 output_folder,
                 energy_problem;
@@ -71,7 +71,7 @@ function run_scenario(
         end
     end
 
-    if show_log && _is_detailed_logging()
+    if _is_detailed_logging(show_log)
         show(to)
         println()
     end
