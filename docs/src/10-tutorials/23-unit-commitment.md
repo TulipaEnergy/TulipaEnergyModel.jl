@@ -1,12 +1,13 @@
 # [Unit Commitment](@id unit-commitment-tutorial)
 
-Unit commitment decides not only how much an asset produces, but which individual units are operating. It is useful when a generator has a minimum stable output, a no-load cost, or minimum up and down times.
+Unit commitment decides not only how much an asset produces, but which individual units are operating. It is useful when a generator has a minimum stable output, a no-load cost, minimum up and down times, or a maximum time it can stay on.
 
 In this tutorial you will:
 
 1. Compare `none`, `basic`, and `3var` unit commitment on one hourly week.
 2. Inspect `units_on`, `start_up`, and `shut_down`.
-3. Coarsen the resolution of unit commitment variables and measure the resulting size and accuracy tradeoff.
+3. Limit how long the units can stay on with a maximum up time.
+4. Coarsen the resolution of unit commitment variables and measure the resulting size and accuracy tradeoff.
 
 For the formulation, see [Unit Commitment Constraints](@ref uc-constraints). The configuration parameters are described in [Unit Commitment constraints](@ref unit-commitment-setup), and the resolution details are covered in [Flexible Time Resolution in the Unit Commitment and Ramping Constraints](@ref flex-time-res-uc).
 
@@ -49,10 +50,11 @@ select(
     :min_operating_point,
     :minimum_down_time,
     :minimum_up_time,
+    :maximum_up_time,
 )
 ```
 
-The default data contains the 3-variable formulation for the 'ccgt', 'ocgt'. These two thermal assets are the only assets with unit commitment.
+The default data contains the 3-variable formulation for the 'ccgt', 'ocgt'. These two thermal assets are the only assets with unit commitment. The `maximum_up_time` column is empty, so the units can stay on for as long as needed.
 
 For the unit commitment modelling it is also important to consider different cost components, such as the `units_on_cost`, `shut_down_cost`, and `start_up_cost`, which influence the optimal commitment schedule of the thermal units. Let's have a look at these cost parameters in the asset milestone file.
 
@@ -80,6 +82,7 @@ function run_uc_case(
     unit_commitment;
     minimum_up_time = nothing,
     minimum_down_time = nothing,
+    maximum_up_time = nothing,
     asset_partition = 1,
     flow_partition = nothing,
 )
@@ -101,6 +104,14 @@ function run_uc_case(
         DuckDB.query(connection, """
             UPDATE asset
             SET minimum_down_time = $minimum_down_time
+            WHERE asset IN ('ccgt', 'ocgt')
+        """)
+    end
+
+    if !isnothing(maximum_up_time)
+        DuckDB.query(connection, """
+            UPDATE asset
+            SET maximum_up_time = $maximum_up_time
             WHERE asset IN ('ccgt', 'ocgt')
         """)
     end
@@ -258,7 +269,7 @@ plot_ccgt_dispatch_and_commitment(threevar_hourly_connection)
 
 Since there is a cost on start-up and shut-down, the model will try to minimize the number of transitions, leading to fewer on/off cycles for the `ccgt` units.
 
-Now use the tutorial defaults: `ccgt` has a 6-hour minimum up time and 4-hour minimum down time, while `ocgt` keeps 1-hour limits:
+Now use the tutorial defaults: `ccgt` has a 12-hour minimum up time and 8-hour minimum down time, while `ocgt` keeps 1-hour limits:
 
 ```@example unit-commitment
 threevar_connection, threevar_problem, _ = run_uc_case(
@@ -310,32 +321,94 @@ scatter!(
 )
 ```
 
-The three modes can be compared using the objective and model size:
+### Maximum up time
+
+The optional `maximum_up_time` parameter limits how long a unit can stay on after it starts: a unit can only be on if it started within the last `maximum_up_time` hours. Since the column is empty in the tutorial data, the previous models do not have any maximum up time constraints:
+
+```@example unit-commitment
+length(threevar_problem.model[:maximum_up_time])
+```
+
+Now limit both thermal assets to 24 hours of continuous operation. The value must be greater than or equal to the minimum up time, which is 12 hours for `ccgt`; otherwise the data validation fails.
+
+```@example unit-commitment
+maxup_connection, maxup_problem, _ = run_uc_case(
+    "3var";
+    maximum_up_time = 24,
+)
+(maxup_objective = maxup_problem.objective_value,
+ maximum_up_time_constraints = length(maxup_problem.model[:maximum_up_time]),
+ variables = JuMP.num_variables(maxup_problem.model),
+ constraints = JuMP.num_constraints(maxup_problem.model; count_variable_in_set_constraints = false)
+)
+```
+
+The model has the same variables and one extra constraint for each hourly block of `ccgt` and `ocgt`. The objective increases because units that ran for more than a day must now be shut down and started again. Compare the number of `ccgt` start-ups with and without the limit:
+
+```@example unit-commitment
+ccgt_units_on_maxup = filter(row -> row.asset == "ccgt", TIO.get_table(maxup_connection, "var_units_on"))
+ccgt_start_up_maxup = filter(row -> row.asset == "ccgt", TIO.get_table(maxup_connection, "var_start_up"))
+(start_ups_without_limit = round(Int, sum(ccgt_start_up.solution)),
+ start_ups_with_24h_limit = round(Int, sum(ccgt_start_up_maxup.solution)))
+```
+
+The number of units on changes only slightly, because the model can keep the same number of units on by shutting down one unit and starting another one. The constraint limits how long each unit stays on, not how many units are on:
+
+```@example unit-commitment
+plot(
+    ccgt_units_on.time_block_start,
+    ccgt_units_on.solution;
+    seriestype = :steppost,
+    label = "units on (no maximum up time)",
+    xlabel = "Hour",
+    ylabel = "Units",
+    xlims = (1, 168),
+)
+plot!(
+    ccgt_units_on_maxup.time_block_start,
+    ccgt_units_on_maxup.solution;
+    seriestype = :steppost,
+    label = "units on (24 h maximum up time)",
+)
+scatter!(
+    ccgt_start_up_maxup.time_block_start,
+    ccgt_start_up_maxup.solution;
+    label = "start-up (24 h maximum up time)",
+    marker = :utriangle,
+)
+```
+
+!!! warning "Maximum up time with several units"
+    The `ccgt` asset has four units, so the constraint applies to the total number of start-ups and units on rather than tracking individual units. The single-unit convex-hull result concerns the isolated temporal commitment constraints, not the full model with dispatch, ramping, or investment decisions. See the [maximum up time constraint](@ref maximum-up-time-constraint) for the assumptions.
+
+The unit commitment cases can be compared using the objective and model size:
 
 ```@example unit-commitment
 comparison = DataFrame(
-    mode = ["none", "basic", "3var (1h up/down)", "3var (tutorial defaults)"],
+    mode = ["none", "basic", "3var (1h up/down)", "3var (tutorial defaults)", "3var (24h maximum up time)"],
     objective = [
         none_problem.objective_value,
         basic_problem.objective_value,
         threevar_hourly_problem.objective_value,
         threevar_problem.objective_value,
+        maxup_problem.objective_value,
     ],
     variables = [
         JuMP.num_variables(none_problem.model),
         JuMP.num_variables(basic_problem.model),
         JuMP.num_variables(threevar_hourly_problem.model),
         JuMP.num_variables(threevar_problem.model),
+        JuMP.num_variables(maxup_problem.model),
     ],
     structural_constraints = [
         JuMP.num_constraints(p.model; count_variable_in_set_constraints = false) for p in
-        (none_problem, basic_problem, threevar_hourly_problem, threevar_problem)
+        (none_problem, basic_problem, threevar_hourly_problem, threevar_problem, maxup_problem)
     ],
 )
 comparison
 ```
 
-`none` is the least restrictive model. `basic` adds commitment and minimum-output logic, while `3var` adds transition variables and minimum up/down-time logic.
+`none` is the least restrictive model. `basic` adds commitment and minimum-output logic, while `3var` adds transition variables and minimum up/down-time logic. The maximum up time adds constraints, but no variables, to the `3var` model.
 
 ## Part 2: coarser commitment resolution
 
@@ -456,3 +529,5 @@ These timings are illustrative and machine-dependent. The earlier examples warm 
     1. Change `minimum_up_time` and `minimum_down_time` and repeat the partition sweep.
     2. Set `unit_commitment_integer = false` for the thermal assets and compare the relaxed model size and objective.
     3. Add ramping and inspect how the flow resolution affects the ramping constraints.
+    4. Run `run_uc_case("3var"; maximum_up_time = 6)` and read the data validation error: the maximum up time of `ccgt` is lower than its minimum up time.
+    5. Combine `maximum_up_time` with a coarser `asset_partition` and check how the maximum up time window is rounded up to whole commitment blocks.

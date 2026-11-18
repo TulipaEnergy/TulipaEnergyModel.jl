@@ -101,6 +101,15 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u./h"
     },
+    "maximum_up_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": null,
+      "description": "Maximum amount of time a unit can remain on after starting up. Applies to 3var unit commitment. It must be greater than or equal to `minimum_up_time`. If the value is null, empty, or missing, there is no maximum up time constraint.",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
     "min_operating_point": {
       "constraints": {
         "maximum": 1,

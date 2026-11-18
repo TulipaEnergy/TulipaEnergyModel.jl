@@ -82,6 +82,7 @@ export
     add_investment_group_constraints!,
     add_minimum_down_time_constraints!,
     add_minimum_up_time_constraints!,
+    add_maximum_up_time_constraints!,
 
     # Objectives
     add_objective!,

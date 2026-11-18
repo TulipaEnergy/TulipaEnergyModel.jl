@@ -349,6 +349,15 @@ function create_model(
         constraints,
     )
 
+    _log_detailed(show_log, "[$(timestamp())] Adding maximum up time constraints")
+    @timeit to "add_maximum_up_time_constraints!" add_maximum_up_time_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
     _log_detailed(show_log, "[$(timestamp())] Adding minimum down time constraints")
     @timeit to "add_minimum_down_time_constraints!" add_minimum_down_time_constraints!(
         connection,

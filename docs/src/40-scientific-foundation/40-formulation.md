@@ -36,6 +36,7 @@ In addition, the following asset sets represent methods for incorporating additi
 | $\mathcal{A}^{\text{uc}}_y$                    | Energy assets with unit commitment method at year $y$         |          | $\mathcal{A}^{\text{uc}}_y  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$       | This set contains conversion and production assets that have a unit commitment method. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                       |
 | $\mathcal{A}^{\text{uc basic}}_y$              | Energy assets with a basic unit commitment method at year $y$ |          | $\mathcal{A}^{\text{uc basic}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                            | This set contains the assets that have a basic unit commitment method that uses only the units on variable. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                  |
 | $\mathcal{A}^{\text{uc 3var}}_y$               | Energy assets with a 3var unit commitment method at year $y$  |          | $\mathcal{A}^{\text{uc 3var}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                             | This set contains the assets that have a unit commitment method using three variables: units on, start-up, and shut-down. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                    |
+| $\mathcal{A}^{\text{uc max up}}_y$             | Energy assets with a maximum up time at year $y$              |          | $\mathcal{A}^{\text{uc max up}}_y \subseteq \mathcal{A}^{\text{uc 3var}}_y$                      | This set contains the 3var unit commitment assets with a `maximum_up_time` value. Assets with an empty `maximum_up_time` are not in this set. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                |
 | $\mathcal{A}^{\text{ramp}}_y$                  | Energy assets with ramping method at year $y$                 |          | $\mathcal{A}^{\text{ramp}}_y  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$     | This set contains conversion and production assets that have a ramping method. Please visit the [how-to section](@ref ramping-setup) to learn how to set up this feature.                                                                                       |
 | $\mathcal{A}^{\text{dc-opf}}_y$                | Energy assets with a DC power flow method at year $y$         |          | $\mathcal{A}^{\text{dc-opf}}_y \subseteq \mathcal{A}$                                            | This set contains the assets that have that use the dc-opf method.                                                                                                                                                                                              |
 
@@ -177,6 +178,7 @@ The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer a
 | $p^{\text{max ramp down}}_{a,y}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}_y$      | Maximum ramping down rate as a portion of the capacity of asset $a$ at year $y$                                          | [p.u./h]       |
 | $p^{\text{minimum up time}}_{a,y}$     | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously operate once it has been turned on, at year $y$             | [h]            |
 | $p^{\text{minimum down time}}_{a,y}$   | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Minimum amount of time for which asset $a$ must continuously remain off once it has been shut down, at year $y$          | [h]            |
+| $p^{\text{maximum up time}}_{a,y}$     | $\mathbb{N}_{+}$ | $a \in \mathcal{A^{\text{uc max up}}}_y$ | Maximum amount of time for which asset $a$ can continuously operate once it has been turned on, at year $y$              | [h]            |
 | $p^{\text{start up cost}}_{a,y}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Cost per unit started up for asset $a$ at year $y$                                                                       | [kEUR/unit]    |
 | $p^{\text{shut down cost}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc 3var}}}_y$   | Cost per unit shut down for asset $a$ at year $y$                                                                        | [kEUR/unit]    |
 
@@ -607,7 +609,7 @@ When the compact efficiencies method is selected, the model introduces vintage f
 
 Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](@ref scientific-refs) and [Morales-España et al. (2014)](@ref scientific-refs).
 
-The model supports a basic unit commitment version using only $v^{\text{units on}}$ and a 3var version using $v^{\text{units on}}$, $v^{\text{start up}}$, and $v^{\text{shut down}}$. The output and ramping limits apply to both versions; the logical and minimum up/down time constraints apply to the 3var version.
+The model supports a basic unit commitment version using only $v^{\text{units on}}$ and a 3var version using $v^{\text{units on}}$, $v^{\text{start up}}$, and $v^{\text{shut down}}$. The output and ramping limits apply to both versions; the logical, minimum up/down time, and maximum up time constraints apply to the 3var version.
 
 For the unit commitment constraints, we define the following expression for the flow that is above the minimum operating point of the asset:
 
@@ -652,6 +654,22 @@ v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\te
 \\ \sum_{\substack{i \in \mathcal{B}^{\text{su}}_{a, y, {k_y}}\text{: start}(b_{k_y}) - p_{a,y}^{\text{minimum down time}} + 1 \\ \leq \text{start}(i) \leq \text{start}(b_{k_{y}})}}^{b_{k_y}} v_{a, k_y, i}^{\text{shut down}} \leq v^{\text{available units}}_{a,y} - v_{a, k_y, b'}^{\text{units on}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}, b' = {B}^{\text{uc}}_{a, y, k_y}(b_{k_y})
 ```
+
+#### [Maximum Up Time Constraint](@id maximum-up-time-constraint)
+
+The maximum up time constraint limits how long a unit can stay on once it has been started: a unit can only be on if it started within the last $p^{\text{maximum up time}}_{a,y}$ hours. It is the constant-bound case of the formulation in [Queyranne and Wolsey (2017)](@ref scientific-refs), and it is only added for the assets in $\mathcal{A}^{\text{uc max up}}_y$, i.e., the assets with a `maximum_up_time` value. The following expression uses hourly timesteps; for other resolutions, see the window conversion in [Three-Variable Unit Commitment with Flexible Time Resolution](@ref).
+
+```math
+v_{a, k_y, b'}^{\text{units on}} \leq \sum_{\substack{i \in \mathcal{B}^{\text{su}}_{a, y, {k_y}}\text{: start}(b_{k_y}) - p_{a,y}^{\text{maximum up time}} + 1 \\ \leq \text{start}(i) \leq \text{start}(b_{k_{y}})}} v_{a, k_y, i}^{\text{start up}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc max up}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}, b' = {B}^{\text{uc}}_{a, y, k_y}(b_{k_y})
+```
+
+The following notes apply to this constraint:
+
+- The data validation requires $p^{\text{maximum up time}}_{a,y} \geq p^{\text{minimum up time}}_{a,y}$.
+- As in the minimum up time constraint, the window is rounded up to whole time blocks. When the blocks are longer than one hour, the effective maximum up time can be longer than $p^{\text{maximum up time}}_{a,y}$.
+- The window stops at the start of the representative period. Since the first block has no previous units on value, a unit that is on in the first block counts as started there.
+- For a single unit with equally spaced periods, constant integer time bounds, and consistent fixed history, the logical, minimum up/down time, and maximum up time constraints describe the convex hull of feasible commitment trajectories. This result covers the isolated temporal commitment constraints, not the full model with output limits, ramping, or investment decisions. Tulipa uses the representative-period boundary convention described above, not user-specified commitment history. For assets with several units, the constraint applies to aggregate start-ups and units on rather than tracking individual units; no full-model tightness guarantee is implied.
 
 ### [Minimum Output Constraints Without Unit Commitment](@id min-output-constraints-without-unit-commitment)
 

@@ -226,7 +226,7 @@ For economic representation, the following parameters need to be set up. For con
 
 ## [Unit Commitment constraints](@id unit-commitment-setup)
 
-The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter selects `basic` (units-on variable and output limits) or `3var` (units-on, start-up, shut-down, and minimum up/down time constraints). Additionally, the following parameters should be set in that same file:
+The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter selects `basic` (units-on variable and output limits) or `3var` (units-on, start-up, shut-down, minimum up/down time, and optional maximum up time constraints). Additionally, the following parameters should be set in that same file:
 
 - `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
 - `start_up_cost`: Cost per unit started up; applies to `3var` and is charged once per represented start-up.
@@ -235,6 +235,7 @@ The unit commitment constraints are only applied to producer and conversion asse
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
 - `minimum_up_time`: Minimum time a unit must remain on after start-up; applies to `3var`.
 - `minimum_down_time`: Minimum time a unit must remain off after shut-down; applies to `3var`.
+- [optional] `maximum_up_time`: Maximum time a unit can remain on after start-up; applies to `3var`. It must be greater than or equal to `minimum_up_time`. Leave it empty to skip the maximum up time constraints for that asset.
 
 Transition costs are only applied to an asset that is a producer or conversion with `unit_commitment = '3var'`. Start-up and shut-down costs apply to changes in commitment between consecutive asset time blocks. Commitment is constant within each block, so shorter blocks are needed to represent more frequent starts and stops. The first block of each representative period has no previous commitment state and is not charged.
 
@@ -242,6 +243,9 @@ Transition costs are only applied to an asset that is a producer or conversion w
     Even when `unit_commitment = 'none'`, producer and conversion assets with `min_operating_point > 0` still receive a minimum output-flow constraint (for aggregated and compact profiles vintage methods). This is useful to represent must-run conditions without the full unit commitment formulation.
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
+
+!!! warning "Maximum up time with several units"
+    For assets with several units (or with investments in units), this constraint applies to the total number of start-ups and units on, rather than tracking individual units. The single-unit convex-hull result concerns the isolated temporal commitment constraints; it does not guarantee a tight relaxation for the full model with dispatch, ramping, or investment decisions. See the [maximum up time constraint](@ref maximum-up-time-constraint) for the assumptions.
 
 ## [Ramping constraints](@id ramping-setup)
 

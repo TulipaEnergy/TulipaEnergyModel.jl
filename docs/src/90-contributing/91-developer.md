@@ -375,7 +375,7 @@ Or, using the CLI version:
 julia --project=test test/runtests.jl --verbose
 ```
 
-#### Running Tests with filters
+#### Running Tests with Filters
 
 The test suite uses tags for efficient test filtering during development. Here are some tags:
 
@@ -406,6 +406,20 @@ julia --project=test test/runtests.jl --name "Some test name"
 ```
 
 Use `--help` to see the full help.
+
+#### Using Local Dependency Versions
+
+By default, the CLI runner creates a temporary environment from `test/Project.toml`
+and resolves dependencies without using your local manifest or pins.
+To use the active environment and its existing manifest instead, add `--use-local-env`:
+
+```bash
+julia --project=test test/runtests.jl --file test-case-studies.jl --use-local-env
+```
+
+This option skips temporary environment creation and dependency resolution.
+The active environment must already have the test dependencies installed.
+Without the option, the default workflow is unchanged.
 
 #### Test Coverage
 
