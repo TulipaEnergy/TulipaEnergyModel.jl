@@ -106,7 +106,7 @@ DataFrame(DuckDB.query(connection, """
 ## Running the Model (λ = 0.5)
 
 ```@example cvar
-energy_problem = TEM.run_scenario(connection; show_log = false)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 println("Objective value: ", round(energy_problem.objective_value; digits=2), " €")
 ```
 
@@ -207,7 +207,7 @@ conn0 = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(conn0, input_dir)
 TEM.populate_with_defaults!(conn0)
 DuckDB.query(conn0, "UPDATE model_parameters SET risk_aversion_weight_lambda = 0.0")
-ep0 = TEM.run_scenario(conn0; show_log = false)
+ep0 = TEM.run_scenario(conn0; show_log = :none)
 println("λ=0 objective: ", round(ep0.objective_value; digits=2), " €")
 inv0 = DataFrame(DuckDB.query(conn0, "SELECT solution AS units_invested FROM var_assets_investment"))
 println("Wind units invested: ", inv0.units_invested[1])
@@ -224,7 +224,7 @@ conn1 = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(conn1, input_dir)
 TEM.populate_with_defaults!(conn1)
 DuckDB.query(conn1, "UPDATE model_parameters SET risk_aversion_weight_lambda = 1.0")
-ep1 = TEM.run_scenario(conn1; show_log = false)
+ep1 = TEM.run_scenario(conn1; show_log = :none)
 println("λ=1 objective: ", round(ep1.objective_value; digits=2), " €")
 inv1 = DataFrame(DuckDB.query(conn1, "SELECT solution AS units_invested FROM var_assets_investment"))
 println("Wind units invested: ", inv1.units_invested[1])

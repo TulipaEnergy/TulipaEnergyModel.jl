@@ -515,7 +515,7 @@ end
     [CommonSetup, BidsSetup] tags = [:case_study, :integration, :slow] begin
     # Normal solution
     connection = create_problem()
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     @test energy_problem.objective_value ≈ 0.0 rtol = 1e-5
     close(connection)
 

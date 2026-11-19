@@ -124,7 +124,7 @@ TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_
 
 # Solve the scenario
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection, show_log=false)
+energy_problem = TEM.run_scenario(connection, show_log = :none)
 
 energy_problem
 ```
@@ -221,7 +221,7 @@ TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_
 
 # Solve the scenario
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection, show_log=false)
+energy_problem = TEM.run_scenario(connection, show_log = :none)
 
 energy_problem
 ```

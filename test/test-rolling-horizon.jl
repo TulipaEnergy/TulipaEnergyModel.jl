@@ -58,7 +58,7 @@ end
     )
 
     error = try
-        TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+        TEM.run_rolling_horizon(connection, 24, 48; show_log = :none)
         nothing
     catch exception
         exception
@@ -76,12 +76,12 @@ end
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
     )
     opt_window_length = horizon_length
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = :none)
     expected_objective = energy_problem.objective_value
 
     for move_forward in [div(horizon_length, k) for k in (2, 3, 4, 6, 12, 24)]
         energy_problem =
-            run_rolling_horizon(connection, move_forward, opt_window_length; show_log = false)
+            run_rolling_horizon(connection, move_forward, opt_window_length; show_log = :none)
         df_rolling_horizon_window =
             DataFrame(DuckDB.query(connection, "FROM rolling_horizon_window"))
         @test df_rolling_horizon_window.objective_value[1] == expected_objective # The first solution should be the full problem
@@ -131,9 +131,9 @@ end
         connection,
         24,
         48,
-        show_log = false,
+        show_log = :none,
     )
-    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = :none)
     @test energy_problem.termination_status == JuMP.INFEASIBLE
 end
 
@@ -161,7 +161,7 @@ end
                 ('demand',  'uniform', '6', 2030, 1),
         ",
     )
-    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = :none)
 
     # It should fail when opt_window_length is not a multiple of any of these
     DuckDB.query(
@@ -169,10 +169,10 @@ end
         "UPDATE assets_rep_periods_partitions SET partition='5' WHERE asset='battery'
         ",
     )
-    @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+    @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = :none)
 
     # Working again with different move_forward and opt_window_length that are divisible by 5
-    TEM.run_rolling_horizon(connection, 12 * 5, 24 * 5; show_log = false)
+    TEM.run_rolling_horizon(connection, 12 * 5, 24 * 5; show_log = :none)
 
     # It should fail when partition is not uniform
     DuckDB.query(
@@ -180,7 +180,7 @@ end
         "UPDATE assets_rep_periods_partitions SET partition='4', specification='math' WHERE asset='battery'
         ",
     )
-    @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+    @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = :none)
 end
 
 # Test optionality of the full rolling_solution_var_* tables
@@ -188,10 +188,10 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
 
-    TEM.run_rolling_horizon(connection, 24, 48; show_log = false, save_rolling_solution = false)
+    TEM.run_rolling_horizon(connection, 24, 48; show_log = :none, save_rolling_solution = false)
     tables = [row.table_name for row in DuckDB.query(connection, "FROM duckdb_tables")]
     @test !("rolling_solution_var_flow" in tables)
-    TEM.run_rolling_horizon(connection, 24, 48; show_log = false, save_rolling_solution = true)
+    TEM.run_rolling_horizon(connection, 24, 48; show_log = :none, save_rolling_solution = true)
     tables = [row.table_name for row in DuckDB.query(connection, "FROM duckdb_tables")]
     @test "rolling_solution_var_flow" in tables
 end
@@ -202,12 +202,12 @@ end
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
 
     # There is no internal rolling_horizon_energy_problem when we're not running rolling_horizon
-    energy_problem = TEM.run_scenario(connection; show_log = false)
+    energy_problem = TEM.run_scenario(connection; show_log = :none)
     @test isnothing(energy_problem.rolling_horizon_energy_problem)
     @test !isnan(energy_problem.objective_value)
 
     # Now there will be one
-    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = :none)
     @test energy_problem.rolling_horizon_energy_problem isa EnergyProblem
     @test isnan(energy_problem.objective_value)
     @test !isnan(energy_problem.rolling_horizon_energy_problem.objective_value)
@@ -218,7 +218,7 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
     output_folder = mktempdir()
-    TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; output_folder, show_log = false)
+    TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; output_folder, show_log = :none)
     for filename in (
         "var_flow.csv",
         "cons_balance_consumer.csv",
@@ -246,7 +246,7 @@ end
         move_forward,
         opt_window_length;
         compute_duals = false,
-        show_log = false,
+        show_log = :none,
     )
     @test !(
         "dual_balance_consumer" in [
@@ -265,7 +265,7 @@ end
         move_forward,
         opt_window_length;
         compute_duals = true,
-        show_log = false,
+        show_log = :none,
     )
     @test "dual_balance_consumer" in [
         row.column_name for row in DuckDB.query(

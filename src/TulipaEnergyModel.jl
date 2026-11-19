@@ -104,6 +104,7 @@ export
     run_rolling_horizon
 
 # Definitions and auxiliary files
+include("logging.jl")
 include("run-scenario.jl")
 include("structures.jl")
 include("utils.jl")

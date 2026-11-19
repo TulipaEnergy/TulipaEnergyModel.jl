@@ -10,7 +10,7 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
     output_folder = mktempdir()
-    TulipaEnergyModel.run_scenario(connection; output_folder, show_log = false)
+    TulipaEnergyModel.run_scenario(connection; output_folder, show_log = :none)
     for filename in (
         "var_flow.csv",
         "var_flows_investment.csv",
