@@ -52,7 +52,7 @@ clusters = TC.cluster!(connection,
                     )
 
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 !!! tip
@@ -116,7 +116,7 @@ Rerun the workflow and check the results again...
 And then run the scenario again:
 
 ```@example seasonal-and-non-seasonal-storage
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 What do you notice in the output folder? Any new variables/constraints?
@@ -193,7 +193,7 @@ DuckDB.query(
     conn_hourly_benchmark, "UPDATE asset SET use_inter_period_constraints = false")
 
 # 5. We can solve it now
-ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
+ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = :none)
 ```
 
 You can use this result and the ones from the clustering to see the comparison of the two solutions.\

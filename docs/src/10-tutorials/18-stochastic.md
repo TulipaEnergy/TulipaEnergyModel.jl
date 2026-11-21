@@ -177,7 +177,7 @@ After this small detour to understand how to cluster the stochastic scenarios us
 
 ```@example stochastic
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 ### Exploring the Results
@@ -256,7 +256,7 @@ Let's solve the optimization problem again with the new probabilities and see ho
 
 ```@example stochastic
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 In this case, the investments change to invest less in wind and more in solar and ccgt, which is expected since the scenario with lower renewable availability (2008) has a higher probability. The model is trying to hedge against the possibility of having a year with low renewable availability by investing more in solar, which has a more stable availability compared to wind. The ccgt investment also increases to provide more flexibility to the system in case of low renewable availability.:

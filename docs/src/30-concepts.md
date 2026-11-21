@@ -881,7 +881,7 @@ input_dir = "../../test/inputs/Storage" # hide
 # input_dir should be the path to the Storage example
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-energy_problem = run_scenario(connection)
+energy_problem = run_scenario(connection; show_log = :none)
 ```
 
 Since the `battery` and the `caes` are not seasonal, they only have results for the rep-period-storage level of each representative period, as shown in the following figure:
