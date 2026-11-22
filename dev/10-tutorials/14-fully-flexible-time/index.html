@@ -55,7 +55,7 @@ TEM.populate_with_defaults!(connection)
 
 # Optimize the model
 energy_problem =
-    TEM.run_scenario(connection);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+    TEM.run_scenario(connection; show_log = :none);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
   - Model created!
     - Number of variables: 89060
     - Number of constraints for variable bounds: 80300
@@ -102,7 +102,7 @@ plot(
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
     xlims=(168 * 2, 168 * 3),
-)</code></pre><img src="aaec881d.svg" alt="Example block output"/><p>Explore the h2_balance duals in the results by displaying the first 5 rows of the table:</p><pre><code class="language-julia hljs">balance = TIO.get_table(connection, &quot;cons_balance_consumer&quot;)
+)</code></pre><img src="8c914360.svg" alt="Example block output"/><p>Explore the h2_balance duals in the results by displaying the first 5 rows of the table:</p><pre><code class="language-julia hljs">balance = TIO.get_table(connection, &quot;cons_balance_consumer&quot;)
 
 asset = &quot;h2_demand&quot;
 year = 2030
@@ -124,7 +124,7 @@ smr_ccs,h2_demand,6,1,uniform,2030</code></pre><p>or using the DuckDB connection
     &quot;&quot;&quot;
     )</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [1],)</code></pre><p>Run again and explore the results once more...</p><pre><code class="language-julia hljs"># Optimize the model
 energy_problem =
-    TEM.run_scenario(connection);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+    TEM.run_scenario(connection; show_log = :none);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
   - Model created!
     - Number of variables: 81760
     - Number of constraints for variable bounds: 73000
@@ -162,7 +162,7 @@ first(filtered_asset, 5)</code></pre><div><div style = "float: left;"><span>5×7
 input_dir = joinpath(@__DIR__, &quot;my-awesome-energy-system/tutorial-3&quot;)
 TIO.read_csv_folder(conn_hourly, input_dir)
 TEM.populate_with_defaults!(conn_hourly)
-hourly_energy_problem = TEM.run_scenario(conn_hourly);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+hourly_energy_problem = TEM.run_scenario(conn_hourly; show_log = :none);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
   - Model created!
     - Number of variables: 96360
     - Number of constraints for variable bounds: 87600
@@ -225,4 +225,4 @@ plot!(
     hourly_filtered_flow.time_block_start,
     hourly_filtered_flow.solution;
     label=string(from_asset, &quot; -&gt; &quot;, to_asset, &quot; (hourly)&quot;),
-)</code></pre><img src="765c6ea3.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../13-assets/">« Gereralized Assets and Flows</a><a class="docs-footer-nextpage" href="../15-clustering-rep-periods/">Blended Representative Periods with Tulipa Clustering »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Tuesday 17 November 2026 18:31">Tuesday 17 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+)</code></pre><img src="4b338cd5.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../13-assets/">« Gereralized Assets and Flows</a><a class="docs-footer-nextpage" href="../15-clustering-rep-periods/">Blended Representative Periods with Tulipa Clustering »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Sunday 22 November 2026 15:37">Sunday 22 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
