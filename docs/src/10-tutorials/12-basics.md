@@ -71,7 +71,7 @@ Run, baby run!
 
 ```@example basic
 energy_problem =
-    TEM.run_scenario(connection; output_folder=output_dir)
+    TEM.run_scenario(connection; output_folder=output_dir, show_log = :none)
 ```
 
 ## Explore the results

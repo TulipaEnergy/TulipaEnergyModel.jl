@@ -52,7 +52,7 @@ clusters = TC.cluster!(connection,
                     )
 
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 !!! tip
@@ -116,7 +116,7 @@ Rerun the workflow and check the results again...
 And then run the scenario again:
 
 ```@example seasonal-and-non-seasonal-storage
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 What do you notice in the output folder? Any new variables/constraints?
@@ -193,7 +193,7 @@ DuckDB.query(
     conn_hourly_benchmark, "UPDATE asset SET use_inter_period_constraints = false")
 
 # 5. We can solve it now
-ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
+ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = :none)
 ```
 
 You can use this result and the ones from the clustering to see the comparison of the two solutions.\
@@ -259,7 +259,7 @@ TC.transform_wide_to_long!(conn_hourly_benchmark, "profiles_wide", "profiles"; e
 TC.dummy_cluster!(conn_hourly_benchmark; layout = TC.ProfilesTableLayout(year = :milestone_year))
 TEM.populate_with_defaults!(conn_hourly_benchmark)
 DuckDB.query(conn_hourly_benchmark, "UPDATE asset SET use_inter_period_constraints = false")
-ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = false)
+ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = :none)
 
 # The plot of the hourly benchmark
 storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_intra_rep_period")
@@ -297,7 +297,7 @@ for num_rps in list_num_rps
     )
     TEM.populate_with_defaults!(connection)
     DuckDB.query(connection, "UPDATE asset SET use_inter_period_constraints = true WHERE asset = 'h2_storage'")
-    energy_problem = TEM.run_scenario(connection; show_log = false)
+    energy_problem = TEM.run_scenario(connection; show_log = :none)
 
     # update the plot for each num_rps
     seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_inter_period")

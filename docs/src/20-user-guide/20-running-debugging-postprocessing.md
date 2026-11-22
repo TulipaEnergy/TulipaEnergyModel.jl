@@ -18,6 +18,22 @@ The `connection` should have been created and the data loaded into it using [Tul
 See the [Workflow Tutorial](@ref workflow-tutorial) for a complete guide on how to achieve this.
 The `output_folder` is optional if the user wants to export the output.
 
+### Controlling progress logs
+
+The `show_log` keyword controls Tulipa's progress messages. It does not hide
+warnings or errors.
+
+- `show_log = :none` silences progress logging.
+- `show_log = :minimal` is the default and reports the scenario lifecycle.
+- `show_log = :detailed` also reports model-construction steps.
+
+For example, use `:none` when a notebook or script should only emit its own
+output:
+
+```julia
+energy_problem = run_scenario(connection; show_log = :none)
+```
+
 ## Finding an input parameter
 
 !!! tip "Are you looking for an input parameter?"

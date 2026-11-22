@@ -843,7 +843,7 @@ end
                 "mip_rel_gap" => 0.0,
                 "mip_feasibility_tolerance" => 1e-5,
             ),
-            show_log = false,
+            show_log = :none,
         )
         JuMP.assert_is_solved_and_feasible(energy_problem.model)
         ocgt_units_on = [

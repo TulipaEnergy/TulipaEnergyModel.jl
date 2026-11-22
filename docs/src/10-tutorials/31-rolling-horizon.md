@@ -42,7 +42,7 @@ nice_query("SELECT from_asset, to_asset FROM flow")
 Let's first solve this problem directly and inspect the solution
 
 ```@example rolling_horizon
-energy_problem = TulipaEnergyModel.run_scenario(connection, show_log=false)
+energy_problem = TulipaEnergyModel.run_scenario(connection, show_log = :none)
 ```
 
 We will aggregate the flow solution and visualize the "solar" and "thermal" assets, and the "charge" and "discharge" of the battery.
@@ -195,7 +195,7 @@ energy_problem = TulipaEnergyModel.run_rolling_horizon(
     connection,
     move_forward,
     opt_window_length,
-    show_log = false,
+    show_log = :none,
     save_rolling_solution = true, # optional: saves intermediate solutions
 )
 ```

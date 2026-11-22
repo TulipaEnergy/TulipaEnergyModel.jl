@@ -44,7 +44,7 @@ connection = DBInterface.connect(DuckDB.DB)
 input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-6-simple-method")
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 !!! warning
@@ -106,7 +106,7 @@ connection = DBInterface.connect(DuckDB.DB)
 input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-6-simple-method")
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 Check initial capacity - under the aggregated method, we will not be able to differentiate units built in other years (than milestone years), they will be considered the same as the units built in the milestone year, which means that we will not use the 2020 profile.
@@ -131,7 +131,7 @@ connection = DBInterface.connect(DuckDB.DB)
 input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-6-compact-method")
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection; show_log = :none)
 ```
 
 !!! warning

@@ -156,8 +156,8 @@ function run_uc_case(
     TEM.populate_with_defaults!(connection)
     energy_problem = nothing
     model_build_time = @elapsed begin
-        energy_problem = TEM.EnergyProblem(connection; show_log = false)
-        TEM.create_model!(energy_problem; show_log = false)
+        energy_problem = TEM.EnergyProblem(connection; show_log = :none)
+        TEM.create_model!(energy_problem; show_log = :none)
     end
     TEM.solve_model!(energy_problem)
     solver_time = JuMP.solve_time(energy_problem.model)

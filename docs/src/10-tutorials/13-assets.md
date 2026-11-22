@@ -40,7 +40,7 @@ TEM.populate_with_defaults!(connection)
 
 # Run the model
 energy_problem =
-    TEM.run_scenario(connection);
+    TEM.run_scenario(connection; show_log = :none);
 ```
 
 !!! tip
