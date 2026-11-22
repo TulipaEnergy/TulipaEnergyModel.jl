@@ -5,7 +5,7 @@ const SHOW_LOG_LEVELS = (:none, :minimal, :detailed)
 
 Validate a `show_log` value.
 
-Use `:none` to silence progress logging, `:minimal` for high-level 
+Use `:none` to silence progress logging, `:minimal` for high-level
 progress, or `:detailed` to include internal model construction steps.
 """
 function _validate_show_log(show_log::Symbol)
